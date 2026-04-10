@@ -77,6 +77,7 @@ class DictationInputMethod : InputMethodService() {
         val btnPaste: ImageButton = view.findViewById(R.id.btnPaste)
         val btnQuestion: Button = view.findViewById(R.id.btnQuestion)
         val btnExclamation: Button = view.findViewById(R.id.btnExclamation)
+        val btnCutAll: ImageButton = view.findViewById(R.id.btnCutAll)
         val btnSettings: ImageButton = view.findViewById(R.id.btnSettings)
         val btnHideKeyboard: ImageButton = view.findViewById(R.id.btnHideKeyboard)
 
@@ -98,6 +99,8 @@ class DictationInputMethod : InputMethodService() {
                 else -> false
             }
         }
+
+        btnCutAll.setOnClickListener { keystrokes.cutAll(this) }
 
         btnSpace.setOnClickListener { keystrokes.insertText(" ") }
         btnEnter.setOnClickListener { keystrokes.sendEnter() }

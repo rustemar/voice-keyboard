@@ -1,11 +1,11 @@
 package com.tyraen.voicekeyboard.feature.ime
 
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.KeyEvent
-import android.view.InputDevice
 import android.view.inputmethod.InputConnection
 
 class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?) {
@@ -45,6 +45,18 @@ class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?
             ic.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
             ic.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
         }
+    }
+
+    fun cutAll(context: Context): Boolean {
+        val ic = connectionProvider() ?: return false
+        val extracted = ic.getExtractedText(android.view.inputmethod.ExtractedTextRequest(), 0)
+        val text = extracted?.text?.toString() ?: return false
+        if (text.isEmpty()) return false
+
+        ic.performContextMenuAction(android.R.id.selectAll)
+        ic.performContextMenuAction(android.R.id.cut)
+
+        return true
     }
 
     fun pasteFromClipboard(context: Context) {
