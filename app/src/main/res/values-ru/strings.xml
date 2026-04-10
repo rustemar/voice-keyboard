@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">Нажмите на микрофон</string>
+    <string name="status_recording">Запись\u2026</string>
+    <string name="status_transcribing">Распознавание\u2026</string>
+    <string name="status_error">Ошибка: %s</string>
+    <string name="settings_title">Настройки Voice Keyboard</string>
+    <string name="settings_api_key">Ключ API GroQ</string>
+    <string name="settings_model">Модель</string>
+    <string name="settings_language">Код языка</string>
+    <string name="settings_endpoint">Адрес API</string>
+    <string name="settings_auto_record">Автозапись</string>
+    <string name="settings_add_space">Добавлять пробел в конце</string>
+    <string name="settings_apply">Применить</string>
+    <string name="settings_enable_instructions">Чтобы включить клавиатуру:\n\n1. Перейдите в Настройки → Система → Языки и ввод → Экранная клавиатура\n2. Включите \"Voice Keyboard\"\n3. Выберите её в любом текстовом поле</string>
+    <string name="test_section_title">Тест распознавания</string>
+    <string name="test_section_hint">Запишите короткую фразу, чтобы проверить работу</string>
+    <string name="test_result_placeholder">Результат распознавания появится здесь…</string>
+    <string name="test_record">Запись</string>
+    <string name="test_stop">Стоп и распознать</string>
+    <string name="test_clear">Очистить</string>
+    <string name="logs_section_title">Журнал</string>
+    <string name="logs_section_hint">Сохраните журнал в файл, если что-то не работает</string>
+    <string name="logs_save">Сохранить журнал</string>
+    <string name="logs_clear">Очистить</string>
+    <string name="settings_prompt">Промпт (подсказка форматирования)</string>
+    <string name="settings_prompt_hint">Пример текста с правильной пунктуацией для форматирования</string>
+    <string name="settings_interface_language">Язык интерфейса</string>
+    <string name="update_available">Доступно обновление</string>
+    <string name="update_new_version">Доступна новая версия %s.</string>
+    <string name="update_button">Обновить</string>
+    <string name="update_later">Позже</string>
+    <string name="update_downloading">Загрузка обновления</string>
+    <string name="update_downloading_progress">Загрузка обновления… %d%%</string>
+    <string name="update_download_failed">Ошибка загрузки</string>
+    <string name="update_download_failed_message">Не удалось загрузить обновление. Попробуйте позже.</string>
+    <string name="update_cancel">Отмена</string>
+    <string name="update_open_browser">Открыть в браузере</string>
+    <string name="update_check">Проверить обновления</string>
+    <string name="update_no_updates">У вас последняя версия</string>
+    <string name="update_check_failed">Не удалось проверить обновления. Проверьте подключение к интернету.</string>
+    <string name="settings_get_api_key">Получить API-ключ → console.groq.com</string>
+    <string name="about_project">GitHub — О проекте</string>
+    <string name="link_copied">Ссылка скопирована</string>
+</resources>

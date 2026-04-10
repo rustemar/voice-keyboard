@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme-adaptive colors (dark overrides) -->
+    <color name="keyboard_bg">#FF1B1B1F</color>
+    <color name="key_bg">#FF2D2D32</color>
+    <color name="key_text">#FFE0E0E0</color>
+    <color name="status_text">#FF9CA3AF</color>
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="divider">#FF3D3D42</color>
+    <color name="test_result_bg">#FF2D2D32</color>
+</resources>

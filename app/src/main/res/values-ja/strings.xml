@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">マイクをタップ</string>
+    <string name="status_recording">録音中\u2026</string>
+    <string name="status_transcribing">文字起こし中\u2026</string>
+    <string name="status_error">エラー：%s</string>
+    <string name="settings_title">Voice Keyboard 設定</string>
+    <string name="settings_api_key">GroQ APIキー</string>
+    <string name="settings_model">モデル</string>
+    <string name="settings_language">言語コード</string>
+    <string name="settings_endpoint">APIエンドポイント</string>
+    <string name="settings_auto_record">自動録音</string>
+    <string name="settings_add_space">末尾にスペースを追加</string>
+    <string name="settings_apply">適用</string>
+    <string name="settings_enable_instructions">このキーボードを有効にするには：\n\n1. 設定 → システム → 言語と入力 → 画面キーボードに移動\n2. \"Voice Keyboard\" を有効にする\n3. 任意のテキストフィールドで選択する</string>
+    <string name="test_section_title">音声認識テスト</string>
+    <string name="test_section_hint">短いフレーズを録音して動作を確認してください</string>
+    <string name="test_result_placeholder">認識結果がここに表示されます…</string>
+    <string name="test_record">録音</string>
+    <string name="test_stop">停止して文字起こし</string>
+    <string name="test_clear">クリア</string>
+    <string name="logs_section_title">ログ</string>
+    <string name="logs_section_hint">問題がある場合はログをファイルに保存してください</string>
+    <string name="logs_save">ログを保存</string>
+    <string name="logs_clear">クリア</string>
+    <string name="settings_prompt">プロンプト（書式ガイド）</string>
+    <string name="settings_prompt_hint">書式を指定するための正しい句読点付きのテキスト例</string>
+    <string name="settings_interface_language">インターフェース言語</string>
+    <string name="update_available">アップデートあり</string>
+    <string name="update_new_version">新しいバージョン %s が利用可能です。</string>
+    <string name="update_button">アップデート</string>
+    <string name="update_later">後で</string>
+    <string name="update_downloading">アップデートをダウンロード中</string>
+    <string name="update_downloading_progress">アップデートをダウンロード中… %d%%</string>
+    <string name="update_download_failed">ダウンロード失敗</string>
+    <string name="update_download_failed_message">アップデートをダウンロードできませんでした。後でもう一度お試しください。</string>
+    <string name="update_cancel">キャンセル</string>
+    <string name="update_open_browser">ブラウザで開く</string>
+    <string name="update_check">アップデートを確認</string>
+    <string name="update_no_updates">最新バージョンです</string>
+    <string name="update_check_failed">アップデートを確認できませんでした。インターネット接続を確認してください。</string>
+    <string name="settings_get_api_key">APIキーを取得 → console.groq.com</string>
+    <string name="about_project">GitHub — プロジェクトについて</string>
+    <string name="link_copied">リンクをコピーしました</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Gradient background: deep purple to indigo -->
+    <path
+        android:pathData="M0,0 L108,0 L108,108 L0,108 Z"
+        android:fillColor="#4A2D8A" />
+
+    <!-- Subtle lighter accent at top -->
+    <path
+        android:pathData="M0,0 L108,0 L108,54 C108,54 80,62 54,62 C28,62 0,54 0,54 Z"
+        android:fillColor="#5B3BA5"
+        android:fillAlpha="0.5" />
+
+</vector>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme-adaptive colors (light defaults) -->
+    <color name="keyboard_bg">#FFF2F2F7</color>
+    <color name="key_bg">#FFFFFFFF</color>
+    <color name="key_text">#FF1B1B1F</color>
+    <color name="status_text">#FF6B7280</color>
+    <color name="text_primary">#FF1B1B1F</color>
+    <color name="divider">#FFD1D5DB</color>
+    <color name="test_result_bg">#FFE5E7EB</color>
+
+    <!-- Accent colors (same in both themes) -->
+    <color name="mic_idle">#FF7C4DFF</color>
+    <color name="mic_recording">#FFFF1744</color>
+    <color name="mic_transcribing">#FFFFAB00</color>
+    <color name="ripple_color">#55FF1744</color>
+
+    <!-- Fixed colors -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>

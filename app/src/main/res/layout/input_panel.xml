@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/keyboard_bg"
+    android:padding="8dp">
+
+    <!-- Status text -->
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/status_idle"
+        android:textColor="@color/status_text"
+        android:textSize="13sp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Hide keyboard button (top left) -->
+    <ImageButton
+        android:id="@+id/btnHideKeyboard"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/borderless_ripple"
+        android:src="@drawable/ic_keyboard_hide"
+        android:contentDescription="Hide keyboard"
+        android:scaleType="centerInside"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/status_text" />
+
+    <!-- Settings button (below switch IME) -->
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/borderless_ripple"
+        android:src="@android:drawable/ic_menu_manage"
+        android:contentDescription="Settings"
+        android:scaleType="centerInside"
+        app:layout_constraintTop_toBottomOf="@id/btnHideKeyboard"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"
+        app:tint="@color/status_text" />
+
+    <!-- Backspace button (top right, with long-press repeat) -->
+    <ImageButton
+        android:id="@+id/btnBackspace"
+        android:layout_width="56dp"
+        android:layout_height="42dp"
+        android:background="@drawable/key_bg"
+        android:src="@android:drawable/ic_input_delete"
+        android:contentDescription="Backspace"
+        android:scaleType="centerInside"
+        android:padding="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/key_text" />
+
+    <!-- Mic button -->
+    <FrameLayout
+        android:id="@+id/micFrame"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintTop_toBottomOf="@id/statusText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp">
+
+        <!-- Ripple layers for recording animation -->
+        <View
+            android:id="@+id/ripple1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple_circle"
+            android:alpha="0"
+            android:scaleX="1"
+            android:scaleY="1" />
+
+        <View
+            android:id="@+id/ripple2"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple_circle"
+            android:alpha="0"
+            android:scaleX="1"
+            android:scaleY="1" />
+
+        <ImageButton
+            android:id="@+id/btnMic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/mic_button_bg"
+            android:src="@drawable/ic_mic"
+            android:contentDescription="Record"
+            android:scaleType="centerInside"
+            android:padding="16dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/mic_transcribing" />
+    </FrameLayout>
+
+    <!-- Cancel button (left of mic) -->
+    <ImageButton
+        android:id="@+id/btnCancel"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/borderless_ripple"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:contentDescription="Cancel"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/micFrame"
+        app:layout_constraintBottom_toBottomOf="@id/micFrame"
+        app:layout_constraintEnd_toStartOf="@id/micFrame"
+        app:tint="@color/status_text" />
+
+    <!-- Bottom row: paste, space, enter -->
+    <LinearLayout
+        android:id="@+id/bottomRow"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintTop_toBottomOf="@id/micFrame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnPaste"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/key_bg"
+            android:src="@drawable/ic_paste"
+            android:contentDescription="Paste"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/key_text" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnSpace"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/key_bg"
+            android:text=""
+            android:textColor="@color/key_text"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnQuestion"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/key_bg"
+            android:text="?"
+            android:textColor="@color/key_text"
+            android:textSize="18sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp" />
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnExclamation"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/key_bg"
+            android:text="!"
+            android:textColor="@color/key_text"
+            android:textSize="18sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp" />
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="0dp" />
+
+        <ImageButton
+            android:id="@+id/btnEnter"
+            android:layout_width="52dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/key_bg"
+            android:src="@drawable/ic_enter"
+            android:contentDescription="Enter"
+            android:scaleType="centerInside"
+            android:padding="8dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

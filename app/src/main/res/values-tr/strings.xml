@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">Mikrofona dokunun</string>
+    <string name="status_recording">Kaydediliyor\u2026</string>
+    <string name="status_transcribing">Dönüştürülüyor\u2026</string>
+    <string name="status_error">Hata: %s</string>
+    <string name="settings_title">Voice Keyboard Ayarları</string>
+    <string name="settings_api_key">GroQ API Anahtarı</string>
+    <string name="settings_model">Model</string>
+    <string name="settings_language">Dil kodu</string>
+    <string name="settings_endpoint">API Adresi</string>
+    <string name="settings_auto_record">Otomatik kayıt</string>
+    <string name="settings_add_space">Sona boşluk ekle</string>
+    <string name="settings_apply">Uygula</string>
+    <string name="settings_enable_instructions">Bu klavyeyi etkinleştirmek için:\n\n1. Ayarlar → Sistem → Diller ve giriş → Ekran klavyesine gidin\n2. \"Voice Keyboard\" etkinleştirin\n3. Herhangi bir metin alanında seçin</string>
+    <string name="test_section_title">Ses tanıma testi</string>
+    <string name="test_section_hint">Her şeyin çalıştığını doğrulamak için kısa bir cümle kaydedin</string>
+    <string name="test_result_placeholder">Sonuç burada görünecek…</string>
+    <string name="test_record">Kaydet</string>
+    <string name="test_stop">Durdur ve dönüştür</string>
+    <string name="test_clear">Temizle</string>
+    <string name="logs_section_title">Günlükler</string>
+    <string name="logs_section_hint">Bir sorun varsa günlükleri dosyaya kaydedin</string>
+    <string name="logs_save">Günlükleri kaydet</string>
+    <string name="logs_clear">Temizle</string>
+    <string name="settings_prompt">Prompt (biçimlendirme ipucu)</string>
+    <string name="settings_prompt_hint">Biçimlendirmeyi yönlendirmek için doğru noktalama işaretli örnek metin</string>
+    <string name="settings_interface_language">Arayüz dili</string>
+    <string name="update_available">Güncelleme mevcut</string>
+    <string name="update_new_version">Yeni sürüm %s mevcut.</string>
+    <string name="update_button">Güncelle</string>
+    <string name="update_later">Daha sonra</string>
+    <string name="update_downloading">Güncelleme indiriliyor</string>
+    <string name="update_downloading_progress">Güncelleme indiriliyor… %d%%</string>
+    <string name="update_download_failed">İndirme başarısız</string>
+    <string name="update_download_failed_message">Güncelleme indirilemedi. Daha sonra tekrar deneyin.</string>
+    <string name="update_cancel">İptal</string>
+    <string name="update_open_browser">Tarayıcıda aç</string>
+    <string name="update_check">Güncellemeleri kontrol et</string>
+    <string name="update_no_updates">En son sürüme sahipsiniz</string>
+    <string name="update_check_failed">Güncellemeler kontrol edilemedi. İnternet bağlantınızı kontrol edin.</string>
+    <string name="settings_get_api_key">API anahtarınızı alın → console.groq.com</string>
+    <string name="about_project">GitHub — Proje hakkında</string>
+    <string name="link_copied">Bağlantı kopyalandı</string>
+</resources>

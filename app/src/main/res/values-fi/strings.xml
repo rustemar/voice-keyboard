@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">Napauta mikrofonia</string>
+    <string name="status_recording">Nauhoitetaan\u2026</string>
+    <string name="status_transcribing">Litteroidaan\u2026</string>
+    <string name="status_error">Virhe: %s</string>
+    <string name="settings_title">Voice Keyboard -asetukset</string>
+    <string name="settings_api_key">GroQ API -avain</string>
+    <string name="settings_model">Malli</string>
+    <string name="settings_language">Kielikoodi</string>
+    <string name="settings_endpoint">API-osoite</string>
+    <string name="settings_auto_record">Automaattinen nauhoitus</string>
+    <string name="settings_add_space">Lisää välilyönti loppuun</string>
+    <string name="settings_apply">Ota käyttöön</string>
+    <string name="settings_enable_instructions">Ota tämä näppäimistö käyttöön:\n\n1. Siirry kohtaan Asetukset → Järjestelmä → Kielet ja syöttö → Näyttönäppäimistö\n2. Ota käyttöön \"Voice Keyboard\"\n3. Valitse se missä tahansa tekstikentässä</string>
+    <string name="test_section_title">Testaa puheentunnistus</string>
+    <string name="test_section_hint">Nauhoita lyhyt lause varmistaaksesi, että kaikki toimii</string>
+    <string name="test_result_placeholder">Tulos näytetään tässä…</string>
+    <string name="test_record">Nauhoita</string>
+    <string name="test_stop">Pysäytä ja litteroi</string>
+    <string name="test_clear">Tyhjennä</string>
+    <string name="logs_section_title">Lokit</string>
+    <string name="logs_section_hint">Tallenna lokit tiedostoon, jos jokin ei toimi</string>
+    <string name="logs_save">Tallenna lokit</string>
+    <string name="logs_clear">Tyhjennä</string>
+    <string name="settings_prompt">Kehote (muotoiluohje)</string>
+    <string name="settings_prompt_hint">Esimerkkiteksti oikeilla välimerkeillä muotoilun ohjaamiseksi</string>
+    <string name="settings_interface_language">Käyttöliittymän kieli</string>
+    <string name="update_available">Päivitys saatavilla</string>
+    <string name="update_new_version">Uusi versio %s saatavilla.</string>
+    <string name="update_button">Päivitä</string>
+    <string name="update_later">Myöhemmin</string>
+    <string name="update_downloading">Ladataan päivitystä</string>
+    <string name="update_downloading_progress">Ladataan päivitystä… %d%%</string>
+    <string name="update_download_failed">Lataus epäonnistui</string>
+    <string name="update_download_failed_message">Päivityksen lataus epäonnistui. Yritä myöhemmin uudelleen.</string>
+    <string name="update_cancel">Peruuta</string>
+    <string name="update_open_browser">Avaa selaimessa</string>
+    <string name="update_check">Tarkista päivitykset</string>
+    <string name="update_no_updates">Sinulla on uusin versio</string>
+    <string name="update_check_failed">Päivityksiä ei voitu tarkistaa. Tarkista internet-yhteytesi.</string>
+    <string name="settings_get_api_key">Hanki API-avaimesi → console.groq.com</string>
+    <string name="about_project">GitHub — Tietoa projektista</string>
+    <string name="link_copied">Linkki kopioitu</string>
+</resources>

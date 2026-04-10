@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">Πατήστε το μικρόφωνο</string>
+    <string name="status_recording">Εγγραφή\u2026</string>
+    <string name="status_transcribing">Μεταγραφή\u2026</string>
+    <string name="status_error">Σφάλμα: %s</string>
+    <string name="settings_title">Ρυθμίσεις Voice Keyboard</string>
+    <string name="settings_api_key">Κλειδί API GroQ</string>
+    <string name="settings_model">Μοντέλο</string>
+    <string name="settings_language">Κωδικός γλώσσας</string>
+    <string name="settings_endpoint">Διεύθυνση API</string>
+    <string name="settings_auto_record">Αυτόματη εγγραφή</string>
+    <string name="settings_add_space">Προσθήκη κενού στο τέλος</string>
+    <string name="settings_apply">Εφαρμογή</string>
+    <string name="settings_enable_instructions">Για να ενεργοποιήσετε αυτό το πληκτρολόγιο:\n\n1. Μεταβείτε στις Ρυθμίσεις → Σύστημα → Γλώσσες και εισαγωγή → Πληκτρολόγιο οθόνης\n2. Ενεργοποιήστε το \"Voice Keyboard\"\n3. Επιλέξτε το σε οποιοδήποτε πεδίο κειμένου</string>
+    <string name="test_section_title">Δοκιμή αναγνώρισης φωνής</string>
+    <string name="test_section_hint">Ηχογραφήστε μια σύντομη φράση για να ελέγξετε ότι όλα λειτουργούν</string>
+    <string name="test_result_placeholder">Το αποτέλεσμα θα εμφανιστεί εδώ…</string>
+    <string name="test_record">Εγγραφή</string>
+    <string name="test_stop">Διακοπή και μεταγραφή</string>
+    <string name="test_clear">Εκκαθάριση</string>
+    <string name="logs_section_title">Αρχεία καταγραφής</string>
+    <string name="logs_section_hint">Αποθηκεύστε τα αρχεία καταγραφής αν κάτι δεν λειτουργεί</string>
+    <string name="logs_save">Αποθήκευση αρχείων</string>
+    <string name="logs_clear">Εκκαθάριση</string>
+    <string name="settings_prompt">Prompt (οδηγός μορφοποίησης)</string>
+    <string name="settings_prompt_hint">Παράδειγμα κειμένου με σωστή στίξη για καθοδήγηση μορφοποίησης</string>
+    <string name="settings_interface_language">Γλώσσα διεπαφής</string>
+    <string name="update_available">Διαθέσιμη ενημέρωση</string>
+    <string name="update_new_version">Νέα έκδοση %s διαθέσιμη.</string>
+    <string name="update_button">Ενημέρωση</string>
+    <string name="update_later">Αργότερα</string>
+    <string name="update_downloading">Λήψη ενημέρωσης</string>
+    <string name="update_downloading_progress">Λήψη ενημέρωσης… %d%%</string>
+    <string name="update_download_failed">Η λήψη απέτυχε</string>
+    <string name="update_download_failed_message">Δεν ήταν δυνατή η λήψη της ενημέρωσης. Δοκιμάστε ξανά αργότερα.</string>
+    <string name="update_cancel">Ακύρωση</string>
+    <string name="update_open_browser">Άνοιγμα στο πρόγραμμα περιήγησης</string>
+    <string name="update_check">Έλεγχος ενημερώσεων</string>
+    <string name="update_no_updates">Έχετε την τελευταία έκδοση</string>
+    <string name="update_check_failed">Δεν ήταν δυνατός ο έλεγχος ενημερώσεων. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο.</string>
+    <string name="settings_get_api_key">Αποκτήστε το κλειδί API σας → console.groq.com</string>
+    <string name="about_project">GitHub — Σχετικά με το έργο</string>
+    <string name="link_copied">Ο σύνδεσμος αντιγράφηκε</string>
+</resources>

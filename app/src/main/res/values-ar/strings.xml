@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">اضغط على الميكروفون</string>
+    <string name="status_recording">جارٍ التسجيل\u2026</string>
+    <string name="status_transcribing">جارٍ التحويل\u2026</string>
+    <string name="status_error">خطأ: %s</string>
+    <string name="settings_title">إعدادات Voice Keyboard</string>
+    <string name="settings_api_key">مفتاح API لـ GroQ</string>
+    <string name="settings_model">النموذج</string>
+    <string name="settings_language">رمز اللغة</string>
+    <string name="settings_endpoint">عنوان API</string>
+    <string name="settings_auto_record">تسجيل تلقائي</string>
+    <string name="settings_add_space">إضافة مسافة في النهاية</string>
+    <string name="settings_apply">تطبيق</string>
+    <string name="settings_enable_instructions">لتفعيل لوحة المفاتيح:\n\n1. اذهب إلى الإعدادات → النظام → اللغات والإدخال → لوحة المفاتيح على الشاشة\n2. فعّل \"Voice Keyboard\"\n3. اختره في أي حقل نصي</string>
+    <string name="test_section_title">اختبار التعرف على الصوت</string>
+    <string name="test_section_hint">سجّل عبارة قصيرة للتحقق من أن كل شيء يعمل</string>
+    <string name="test_result_placeholder">ستظهر النتيجة هنا…</string>
+    <string name="test_record">تسجيل</string>
+    <string name="test_stop">إيقاف وتحويل</string>
+    <string name="test_clear">مسح</string>
+    <string name="logs_section_title">السجلات</string>
+    <string name="logs_section_hint">احفظ السجلات في ملف إذا كان هناك خلل</string>
+    <string name="logs_save">حفظ السجلات</string>
+    <string name="logs_clear">مسح</string>
+    <string name="settings_prompt">النص التوجيهي (دليل التنسيق)</string>
+    <string name="settings_prompt_hint">نص نموذجي بعلامات ترقيم صحيحة لتوجيه التنسيق</string>
+    <string name="settings_interface_language">لغة الواجهة</string>
+    <string name="update_available">يتوفر تحديث</string>
+    <string name="update_new_version">الإصدار الجديد %s متوفر.</string>
+    <string name="update_button">تحديث</string>
+    <string name="update_later">لاحقاً</string>
+    <string name="update_downloading">جارٍ تنزيل التحديث</string>
+    <string name="update_downloading_progress">جارٍ تنزيل التحديث… %d%%</string>
+    <string name="update_download_failed">فشل التنزيل</string>
+    <string name="update_download_failed_message">تعذّر تنزيل التحديث. حاول مرة أخرى لاحقاً.</string>
+    <string name="update_cancel">إلغاء</string>
+    <string name="update_open_browser">فتح في المتصفح</string>
+    <string name="update_check">التحقق من التحديثات</string>
+    <string name="update_no_updates">لديك أحدث إصدار</string>
+    <string name="update_check_failed">تعذّر التحقق من التحديثات. تحقق من اتصالك بالإنترنت.</string>
+    <string name="settings_get_api_key">احصل على مفتاح API الخاص بك → console.groq.com</string>
+    <string name="about_project">GitHub — حول المشروع</string>
+    <string name="link_copied">تم نسخ الرابط</string>
+</resources>

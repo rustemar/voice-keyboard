@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_idle">Tippen Sie auf das Mikrofon</string>
+    <string name="status_recording">Aufnahme\u2026</string>
+    <string name="status_transcribing">Transkription\u2026</string>
+    <string name="status_error">Fehler: %s</string>
+    <string name="settings_title">Voice Keyboard Einstellungen</string>
+    <string name="settings_api_key">GroQ API-Schlüssel</string>
+    <string name="settings_model">Modell</string>
+    <string name="settings_language">Sprachcode</string>
+    <string name="settings_endpoint">API-Endpunkt</string>
+    <string name="settings_auto_record">Automatische Aufnahme</string>
+    <string name="settings_add_space">Leerzeichen am Ende hinzufügen</string>
+    <string name="settings_apply">Übernehmen</string>
+    <string name="settings_enable_instructions">Um diese Tastatur zu aktivieren:\n\n1. Gehen Sie zu Einstellungen → System → Sprachen und Eingabe → Bildschirmtastatur\n2. Aktivieren Sie \"Voice Keyboard\"\n3. Wählen Sie sie in einem beliebigen Textfeld aus</string>
+    <string name="test_section_title">Spracherkennung testen</string>
+    <string name="test_section_hint">Nehmen Sie einen kurzen Satz auf, um zu prüfen, ob alles funktioniert</string>
+    <string name="test_result_placeholder">Das Ergebnis wird hier angezeigt…</string>
+    <string name="test_record">Aufnehmen</string>
+    <string name="test_stop">Stopp und transkribieren</string>
+    <string name="test_clear">Löschen</string>
+    <string name="logs_section_title">Protokolle</string>
+    <string name="logs_section_hint">Speichern Sie die Protokolle in einer Datei, wenn etwas nicht funktioniert</string>
+    <string name="logs_save">Protokolle speichern</string>
+    <string name="logs_clear">Löschen</string>
+    <string name="settings_prompt">Prompt (Formatierungshinweis)</string>
+    <string name="settings_prompt_hint">Beispieltext mit korrekter Zeichensetzung zur Formatierungshilfe</string>
+    <string name="settings_interface_language">Sprache der Benutzeroberfläche</string>
+    <string name="update_available">Update verfügbar</string>
+    <string name="update_new_version">Neue Version %s verfügbar.</string>
+    <string name="update_button">Aktualisieren</string>
+    <string name="update_later">Später</string>
+    <string name="update_downloading">Update wird heruntergeladen</string>
+    <string name="update_downloading_progress">Update wird heruntergeladen… %d%%</string>
+    <string name="update_download_failed">Download fehlgeschlagen</string>
+    <string name="update_download_failed_message">Das Update konnte nicht heruntergeladen werden. Versuchen Sie es später erneut.</string>
+    <string name="update_cancel">Abbrechen</string>
+    <string name="update_open_browser">Im Browser öffnen</string>
+    <string name="update_check">Nach Updates suchen</string>
+    <string name="update_no_updates">Sie haben die neueste Version</string>
+    <string name="update_check_failed">Updates konnten nicht geprüft werden. Überprüfen Sie Ihre Internetverbindung.</string>
+    <string name="settings_get_api_key">API-Schlüssel erhalten → console.groq.com</string>
+    <string name="about_project">GitHub — Über das Projekt</string>
+    <string name="link_copied">Link kopiert</string>
+</resources>
