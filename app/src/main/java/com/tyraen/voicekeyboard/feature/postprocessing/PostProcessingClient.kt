@@ -23,8 +23,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
             val result = when (prefs.provider) {
-                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(prompt, prefs)
-                else -> callOpenAI(prompt, prefs)
+                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(prompt, prefs, maxTokens = 4096)
+                else -> callOpenAI(prompt, prefs, maxTokens = 4096)
             }
             DiagnosticLog.record(TAG, "Success: ${result.take(80)}")
             Result.success(result)
@@ -40,8 +40,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         try {
             val testPrompt = "Reply with exactly: OK"
             when (prefs.provider) {
-                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(testPrompt, prefs)
-                else -> callOpenAI(testPrompt, prefs)
+                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(testPrompt, prefs, maxTokens = 10)
+                else -> callOpenAI(testPrompt, prefs, maxTokens = 10)
             }
             DiagnosticLog.record(TAG, "Validation success")
             Result.success("API key is valid.")
@@ -55,7 +55,6 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
                 e.message?.contains("5") == true && e.message?.contains("API error 5") == true -> "Server error, try again later"
                 else -> e.message ?: "Unknown error"
             }
-            // 429 means the key works, just rate limited
             if (e.message?.contains("429") == true) {
                 Result.success(message)
             } else {
@@ -64,11 +63,11 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         }
     }
 
-    private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences): String {
+    private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
             put("temperature", 0.3)
-            put("max_tokens", 10)
+            put("max_tokens", maxTokens)
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "user")
@@ -99,10 +98,10 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             .trim()
     }
 
-    private fun callClaude(prompt: String, prefs: PostProcessingPreferences): String {
+    private fun callClaude(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
-            put("max_tokens", 10)
+            put("max_tokens", maxTokens)
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "user")
