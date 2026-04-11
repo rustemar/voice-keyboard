@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">Prompt emoji</string>
     <string name="pp_prompt_suffix_label">Instrukcja wyjścia</string>
     <string name="pp_prompt_suffix_hint">Dodawane do każdego promptu</string>
+    <string name="pp_translate">Tłumacz</string>
+    <string name="pp_translate_title">Tłumaczenie</string>
+    <string name="pp_translate_lang">Język docelowy</string>
+    <string name="pp_translate_model">Model tłumaczenia</string>
+    <string name="pp_translate_model_hint">Zostaw puste dla wartości domyślnej (mocniejszy model dla jakości tłumaczenia)</string>
     <string name="pp_open_settings">Ustawienia przetwarzania</string>
 </resources>

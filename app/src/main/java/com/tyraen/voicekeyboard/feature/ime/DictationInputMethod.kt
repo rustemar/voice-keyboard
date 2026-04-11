@@ -172,6 +172,12 @@ class DictationInputMethod : InputMethodService() {
             orchestrator.saveToggleStates()
             updateToggleUI()
         }
+
+        panel.btnPpTranslate.setOnClickListener {
+            orchestrator.ppTranslateActive = !orchestrator.ppTranslateActive
+            orchestrator.saveToggleStates()
+            updateToggleUI()
+        }
     }
 
     private fun refreshPostProcessingUI() {
@@ -184,5 +190,7 @@ class DictationInputMethod : InputMethodService() {
         panel.updateToggleAppearance(panel.btnPpFix, orchestrator.ppFixActive)
         panel.updateToggleAppearance(panel.btnPpShorten, orchestrator.ppShortenActive)
         panel.updateToggleAppearance(panel.btnPpEmoji, orchestrator.ppEmojiActive)
+        val translateLang = orchestrator.getTranslateLang()
+        panel.updateTranslateToggle(orchestrator.ppTranslateActive, translateLang)
     }
 }

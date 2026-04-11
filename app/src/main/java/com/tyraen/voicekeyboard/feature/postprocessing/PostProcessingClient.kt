@@ -19,20 +19,24 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
 
     suspend fun process(
         prompt: PromptParts,
-        prefs: PostProcessingPreferences
+        prefs: PostProcessingPreferences,
+        modelOverride: String? = null
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
+            val model = modelOverride ?: prefs.resolvedModel()
             val result = when (prefs.provider) {
                 PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(
                     systemInstruction = prompt.systemInstruction,
                     userText = prompt.userText,
                     prefs = prefs,
+                    model = model,
                     maxTokens = 16384
                 )
                 else -> callOpenAI(
                     systemInstruction = prompt.systemInstruction,
                     userText = prompt.userText,
                     prefs = prefs,
+                    model = model,
                     maxTokens = null
                 )
             }
@@ -71,8 +75,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
 
     private fun callOpenAIOrClaude(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
         return when (prefs.provider) {
-            PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(null, prompt, prefs, maxTokens)
-            else -> callOpenAI(null, prompt, prefs, maxTokens)
+            PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(systemInstruction = null, userText = prompt, prefs = prefs, maxTokens = maxTokens)
+            else -> callOpenAI(systemInstruction = null, userText = prompt, prefs = prefs, maxTokens = maxTokens)
         }
     }
 
@@ -80,6 +84,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         systemInstruction: String?,
         userText: String,
         prefs: PostProcessingPreferences,
+        model: String = prefs.resolvedModel(),
         maxTokens: Int? = null
     ): String {
         val messages = JSONArray()
@@ -95,7 +100,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         })
 
         val body = JSONObject().apply {
-            put("model", prefs.resolvedModel())
+            put("model", model)
             put("temperature", prefs.resolvedTemperature().toDouble())
             if (maxTokens != null) put("max_tokens", maxTokens)
             put("messages", messages)
@@ -127,10 +132,11 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         systemInstruction: String?,
         userText: String,
         prefs: PostProcessingPreferences,
+        model: String = prefs.resolvedModel(),
         maxTokens: Int
     ): String {
         val body = JSONObject().apply {
-            put("model", prefs.resolvedModel())
+            put("model", model)
             put("max_tokens", maxTokens)
             if (systemInstruction != null) {
                 put("system", systemInstruction)

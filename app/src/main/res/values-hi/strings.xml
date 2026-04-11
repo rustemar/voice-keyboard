@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">इमोजी प्रॉम्प्ट</string>
     <string name="pp_prompt_suffix_label">आउटपुट निर्देश</string>
     <string name="pp_prompt_suffix_hint">हर प्रॉम्प्ट में जोड़ा जाता है</string>
+    <string name="pp_translate">अनुवाद</string>
+    <string name="pp_translate_title">अनुवाद</string>
+    <string name="pp_translate_lang">लक्ष्य भाषा</string>
+    <string name="pp_translate_model">अनुवाद मॉडल</string>
+    <string name="pp_translate_model_hint">डिफ़ॉल्ट के लिए खाली छोड़ें (अनुवाद गुणवत्ता के लिए अधिक शक्तिशाली मॉडल)</string>
     <string name="pp_open_settings">पोस्ट-प्रोसेसिंग सेटिंग्स</string>
 </resources>

@@ -10,7 +10,9 @@ data class PostProcessingPreferences(
     val promptFix: String = "",
     val promptShorten: String = "",
     val promptEmoji: String = "",
-    val promptSuffix: String = ""
+    val promptSuffix: String = "",
+    val translateLang: String = "en",
+    val translateModel: String = ""
 ) {
     companion object {
         const val PROVIDER_OPENAI = "openai"
@@ -21,6 +23,9 @@ data class PostProcessingPreferences(
 
         const val DEFAULT_CLAUDE_ENDPOINT = "https://api.anthropic.com/v1/messages"
         const val DEFAULT_CLAUDE_MODEL = "claude-haiku-4-5-20251001"
+
+        const val DEFAULT_OPENAI_TRANSLATE_MODEL = "gpt-4o"
+        const val DEFAULT_CLAUDE_TRANSLATE_MODEL = "claude-sonnet-4-5-20241022"
 
         const val DEFAULT_TEMPERATURE = 0.3f
 
@@ -44,10 +49,16 @@ data class PostProcessingPreferences(
             PROVIDER_CLAUDE -> DEFAULT_CLAUDE_MODEL
             else -> DEFAULT_OPENAI_MODEL
         }
+
+        fun defaultTranslateModel(provider: String): String = when (provider) {
+            PROVIDER_CLAUDE -> DEFAULT_CLAUDE_TRANSLATE_MODEL
+            else -> DEFAULT_OPENAI_TRANSLATE_MODEL
+        }
     }
 
     fun resolvedEndpoint(): String = endpoint.ifBlank { defaultEndpoint(provider) }
     fun resolvedModel(): String = model.ifBlank { defaultModel(provider) }
+    fun resolvedTranslateModel(): String = translateModel.ifBlank { defaultTranslateModel(provider) }
     fun resolvedPromptFix(): String = promptFix.ifBlank { DEFAULT_PROMPT_FIX }
     fun resolvedPromptShorten(): String = promptShorten.ifBlank { DEFAULT_PROMPT_SHORTEN }
     fun resolvedPromptEmoji(): String = promptEmoji.ifBlank { DEFAULT_PROMPT_EMOJI }

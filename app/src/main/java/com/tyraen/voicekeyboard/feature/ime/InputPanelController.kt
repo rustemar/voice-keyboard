@@ -17,6 +17,7 @@ class InputPanelController(rootView: View) {
     val btnPpFix: ImageButton = rootView.findViewById(R.id.btnPpFix)
     val btnPpShorten: ImageButton = rootView.findViewById(R.id.btnPpShorten)
     val btnPpEmoji: ImageButton = rootView.findViewById(R.id.btnPpEmoji)
+    val btnPpTranslate: Button = rootView.findViewById(R.id.btnPpTranslate)
 
     val animator = InputPanelAnimator(
         wave1 = rootView.findViewById(R.id.ripple1),
@@ -81,6 +82,18 @@ class InputPanelController(rootView: View) {
         } else {
             button.setBackgroundResource(R.drawable.toggle_key_bg)
             button.imageTintList = ContextCompat.getColorStateList(context, R.color.key_text)
+        }
+    }
+
+    fun updateTranslateToggle(active: Boolean, langCode: String) {
+        btnPpTranslate.text = langCode.uppercase()
+        val context = btnPpTranslate.context
+        if (active) {
+            btnPpTranslate.setBackgroundResource(R.drawable.toggle_key_bg_active)
+            btnPpTranslate.setTextColor(ContextCompat.getColor(context, R.color.white))
+        } else {
+            btnPpTranslate.setBackgroundResource(R.drawable.toggle_key_bg)
+            btnPpTranslate.setTextColor(ContextCompat.getColor(context, R.color.key_text))
         }
     }
 }

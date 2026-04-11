@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">تعليمة الإيموجي</string>
     <string name="pp_prompt_suffix_label">تعليمة الإخراج</string>
     <string name="pp_prompt_suffix_hint">يُضاف إلى كل تعليمة</string>
+    <string name="pp_translate">ترجمة</string>
+    <string name="pp_translate_title">الترجمة</string>
+    <string name="pp_translate_lang">اللغة المستهدفة</string>
+    <string name="pp_translate_model">نموذج الترجمة</string>
+    <string name="pp_translate_model_hint">اتركه فارغاً للقيمة الافتراضية (نموذج أقوى لجودة الترجمة)</string>
     <string name="pp_open_settings">إعدادات المعالجة اللاحقة</string>
 </resources>

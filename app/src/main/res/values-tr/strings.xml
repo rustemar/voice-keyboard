@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">Emoji promptu</string>
     <string name="pp_prompt_suffix_label">Çıktı talimatı</string>
     <string name="pp_prompt_suffix_hint">Her prompta eklenir</string>
+    <string name="pp_translate">Çevir</string>
+    <string name="pp_translate_title">Çeviri</string>
+    <string name="pp_translate_lang">Hedef dil</string>
+    <string name="pp_translate_model">Çeviri modeli</string>
+    <string name="pp_translate_model_hint">Varsayılan için boş bırakın (çeviri kalitesi için daha güçlü model)</string>
     <string name="pp_open_settings">Son işleme ayarları</string>
 </resources>

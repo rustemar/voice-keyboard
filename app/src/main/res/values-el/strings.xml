@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">Προτροπή emoji</string>
     <string name="pp_prompt_suffix_label">Οδηγία εξόδου</string>
     <string name="pp_prompt_suffix_hint">Προστίθεται σε κάθε προτροπή</string>
+    <string name="pp_translate">Μετάφραση</string>
+    <string name="pp_translate_title">Μετάφραση</string>
+    <string name="pp_translate_lang">Γλώσσα-στόχος</string>
+    <string name="pp_translate_model">Μοντέλο μετάφρασης</string>
+    <string name="pp_translate_model_hint">Αφήστε κενό για προεπιλογή (ισχυρότερο μοντέλο για ποιότητα μετάφρασης)</string>
     <string name="pp_open_settings">Ρυθμίσεις μετεπεξεργασίας</string>
 </resources>

@@ -42,6 +42,7 @@ class InputOrchestrator(
     var ppFixActive = false
     var ppShortenActive = false
     var ppEmojiActive = false
+    var ppTranslateActive = false
 
     fun loadPreferences() {
         CoroutineScope(Dispatchers.Main).launch {
@@ -67,15 +68,18 @@ class InputOrchestrator(
         ppFixActive = toggles.fixActive
         ppShortenActive = toggles.shortenActive
         ppEmojiActive = toggles.emojiActive
+        ppTranslateActive = toggles.translateActive
         DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
 
     fun isPostProcessingEnabled(): Boolean = ppPreferences?.enabled == true
 
+    fun getTranslateLang(): String = ppPreferences?.translateLang ?: "en"
+
     fun saveToggleStates() {
         CoroutineScope(Dispatchers.IO).launch {
             preferenceStore.saveToggleStates(
-                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive)
+                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppTranslateActive)
             )
         }
     }
@@ -160,18 +164,36 @@ class InputOrchestrator(
         val pp = ppPreferences ?: return text
         if (!pp.enabled) return text
         if (pp.apiKey.isBlank()) return text
-        if (!PostProcessingPrompts.hasAnyMode(ppFixActive, ppShortenActive, ppEmojiActive)) return text
 
-        moveTo(InputPhase.PostProcessing)
-        DiagnosticLog.record(TAG, "Post-processing: fix=$ppFixActive, shorten=$ppShortenActive, emoji=$ppEmojiActive")
+        var processed = text
 
-        val promptParts = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, text, pp)
-        val result = postProcessingClient.process(promptParts, pp)
+        // First: fix/shorten/emoji
+        if (PostProcessingPrompts.hasAnyMode(ppFixActive, ppShortenActive, ppEmojiActive)) {
+            moveTo(InputPhase.PostProcessing)
+            DiagnosticLog.record(TAG, "Post-processing: fix=$ppFixActive, shorten=$ppShortenActive, emoji=$ppEmojiActive")
 
-        return result.getOrElse { error ->
-            DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
-            text
+            val promptParts = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, processed, pp)
+            val result = postProcessingClient.process(promptParts, pp)
+            processed = result.getOrElse { error ->
+                DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
+                processed
+            }
         }
+
+        // Then: translate (uses a separate, more powerful model)
+        if (ppTranslateActive) {
+            moveTo(InputPhase.PostProcessing)
+            DiagnosticLog.record(TAG, "Translating to: ${pp.translateLang}")
+
+            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang)
+            val result = postProcessingClient.process(translatePrompt, pp, modelOverride = pp.resolvedTranslateModel())
+            processed = result.getOrElse { error ->
+                DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
+                processed
+            }
+        }
+
+        return processed
     }
 
     fun cancelAll() {

@@ -145,6 +145,60 @@
             android:background="@color/divider"
             android:layout_marginBottom="16dp" />
 
+        <!-- Translation section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_translate_title"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Translate language -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_translate_lang"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <Spinner
+            android:id="@+id/spinnerTranslateLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Translate model -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_translate_model"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_translate_model_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:id="@+id/editTranslateModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginBottom="16dp" />
+
         <!-- Prompts section -->
         <TextView
             android:layout_width="wrap_content"

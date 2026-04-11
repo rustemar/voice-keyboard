@@ -37,11 +37,14 @@ class PreferenceStore(private val context: Context) {
         val PP_PROMPT_SHORTEN = stringPreferencesKey("pp_prompt_shorten")
         val PP_PROMPT_EMOJI = stringPreferencesKey("pp_prompt_emoji")
         val PP_PROMPT_SUFFIX = stringPreferencesKey("pp_prompt_suffix")
+        val PP_TRANSLATE_LANG = stringPreferencesKey("pp_translate_lang")
+        val PP_TRANSLATE_MODEL = stringPreferencesKey("pp_translate_model")
 
         // Post-processing toggle states (persist between sessions)
         val PP_FIX_ACTIVE = booleanPreferencesKey("pp_fix_active")
         val PP_SHORTEN_ACTIVE = booleanPreferencesKey("pp_shorten_active")
         val PP_EMOJI_ACTIVE = booleanPreferencesKey("pp_emoji_active")
+        val PP_TRANSLATE_ACTIVE = booleanPreferencesKey("pp_translate_active")
     }
 
     suspend fun load(): UserPreferences {
@@ -87,7 +90,9 @@ class PreferenceStore(private val context: Context) {
             promptFix = prefs[Keys.PP_PROMPT_FIX] ?: "",
             promptShorten = prefs[Keys.PP_PROMPT_SHORTEN] ?: "",
             promptEmoji = prefs[Keys.PP_PROMPT_EMOJI] ?: "",
-            promptSuffix = prefs[Keys.PP_PROMPT_SUFFIX] ?: ""
+            promptSuffix = prefs[Keys.PP_PROMPT_SUFFIX] ?: "",
+            translateLang = prefs[Keys.PP_TRANSLATE_LANG] ?: "en",
+            translateModel = prefs[Keys.PP_TRANSLATE_MODEL] ?: ""
         )
     }
 
@@ -103,6 +108,8 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_PROMPT_SHORTEN] = prefs.promptShorten
             data[Keys.PP_PROMPT_EMOJI] = prefs.promptEmoji
             data[Keys.PP_PROMPT_SUFFIX] = prefs.promptSuffix
+            data[Keys.PP_TRANSLATE_LANG] = prefs.translateLang
+            data[Keys.PP_TRANSLATE_MODEL] = prefs.translateModel
         }
     }
 
@@ -111,7 +118,8 @@ class PreferenceStore(private val context: Context) {
         return ToggleStates(
             fixActive = prefs[Keys.PP_FIX_ACTIVE] ?: false,
             shortenActive = prefs[Keys.PP_SHORTEN_ACTIVE] ?: false,
-            emojiActive = prefs[Keys.PP_EMOJI_ACTIVE] ?: false
+            emojiActive = prefs[Keys.PP_EMOJI_ACTIVE] ?: false,
+            translateActive = prefs[Keys.PP_TRANSLATE_ACTIVE] ?: false
         )
     }
 
@@ -120,12 +128,14 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_FIX_ACTIVE] = states.fixActive
             data[Keys.PP_SHORTEN_ACTIVE] = states.shortenActive
             data[Keys.PP_EMOJI_ACTIVE] = states.emojiActive
+            data[Keys.PP_TRANSLATE_ACTIVE] = states.translateActive
         }
     }
 
     data class ToggleStates(
         val fixActive: Boolean = false,
         val shortenActive: Boolean = false,
-        val emojiActive: Boolean = false
+        val emojiActive: Boolean = false,
+        val translateActive: Boolean = false
     )
 }

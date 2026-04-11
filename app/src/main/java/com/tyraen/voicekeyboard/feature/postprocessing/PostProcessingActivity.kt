@@ -10,6 +10,7 @@ import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
+import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,8 @@ class PostProcessingActivity : AppCompatActivity() {
     private lateinit var editPromptShorten: EditText
     private lateinit var editPromptEmoji: EditText
     private lateinit var editPromptSuffix: EditText
+    private lateinit var spinnerTranslateLang: Spinner
+    private lateinit var editTranslateModel: EditText
     private lateinit var btnApply: Button
     private lateinit var txtStatus: TextView
 
@@ -50,6 +53,7 @@ class PostProcessingActivity : AppCompatActivity() {
 
         bindViews()
         setupProviderSpinner()
+        setupTranslateLangSpinner()
         setupActions()
         loadPreferences()
     }
@@ -65,6 +69,8 @@ class PostProcessingActivity : AppCompatActivity() {
         editPromptShorten = findViewById(R.id.editPromptShorten)
         editPromptEmoji = findViewById(R.id.editPromptEmoji)
         editPromptSuffix = findViewById(R.id.editPromptSuffix)
+        spinnerTranslateLang = findViewById(R.id.spinnerTranslateLang)
+        editTranslateModel = findViewById(R.id.editTranslateModel)
         btnApply = findViewById(R.id.btnPpApply)
         txtStatus = findViewById(R.id.txtPpStatus)
     }
@@ -83,6 +89,14 @@ class PostProcessingActivity : AppCompatActivity() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+
+    private fun setupTranslateLangSpinner() {
+        val locales = TranscriptionLocale.entries
+        val displayNames = locales.map { "${it.displayName} (${it.code})" }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, displayNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerTranslateLang.adapter = adapter
     }
 
     private fun setupActions() {
@@ -118,6 +132,10 @@ class PostProcessingActivity : AppCompatActivity() {
             editPromptShorten.setText(pp.promptShorten.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_SHORTEN })
             editPromptEmoji.setText(pp.promptEmoji.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_EMOJI })
             editPromptSuffix.setText(pp.promptSuffix.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_SUFFIX })
+
+            spinnerTranslateLang.setSelection(TranscriptionLocale.positionOf(pp.translateLang))
+            editTranslateModel.setText(pp.translateModel)
+            editTranslateModel.hint = PostProcessingPreferences.defaultTranslateModel(pp.provider)
         }
     }
 
@@ -136,7 +154,9 @@ class PostProcessingActivity : AppCompatActivity() {
             promptFix = editPromptFix.text.toString().trim(),
             promptShorten = editPromptShorten.text.toString().trim(),
             promptEmoji = editPromptEmoji.text.toString().trim(),
-            promptSuffix = editPromptSuffix.text.toString().trim()
+            promptSuffix = editPromptSuffix.text.toString().trim(),
+            translateLang = TranscriptionLocale.entries[spinnerTranslateLang.selectedItemPosition].code,
+            translateModel = editTranslateModel.text.toString().trim()
         )
 
         btnApply.isEnabled = false

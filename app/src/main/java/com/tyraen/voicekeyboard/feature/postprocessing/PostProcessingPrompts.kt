@@ -1,6 +1,7 @@
 package com.tyraen.voicekeyboard.feature.postprocessing
 
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
+import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 
 data class PromptParts(val systemInstruction: String, val userText: String)
 
@@ -25,6 +26,21 @@ object PostProcessingPrompts {
 
         return PromptParts(
             systemInstruction = parts.joinToString("\n\n"),
+            userText = text
+        )
+    }
+
+    fun buildTranslate(text: String, targetLangCode: String): PromptParts {
+        val langName = TranscriptionLocale.resolve(targetLangCode)?.displayName ?: targetLangCode
+
+        val instruction = GUARD + "\n\n" +
+            "Translate the text into $langName ($targetLangCode). " +
+            "Preserve the original tone, style, and formatting. " +
+            "Keep proper nouns, brand names, and technical terms unchanged unless they have a standard translation. " +
+            "Output ONLY the translated text."
+
+        return PromptParts(
+            systemInstruction = instruction,
             userText = text
         )
     }

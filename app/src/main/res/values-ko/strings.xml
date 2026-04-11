@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">이모지 프롬프트</string>
     <string name="pp_prompt_suffix_label">출력 지시</string>
     <string name="pp_prompt_suffix_hint">모든 프롬프트에 추가됩니다</string>
+    <string name="pp_translate">번역</string>
+    <string name="pp_translate_title">번역</string>
+    <string name="pp_translate_lang">대상 언어</string>
+    <string name="pp_translate_model">번역 모델</string>
+    <string name="pp_translate_model_hint">기본값을 사용하려면 비워두세요 (번역 품질을 위한 더 강력한 모델l)</string>
     <string name="pp_open_settings">후처리 설정</string>
 </resources>

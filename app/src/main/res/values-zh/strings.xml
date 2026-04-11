@@ -70,5 +70,10 @@
     <string name="pp_prompt_emoji_label">表情提示词</string>
     <string name="pp_prompt_suffix_label">输出指令</string>
     <string name="pp_prompt_suffix_hint">添加到每个提示词</string>
+    <string name="pp_translate">翻译</string>
+    <string name="pp_translate_title">翻译</string>
+    <string name="pp_translate_lang">目标语言</string>
+    <string name="pp_translate_model">翻译模型</string>
+    <string name="pp_translate_model_hint">留空使用默认值（更强大的模型以确保翻译质量）</string>
     <string name="pp_open_settings">后处理设置</string>
 </resources>

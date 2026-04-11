@@ -199,6 +199,26 @@
             android:scaleType="centerInside"
             android:padding="6dp"
             app:tint="@color/key_text" />
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnPpTranslate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="40dp"
+            android:minHeight="0dp"
+            android:background="@drawable/toggle_key_bg"
+            android:text="en"
+            android:textColor="@color/key_text"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:padding="0dp"
+            android:contentDescription="@string/pp_translate" />
     </LinearLayout>
 
     <!-- Bottom row: paste, space, enter -->
