@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">APIキーを取得 → console.groq.com</string>
     <string name="about_project">GitHub — プロジェクトについて</string>
     <string name="link_copied">リンクをコピーしました</string>
+    <string name="status_postprocessing">後処理中\u2026</string>
+    <string name="pp_settings_title">後処理</string>
+    <string name="pp_settings_description">AIを使用して文字起こしテキストの修正、短縮、改善を行います。OpenAIまたはClaude APIキーが必要です。</string>
+    <string name="pp_enable">後処理を有効にする</string>
+    <string name="pp_provider">APIプロバイダー</string>
+    <string name="pp_api_key">APIキー</string>
+    <string name="pp_endpoint">APIエンドポイント</string>
+    <string name="pp_endpoint_hint">デフォルトを使用する場合は空欄</string>
+    <string name="pp_model">モデル</string>
+    <string name="pp_model_hint">デフォルトを使用する場合は空欄</string>
+    <string name="pp_saved">設定を保存しました</string>
+    <string name="pp_fix">エラーを修正</string>
+    <string name="pp_shorten">短縮</string>
+    <string name="pp_emoji">絵文字を追加</string>
+    <string name="pp_open_settings">後処理の設定</string>
 </resources>

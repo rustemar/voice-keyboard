@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/keyboard_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_settings_title"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_settings_description"
+            android:textColor="@color/status_text"
+            android:textSize="13sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Enable post-processing -->
+        <Switch
+            android:id="@+id/switchPpEnabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_enable"
+            android:textColor="@color/key_text"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Provider -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_provider"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <Spinner
+            android:id="@+id/spinnerProvider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- API Key -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_api_key"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/editPpApiKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Endpoint -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_endpoint"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_endpoint_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:id="@+id/editPpEndpoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Model -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_model"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_model_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:id="@+id/editPpModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnPpApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_apply"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/mic_idle" />
+
+        <!-- Status -->
+        <TextView
+            android:id="@+id/txtPpStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

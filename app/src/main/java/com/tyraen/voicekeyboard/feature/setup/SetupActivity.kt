@@ -24,6 +24,7 @@ import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.core.logging.FaultCapture
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
+import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingActivity
 import kotlinx.coroutines.*
 
 class SetupActivity : AppCompatActivity() {
@@ -45,6 +46,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var btnSaveLogs: Button
     private lateinit var btnClearLogs: Button
     private lateinit var btnCheckUpdate: Button
+    private lateinit var btnPostProcessing: Button
     private lateinit var txtVersion: TextView
 
     private val preferenceStore: PreferenceStore get() = ServiceLocator.preferenceStore
@@ -96,6 +98,7 @@ class SetupActivity : AppCompatActivity() {
         btnSaveLogs = findViewById(R.id.btnSaveLogs)
         btnClearLogs = findViewById(R.id.btnClearLogs)
         btnCheckUpdate = findViewById(R.id.btnCheckUpdate)
+        btnPostProcessing = findViewById(R.id.btnPostProcessing)
         txtVersion = findViewById(R.id.txtVersion)
 
         val txtGetApiKey: TextView = findViewById(R.id.txtGetApiKey)
@@ -137,6 +140,10 @@ class SetupActivity : AppCompatActivity() {
         }
 
         btnCheckUpdate.setOnClickListener { checkForUpdates(showUpToDate = true) }
+
+        btnPostProcessing.setOnClickListener {
+            startActivity(Intent(this, PostProcessingActivity::class.java))
+        }
     }
 
     private fun setupLanguageSpinner() {

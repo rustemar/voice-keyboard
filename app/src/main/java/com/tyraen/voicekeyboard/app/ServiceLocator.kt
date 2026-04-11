@@ -3,6 +3,7 @@ package com.tyraen.voicekeyboard.app
 import android.content.Context
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.network.HttpClientProvider
+import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.WhisperApiClient
 import com.tyraen.voicekeyboard.feature.update.ReleaseChecker
@@ -21,6 +22,8 @@ object ServiceLocator {
     val preferenceStore: PreferenceStore by lazy { PreferenceStore(appContext) }
 
     val speechToTextClient: SpeechToTextClient by lazy { WhisperApiClient(httpClient) }
+
+    val postProcessingClient: PostProcessingClient by lazy { PostProcessingClient(httpClient) }
 
     val releaseChecker: ReleaseChecker by lazy { ReleaseChecker(httpClient) }
 }

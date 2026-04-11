@@ -4,10 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
+import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
+import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
+import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingPrompts
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import kotlinx.coroutines.*
@@ -16,6 +19,7 @@ class InputOrchestrator(
     private val context: Context,
     private val preferenceStore: PreferenceStore,
     private val speechClient: SpeechToTextClient,
+    private val postProcessingClient: PostProcessingClient,
     private val capture: MicrophoneCaptureSession,
     private val onTextReady: (String) -> Unit,
     private val onPhaseChanged: (InputPhase) -> Unit,
@@ -28,23 +32,49 @@ class InputOrchestrator(
 
     private var activeJob: Job? = null
     private var preferences: UserPreferences? = null
+    private var ppPreferences: PostProcessingPreferences? = null
 
     var currentPhase: InputPhase = InputPhase.Ready
         private set
 
+    // Post-processing toggle states
+    var ppFixActive = false
+    var ppShortenActive = false
+    var ppEmojiActive = false
+
     fun loadPreferences() {
         CoroutineScope(Dispatchers.Main).launch {
             preferences = preferenceStore.load()
-            DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}")
+            ppPreferences = preferenceStore.loadPostProcessing()
+            val toggles = preferenceStore.loadToggleStates()
+            ppFixActive = toggles.fixActive
+            ppShortenActive = toggles.shortenActive
+            ppEmojiActive = toggles.emojiActive
+            DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
         }
     }
 
     fun reloadAndAutoStart() {
         CoroutineScope(Dispatchers.Main).launch {
             preferences = preferenceStore.load()
+            ppPreferences = preferenceStore.loadPostProcessing()
+            val toggles = preferenceStore.loadToggleStates()
+            ppFixActive = toggles.fixActive
+            ppShortenActive = toggles.shortenActive
+            ppEmojiActive = toggles.emojiActive
             if (preferences?.autoRecord == true && currentPhase is InputPhase.Ready) {
                 beginCapture()
             }
+        }
+    }
+
+    fun isPostProcessingEnabled(): Boolean = ppPreferences?.enabled == true
+
+    fun saveToggleStates() {
+        CoroutineScope(Dispatchers.IO).launch {
+            preferenceStore.saveToggleStates(
+                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive)
+            )
         }
     }
 
@@ -59,7 +89,7 @@ class InputOrchestrator(
                 InputAction.CancelOperation -> cancelAll()
                 else -> {}
             }
-            is InputPhase.Processing -> when (action) {
+            is InputPhase.Processing, is InputPhase.PostProcessing -> when (action) {
                 InputAction.CancelOperation -> cancelAll()
                 else -> {}
             }
@@ -111,7 +141,8 @@ class InputOrchestrator(
             result.onSuccess { text ->
                 DiagnosticLog.record(TAG, "Transcription success: ${text.take(50)}")
                 if (text.isNotBlank()) {
-                    val output = if (prefs.addTrailingSpace) "$text " else text
+                    val processed = maybePostProcess(text)
+                    val output = if (prefs.addTrailingSpace) "$processed " else processed
                     onTextReady(output)
                 }
                 moveTo(InputPhase.Ready)
@@ -120,6 +151,24 @@ class InputOrchestrator(
                 moveTo(InputPhase.Failed(error.message ?: "Unknown error"))
                 moveTo(InputPhase.Ready)
             }
+        }
+    }
+
+    private suspend fun maybePostProcess(text: String): String {
+        val pp = ppPreferences ?: return text
+        if (!pp.enabled) return text
+        if (pp.apiKey.isBlank()) return text
+        if (!PostProcessingPrompts.hasAnyMode(ppFixActive, ppShortenActive, ppEmojiActive)) return text
+
+        moveTo(InputPhase.PostProcessing)
+        DiagnosticLog.record(TAG, "Post-processing: fix=$ppFixActive, shorten=$ppShortenActive, emoji=$ppEmojiActive")
+
+        val prompt = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, text)
+        val result = postProcessingClient.process(prompt, pp)
+
+        return result.getOrElse { error ->
+            DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
+            text
         }
     }
 

@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">API anahtarınızı alın → console.groq.com</string>
     <string name="about_project">GitHub — Proje hakkında</string>
     <string name="link_copied">Bağlantı kopyalandı</string>
+    <string name="status_postprocessing">İşleniyor\u2026</string>
+    <string name="pp_settings_title">Son işleme</string>
+    <string name="pp_settings_description">Yazıya dökülmüş metni düzeltmek, kısaltmak veya geliştirmek için yapay zeka kullanın. OpenAI veya Claude API anahtarı gerektirir.</string>
+    <string name="pp_enable">Son işlemeyi etkinleştir</string>
+    <string name="pp_provider">API sağlayıcı</string>
+    <string name="pp_api_key">API anahtarı</string>
+    <string name="pp_endpoint">API uç noktası</string>
+    <string name="pp_endpoint_hint">Varsayılan için boş bırakın</string>
+    <string name="pp_model">Model</string>
+    <string name="pp_model_hint">Varsayılan için boş bırakın</string>
+    <string name="pp_saved">Ayarlar kaydedildi</string>
+    <string name="pp_fix">Hataları düzelt</string>
+    <string name="pp_shorten">Kısalt</string>
+    <string name="pp_emoji">Emoji ekle</string>
+    <string name="pp_open_settings">Son işleme ayarları</string>
 </resources>

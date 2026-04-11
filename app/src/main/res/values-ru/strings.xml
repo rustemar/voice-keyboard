@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">Получить API-ключ → console.groq.com</string>
     <string name="about_project">GitHub — О проекте</string>
     <string name="link_copied">Ссылка скопирована</string>
+    <string name="status_postprocessing">Постобработка\u2026</string>
+    <string name="pp_settings_title">Постобработка</string>
+    <string name="pp_settings_description">Используйте ИИ для исправления, сокращения или улучшения распознанного текста. Требуется ключ API OpenAI или Claude.</string>
+    <string name="pp_enable">Включить постобработку</string>
+    <string name="pp_provider">Провайдер API</string>
+    <string name="pp_api_key">Ключ API</string>
+    <string name="pp_endpoint">Адрес API</string>
+    <string name="pp_endpoint_hint">Оставьте пустым для значения по умолчанию</string>
+    <string name="pp_model">Модель</string>
+    <string name="pp_model_hint">Оставьте пустым для значения по умолчанию</string>
+    <string name="pp_saved">Настройки сохранены</string>
+    <string name="pp_fix">Исправить ошибки</string>
+    <string name="pp_shorten">Сократить</string>
+    <string name="pp_emoji">Добавить эмодзи</string>
+    <string name="pp_open_settings">Настройки постобработки</string>
 </resources>

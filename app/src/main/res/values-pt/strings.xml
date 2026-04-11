@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">Obtenha sua chave API → console.groq.com</string>
     <string name="about_project">GitHub — Sobre o projeto</string>
     <string name="link_copied">Link copiado</string>
+    <string name="status_postprocessing">Pós-processamento\u2026</string>
+    <string name="pp_settings_title">Pós-processamento</string>
+    <string name="pp_settings_description">Use IA para corrigir, encurtar ou melhorar o texto transcrito. Requer uma chave API OpenAI ou Claude.</string>
+    <string name="pp_enable">Ativar pós-processamento</string>
+    <string name="pp_provider">Provedor de API</string>
+    <string name="pp_api_key">Chave API</string>
+    <string name="pp_endpoint">Endpoint da API</string>
+    <string name="pp_endpoint_hint">Deixe vazio para o valor padrão</string>
+    <string name="pp_model">Modelo</string>
+    <string name="pp_model_hint">Deixe vazio para o valor padrão</string>
+    <string name="pp_saved">Configurações salvas</string>
+    <string name="pp_fix">Corrigir erros</string>
+    <string name="pp_shorten">Encurtar</string>
+    <string name="pp_emoji">Adicionar emoji</string>
+    <string name="pp_open_settings">Configurações de pós-processamento</string>
 </resources>

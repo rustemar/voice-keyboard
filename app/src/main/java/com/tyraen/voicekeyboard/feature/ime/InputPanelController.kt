@@ -2,6 +2,7 @@ package com.tyraen.voicekeyboard.feature.ime
 
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
 
 class InputPanelController(rootView: View) {
@@ -10,6 +11,12 @@ class InputPanelController(rootView: View) {
     private val btnMic: ImageButton = rootView.findViewById(R.id.btnMic)
     private val btnCancel: ImageButton = rootView.findViewById(R.id.btnCancel)
     private val progressBar: ProgressBar = rootView.findViewById(R.id.progressBar)
+
+    // Post-processing toggle UI
+    val ppToggleRow: View = rootView.findViewById(R.id.ppToggleRow)
+    val btnPpFix: ImageButton = rootView.findViewById(R.id.btnPpFix)
+    val btnPpShorten: ImageButton = rootView.findViewById(R.id.btnPpShorten)
+    val btnPpEmoji: ImageButton = rootView.findViewById(R.id.btnPpEmoji)
 
     val animator = InputPanelAnimator(
         wave1 = rootView.findViewById(R.id.ripple1),
@@ -45,6 +52,13 @@ class InputPanelController(rootView: View) {
                 progressBar.visibility = View.VISIBLE
                 animator.haltPulse()
             }
+            is InputPhase.PostProcessing -> {
+                statusText.setText(R.string.status_postprocessing)
+                btnMic.visibility = View.GONE
+                btnCancel.visibility = View.VISIBLE
+                progressBar.visibility = View.VISIBLE
+                animator.haltPulse()
+            }
             is InputPhase.Failed -> {
                 displayError(phase.reason)
             }
@@ -53,5 +67,20 @@ class InputPanelController(rootView: View) {
 
     fun displayError(message: String) {
         statusText.text = statusText.context.getString(R.string.status_error, message)
+    }
+
+    fun showPostProcessingButtons(show: Boolean) {
+        ppToggleRow.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    fun updateToggleAppearance(button: ImageButton, active: Boolean) {
+        val context = button.context
+        if (active) {
+            button.setBackgroundResource(R.drawable.toggle_key_bg_active)
+            button.imageTintList = ContextCompat.getColorStateList(context, R.color.white)
+        } else {
+            button.setBackgroundResource(R.drawable.toggle_key_bg)
+            button.imageTintList = ContextCompat.getColorStateList(context, R.color.key_text)
+        }
     }
 }

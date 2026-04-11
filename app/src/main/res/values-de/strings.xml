@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">API-Schlüssel erhalten → console.groq.com</string>
     <string name="about_project">GitHub — Über das Projekt</string>
     <string name="link_copied">Link kopiert</string>
+    <string name="status_postprocessing">Nachbearbeitung\u2026</string>
+    <string name="pp_settings_title">Nachbearbeitung</string>
+    <string name="pp_settings_description">Verwenden Sie KI zum Korrigieren, Kürzen oder Verbessern von transkribiertem Text. Erfordert einen OpenAI- oder Claude-API-Schlüssel.</string>
+    <string name="pp_enable">Nachbearbeitung aktivieren</string>
+    <string name="pp_provider">API-Anbieter</string>
+    <string name="pp_api_key">API-Schlüssel</string>
+    <string name="pp_endpoint">API-Endpunkt</string>
+    <string name="pp_endpoint_hint">Leer lassen für Standardwert</string>
+    <string name="pp_model">Modell</string>
+    <string name="pp_model_hint">Leer lassen für Standardwert</string>
+    <string name="pp_saved">Einstellungen gespeichert</string>
+    <string name="pp_fix">Fehler korrigieren</string>
+    <string name="pp_shorten">Kürzen</string>
+    <string name="pp_emoji">Emoji hinzufügen</string>
+    <string name="pp_open_settings">Nachbearbeitung-Einstellungen</string>
 </resources>

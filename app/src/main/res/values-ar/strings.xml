@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">احصل على مفتاح API الخاص بك → console.groq.com</string>
     <string name="about_project">GitHub — حول المشروع</string>
     <string name="link_copied">تم نسخ الرابط</string>
+    <string name="status_postprocessing">جارٍ المعالجة\u2026</string>
+    <string name="pp_settings_title">المعالجة اللاحقة</string>
+    <string name="pp_settings_description">استخدم الذكاء الاصطناعي لتصحيح النص المنسوخ أو اختصاره أو تحسينه. يتطلب مفتاح API لـ OpenAI أو Claude.</string>
+    <string name="pp_enable">تفعيل المعالجة اللاحقة</string>
+    <string name="pp_provider">مزود API</string>
+    <string name="pp_api_key">مفتاح API</string>
+    <string name="pp_endpoint">نقطة نهاية API</string>
+    <string name="pp_endpoint_hint">اتركه فارغاً للقيمة الافتراضية</string>
+    <string name="pp_model">النموذج</string>
+    <string name="pp_model_hint">اتركه فارغاً للقيمة الافتراضية</string>
+    <string name="pp_saved">تم حفظ الإعدادات</string>
+    <string name="pp_fix">تصحيح الأخطاء</string>
+    <string name="pp_shorten">اختصار</string>
+    <string name="pp_emoji">إضافة إيموجي</string>
+    <string name="pp_open_settings">إعدادات المعالجة اللاحقة</string>
 </resources>

@@ -47,4 +47,19 @@
     <string name="settings_get_api_key">Get your API key → console.groq.com</string>
     <string name="about_project">GitHub — About the project</string>
     <string name="link_copied">Link copied</string>
+    <string name="status_postprocessing">Post-processing\u2026</string>
+    <string name="pp_settings_title">Post-processing</string>
+    <string name="pp_settings_description">Use AI to clean up, shorten, or enhance transcribed text. Requires an OpenAI or Claude API key.</string>
+    <string name="pp_enable">Enable post-processing</string>
+    <string name="pp_provider">API Provider</string>
+    <string name="pp_api_key">API Key</string>
+    <string name="pp_endpoint">API Endpoint</string>
+    <string name="pp_endpoint_hint">Leave empty for default</string>
+    <string name="pp_model">Model</string>
+    <string name="pp_model_hint">Leave empty for default</string>
+    <string name="pp_saved">Settings saved</string>
+    <string name="pp_fix">Fix errors</string>
+    <string name="pp_shorten">Shorten</string>
+    <string name="pp_emoji">Add emoji</string>
+    <string name="pp_open_settings">Post-processing settings</string>
 </resources>

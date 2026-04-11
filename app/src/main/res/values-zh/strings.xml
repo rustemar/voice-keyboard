@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">获取您的 API 密钥 → console.groq.com</string>
     <string name="about_project">GitHub — 关于项目</string>
     <string name="link_copied">链接已复制</string>
+    <string name="status_postprocessing">后处理中\u2026</string>
+    <string name="pp_settings_title">后处理</string>
+    <string name="pp_settings_description">使用AI修正、缩短或改善转录文本。需要OpenAI或Claude API密钥。</string>
+    <string name="pp_enable">启用后处理</string>
+    <string name="pp_provider">API提供商</string>
+    <string name="pp_api_key">API密钥</string>
+    <string name="pp_endpoint">API端点</string>
+    <string name="pp_endpoint_hint">留空使用默认值</string>
+    <string name="pp_model">模型</string>
+    <string name="pp_model_hint">留空使用默认值</string>
+    <string name="pp_saved">设置已保存</string>
+    <string name="pp_fix">修正错误</string>
+    <string name="pp_shorten">缩短</string>
+    <string name="pp_emoji">添加表情</string>
+    <string name="pp_open_settings">后处理设置</string>
 </resources>

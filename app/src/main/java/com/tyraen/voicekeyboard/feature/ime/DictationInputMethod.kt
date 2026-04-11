@@ -41,6 +41,7 @@ class DictationInputMethod : InputMethodService() {
             context = this,
             preferenceStore = ServiceLocator.preferenceStore,
             speechClient = ServiceLocator.speechToTextClient,
+            postProcessingClient = ServiceLocator.postProcessingClient,
             capture = MicrophoneCaptureSession(this),
             onTextReady = { text -> keystrokes.insertText(text) },
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
@@ -56,6 +57,7 @@ class DictationInputMethod : InputMethodService() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
         orchestrator.reloadAndAutoStart()
+        refreshPostProcessingUI()
     }
 
     override fun onWindowHidden() {
@@ -115,5 +117,50 @@ class DictationInputMethod : InputMethodService() {
         }
 
         btnHideKeyboard.setOnClickListener { requestHideSelf(0) }
+
+        // Post-processing toggle buttons
+        wirePostProcessingToggles()
+    }
+
+    private fun wirePostProcessingToggles() {
+        panel.btnPpFix.setOnClickListener {
+            if (orchestrator.ppFixActive) {
+                orchestrator.ppFixActive = false
+            } else {
+                orchestrator.ppFixActive = true
+                orchestrator.ppShortenActive = false // mutually exclusive
+            }
+            orchestrator.saveToggleStates()
+            updateToggleUI()
+        }
+
+        panel.btnPpShorten.setOnClickListener {
+            if (orchestrator.ppShortenActive) {
+                orchestrator.ppShortenActive = false
+            } else {
+                orchestrator.ppShortenActive = true
+                orchestrator.ppFixActive = false // mutually exclusive
+            }
+            orchestrator.saveToggleStates()
+            updateToggleUI()
+        }
+
+        panel.btnPpEmoji.setOnClickListener {
+            orchestrator.ppEmojiActive = !orchestrator.ppEmojiActive
+            orchestrator.saveToggleStates()
+            updateToggleUI()
+        }
+    }
+
+    private fun refreshPostProcessingUI() {
+        val show = orchestrator.isPostProcessingEnabled()
+        panel.showPostProcessingButtons(show)
+        if (show) updateToggleUI()
+    }
+
+    private fun updateToggleUI() {
+        panel.updateToggleAppearance(panel.btnPpFix, orchestrator.ppFixActive)
+        panel.updateToggleAppearance(panel.btnPpShorten, orchestrator.ppShortenActive)
+        panel.updateToggleAppearance(panel.btnPpEmoji, orchestrator.ppEmojiActive)
     }
 }

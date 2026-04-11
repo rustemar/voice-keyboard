@@ -42,4 +42,19 @@
     <string name="settings_get_api_key">Αποκτήστε το κλειδί API σας → console.groq.com</string>
     <string name="about_project">GitHub — Σχετικά με το έργο</string>
     <string name="link_copied">Ο σύνδεσμος αντιγράφηκε</string>
+    <string name="status_postprocessing">Μετεπεξεργασία\u2026</string>
+    <string name="pp_settings_title">Μετεπεξεργασία</string>
+    <string name="pp_settings_description">Χρησιμοποιήστε AI για διόρθωση, συντόμευση ή βελτίωση του μεταγεγραμμένου κειμένου. Απαιτεί κλειδί API OpenAI ή Claude.</string>
+    <string name="pp_enable">Ενεργοποίηση μετεπεξεργασίας</string>
+    <string name="pp_provider">Πάροχος API</string>
+    <string name="pp_api_key">Κλειδί API</string>
+    <string name="pp_endpoint">Τελικό σημείο API</string>
+    <string name="pp_endpoint_hint">Αφήστε κενό για προεπιλογή</string>
+    <string name="pp_model">Μοντέλο</string>
+    <string name="pp_model_hint">Αφήστε κενό για προεπιλογή</string>
+    <string name="pp_saved">Οι ρυθμίσεις αποθηκεύτηκαν</string>
+    <string name="pp_fix">Διόρθωση σφαλμάτων</string>
+    <string name="pp_shorten">Συντόμευση</string>
+    <string name="pp_emoji">Προσθήκη emoji</string>
+    <string name="pp_open_settings">Ρυθμίσεις μετεπεξεργασίας</string>
 </resources>

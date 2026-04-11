@@ -24,6 +24,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".feature.postprocessing.PostProcessingActivity"
+            android:exported="false"
+            android:label="@string/pp_settings_title" />
+
         <service
             android:name=".feature.ime.DictationInputMethod"
             android:exported="true"

@@ -24,6 +24,18 @@ class PreferenceStore(private val context: Context) {
         val AUTO_RECORD = booleanPreferencesKey("auto_record")
         val ADD_TRAILING_SPACE = booleanPreferencesKey("add_trailing_space")
         val PROMPT = stringPreferencesKey("prompt")
+
+        // Post-processing config
+        val PP_ENABLED = booleanPreferencesKey("pp_enabled")
+        val PP_PROVIDER = stringPreferencesKey("pp_provider")
+        val PP_API_KEY = stringPreferencesKey("pp_api_key")
+        val PP_ENDPOINT = stringPreferencesKey("pp_endpoint")
+        val PP_MODEL = stringPreferencesKey("pp_model")
+
+        // Post-processing toggle states (persist between sessions)
+        val PP_FIX_ACTIVE = booleanPreferencesKey("pp_fix_active")
+        val PP_SHORTEN_ACTIVE = booleanPreferencesKey("pp_shorten_active")
+        val PP_EMOJI_ACTIVE = booleanPreferencesKey("pp_emoji_active")
     }
 
     suspend fun load(): UserPreferences {
@@ -56,4 +68,48 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PROMPT] = prefs.prompt
         }
     }
+
+    suspend fun loadPostProcessing(): PostProcessingPreferences {
+        val prefs = context.store.data.first()
+        return PostProcessingPreferences(
+            enabled = prefs[Keys.PP_ENABLED] ?: false,
+            provider = prefs[Keys.PP_PROVIDER] ?: PostProcessingPreferences.PROVIDER_OPENAI,
+            apiKey = prefs[Keys.PP_API_KEY] ?: "",
+            endpoint = prefs[Keys.PP_ENDPOINT] ?: "",
+            model = prefs[Keys.PP_MODEL] ?: ""
+        )
+    }
+
+    suspend fun savePostProcessing(prefs: PostProcessingPreferences) {
+        context.store.edit { data ->
+            data[Keys.PP_ENABLED] = prefs.enabled
+            data[Keys.PP_PROVIDER] = prefs.provider
+            data[Keys.PP_API_KEY] = prefs.apiKey
+            data[Keys.PP_ENDPOINT] = prefs.endpoint
+            data[Keys.PP_MODEL] = prefs.model
+        }
+    }
+
+    suspend fun loadToggleStates(): ToggleStates {
+        val prefs = context.store.data.first()
+        return ToggleStates(
+            fixActive = prefs[Keys.PP_FIX_ACTIVE] ?: false,
+            shortenActive = prefs[Keys.PP_SHORTEN_ACTIVE] ?: false,
+            emojiActive = prefs[Keys.PP_EMOJI_ACTIVE] ?: false
+        )
+    }
+
+    suspend fun saveToggleStates(states: ToggleStates) {
+        context.store.edit { data ->
+            data[Keys.PP_FIX_ACTIVE] = states.fixActive
+            data[Keys.PP_SHORTEN_ACTIVE] = states.shortenActive
+            data[Keys.PP_EMOJI_ACTIVE] = states.emojiActive
+        }
+    }
+
+    data class ToggleStates(
+        val fixActive: Boolean = false,
+        val shortenActive: Boolean = false,
+        val emojiActive: Boolean = false
+    )
 }
