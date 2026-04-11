@@ -40,8 +40,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         try {
             val testPrompt = "Reply with exactly: OK"
             when (prefs.provider) {
-                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(testPrompt, prefs, maxTokens = 10)
-                else -> callOpenAI(testPrompt, prefs, maxTokens = 10)
+                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(testPrompt, prefs, maxTokens = 50)
+                else -> callOpenAI(testPrompt, prefs, maxTokens = 50)
             }
             DiagnosticLog.record(TAG, "Validation success")
             Result.success("API key is valid.")
