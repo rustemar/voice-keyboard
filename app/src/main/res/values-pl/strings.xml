@@ -57,5 +57,14 @@
     <string name="pp_fix">Popraw błędy</string>
     <string name="pp_shorten">Skróć</string>
     <string name="pp_emoji">Dodaj emoji</string>
+    <string name="pp_temperature">Temperatura</string>
+    <string name="pp_temperature_hint">0.0 = deterministyczny, 1.0 = kreatywny (domyślnie: 0.3)</string>
+    <string name="pp_prompts_title">Prompty</string>
+    <string name="pp_prompts_description">Dostosuj instrukcje dla każdego trybu. Zostaw puste dla wartości domyślnych.</string>
+    <string name="pp_prompt_fix_label">Prompt korekty błędów</string>
+    <string name="pp_prompt_shorten_label">Prompt skracania</string>
+    <string name="pp_prompt_emoji_label">Prompt emoji</string>
+    <string name="pp_prompt_suffix_label">Instrukcja wyjścia</string>
+    <string name="pp_prompt_suffix_hint">Dodawane do każdego promptu</string>
     <string name="pp_open_settings">Ustawienia przetwarzania</string>
 </resources>

@@ -57,5 +57,14 @@
     <string name="pp_fix">エラーを修正</string>
     <string name="pp_shorten">短縮</string>
     <string name="pp_emoji">絵文字を追加</string>
+    <string name="pp_temperature">温度</string>
+    <string name="pp_temperature_hint">0.0 = 決定的, 1.0 = 創造的 (デフォルト: 0.3)</string>
+    <string name="pp_prompts_title">プロンプト</string>
+    <string name="pp_prompts_description">各モードの指示をカスタマイズします。デフォルトを使用する場合は空欄にしてください。</string>
+    <string name="pp_prompt_fix_label">エラー修正プロンプト</string>
+    <string name="pp_prompt_shorten_label">短縮プロンプト</string>
+    <string name="pp_prompt_emoji_label">絵文字プロンプト</string>
+    <string name="pp_prompt_suffix_label">出力指示</string>
+    <string name="pp_prompt_suffix_hint">すべてのプロンプトに追加されます</string>
     <string name="pp_open_settings">後処理の設定</string>
 </resources>

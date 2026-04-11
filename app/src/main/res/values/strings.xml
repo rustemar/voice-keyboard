@@ -62,5 +62,14 @@
     <string name="pp_fix">Fix errors</string>
     <string name="pp_shorten">Shorten</string>
     <string name="pp_emoji">Add emoji</string>
+    <string name="pp_temperature">Temperature</string>
+    <string name="pp_temperature_hint">0.0 = deterministic, 1.0 = creative (default: 0.3)</string>
+    <string name="pp_prompts_title">Prompts</string>
+    <string name="pp_prompts_description">Customize instructions for each mode. Leave empty to use defaults.</string>
+    <string name="pp_prompt_fix_label">Fix errors prompt</string>
+    <string name="pp_prompt_shorten_label">Shorten prompt</string>
+    <string name="pp_prompt_emoji_label">Emoji prompt</string>
+    <string name="pp_prompt_suffix_label">Output instruction</string>
+    <string name="pp_prompt_suffix_hint">Appended to every prompt</string>
     <string name="pp_open_settings">Post-processing settings</string>
 </resources>

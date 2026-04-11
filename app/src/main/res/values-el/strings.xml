@@ -57,5 +57,14 @@
     <string name="pp_fix">Διόρθωση σφαλμάτων</string>
     <string name="pp_shorten">Συντόμευση</string>
     <string name="pp_emoji">Προσθήκη emoji</string>
+    <string name="pp_temperature">Θερμοκρασία</string>
+    <string name="pp_temperature_hint">0.0 = ντετερμινιστικό, 1.0 = δημιουργικό (προεπιλογή: 0.3)</string>
+    <string name="pp_prompts_title">Προτροπές</string>
+    <string name="pp_prompts_description">Προσαρμόστε τις οδηγίες για κάθε λειτουργία. Αφήστε κενό για προεπιλογές.</string>
+    <string name="pp_prompt_fix_label">Προτροπή διόρθωσης</string>
+    <string name="pp_prompt_shorten_label">Προτροπή συντόμευσης</string>
+    <string name="pp_prompt_emoji_label">Προτροπή emoji</string>
+    <string name="pp_prompt_suffix_label">Οδηγία εξόδου</string>
+    <string name="pp_prompt_suffix_hint">Προστίθεται σε κάθε προτροπή</string>
     <string name="pp_open_settings">Ρυθμίσεις μετεπεξεργασίας</string>
 </resources>

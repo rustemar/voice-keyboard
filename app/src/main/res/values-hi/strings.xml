@@ -57,5 +57,14 @@
     <string name="pp_fix">त्रुटियाँ ठीक करें</string>
     <string name="pp_shorten">छोटा करें</string>
     <string name="pp_emoji">इमोजी जोड़ें</string>
+    <string name="pp_temperature">तापमान</string>
+    <string name="pp_temperature_hint">0.0 = निर्धारित, 1.0 = रचनात्मक (डिफ़ॉल्ट: 0.3)</string>
+    <string name="pp_prompts_title">प्रॉम्प्ट</string>
+    <string name="pp_prompts_description">प्रत्येक मोड के लिए निर्देश अनुकूलित करें। डिफ़ॉल्ट के लिए खाली छोड़ें।</string>
+    <string name="pp_prompt_fix_label">त्रुटि सुधार प्रॉम्प्ट</string>
+    <string name="pp_prompt_shorten_label">संक्षेप प्रॉम्प्ट</string>
+    <string name="pp_prompt_emoji_label">इमोजी प्रॉम्प्ट</string>
+    <string name="pp_prompt_suffix_label">आउटपुट निर्देश</string>
+    <string name="pp_prompt_suffix_hint">हर प्रॉम्प्ट में जोड़ा जाता है</string>
     <string name="pp_open_settings">पोस्ट-प्रोसेसिंग सेटिंग्स</string>
 </resources>

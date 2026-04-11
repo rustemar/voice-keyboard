@@ -66,7 +66,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
     private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int? = null): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
-            put("temperature", 0.3)
+            put("temperature", prefs.resolvedTemperature().toDouble())
             if (maxTokens != null) put("max_tokens", maxTokens)
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {

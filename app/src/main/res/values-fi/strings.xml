@@ -57,5 +57,14 @@
     <string name="pp_fix">Korjaa virheet</string>
     <string name="pp_shorten">Lyhennä</string>
     <string name="pp_emoji">Lisää emoji</string>
+    <string name="pp_temperature">Lämpötila</string>
+    <string name="pp_temperature_hint">0.0 = deterministinen, 1.0 = luova (oletus: 0.3)</string>
+    <string name="pp_prompts_title">Promptit</string>
+    <string name="pp_prompts_description">Mukauta ohjeita kullekin tilalle. Jätä tyhjäksi oletusarvoille.</string>
+    <string name="pp_prompt_fix_label">Virheenkorjaus-prompti</string>
+    <string name="pp_prompt_shorten_label">Lyhennys-prompti</string>
+    <string name="pp_prompt_emoji_label">Emoji-prompti</string>
+    <string name="pp_prompt_suffix_label">Tulosohje</string>
+    <string name="pp_prompt_suffix_hint">Lisätään jokaiseen promptiin</string>
     <string name="pp_open_settings">Jälkikäsittelyn asetukset</string>
 </resources>

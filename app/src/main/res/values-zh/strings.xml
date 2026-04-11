@@ -57,5 +57,14 @@
     <string name="pp_fix">修正错误</string>
     <string name="pp_shorten">缩短</string>
     <string name="pp_emoji">添加表情</string>
+    <string name="pp_temperature">温度</string>
+    <string name="pp_temperature_hint">0.0 = 确定性, 1.0 = 创造性 (默认: 0.3)</string>
+    <string name="pp_prompts_title">提示词</string>
+    <string name="pp_prompts_description">自定义每种模式的指令。留空使用默认值。</string>
+    <string name="pp_prompt_fix_label">纠错提示词</string>
+    <string name="pp_prompt_shorten_label">缩短提示词</string>
+    <string name="pp_prompt_emoji_label">表情提示词</string>
+    <string name="pp_prompt_suffix_label">输出指令</string>
+    <string name="pp_prompt_suffix_hint">添加到每个提示词</string>
     <string name="pp_open_settings">后处理设置</string>
 </resources>

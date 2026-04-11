@@ -165,7 +165,7 @@ class InputOrchestrator(
         moveTo(InputPhase.PostProcessing)
         DiagnosticLog.record(TAG, "Post-processing: fix=$ppFixActive, shorten=$ppShortenActive, emoji=$ppEmojiActive")
 
-        val prompt = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, text)
+        val prompt = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, text, pp)
         val result = postProcessingClient.process(prompt, pp)
 
         return result.getOrElse { error ->

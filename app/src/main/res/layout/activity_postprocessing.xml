@@ -113,6 +113,129 @@
             android:inputType="text"
             android:textColor="@color/text_primary"
             android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Temperature -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_temperature"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_temperature_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:id="@+id/editPpTemperature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Prompts section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompts_title"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompts_description"
+            android:textColor="@color/status_text"
+            android:textSize="13sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Fix prompt -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompt_fix_label"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/editPromptFix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Shorten prompt -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompt_shorten_label"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/editPromptShorten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Emoji prompt -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompt_emoji_label"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/editPromptEmoji"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Suffix prompt -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompt_suffix_label"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_prompt_suffix_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:id="@+id/editPromptSuffix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="24dp" />
 
         <Button

@@ -57,5 +57,14 @@
     <string name="pp_fix">تصحيح الأخطاء</string>
     <string name="pp_shorten">اختصار</string>
     <string name="pp_emoji">إضافة إيموجي</string>
+    <string name="pp_temperature">الحرارة</string>
+    <string name="pp_temperature_hint">0.0 = حتمي، 1.0 = إبداعي (افتراضي: 0.3)</string>
+    <string name="pp_prompts_title">التعليمات</string>
+    <string name="pp_prompts_description">خصص التعليمات لكل وضع. اتركها فارغة لاستخدام القيم الافتراضية.</string>
+    <string name="pp_prompt_fix_label">تعليمة تصحيح الأخطاء</string>
+    <string name="pp_prompt_shorten_label">تعليمة الاختصار</string>
+    <string name="pp_prompt_emoji_label">تعليمة الإيموجي</string>
+    <string name="pp_prompt_suffix_label">تعليمة الإخراج</string>
+    <string name="pp_prompt_suffix_hint">يُضاف إلى كل تعليمة</string>
     <string name="pp_open_settings">إعدادات المعالجة اللاحقة</string>
 </resources>

@@ -21,6 +21,11 @@ class PostProcessingActivity : AppCompatActivity() {
     private lateinit var editApiKey: EditText
     private lateinit var editEndpoint: EditText
     private lateinit var editModel: EditText
+    private lateinit var editTemperature: EditText
+    private lateinit var editPromptFix: EditText
+    private lateinit var editPromptShorten: EditText
+    private lateinit var editPromptEmoji: EditText
+    private lateinit var editPromptSuffix: EditText
     private lateinit var btnApply: Button
     private lateinit var txtStatus: TextView
 
@@ -55,6 +60,11 @@ class PostProcessingActivity : AppCompatActivity() {
         editApiKey = findViewById(R.id.editPpApiKey)
         editEndpoint = findViewById(R.id.editPpEndpoint)
         editModel = findViewById(R.id.editPpModel)
+        editTemperature = findViewById(R.id.editPpTemperature)
+        editPromptFix = findViewById(R.id.editPromptFix)
+        editPromptShorten = findViewById(R.id.editPromptShorten)
+        editPromptEmoji = findViewById(R.id.editPromptEmoji)
+        editPromptSuffix = findViewById(R.id.editPromptSuffix)
         btnApply = findViewById(R.id.btnPpApply)
         txtStatus = findViewById(R.id.txtPpStatus)
     }
@@ -78,7 +88,6 @@ class PostProcessingActivity : AppCompatActivity() {
     private fun setupActions() {
         btnApply.setOnClickListener { saveAndValidate() }
 
-        // Instant save when toggle changes — no Apply needed
         switchEnabled.setOnCheckedChangeListener { _, isChecked ->
             CoroutineScope(Dispatchers.Main).launch {
                 val current = preferenceStore.loadPostProcessing()
@@ -100,20 +109,38 @@ class PostProcessingActivity : AppCompatActivity() {
             editApiKey.setText(pp.apiKey)
             editEndpoint.setText(pp.endpoint)
             editModel.setText(pp.model)
+            editTemperature.setText(pp.temperature.toString())
 
             editEndpoint.hint = PostProcessingPreferences.defaultEndpoint(pp.provider)
             editModel.hint = PostProcessingPreferences.defaultModel(pp.provider)
+
+            editPromptFix.setText(pp.promptFix)
+            editPromptFix.hint = PostProcessingPreferences.DEFAULT_PROMPT_FIX
+            editPromptShorten.setText(pp.promptShorten)
+            editPromptShorten.hint = PostProcessingPreferences.DEFAULT_PROMPT_SHORTEN
+            editPromptEmoji.setText(pp.promptEmoji)
+            editPromptEmoji.hint = PostProcessingPreferences.DEFAULT_PROMPT_EMOJI
+            editPromptSuffix.setText(pp.promptSuffix)
+            editPromptSuffix.hint = PostProcessingPreferences.DEFAULT_PROMPT_SUFFIX
         }
     }
 
     private fun saveAndValidate() {
         val providerIndex = spinnerProvider.selectedItemPosition
+        val tempText = editTemperature.text.toString().trim()
+        val temperature = tempText.toFloatOrNull() ?: PostProcessingPreferences.DEFAULT_TEMPERATURE
+
         val prefs = PostProcessingPreferences(
             enabled = switchEnabled.isChecked,
             provider = providers[providerIndex],
             apiKey = editApiKey.text.toString().trim(),
             endpoint = editEndpoint.text.toString().trim(),
-            model = editModel.text.toString().trim()
+            model = editModel.text.toString().trim(),
+            temperature = temperature.coerceIn(0f, 2f),
+            promptFix = editPromptFix.text.toString().trim(),
+            promptShorten = editPromptShorten.text.toString().trim(),
+            promptEmoji = editPromptEmoji.text.toString().trim(),
+            promptSuffix = editPromptSuffix.text.toString().trim()
         )
 
         btnApply.isEnabled = false

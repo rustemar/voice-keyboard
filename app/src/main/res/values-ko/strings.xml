@@ -57,5 +57,14 @@
     <string name="pp_fix">오류 수정</string>
     <string name="pp_shorten">축약</string>
     <string name="pp_emoji">이모지 추가</string>
+    <string name="pp_temperature">온도</string>
+    <string name="pp_temperature_hint">0.0 = 결정적, 1.0 = 창의적 (기본값: 0.3)</string>
+    <string name="pp_prompts_title">프롬프트</string>
+    <string name="pp_prompts_description">각 모드의 지시를 사용자 정의합니다. 기본값을 사용하려면 비워두세요.</string>
+    <string name="pp_prompt_fix_label">오류 수정 프롬프트</string>
+    <string name="pp_prompt_shorten_label">축약 프롬프트</string>
+    <string name="pp_prompt_emoji_label">이모지 프롬프트</string>
+    <string name="pp_prompt_suffix_label">출력 지시</string>
+    <string name="pp_prompt_suffix_hint">모든 프롬프트에 추가됩니다</string>
     <string name="pp_open_settings">후처리 설정</string>
 </resources>

@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.tyraen.voicekeyboard.R
@@ -31,6 +32,11 @@ class PreferenceStore(private val context: Context) {
         val PP_API_KEY = stringPreferencesKey("pp_api_key")
         val PP_ENDPOINT = stringPreferencesKey("pp_endpoint")
         val PP_MODEL = stringPreferencesKey("pp_model")
+        val PP_TEMPERATURE = floatPreferencesKey("pp_temperature")
+        val PP_PROMPT_FIX = stringPreferencesKey("pp_prompt_fix")
+        val PP_PROMPT_SHORTEN = stringPreferencesKey("pp_prompt_shorten")
+        val PP_PROMPT_EMOJI = stringPreferencesKey("pp_prompt_emoji")
+        val PP_PROMPT_SUFFIX = stringPreferencesKey("pp_prompt_suffix")
 
         // Post-processing toggle states (persist between sessions)
         val PP_FIX_ACTIVE = booleanPreferencesKey("pp_fix_active")
@@ -76,7 +82,12 @@ class PreferenceStore(private val context: Context) {
             provider = prefs[Keys.PP_PROVIDER] ?: PostProcessingPreferences.PROVIDER_OPENAI,
             apiKey = prefs[Keys.PP_API_KEY] ?: "",
             endpoint = prefs[Keys.PP_ENDPOINT] ?: "",
-            model = prefs[Keys.PP_MODEL] ?: ""
+            model = prefs[Keys.PP_MODEL] ?: "",
+            temperature = prefs[Keys.PP_TEMPERATURE] ?: PostProcessingPreferences.DEFAULT_TEMPERATURE,
+            promptFix = prefs[Keys.PP_PROMPT_FIX] ?: "",
+            promptShorten = prefs[Keys.PP_PROMPT_SHORTEN] ?: "",
+            promptEmoji = prefs[Keys.PP_PROMPT_EMOJI] ?: "",
+            promptSuffix = prefs[Keys.PP_PROMPT_SUFFIX] ?: ""
         )
     }
 
@@ -87,6 +98,11 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_API_KEY] = prefs.apiKey
             data[Keys.PP_ENDPOINT] = prefs.endpoint
             data[Keys.PP_MODEL] = prefs.model
+            data[Keys.PP_TEMPERATURE] = prefs.temperature
+            data[Keys.PP_PROMPT_FIX] = prefs.promptFix
+            data[Keys.PP_PROMPT_SHORTEN] = prefs.promptShorten
+            data[Keys.PP_PROMPT_EMOJI] = prefs.promptEmoji
+            data[Keys.PP_PROMPT_SUFFIX] = prefs.promptSuffix
         }
     }
 

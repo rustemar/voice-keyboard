@@ -57,5 +57,14 @@
     <string name="pp_fix">Fehler korrigieren</string>
     <string name="pp_shorten">Kürzen</string>
     <string name="pp_emoji">Emoji hinzufügen</string>
+    <string name="pp_temperature">Temperatur</string>
+    <string name="pp_temperature_hint">0.0 = deterministisch, 1.0 = kreativ (Standard: 0.3)</string>
+    <string name="pp_prompts_title">Prompts</string>
+    <string name="pp_prompts_description">Passen Sie die Anweisungen für jeden Modus an. Leer lassen für Standardwerte.</string>
+    <string name="pp_prompt_fix_label">Fehlerkorrektur-Prompt</string>
+    <string name="pp_prompt_shorten_label">Kürzungs-Prompt</string>
+    <string name="pp_prompt_emoji_label">Emoji-Prompt</string>
+    <string name="pp_prompt_suffix_label">Ausgabeanweisung</string>
+    <string name="pp_prompt_suffix_hint">Wird jedem Prompt angehängt</string>
     <string name="pp_open_settings">Nachbearbeitung-Einstellungen</string>
 </resources>

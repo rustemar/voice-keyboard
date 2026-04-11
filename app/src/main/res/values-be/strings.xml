@@ -57,5 +57,14 @@
     <string name="pp_fix">Выправіць памылкі</string>
     <string name="pp_shorten">Скараціць</string>
     <string name="pp_emoji">Дадаць эмодзі</string>
+    <string name="pp_temperature">Тэмпература</string>
+    <string name="pp_temperature_hint">0.0 = дэтэрмінаваны, 1.0 = крэатыўны (па змаўчанні: 0.3)</string>
+    <string name="pp_prompts_title">Промпты</string>
+    <string name="pp_prompts_description">Наладзьце інструкцыі для кожнага рэжыму. Пакіньце пустым для значэнняў па змаўчанні.</string>
+    <string name="pp_prompt_fix_label">Промпт выпраўлення памылак</string>
+    <string name="pp_prompt_shorten_label">Промпт скарачэння</string>
+    <string name="pp_prompt_emoji_label">Промпт эмодзі</string>
+    <string name="pp_prompt_suffix_label">Інструкцыя вываду</string>
+    <string name="pp_prompt_suffix_hint">Дадаецца да кожнага промпту</string>
     <string name="pp_open_settings">Налады постапрацоўкі</string>
 </resources>
