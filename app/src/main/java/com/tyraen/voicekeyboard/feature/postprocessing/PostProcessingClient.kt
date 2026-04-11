@@ -18,13 +18,23 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
     }
 
     suspend fun process(
-        prompt: String,
+        prompt: PromptParts,
         prefs: PostProcessingPreferences
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
             val result = when (prefs.provider) {
-                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(prompt, prefs, maxTokens = 16384)
-                else -> callOpenAI(prompt, prefs, maxTokens = null)
+                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(
+                    systemInstruction = prompt.systemInstruction,
+                    userText = prompt.userText,
+                    prefs = prefs,
+                    maxTokens = 16384
+                )
+                else -> callOpenAI(
+                    systemInstruction = prompt.systemInstruction,
+                    userText = prompt.userText,
+                    prefs = prefs,
+                    maxTokens = null
+                )
             }
             DiagnosticLog.record(TAG, "Success: ${result.take(80)}")
             Result.success(result)
@@ -38,11 +48,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         prefs: PostProcessingPreferences
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
-            val testPrompt = "Reply with exactly: OK"
-            when (prefs.provider) {
-                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(testPrompt, prefs, maxTokens = 50)
-                else -> callOpenAI(testPrompt, prefs, maxTokens = 50)
-            }
+            callOpenAIOrClaude("Reply with exactly: OK", prefs, maxTokens = 50)
             DiagnosticLog.record(TAG, "Validation success")
             Result.success("API key is valid.")
         } catch (e: Exception) {
@@ -63,17 +69,36 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         }
     }
 
-    private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int? = null): String {
+    private fun callOpenAIOrClaude(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
+        return when (prefs.provider) {
+            PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(null, prompt, prefs, maxTokens)
+            else -> callOpenAI(null, prompt, prefs, maxTokens)
+        }
+    }
+
+    private fun callOpenAI(
+        systemInstruction: String?,
+        userText: String,
+        prefs: PostProcessingPreferences,
+        maxTokens: Int? = null
+    ): String {
+        val messages = JSONArray()
+        if (systemInstruction != null) {
+            messages.put(JSONObject().apply {
+                put("role", "system")
+                put("content", systemInstruction)
+            })
+        }
+        messages.put(JSONObject().apply {
+            put("role", "user")
+            put("content", userText)
+        })
+
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
             put("temperature", prefs.resolvedTemperature().toDouble())
             if (maxTokens != null) put("max_tokens", maxTokens)
-            put("messages", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("role", "user")
-                    put("content", prompt)
-                })
-            })
+            put("messages", messages)
         }
 
         val request = Request.Builder()
@@ -98,14 +123,22 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             .trim()
     }
 
-    private fun callClaude(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
+    private fun callClaude(
+        systemInstruction: String?,
+        userText: String,
+        prefs: PostProcessingPreferences,
+        maxTokens: Int
+    ): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
             put("max_tokens", maxTokens)
+            if (systemInstruction != null) {
+                put("system", systemInstruction)
+            }
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "user")
-                    put("content", prompt)
+                    put("content", userText)
                 })
             })
         }

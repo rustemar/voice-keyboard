@@ -165,8 +165,8 @@ class InputOrchestrator(
         moveTo(InputPhase.PostProcessing)
         DiagnosticLog.record(TAG, "Post-processing: fix=$ppFixActive, shorten=$ppShortenActive, emoji=$ppEmojiActive")
 
-        val prompt = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, text, pp)
-        val result = postProcessingClient.process(prompt, pp)
+        val promptParts = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, text, pp)
+        val result = postProcessingClient.process(promptParts, pp)
 
         return result.getOrElse { error ->
             DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
