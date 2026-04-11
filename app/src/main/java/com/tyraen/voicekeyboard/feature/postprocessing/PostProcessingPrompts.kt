@@ -3,7 +3,7 @@ package com.tyraen.voicekeyboard.feature.postprocessing
 object PostProcessingPrompts {
 
     private const val FIX =
-        "Fix punctuation, spelling. Remove all filler/hesitation words in any language (e.g. um, uh, like, well, you know, ну, э, ммм, типа, короче, вот, как бы, значит, euh, also, halt, pues, bueno, えーと, 那个). Keep profanity unchanged."
+        "Fix ONLY punctuation and spelling errors. Remove filler/hesitation sounds (um, uh, ммм, э, euh, えーと). Do NOT rephrase, shorten, or rewrite the text in any other way. Keep every word the author used, including profanity."
 
     private const val SHORTEN =
         "Make the text more concise: remove repetitions, filler words, and unnecessary verbosity, but keep ALL key points, details, and arguments. Preserve the author's style and tone. Fix spelling and punctuation. Keep profanity unchanged."
