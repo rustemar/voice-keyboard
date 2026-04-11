@@ -57,17 +57,17 @@ class DictationInputMethod : InputMethodService() {
     override fun onWindowShown() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
-        orchestrator.reloadAndAutoStart()
+        if (::orchestrator.isInitialized) orchestrator.reloadAndAutoStart()
     }
 
     override fun onWindowHidden() {
         super.onWindowHidden()
-        orchestrator.cancelAll()
+        if (::orchestrator.isInitialized) orchestrator.cancelAll()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        orchestrator.cancelAll()
+        if (::orchestrator.isInitialized) orchestrator.cancelAll()
     }
 
     private fun wireControls(view: View) {
