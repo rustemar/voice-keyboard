@@ -10,7 +10,6 @@ import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
-import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingPrompts
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import kotlinx.coroutines.*
@@ -24,6 +23,7 @@ class InputOrchestrator(
     private val onTextReady: (String) -> Unit,
     private val onPhaseChanged: (InputPhase) -> Unit,
     private val onAmplitude: (Int) -> Unit,
+    private val onQueueCountChanged: (Int) -> Unit,
     private val onPreferencesLoaded: () -> Unit = {}
 ) {
 
@@ -31,9 +31,20 @@ class InputOrchestrator(
         private const val TAG = "Orchestrator"
     }
 
-    private var activeJob: Job? = null
     private var preferences: UserPreferences? = null
     private var ppPreferences: PostProcessingPreferences? = null
+
+    private val processingQueue = ProcessingQueue(
+        speechClient = speechClient,
+        postProcessingClient = postProcessingClient,
+        onTextReady = onTextReady,
+        onQueueCountChanged = { count ->
+            onQueueCountChanged(count)
+        },
+        onError = { message ->
+            DiagnosticLog.record(TAG, "Queue error: $message")
+        }
+    )
 
     var currentPhase: InputPhase = InputPhase.Ready
         private set
@@ -93,12 +104,8 @@ class InputOrchestrator(
                 else -> {}
             }
             is InputPhase.Capturing -> when (action) {
-                InputAction.ToggleCapture -> finishCaptureAndProcess()
-                InputAction.CancelOperation -> cancelAll()
-                else -> {}
-            }
-            is InputPhase.Processing, is InputPhase.PostProcessing -> when (action) {
-                InputAction.CancelOperation -> cancelAll()
+                InputAction.ToggleCapture -> finishCaptureAndEnqueue()
+                InputAction.CancelOperation -> cancelCapture()
                 else -> {}
             }
             is InputPhase.Failed -> {
@@ -121,10 +128,9 @@ class InputOrchestrator(
         capture.begin { amplitude -> onAmplitude(amplitude) }
     }
 
-    fun finishCaptureAndProcess() {
+    fun finishCaptureAndEnqueue() {
         val file = capture.finalize() ?: return
         DiagnosticLog.record(TAG, "finishCapture, file=${file.name}, size=${file.length()}")
-        moveTo(InputPhase.Processing)
 
         val prefs = preferences ?: run {
             moveTo(InputPhase.Failed("Settings not loaded"))
@@ -144,80 +150,47 @@ class InputOrchestrator(
             prompt = prefs.prompt
         )
 
-        activeJob = CoroutineScope(Dispatchers.Main).launch {
-            val result = speechClient.transcribe(file, config)
-            result.onSuccess { text ->
-                DiagnosticLog.record(TAG, "Transcription success: ${text.take(50)}")
-                if (text.isNotBlank()) {
-                    val processed = maybePostProcess(text)
-                    val output = if (prefs.addTrailingSpace) "$processed " else processed
-                    onTextReady(output)
-                }
-                moveTo(InputPhase.Ready)
-            }.onFailure { error ->
-                DiagnosticLog.recordFailure(TAG, "Transcription failed", error)
-                moveTo(InputPhase.Failed(error.message ?: "Unknown error"))
-                moveTo(InputPhase.Ready)
-            }
-        }
+        // Snapshot current post-processing state at enqueue time
+        val ppEnabled = ppPreferences?.enabled == true
+        val item = ProcessingQueue.QueueItem(
+            audioFile = file,
+            transcriptionConfig = config,
+            addTrailingSpace = prefs.addTrailingSpace,
+            ppPreferences = if (ppEnabled) ppPreferences else null,
+            ppFix = ppEnabled && ppFixActive,
+            ppShorten = ppEnabled && ppShortenActive,
+            ppEmoji = ppEnabled && ppEmojiActive,
+            ppRhyme = ppEnabled && ppRhymeActive,
+            ppTranslate = ppEnabled && ppTranslateActive
+        )
+
+        // Return to Ready immediately — user can start recording again
+        moveTo(InputPhase.Ready)
+        processingQueue.enqueue(item)
     }
 
-    private suspend fun maybePostProcess(text: String): String {
-        val pp = ppPreferences ?: return text
-        if (!pp.enabled) return text
-        if (pp.apiKey.isBlank()) return text
-
-        var processed = text
-
-        // First: fix/shorten/emoji
-        if (PostProcessingPrompts.hasAnyMode(ppFixActive, ppShortenActive, ppEmojiActive)) {
-            moveTo(InputPhase.PostProcessing)
-            DiagnosticLog.record(TAG, "Post-processing: fix=$ppFixActive, shorten=$ppShortenActive, emoji=$ppEmojiActive")
-
-            val promptParts = PostProcessingPrompts.build(ppFixActive, ppShortenActive, ppEmojiActive, processed, pp)
-            val result = postProcessingClient.process(promptParts, pp)
-            processed = result.getOrElse { error ->
-                DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
-                processed
-            }
-        }
-
-        // Then: rhyme (uses translate model — more powerful)
-        if (ppRhymeActive) {
-            moveTo(InputPhase.PostProcessing)
-            DiagnosticLog.record(TAG, "Rhyming text")
-
-            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed)
-            val result = postProcessingClient.process(rhymePrompt, pp, modelOverride = pp.resolvedTranslateModel())
-            processed = result.getOrElse { error ->
-                DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
-                processed
-            }
-        }
-
-        // Then: translate (uses a separate, more powerful model)
-        if (ppTranslateActive) {
-            moveTo(InputPhase.PostProcessing)
-            DiagnosticLog.record(TAG, "Translating to: ${pp.translateLang}")
-
-            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang)
-            val result = postProcessingClient.process(translatePrompt, pp, modelOverride = pp.resolvedTranslateModel())
-            processed = result.getOrElse { error ->
-                DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
-                processed
-            }
-        }
-
-        return processed
-    }
-
-    fun cancelAll() {
-        activeJob?.cancel()
-        activeJob = null
+    /** Cancel only the current recording; the queue keeps processing. */
+    private fun cancelCapture() {
         if (capture.isActive) {
             capture.abort()
         }
         moveTo(InputPhase.Ready)
+    }
+
+    /** Cancel everything: current recording + the entire queue. */
+    fun cancelAll() {
+        if (capture.isActive) {
+            capture.abort()
+        }
+        processingQueue.cancelAll()
+        moveTo(InputPhase.Ready)
+    }
+
+    fun destroy() {
+        if (capture.isActive) {
+            capture.abort()
+        }
+        processingQueue.destroy()
     }
 
     private fun moveTo(phase: InputPhase) {

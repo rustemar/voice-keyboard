@@ -10,6 +10,7 @@ class MicrophoneCaptureSession(private val context: Context) {
 
     private var recorder: MediaRecorder? = null
     private var levelMonitor: Job? = null
+    private var fileCounter = 0
     var capturedFile: File? = null
         private set
 
@@ -17,7 +18,7 @@ class MicrophoneCaptureSession(private val context: Context) {
         get() = recorder != null
 
     fun begin(onAmplitude: (Int) -> Unit): File {
-        val file = File(context.externalCacheDir, "recorded.m4a")
+        val file = File(context.externalCacheDir, "recording_${fileCounter++}.m4a")
         capturedFile = file
 
         val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

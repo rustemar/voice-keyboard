@@ -11,6 +11,7 @@ class InputPanelController(rootView: View) {
     private val btnMic: ImageButton = rootView.findViewById(R.id.btnMic)
     private val btnCancel: ImageButton = rootView.findViewById(R.id.btnCancel)
     private val progressBar: ProgressBar = rootView.findViewById(R.id.progressBar)
+    private val queueBadge: TextView = rootView.findViewById(R.id.queueBadge)
 
     // Post-processing toggle UI
     val ppToggleRow: View = rootView.findViewById(R.id.ppToggleRow)
@@ -28,16 +29,18 @@ class InputPanelController(rootView: View) {
     var currentPhase: InputPhase = InputPhase.Ready
         private set
 
+    private var currentQueueCount: Int = 0
+
     fun transitionTo(phase: InputPhase) {
         currentPhase = phase
         when (phase) {
             is InputPhase.Ready -> {
-                statusText.setText(R.string.status_idle)
                 btnMic.setBackgroundResource(R.drawable.mic_button_bg)
                 btnMic.visibility = View.VISIBLE
                 btnCancel.visibility = View.GONE
-                progressBar.visibility = View.GONE
                 animator.haltPulse()
+                // Status and progress depend on queue state
+                applyQueueState()
             }
             is InputPhase.Capturing -> {
                 statusText.setText(R.string.status_recording)
@@ -47,23 +50,34 @@ class InputPanelController(rootView: View) {
                 progressBar.visibility = View.GONE
                 animator.beginPulse()
             }
-            is InputPhase.Processing -> {
-                statusText.setText(R.string.status_transcribing)
-                btnMic.visibility = View.GONE
-                btnCancel.visibility = View.VISIBLE
-                progressBar.visibility = View.VISIBLE
-                animator.haltPulse()
-            }
-            is InputPhase.PostProcessing -> {
-                statusText.setText(R.string.status_postprocessing)
-                btnMic.visibility = View.GONE
-                btnCancel.visibility = View.VISIBLE
-                progressBar.visibility = View.VISIBLE
-                animator.haltPulse()
-            }
             is InputPhase.Failed -> {
                 displayError(phase.reason)
             }
+        }
+    }
+
+    fun updateQueueCount(count: Int) {
+        currentQueueCount = count
+        // Update badge
+        if (count > 0) {
+            queueBadge.text = count.toString()
+            queueBadge.visibility = View.VISIBLE
+        } else {
+            queueBadge.visibility = View.GONE
+        }
+        // If in Ready phase, update progress bar and status text
+        if (currentPhase is InputPhase.Ready) {
+            applyQueueState()
+        }
+    }
+
+    private fun applyQueueState() {
+        if (currentQueueCount > 0) {
+            statusText.setText(R.string.status_transcribing)
+            progressBar.visibility = View.VISIBLE
+        } else {
+            statusText.setText(R.string.status_idle)
+            progressBar.visibility = View.GONE
         }
     }
 

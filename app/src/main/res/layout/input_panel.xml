@@ -130,6 +130,20 @@
             android:layout_gravity="center"
             android:visibility="gone"
             android:indeterminateTint="@color/mic_transcribing" />
+
+        <TextView
+            android:id="@+id/queueBadge"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/queue_badge_bg"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </FrameLayout>
 
     <!-- Cancel button (left of mic) -->

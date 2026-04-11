@@ -55,6 +55,7 @@ class DictationInputMethod : InputMethodService() {
             onTextReady = { text -> keystrokes.insertText(text) },
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
             onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
+            onQueueCountChanged = { count -> panel.updateQueueCount(count) },
             onPreferencesLoaded = { refreshPostProcessingUI() }
         )
 
@@ -84,7 +85,7 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (::orchestrator.isInitialized) orchestrator.cancelAll()
+        if (::orchestrator.isInitialized) orchestrator.destroy()
     }
 
     private fun wireControls(view: View) {
