@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">기본값을 사용하려면 비워두세요</string>
     <string name="pp_model">모델</string>
     <string name="pp_model_hint">기본값을 사용하려면 비워두세요</string>
-    <string name="pp_saved">설정이 저장되었습니다</string>
+    <string name="pp_saved">설정이 저장되었습니다.</string>
+    <string name="pp_validating">저장 및 API 키 확인 중\u2026</string>
     <string name="pp_fix">오류 수정</string>
     <string name="pp_shorten">축약</string>
     <string name="pp_emoji">이모지 추가</string>

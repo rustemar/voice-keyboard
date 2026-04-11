@@ -57,7 +57,8 @@
     <string name="pp_endpoint_hint">Leave empty for default</string>
     <string name="pp_model">Model</string>
     <string name="pp_model_hint">Leave empty for default</string>
-    <string name="pp_saved">Settings saved</string>
+    <string name="pp_saved">Settings saved.</string>
+    <string name="pp_validating">Saving and validating API key\u2026</string>
     <string name="pp_fix">Fix errors</string>
     <string name="pp_shorten">Shorten</string>
     <string name="pp_emoji">Add emoji</string>

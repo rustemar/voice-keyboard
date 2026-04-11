@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Оставьте пустым для значения по умолчанию</string>
     <string name="pp_model">Модель</string>
     <string name="pp_model_hint">Оставьте пустым для значения по умолчанию</string>
-    <string name="pp_saved">Настройки сохранены</string>
+    <string name="pp_saved">Настройки сохранены.</string>
+    <string name="pp_validating">Сохранение и проверка API-ключа\u2026</string>
     <string name="pp_fix">Исправить ошибки</string>
     <string name="pp_shorten">Сократить</string>
     <string name="pp_emoji">Добавить эмодзи</string>

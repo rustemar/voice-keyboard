@@ -34,10 +34,41 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         }
     }
 
+    suspend fun validateCredentials(
+        prefs: PostProcessingPreferences
+    ): Result<String> = withContext(Dispatchers.IO) {
+        try {
+            val testPrompt = "Reply with exactly: OK"
+            when (prefs.provider) {
+                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(testPrompt, prefs)
+                else -> callOpenAI(testPrompt, prefs)
+            }
+            DiagnosticLog.record(TAG, "Validation success")
+            Result.success("API key is valid.")
+        } catch (e: Exception) {
+            DiagnosticLog.recordFailure(TAG, "Validation failed", e)
+            val message = when {
+                e.message?.contains("401") == true -> "Invalid API key"
+                e.message?.contains("403") == true -> "Access denied (check region/permissions)"
+                e.message?.contains("404") == true -> "Invalid endpoint URL"
+                e.message?.contains("429") == true -> "Rate limit exceeded, but key is valid"
+                e.message?.contains("5") == true && e.message?.contains("API error 5") == true -> "Server error, try again later"
+                else -> e.message ?: "Unknown error"
+            }
+            // 429 means the key works, just rate limited
+            if (e.message?.contains("429") == true) {
+                Result.success(message)
+            } else {
+                Result.failure(Exception(message))
+            }
+        }
+    }
+
     private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
             put("temperature", 0.3)
+            put("max_tokens", 10)
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "user")
@@ -71,7 +102,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
     private fun callClaude(prompt: String, prefs: PostProcessingPreferences): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
-            put("max_tokens", 2048)
+            put("max_tokens", 10)
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "user")

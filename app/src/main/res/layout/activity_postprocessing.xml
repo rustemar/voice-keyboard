@@ -35,6 +35,8 @@
             android:text="@string/pp_enable"
             android:textColor="@color/key_text"
             android:textSize="16sp"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color"
             android:layout_marginBottom="24dp" />
 
         <!-- Provider -->

@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Jätä tyhjäksi oletusarvoa varten</string>
     <string name="pp_model">Malli</string>
     <string name="pp_model_hint">Jätä tyhjäksi oletusarvoa varten</string>
-    <string name="pp_saved">Asetukset tallennettu</string>
+    <string name="pp_saved">Asetukset tallennettu.</string>
+    <string name="pp_validating">Tallennetaan ja tarkistetaan API-avain\u2026</string>
     <string name="pp_fix">Korjaa virheet</string>
     <string name="pp_shorten">Lyhennä</string>
     <string name="pp_emoji">Lisää emoji</string>

@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">留空使用默认值</string>
     <string name="pp_model">模型</string>
     <string name="pp_model_hint">留空使用默认值</string>
-    <string name="pp_saved">设置已保存</string>
+    <string name="pp_saved">设置已保存。</string>
+    <string name="pp_validating">正在保存并验证API密钥\u2026</string>
     <string name="pp_fix">修正错误</string>
     <string name="pp_shorten">缩短</string>
     <string name="pp_emoji">添加表情</string>

@@ -23,7 +23,8 @@ class InputOrchestrator(
     private val capture: MicrophoneCaptureSession,
     private val onTextReady: (String) -> Unit,
     private val onPhaseChanged: (InputPhase) -> Unit,
-    private val onAmplitude: (Int) -> Unit
+    private val onAmplitude: (Int) -> Unit,
+    private val onPreferencesLoaded: () -> Unit = {}
 ) {
 
     companion object {
@@ -44,28 +45,29 @@ class InputOrchestrator(
 
     fun loadPreferences() {
         CoroutineScope(Dispatchers.Main).launch {
-            preferences = preferenceStore.load()
-            ppPreferences = preferenceStore.loadPostProcessing()
-            val toggles = preferenceStore.loadToggleStates()
-            ppFixActive = toggles.fixActive
-            ppShortenActive = toggles.shortenActive
-            ppEmojiActive = toggles.emojiActive
-            DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
+            loadPreferencesInternal()
+            onPreferencesLoaded()
         }
     }
 
     fun reloadAndAutoStart() {
         CoroutineScope(Dispatchers.Main).launch {
-            preferences = preferenceStore.load()
-            ppPreferences = preferenceStore.loadPostProcessing()
-            val toggles = preferenceStore.loadToggleStates()
-            ppFixActive = toggles.fixActive
-            ppShortenActive = toggles.shortenActive
-            ppEmojiActive = toggles.emojiActive
+            loadPreferencesInternal()
+            onPreferencesLoaded()
             if (preferences?.autoRecord == true && currentPhase is InputPhase.Ready) {
                 beginCapture()
             }
         }
+    }
+
+    private suspend fun loadPreferencesInternal() {
+        preferences = preferenceStore.load()
+        ppPreferences = preferenceStore.loadPostProcessing()
+        val toggles = preferenceStore.loadToggleStates()
+        ppFixActive = toggles.fixActive
+        ppShortenActive = toggles.shortenActive
+        ppEmojiActive = toggles.emojiActive
+        DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
 
     fun isPostProcessingEnabled(): Boolean = ppPreferences?.enabled == true

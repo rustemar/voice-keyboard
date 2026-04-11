@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">デフォルトを使用する場合は空欄</string>
     <string name="pp_model">モデル</string>
     <string name="pp_model_hint">デフォルトを使用する場合は空欄</string>
-    <string name="pp_saved">設定を保存しました</string>
+    <string name="pp_saved">設定を保存しました。</string>
+    <string name="pp_validating">保存してAPIキーを検証中\u2026</string>
     <string name="pp_fix">エラーを修正</string>
     <string name="pp_shorten">短縮</string>
     <string name="pp_emoji">絵文字を追加</string>

@@ -25,6 +25,7 @@ class PostProcessingActivity : AppCompatActivity() {
     private lateinit var txtStatus: TextView
 
     private val preferenceStore get() = ServiceLocator.preferenceStore
+    private val postProcessingClient get() = ServiceLocator.postProcessingClient
 
     private val providers = listOf(
         PostProcessingPreferences.PROVIDER_OPENAI,
@@ -75,7 +76,15 @@ class PostProcessingActivity : AppCompatActivity() {
     }
 
     private fun setupActions() {
-        btnApply.setOnClickListener { savePreferences() }
+        btnApply.setOnClickListener { saveAndValidate() }
+
+        // Instant save when toggle changes — no Apply needed
+        switchEnabled.setOnCheckedChangeListener { _, isChecked ->
+            CoroutineScope(Dispatchers.Main).launch {
+                val current = preferenceStore.loadPostProcessing()
+                preferenceStore.savePostProcessing(current.copy(enabled = isChecked))
+            }
+        }
     }
 
     private fun loadPreferences() {
@@ -97,7 +106,7 @@ class PostProcessingActivity : AppCompatActivity() {
         }
     }
 
-    private fun savePreferences() {
+    private fun saveAndValidate() {
         val providerIndex = spinnerProvider.selectedItemPosition
         val prefs = PostProcessingPreferences(
             enabled = switchEnabled.isChecked,
@@ -108,9 +117,25 @@ class PostProcessingActivity : AppCompatActivity() {
         )
 
         btnApply.isEnabled = false
+        showStatus(getString(R.string.pp_validating), Color.GRAY)
+
         CoroutineScope(Dispatchers.Main).launch {
             preferenceStore.savePostProcessing(prefs)
-            showStatus(getString(R.string.pp_saved), Color.parseColor("#4CAF50"))
+
+            if (prefs.apiKey.isBlank()) {
+                showStatus(getString(R.string.pp_saved), Color.parseColor("#4CAF50"))
+                btnApply.isEnabled = true
+                return@launch
+            }
+
+            val result = postProcessingClient.validateCredentials(prefs)
+
+            result.onSuccess { msg ->
+                showStatus("${getString(R.string.pp_saved)} $msg", Color.parseColor("#4CAF50"))
+            }.onFailure { error ->
+                showStatus("${getString(R.string.pp_saved)} Error: ${error.message}", Color.parseColor("#EF4444"))
+            }
+
             btnApply.isEnabled = true
         }
     }

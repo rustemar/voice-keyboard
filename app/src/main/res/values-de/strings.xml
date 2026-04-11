@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Leer lassen für Standardwert</string>
     <string name="pp_model">Modell</string>
     <string name="pp_model_hint">Leer lassen für Standardwert</string>
-    <string name="pp_saved">Einstellungen gespeichert</string>
+    <string name="pp_saved">Einstellungen gespeichert.</string>
+    <string name="pp_validating">Speichern und API-Schlüssel überprüfen\u2026</string>
     <string name="pp_fix">Fehler korrigieren</string>
     <string name="pp_shorten">Kürzen</string>
     <string name="pp_emoji">Emoji hinzufügen</string>

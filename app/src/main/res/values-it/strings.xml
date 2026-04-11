@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Lascia vuoto per il valore predefinito</string>
     <string name="pp_model">Modello</string>
     <string name="pp_model_hint">Lascia vuoto per il valore predefinito</string>
-    <string name="pp_saved">Impostazioni salvate</string>
+    <string name="pp_saved">Impostazioni salvate.</string>
+    <string name="pp_validating">Salvataggio e convalida della chiave API\u2026</string>
     <string name="pp_fix">Correggi errori</string>
     <string name="pp_shorten">Abbrevia</string>
     <string name="pp_emoji">Aggiungi emoji</string>

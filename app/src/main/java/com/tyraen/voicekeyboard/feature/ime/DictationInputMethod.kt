@@ -45,7 +45,8 @@ class DictationInputMethod : InputMethodService() {
             capture = MicrophoneCaptureSession(this),
             onTextReady = { text -> keystrokes.insertText(text) },
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
-            onAmplitude = { level -> panel.animator.adjustForAmplitude(level) }
+            onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
+            onPreferencesLoaded = { refreshPostProcessingUI() }
         )
 
         orchestrator.loadPreferences()
@@ -57,7 +58,6 @@ class DictationInputMethod : InputMethodService() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
         orchestrator.reloadAndAutoStart()
-        refreshPostProcessingUI()
     }
 
     override fun onWindowHidden() {

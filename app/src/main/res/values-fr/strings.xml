@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Laisser vide pour la valeur par défaut</string>
     <string name="pp_model">Modèle</string>
     <string name="pp_model_hint">Laisser vide pour la valeur par défaut</string>
-    <string name="pp_saved">Paramètres enregistrés</string>
+    <string name="pp_saved">Paramètres enregistrés.</string>
+    <string name="pp_validating">Enregistrement et validation de la clé API\u2026</string>
     <string name="pp_fix">Corriger les erreurs</string>
     <string name="pp_shorten">Raccourcir</string>
     <string name="pp_emoji">Ajouter des emoji</string>

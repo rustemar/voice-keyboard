@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Пакіньце пустым для значэння па змаўчанні</string>
     <string name="pp_model">Мадэль</string>
     <string name="pp_model_hint">Пакіньце пустым для значэння па змаўчанні</string>
-    <string name="pp_saved">Налады захаваны</string>
+    <string name="pp_saved">Налады захаваны.</string>
+    <string name="pp_validating">Захаванне і праверка ключа API\u2026</string>
     <string name="pp_fix">Выправіць памылкі</string>
     <string name="pp_shorten">Скараціць</string>
     <string name="pp_emoji">Дадаць эмодзі</string>

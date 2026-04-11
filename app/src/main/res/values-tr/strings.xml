@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">Varsayılan için boş bırakın</string>
     <string name="pp_model">Model</string>
     <string name="pp_model_hint">Varsayılan için boş bırakın</string>
-    <string name="pp_saved">Ayarlar kaydedildi</string>
+    <string name="pp_saved">Ayarlar kaydedildi.</string>
+    <string name="pp_validating">Kaydediliyor ve API anahtarı doğrulanıyor\u2026</string>
     <string name="pp_fix">Hataları düzelt</string>
     <string name="pp_shorten">Kısalt</string>
     <string name="pp_emoji">Emoji ekle</string>

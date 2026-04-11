@@ -146,6 +146,8 @@
             android:layout_height="wrap_content"
             android:text="@string/settings_auto_record"
             android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color"
             android:layout_marginBottom="12dp" />
 
         <!-- Add trailing space -->
@@ -155,6 +157,8 @@
             android:layout_height="wrap_content"
             android:text="@string/settings_add_space"
             android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color"
             android:layout_marginBottom="24dp" />
 
         <Button

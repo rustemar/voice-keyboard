@@ -52,7 +52,8 @@
     <string name="pp_endpoint_hint">डिफ़ॉल्ट के लिए खाली छोड़ें</string>
     <string name="pp_model">मॉडल</string>
     <string name="pp_model_hint">डिफ़ॉल्ट के लिए खाली छोड़ें</string>
-    <string name="pp_saved">सेटिंग्स सहेजी गईं</string>
+    <string name="pp_saved">सेटिंग्स सहेजी गईं.</string>
+    <string name="pp_validating">सहेजा जा रहा है और API कुंजी सत्यापित की जा रही है\u2026</string>
     <string name="pp_fix">त्रुटियाँ ठीक करें</string>
     <string name="pp_shorten">छोटा करें</string>
     <string name="pp_emoji">इमोजी जोड़ें</string>
