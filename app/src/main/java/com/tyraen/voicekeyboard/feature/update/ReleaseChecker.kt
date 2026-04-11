@@ -12,6 +12,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -145,9 +146,13 @@ class ReleaseChecker(private val http: OkHttpClient) {
             textSize = 15f
         }
 
+        val scrollView = ScrollView(context).apply {
+            addView(textView)
+        }
+
         val builder = AlertDialog.Builder(context)
             .setTitle(context.getString(R.string.update_available))
-            .setView(textView)
+            .setView(scrollView)
             .setNegativeButton(context.getString(R.string.update_later), null)
 
         if (latest.directDownloadUrl != null) {
