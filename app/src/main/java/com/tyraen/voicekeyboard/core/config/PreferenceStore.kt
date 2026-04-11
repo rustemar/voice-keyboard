@@ -44,6 +44,7 @@ class PreferenceStore(private val context: Context) {
         val PP_FIX_ACTIVE = booleanPreferencesKey("pp_fix_active")
         val PP_SHORTEN_ACTIVE = booleanPreferencesKey("pp_shorten_active")
         val PP_EMOJI_ACTIVE = booleanPreferencesKey("pp_emoji_active")
+        val PP_RHYME_ACTIVE = booleanPreferencesKey("pp_rhyme_active")
         val PP_TRANSLATE_ACTIVE = booleanPreferencesKey("pp_translate_active")
     }
 
@@ -119,6 +120,7 @@ class PreferenceStore(private val context: Context) {
             fixActive = prefs[Keys.PP_FIX_ACTIVE] ?: false,
             shortenActive = prefs[Keys.PP_SHORTEN_ACTIVE] ?: false,
             emojiActive = prefs[Keys.PP_EMOJI_ACTIVE] ?: false,
+            rhymeActive = prefs[Keys.PP_RHYME_ACTIVE] ?: false,
             translateActive = prefs[Keys.PP_TRANSLATE_ACTIVE] ?: false
         )
     }
@@ -128,6 +130,7 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_FIX_ACTIVE] = states.fixActive
             data[Keys.PP_SHORTEN_ACTIVE] = states.shortenActive
             data[Keys.PP_EMOJI_ACTIVE] = states.emojiActive
+            data[Keys.PP_RHYME_ACTIVE] = states.rhymeActive
             data[Keys.PP_TRANSLATE_ACTIVE] = states.translateActive
         }
     }
@@ -136,6 +139,7 @@ class PreferenceStore(private val context: Context) {
         val fixActive: Boolean = false,
         val shortenActive: Boolean = false,
         val emojiActive: Boolean = false,
+        val rhymeActive: Boolean = false,
         val translateActive: Boolean = false
     )
 }

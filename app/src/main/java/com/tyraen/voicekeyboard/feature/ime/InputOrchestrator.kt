@@ -42,6 +42,7 @@ class InputOrchestrator(
     var ppFixActive = false
     var ppShortenActive = false
     var ppEmojiActive = false
+    var ppRhymeActive = false
     var ppTranslateActive = false
 
     fun loadPreferences() {
@@ -68,6 +69,7 @@ class InputOrchestrator(
         ppFixActive = toggles.fixActive
         ppShortenActive = toggles.shortenActive
         ppEmojiActive = toggles.emojiActive
+        ppRhymeActive = toggles.rhymeActive
         ppTranslateActive = toggles.translateActive
         DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
@@ -79,7 +81,7 @@ class InputOrchestrator(
     fun saveToggleStates() {
         CoroutineScope(Dispatchers.IO).launch {
             preferenceStore.saveToggleStates(
-                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppTranslateActive)
+                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppRhymeActive, ppTranslateActive)
             )
         }
     }
@@ -176,6 +178,19 @@ class InputOrchestrator(
             val result = postProcessingClient.process(promptParts, pp)
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
+                processed
+            }
+        }
+
+        // Then: rhyme (uses translate model — more powerful)
+        if (ppRhymeActive) {
+            moveTo(InputPhase.PostProcessing)
+            DiagnosticLog.record(TAG, "Rhyming text")
+
+            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed)
+            val result = postProcessingClient.process(rhymePrompt, pp, modelOverride = pp.resolvedTranslateModel())
+            processed = result.getOrElse { error ->
+                DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
                 processed
             }
         }

@@ -45,6 +45,21 @@ object PostProcessingPrompts {
         )
     }
 
+    fun buildRhyme(text: String): PromptParts {
+        val instruction = GUARD + "\n\n" +
+            "Rewrite the text as a poem with good rhymes. " +
+            "Preserve the original meaning and key points as closely as possible. " +
+            "Use the same language as the input text. " +
+            "Keep the author's tone (humor, sarcasm, seriousness). " +
+            "Make the rhymes natural and pleasant, not forced. " +
+            "Output ONLY the poem, no titles or explanations."
+
+        return PromptParts(
+            systemInstruction = instruction,
+            userText = text
+        )
+    }
+
     fun hasAnyMode(fix: Boolean, shorten: Boolean, emoji: Boolean): Boolean =
         fix || shorten || emoji
 }

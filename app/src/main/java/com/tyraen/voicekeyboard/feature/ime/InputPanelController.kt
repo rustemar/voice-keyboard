@@ -17,6 +17,7 @@ class InputPanelController(rootView: View) {
     val btnPpFix: ImageButton = rootView.findViewById(R.id.btnPpFix)
     val btnPpShorten: ImageButton = rootView.findViewById(R.id.btnPpShorten)
     val btnPpEmoji: ImageButton = rootView.findViewById(R.id.btnPpEmoji)
+    val btnPpRhyme: ImageButton = rootView.findViewById(R.id.btnPpRhyme)
     val btnPpTranslate: Button = rootView.findViewById(R.id.btnPpTranslate)
 
     val animator = InputPanelAnimator(

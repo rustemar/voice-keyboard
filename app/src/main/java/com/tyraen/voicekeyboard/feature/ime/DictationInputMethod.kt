@@ -150,7 +150,8 @@ class DictationInputMethod : InputMethodService() {
                 orchestrator.ppFixActive = false
             } else {
                 orchestrator.ppFixActive = true
-                orchestrator.ppShortenActive = false // mutually exclusive
+                orchestrator.ppShortenActive = false
+                orchestrator.ppRhymeActive = false
             }
             orchestrator.saveToggleStates()
             updateToggleUI()
@@ -161,7 +162,8 @@ class DictationInputMethod : InputMethodService() {
                 orchestrator.ppShortenActive = false
             } else {
                 orchestrator.ppShortenActive = true
-                orchestrator.ppFixActive = false // mutually exclusive
+                orchestrator.ppFixActive = false
+                orchestrator.ppRhymeActive = false
             }
             orchestrator.saveToggleStates()
             updateToggleUI()
@@ -169,6 +171,18 @@ class DictationInputMethod : InputMethodService() {
 
         panel.btnPpEmoji.setOnClickListener {
             orchestrator.ppEmojiActive = !orchestrator.ppEmojiActive
+            orchestrator.saveToggleStates()
+            updateToggleUI()
+        }
+
+        panel.btnPpRhyme.setOnClickListener {
+            if (orchestrator.ppRhymeActive) {
+                orchestrator.ppRhymeActive = false
+            } else {
+                orchestrator.ppRhymeActive = true
+                orchestrator.ppFixActive = false
+                orchestrator.ppShortenActive = false
+            }
             orchestrator.saveToggleStates()
             updateToggleUI()
         }
@@ -190,6 +204,7 @@ class DictationInputMethod : InputMethodService() {
         panel.updateToggleAppearance(panel.btnPpFix, orchestrator.ppFixActive)
         panel.updateToggleAppearance(panel.btnPpShorten, orchestrator.ppShortenActive)
         panel.updateToggleAppearance(panel.btnPpEmoji, orchestrator.ppEmojiActive)
+        panel.updateToggleAppearance(panel.btnPpRhyme, orchestrator.ppRhymeActive)
         val translateLang = orchestrator.getTranslateLang()
         panel.updateTranslateToggle(orchestrator.ppTranslateActive, translateLang)
     }
