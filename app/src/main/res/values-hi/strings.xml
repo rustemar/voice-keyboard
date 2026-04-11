@@ -25,6 +25,10 @@
     <string name="logs_clear">साफ़ करें</string>
     <string name="settings_prompt">प्रॉम्प्ट (फ़ॉर्मेटिंग संकेत)</string>
     <string name="settings_prompt_hint">सही विराम चिह्नों के साथ उदाहरण पाठ</string>
+    <string name="settings_theme">थीम</string>
+    <string name="theme_auto">स्वचालित (सिस्टम)</string>
+    <string name="theme_light">लाइट</string>
+    <string name="theme_dark">डार्क</string>
     <string name="settings_interface_language">इंटरफ़ेस भाषा</string>
     <string name="update_available">अपडेट उपलब्ध</string>
     <string name="update_new_version">नया संस्करण %s उपलब्ध है।</string>

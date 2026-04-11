@@ -25,6 +25,10 @@
     <string name="logs_clear">清除</string>
     <string name="settings_prompt">提示词（格式化指导）</string>
     <string name="settings_prompt_hint">带有正确标点的示例文本，用于指导格式化</string>
+    <string name="settings_theme">主题</string>
+    <string name="theme_auto">自动（跟随系统）</string>
+    <string name="theme_light">浅色</string>
+    <string name="theme_dark">深色</string>
     <string name="settings_interface_language">界面语言</string>
     <string name="update_available">有可用更新</string>
     <string name="update_new_version">新版本 %s 已发布。</string>

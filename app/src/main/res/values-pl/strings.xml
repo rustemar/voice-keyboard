@@ -25,6 +25,10 @@
     <string name="logs_clear">Wyczyść</string>
     <string name="settings_prompt">Prompt (wskazówka formatowania)</string>
     <string name="settings_prompt_hint">Przykładowy tekst z poprawną interpunkcją</string>
+    <string name="settings_theme">Motyw</string>
+    <string name="theme_auto">Automatyczny (systemowy)</string>
+    <string name="theme_light">Jasny</string>
+    <string name="theme_dark">Ciemny</string>
     <string name="settings_interface_language">Język interfejsu</string>
     <string name="update_available">Dostępna aktualizacja</string>
     <string name="update_new_version">Dostępna nowa wersja %s.</string>

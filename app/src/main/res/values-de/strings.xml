@@ -25,6 +25,10 @@
     <string name="logs_clear">Löschen</string>
     <string name="settings_prompt">Prompt (Formatierungshinweis)</string>
     <string name="settings_prompt_hint">Beispieltext mit korrekter Zeichensetzung zur Formatierungshilfe</string>
+    <string name="settings_theme">Design</string>
+    <string name="theme_auto">Automatisch (System)</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
     <string name="settings_interface_language">Sprache der Benutzeroberfläche</string>
     <string name="update_available">Update verfügbar</string>
     <string name="update_new_version">Neue Version %s verfügbar.</string>

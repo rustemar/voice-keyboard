@@ -25,6 +25,10 @@
     <string name="logs_clear">Ачысціць</string>
     <string name="settings_prompt">Промпт (падказка фарматавання)</string>
     <string name="settings_prompt_hint">Прыклад тэксту з правільнай пунктуацыяй для фарматавання</string>
+    <string name="settings_theme">Тэма</string>
+    <string name="theme_auto">Аўта (сістэмная)</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Цёмная</string>
     <string name="settings_interface_language">Мова інтэрфейсу</string>
     <string name="update_available">Даступна абнаўленне</string>
     <string name="update_new_version">Даступная новая версія %s.</string>

@@ -26,6 +26,10 @@
     <string name="logs_clear">Clear</string>
     <string name="settings_prompt">Prompt (formatting hint)</string>
     <string name="settings_prompt_hint">Example text with proper punctuation to guide formatting</string>
+    <string name="settings_theme">Theme</string>
+    <string name="theme_auto">Auto (system)</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
     <string name="settings_interface_language">Interface Language</string>
     <string name="default_endpoint">https://api.groq.com/openai/v1/audio/transcriptions</string>
     <string name="default_model">whisper-large-v3-turbo</string>

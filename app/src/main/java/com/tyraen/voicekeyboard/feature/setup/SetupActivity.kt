@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
+import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
@@ -29,6 +30,7 @@ import kotlinx.coroutines.*
 
 class SetupActivity : AppCompatActivity() {
 
+    private lateinit var spinnerTheme: Spinner
     private lateinit var spinnerLanguage: Spinner
     private lateinit var editApiKey: EditText
     private lateinit var editEndpoint: EditText
@@ -66,6 +68,7 @@ class SetupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_setup)
 
         bindViews()
+        setupThemeSpinner()
         setupLanguageSpinner()
         setupActions()
         loadCurrentPreferences()
@@ -81,6 +84,7 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
+        spinnerTheme = findViewById(R.id.spinnerTheme)
         spinnerLanguage = findViewById(R.id.spinnerLanguage)
         editApiKey = findViewById(R.id.editApiKey)
         editEndpoint = findViewById(R.id.editEndpoint)
@@ -143,6 +147,31 @@ class SetupActivity : AppCompatActivity() {
 
         btnPostProcessing.setOnClickListener {
             startActivity(Intent(this, PostProcessingActivity::class.java))
+        }
+    }
+
+    private val themeValues = listOf(ThemeManager.THEME_AUTO, ThemeManager.THEME_LIGHT, ThemeManager.THEME_DARK)
+
+    private fun setupThemeSpinner() {
+        val themeLabels = listOf(
+            getString(R.string.theme_auto),
+            getString(R.string.theme_light),
+            getString(R.string.theme_dark)
+        )
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, themeLabels)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerTheme.adapter = adapter
+
+        val currentTheme = ThemeManager.current(this)
+        spinnerTheme.setSelection(themeValues.indexOf(currentTheme).coerceAtLeast(0))
+
+        spinnerTheme.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = themeValues[position]
+                if (selected == ThemeManager.current(this@SetupActivity)) return
+                ThemeManager.persist(this@SetupActivity, selected)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 

@@ -25,6 +25,10 @@
     <string name="logs_clear">Tyhjennä</string>
     <string name="settings_prompt">Kehote (muotoiluohje)</string>
     <string name="settings_prompt_hint">Esimerkkiteksti oikeilla välimerkeillä muotoilun ohjaamiseksi</string>
+    <string name="settings_theme">Teema</string>
+    <string name="theme_auto">Automaattinen (järjestelmä)</string>
+    <string name="theme_light">Vaalea</string>
+    <string name="theme_dark">Tumma</string>
     <string name="settings_interface_language">Käyttöliittymän kieli</string>
     <string name="update_available">Päivitys saatavilla</string>
     <string name="update_new_version">Uusi versio %s saatavilla.</string>

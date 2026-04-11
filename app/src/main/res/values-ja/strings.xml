@@ -25,6 +25,10 @@
     <string name="logs_clear">クリア</string>
     <string name="settings_prompt">プロンプト（書式ガイド）</string>
     <string name="settings_prompt_hint">書式を指定するための正しい句読点付きのテキスト例</string>
+    <string name="settings_theme">テーマ</string>
+    <string name="theme_auto">自動（システム）</string>
+    <string name="theme_light">ライト</string>
+    <string name="theme_dark">ダーク</string>
     <string name="settings_interface_language">インターフェース言語</string>
     <string name="update_available">アップデートあり</string>
     <string name="update_new_version">新しいバージョン %s が利用可能です。</string>

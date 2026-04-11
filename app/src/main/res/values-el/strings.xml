@@ -25,6 +25,10 @@
     <string name="logs_clear">Εκκαθάριση</string>
     <string name="settings_prompt">Prompt (οδηγός μορφοποίησης)</string>
     <string name="settings_prompt_hint">Παράδειγμα κειμένου με σωστή στίξη για καθοδήγηση μορφοποίησης</string>
+    <string name="settings_theme">Θέμα</string>
+    <string name="theme_auto">Αυτόματο (σύστημα)</string>
+    <string name="theme_light">Φωτεινό</string>
+    <string name="theme_dark">Σκοτεινό</string>
     <string name="settings_interface_language">Γλώσσα διεπαφής</string>
     <string name="update_available">Διαθέσιμη ενημέρωση</string>
     <string name="update_new_version">Νέα έκδοση %s διαθέσιμη.</string>

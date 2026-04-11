@@ -25,6 +25,10 @@
     <string name="logs_clear">Temizle</string>
     <string name="settings_prompt">Prompt (biçimlendirme ipucu)</string>
     <string name="settings_prompt_hint">Biçimlendirmeyi yönlendirmek için doğru noktalama işaretli örnek metin</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_auto">Otomatik (sistem)</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_dark">Koyu</string>
     <string name="settings_interface_language">Arayüz dili</string>
     <string name="update_available">Güncelleme mevcut</string>
     <string name="update_new_version">Yeni sürüm %s mevcut.</string>
