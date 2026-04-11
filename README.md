@@ -6,6 +6,7 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 
 ### Voice Input
 - Real-time voice recording with amplitude visualization
+- **Processing queue** — start a new recording immediately, previous ones transcribe in the background
 - GroQ Whisper API integration (whisper-large-v3-turbo)
 - Configurable API endpoint, model, and language
 - Auto-start recording when keyboard opens
