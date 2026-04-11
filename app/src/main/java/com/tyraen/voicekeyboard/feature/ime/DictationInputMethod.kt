@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
+import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
@@ -28,12 +29,19 @@ class DictationInputMethod : InputMethodService() {
     private lateinit var panel: InputPanelController
     private lateinit var orchestrator: InputOrchestrator
     private lateinit var keystrokes: KeystrokeDispatcher
+    private var currentTheme: String = ""
 
     override fun onEvaluateFullscreenMode(): Boolean = false
 
     override fun onCreateInputView(): View {
         DiagnosticLog.record(TAG, "onCreateInputView")
-        val view = layoutInflater.inflate(R.layout.input_panel, null)
+        return createInputView()
+    }
+
+    private fun createInputView(): View {
+        currentTheme = ThemeManager.current(this)
+        val themedContext = ThemeManager.applyToContext(this)
+        val view = android.view.LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null)
 
         panel = InputPanelController(view)
         keystrokes = KeystrokeDispatcher { currentInputConnection }
@@ -58,6 +66,14 @@ class DictationInputMethod : InputMethodService() {
     override fun onWindowShown() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
+
+        // Recreate view if theme changed in settings
+        val newTheme = ThemeManager.current(this)
+        if (newTheme != currentTheme) {
+            setInputView(createInputView())
+            return
+        }
+
         if (::orchestrator.isInitialized) orchestrator.reloadAndAutoStart()
     }
 

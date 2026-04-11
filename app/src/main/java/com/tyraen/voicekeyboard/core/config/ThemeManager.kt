@@ -1,6 +1,7 @@
 package com.tyraen.voicekeyboard.core.config
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
 object ThemeManager {
@@ -27,6 +28,25 @@ object ThemeManager {
             .putString(KEY_THEME, theme)
             .apply()
         AppCompatDelegate.setDefaultNightMode(toNightMode(theme))
+    }
+
+    /**
+     * Creates a context with the correct night mode configuration.
+     * Used for InputMethodService which doesn't respect AppCompatDelegate.
+     */
+    fun applyToContext(context: Context): Context {
+        val theme = current(context)
+        if (theme == THEME_AUTO) return context // follow system
+
+        val nightModeFlag = when (theme) {
+            THEME_LIGHT -> Configuration.UI_MODE_NIGHT_NO
+            THEME_DARK -> Configuration.UI_MODE_NIGHT_YES
+            else -> return context
+        }
+
+        val config = Configuration(context.resources.configuration)
+        config.uiMode = (config.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or nightModeFlag
+        return context.createConfigurationContext(config)
     }
 
     private fun resolveNightMode(context: Context): Int = toNightMode(current(context))
