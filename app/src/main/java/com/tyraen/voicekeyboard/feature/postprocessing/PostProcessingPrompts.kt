@@ -9,7 +9,7 @@ object PostProcessingPrompts {
         "Make the text more concise: remove repetitions, filler words, and unnecessary verbosity, but keep ALL key points, details, and arguments. Preserve the author's style and tone. Fix spelling and punctuation. Keep profanity unchanged."
 
     private const val EMOJI =
-        "Add 1 relevant emoji after each sentence-ending mark (.!?). For obvious humor or sarcasm use 2-3 laughing emoji. Use only common everyday emoji."
+        "Add 1 relevant emoji after each sentence-ending mark (.!?). For obvious humor or sarcasm use 2-3 laughing emoji. Use only common everyday emoji. Do NOT change, rephrase, or shorten the text — only insert emoji."
 
     private const val OUTPUT = "Output ONLY the resulting text, no explanations."
 
