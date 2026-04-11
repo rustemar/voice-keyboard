@@ -114,14 +114,10 @@ class PostProcessingActivity : AppCompatActivity() {
             editEndpoint.hint = PostProcessingPreferences.defaultEndpoint(pp.provider)
             editModel.hint = PostProcessingPreferences.defaultModel(pp.provider)
 
-            editPromptFix.setText(pp.promptFix)
-            editPromptFix.hint = PostProcessingPreferences.DEFAULT_PROMPT_FIX
-            editPromptShorten.setText(pp.promptShorten)
-            editPromptShorten.hint = PostProcessingPreferences.DEFAULT_PROMPT_SHORTEN
-            editPromptEmoji.setText(pp.promptEmoji)
-            editPromptEmoji.hint = PostProcessingPreferences.DEFAULT_PROMPT_EMOJI
-            editPromptSuffix.setText(pp.promptSuffix)
-            editPromptSuffix.hint = PostProcessingPreferences.DEFAULT_PROMPT_SUFFIX
+            editPromptFix.setText(pp.promptFix.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_FIX })
+            editPromptShorten.setText(pp.promptShorten.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_SHORTEN })
+            editPromptEmoji.setText(pp.promptEmoji.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_EMOJI })
+            editPromptSuffix.setText(pp.promptSuffix.ifBlank { PostProcessingPreferences.DEFAULT_PROMPT_SUFFIX })
         }
     }
 
