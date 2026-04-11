@@ -25,7 +25,7 @@ data class PostProcessingPreferences(
         const val DEFAULT_CLAUDE_MODEL = "claude-haiku-4-5-20251001"
 
         const val DEFAULT_OPENAI_TRANSLATE_MODEL = "gpt-4o"
-        const val DEFAULT_CLAUDE_TRANSLATE_MODEL = "claude-sonnet-4-5-20241022"
+        const val DEFAULT_CLAUDE_TRANSLATE_MODEL = "claude-sonnet-4-6"
 
         const val DEFAULT_TEMPERATURE = 0.3f
 
