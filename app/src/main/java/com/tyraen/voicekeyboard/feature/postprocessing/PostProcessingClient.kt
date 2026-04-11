@@ -23,8 +23,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
             val result = when (prefs.provider) {
-                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(prompt, prefs, maxTokens = 4096)
-                else -> callOpenAI(prompt, prefs, maxTokens = 4096)
+                PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(prompt, prefs, maxTokens = 16384)
+                else -> callOpenAI(prompt, prefs, maxTokens = null)
             }
             DiagnosticLog.record(TAG, "Success: ${result.take(80)}")
             Result.success(result)
@@ -63,11 +63,11 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         }
     }
 
-    private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
+    private fun callOpenAI(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int? = null): String {
         val body = JSONObject().apply {
             put("model", prefs.resolvedModel())
             put("temperature", 0.3)
-            put("max_tokens", maxTokens)
+            if (maxTokens != null) put("max_tokens", maxTokens)
             put("messages", JSONArray().apply {
                 put(JSONObject().apply {
                     put("role", "user")
