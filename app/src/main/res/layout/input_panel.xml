@@ -73,7 +73,7 @@
         android:layout_width="56dp"
         android:layout_height="42dp"
         android:background="@drawable/key_bg"
-        android:src="@android:drawable/ic_input_delete"
+        android:src="@drawable/ic_backspace"
         android:contentDescription="Backspace"
         android:scaleType="centerInside"
         android:padding="8dp"
