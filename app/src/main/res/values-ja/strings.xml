@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">翻訳先言語</string>
     <string name="pp_translate_model">翻訳モデル</string>
     <string name="pp_translate_model_hint">デフォルトを使用する場合は空欄（翻訳品質のためのより強力なモデル）</string>
+    <string name="pp_terminal">ターミナル</string>
+    <string name="pp_terminal_visible">ターミナルモードボタンを表示</string>
+    <string name="pp_terminal_visible_hint">音声入力をシェルコマンドに変換します。SSH/ターミナル作業に便利です。</string>
     <string name="pp_open_settings">後処理の設定</string>
 </resources>

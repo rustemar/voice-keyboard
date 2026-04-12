@@ -60,6 +60,15 @@ object PostProcessingPrompts {
         )
     }
 
+    fun buildTerminal(text: String, prefs: PostProcessingPreferences): PromptParts {
+        val instruction = GUARD + "\n\n" + prefs.resolvedPromptTerminal()
+
+        return PromptParts(
+            systemInstruction = instruction,
+            userText = text
+        )
+    }
+
     fun hasAnyMode(fix: Boolean, shorten: Boolean, emoji: Boolean): Boolean =
         fix || shorten || emoji
 }

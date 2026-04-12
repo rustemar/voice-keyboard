@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Hedef dil</string>
     <string name="pp_translate_model">Çeviri modeli</string>
     <string name="pp_translate_model_hint">Varsayılan için boş bırakın (çeviri kalitesi için daha güçlü model)</string>
+    <string name="pp_terminal">Terminal</string>
+    <string name="pp_terminal_visible">Terminal modu düğmesini göster</string>
+    <string name="pp_terminal_visible_hint">Sesli girdiyi kabuk komutlarına dönüştürür. SSH/terminal çalışması için kullanışlıdır.</string>
     <string name="pp_open_settings">Son işleme ayarları</string>
 </resources>

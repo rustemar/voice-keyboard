@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Lingua di destinazione</string>
     <string name="pp_translate_model">Modello di traduzione</string>
     <string name="pp_translate_model_hint">Lascia vuoto per il valore predefinito (modello più potente per la qualità della traduzione)</string>
+    <string name="pp_terminal">Terminale</string>
+    <string name="pp_terminal_visible">Mostra pulsante modalità terminale</string>
+    <string name="pp_terminal_visible_hint">Converte l\'input vocale in comandi shell. Utile per il lavoro SSH/terminale.</string>
     <string name="pp_open_settings">Impostazioni post-elaborazione</string>
 </resources>

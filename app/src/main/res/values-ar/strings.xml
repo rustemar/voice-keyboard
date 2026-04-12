@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">اللغة المستهدفة</string>
     <string name="pp_translate_model">نموذج الترجمة</string>
     <string name="pp_translate_model_hint">اتركه فارغاً للقيمة الافتراضية (نموذج أقوى لجودة الترجمة)</string>
+    <string name="pp_terminal">طرفية</string>
+    <string name="pp_terminal_visible">إظهار زر وضع الطرفية</string>
+    <string name="pp_terminal_visible_hint">يحوّل الإدخال الصوتي إلى أوامر طرفية. مفيد للعمل عبر SSH.</string>
     <string name="pp_open_settings">إعدادات المعالجة اللاحقة</string>
 </resources>

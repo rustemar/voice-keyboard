@@ -81,5 +81,8 @@
     <string name="pp_translate_lang">Target language</string>
     <string name="pp_translate_model">Translation model</string>
     <string name="pp_translate_model_hint">Leave empty for default (more powerful model for translation quality)</string>
+    <string name="pp_terminal">Terminal</string>
+    <string name="pp_terminal_visible">Show terminal mode button</string>
+    <string name="pp_terminal_visible_hint">Converts voice input into shell commands. Useful for SSH/terminal work.</string>
     <string name="pp_open_settings">Post-processing settings</string>
 </resources>

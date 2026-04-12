@@ -39,6 +39,7 @@ class PreferenceStore(private val context: Context) {
         val PP_PROMPT_SUFFIX = stringPreferencesKey("pp_prompt_suffix")
         val PP_TRANSLATE_LANG = stringPreferencesKey("pp_translate_lang")
         val PP_TRANSLATE_MODEL = stringPreferencesKey("pp_translate_model")
+        val PP_TERMINAL_VISIBLE = booleanPreferencesKey("pp_terminal_visible")
 
         // Post-processing toggle states (persist between sessions)
         val PP_FIX_ACTIVE = booleanPreferencesKey("pp_fix_active")
@@ -46,6 +47,7 @@ class PreferenceStore(private val context: Context) {
         val PP_EMOJI_ACTIVE = booleanPreferencesKey("pp_emoji_active")
         val PP_RHYME_ACTIVE = booleanPreferencesKey("pp_rhyme_active")
         val PP_TRANSLATE_ACTIVE = booleanPreferencesKey("pp_translate_active")
+        val PP_TERMINAL_ACTIVE = booleanPreferencesKey("pp_terminal_active")
     }
 
     suspend fun load(): UserPreferences {
@@ -83,7 +85,7 @@ class PreferenceStore(private val context: Context) {
         val prefs = context.store.data.first()
         return PostProcessingPreferences(
             enabled = prefs[Keys.PP_ENABLED] ?: false,
-            provider = prefs[Keys.PP_PROVIDER] ?: PostProcessingPreferences.PROVIDER_OPENAI,
+            provider = prefs[Keys.PP_PROVIDER] ?: PostProcessingPreferences.PROVIDER_CLAUDE,
             apiKey = prefs[Keys.PP_API_KEY] ?: "",
             endpoint = prefs[Keys.PP_ENDPOINT] ?: "",
             model = prefs[Keys.PP_MODEL] ?: "",
@@ -93,7 +95,8 @@ class PreferenceStore(private val context: Context) {
             promptEmoji = prefs[Keys.PP_PROMPT_EMOJI] ?: "",
             promptSuffix = prefs[Keys.PP_PROMPT_SUFFIX] ?: "",
             translateLang = prefs[Keys.PP_TRANSLATE_LANG] ?: "en",
-            translateModel = prefs[Keys.PP_TRANSLATE_MODEL] ?: ""
+            translateModel = prefs[Keys.PP_TRANSLATE_MODEL] ?: "",
+            terminalVisible = prefs[Keys.PP_TERMINAL_VISIBLE] ?: false
         )
     }
 
@@ -111,6 +114,7 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_PROMPT_SUFFIX] = prefs.promptSuffix
             data[Keys.PP_TRANSLATE_LANG] = prefs.translateLang
             data[Keys.PP_TRANSLATE_MODEL] = prefs.translateModel
+            data[Keys.PP_TERMINAL_VISIBLE] = prefs.terminalVisible
         }
     }
 
@@ -121,7 +125,8 @@ class PreferenceStore(private val context: Context) {
             shortenActive = prefs[Keys.PP_SHORTEN_ACTIVE] ?: false,
             emojiActive = prefs[Keys.PP_EMOJI_ACTIVE] ?: false,
             rhymeActive = prefs[Keys.PP_RHYME_ACTIVE] ?: false,
-            translateActive = prefs[Keys.PP_TRANSLATE_ACTIVE] ?: false
+            translateActive = prefs[Keys.PP_TRANSLATE_ACTIVE] ?: false,
+            terminalActive = prefs[Keys.PP_TERMINAL_ACTIVE] ?: false
         )
     }
 
@@ -132,6 +137,7 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_EMOJI_ACTIVE] = states.emojiActive
             data[Keys.PP_RHYME_ACTIVE] = states.rhymeActive
             data[Keys.PP_TRANSLATE_ACTIVE] = states.translateActive
+            data[Keys.PP_TERMINAL_ACTIVE] = states.terminalActive
         }
     }
 
@@ -140,6 +146,7 @@ class PreferenceStore(private val context: Context) {
         val shortenActive: Boolean = false,
         val emojiActive: Boolean = false,
         val rhymeActive: Boolean = false,
-        val translateActive: Boolean = false
+        val translateActive: Boolean = false,
+        val terminalActive: Boolean = false
     )
 }

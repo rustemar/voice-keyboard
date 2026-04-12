@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 class PostProcessingActivity : AppCompatActivity() {
 
     private lateinit var switchEnabled: Switch
+    private lateinit var checkTerminalVisible: CheckBox
     private lateinit var spinnerProvider: Spinner
     private lateinit var editApiKey: EditText
     private lateinit var editEndpoint: EditText
@@ -60,6 +61,7 @@ class PostProcessingActivity : AppCompatActivity() {
 
     private fun bindViews() {
         switchEnabled = findViewById(R.id.switchPpEnabled)
+        checkTerminalVisible = findViewById(R.id.checkTerminalVisible)
         spinnerProvider = findViewById(R.id.spinnerProvider)
         editApiKey = findViewById(R.id.editPpApiKey)
         editEndpoint = findViewById(R.id.editPpEndpoint)
@@ -114,6 +116,7 @@ class PostProcessingActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val pp = preferenceStore.loadPostProcessing()
             switchEnabled.isChecked = pp.enabled
+            checkTerminalVisible.isChecked = pp.terminalVisible
 
             suppressProviderChange = true
             val providerIndex = providers.indexOf(pp.provider).coerceAtLeast(0)
@@ -156,7 +159,8 @@ class PostProcessingActivity : AppCompatActivity() {
             promptEmoji = editPromptEmoji.text.toString().trim(),
             promptSuffix = editPromptSuffix.text.toString().trim(),
             translateLang = TranscriptionLocale.entries[spinnerTranslateLang.selectedItemPosition].code,
-            translateModel = editTranslateModel.text.toString().trim()
+            translateModel = editTranslateModel.text.toString().trim(),
+            terminalVisible = checkTerminalVisible.isChecked
         )
 
         btnApply.isEnabled = false

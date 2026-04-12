@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Язык перевода</string>
     <string name="pp_translate_model">Модель перевода</string>
     <string name="pp_translate_model_hint">Оставьте пустым для значения по умолчанию (более мощная модель для качества перевода)</string>
+    <string name="pp_terminal">Терминал</string>
+    <string name="pp_terminal_visible">Показать кнопку терминала</string>
+    <string name="pp_terminal_visible_hint">Преобразует голосовой ввод в команды терминала. Полезно для работы с SSH.</string>
     <string name="pp_open_settings">Настройки постобработки</string>
 </resources>

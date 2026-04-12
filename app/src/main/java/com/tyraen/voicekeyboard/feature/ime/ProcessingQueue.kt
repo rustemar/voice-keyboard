@@ -31,7 +31,8 @@ class ProcessingQueue(
         val ppShorten: Boolean,
         val ppEmoji: Boolean,
         val ppRhyme: Boolean,
-        val ppTranslate: Boolean
+        val ppTranslate: Boolean,
+        val ppTerminal: Boolean
     )
 
     private val queue = ConcurrentLinkedQueue<QueueItem>()
@@ -103,6 +104,17 @@ class ProcessingQueue(
         if (pp.apiKey.isBlank()) return text
 
         var processed = text
+
+        // Terminal mode: convert voice to shell commands (exclusive, skips all other modes)
+        if (item.ppTerminal) {
+            DiagnosticLog.record(TAG, "Terminal mode")
+            val terminalPrompt = PostProcessingPrompts.buildTerminal(processed, pp)
+            val result = postProcessingClient.process(terminalPrompt, pp)
+            return result.getOrElse { error ->
+                DiagnosticLog.recordFailure(TAG, "Terminal processing failed, using raw text", error)
+                processed
+            }
+        }
 
         // First: fix/shorten/emoji
         if (PostProcessingPrompts.hasAnyMode(item.ppFix, item.ppShorten, item.ppEmoji)) {

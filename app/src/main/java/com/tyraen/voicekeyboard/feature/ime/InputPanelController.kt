@@ -19,6 +19,8 @@ class InputPanelController(rootView: View) {
     val btnPpShorten: ImageButton = rootView.findViewById(R.id.btnPpShorten)
     val btnPpEmoji: ImageButton = rootView.findViewById(R.id.btnPpEmoji)
     val btnPpRhyme: ImageButton = rootView.findViewById(R.id.btnPpRhyme)
+    val btnPpTerminal: ImageButton = rootView.findViewById(R.id.btnPpTerminal)
+    private val ppTerminalSpacer: View = rootView.findViewById(R.id.ppTerminalSpacer)
     val btnPpTranslate: Button = rootView.findViewById(R.id.btnPpTranslate)
 
     val animator = InputPanelAnimator(
@@ -98,6 +100,12 @@ class InputPanelController(rootView: View) {
             button.setBackgroundResource(R.drawable.toggle_key_bg)
             button.imageTintList = ContextCompat.getColorStateList(context, R.color.key_text)
         }
+    }
+
+    fun showTerminalButton(show: Boolean) {
+        val visibility = if (show) View.VISIBLE else View.GONE
+        btnPpTerminal.visibility = visibility
+        ppTerminalSpacer.visibility = visibility
     }
 
     fun updateTranslateToggle(active: Boolean, langCode: String) {

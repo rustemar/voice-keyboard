@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Język docelowy</string>
     <string name="pp_translate_model">Model tłumaczenia</string>
     <string name="pp_translate_model_hint">Zostaw puste dla wartości domyślnej (mocniejszy model dla jakości tłumaczenia)</string>
+    <string name="pp_terminal">Terminal</string>
+    <string name="pp_terminal_visible">Pokaż przycisk trybu terminala</string>
+    <string name="pp_terminal_visible_hint">Zamienia mowę na polecenia terminala. Przydatne do pracy z SSH.</string>
     <string name="pp_open_settings">Ustawienia przetwarzania</string>
 </resources>

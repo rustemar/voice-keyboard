@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Γλώσσα-στόχος</string>
     <string name="pp_translate_model">Μοντέλο μετάφρασης</string>
     <string name="pp_translate_model_hint">Αφήστε κενό για προεπιλογή (ισχυρότερο μοντέλο για ποιότητα μετάφρασης)</string>
+    <string name="pp_terminal">Τερματικό</string>
+    <string name="pp_terminal_visible">Εμφάνιση κουμπιού λειτουργίας τερματικού</string>
+    <string name="pp_terminal_visible_hint">Μετατρέπει τη φωνητική εισαγωγή σε εντολές κελύφους. Χρήσιμο για εργασία SSH/τερματικού.</string>
     <string name="pp_open_settings">Ρυθμίσεις μετεπεξεργασίας</string>
 </resources>

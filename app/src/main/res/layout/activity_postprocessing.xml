@@ -39,6 +39,25 @@
             android:trackTint="@color/switch_track_color"
             android:layout_marginBottom="24dp" />
 
+        <!-- Show terminal mode button -->
+        <CheckBox
+            android:id="@+id/checkTerminalVisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_terminal_visible"
+            android:textColor="@color/key_text"
+            android:textSize="14sp"
+            android:buttonTint="@color/mic_idle"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_terminal_visible_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="24dp" />
+
         <!-- Provider -->
         <TextView
             android:layout_width="wrap_content"

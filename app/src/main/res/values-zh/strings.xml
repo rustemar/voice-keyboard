@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">目标语言</string>
     <string name="pp_translate_model">翻译模型</string>
     <string name="pp_translate_model_hint">留空使用默认值（更强大的模型以确保翻译质量）</string>
+    <string name="pp_terminal">终端</string>
+    <string name="pp_terminal_visible">显示终端模式按钮</string>
+    <string name="pp_terminal_visible_hint">将语音输入转换为终端命令。适用于SSH/终端工作。</string>
     <string name="pp_open_settings">后处理设置</string>
 </resources>

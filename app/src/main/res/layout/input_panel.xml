@@ -233,6 +233,24 @@
             android:layout_width="4dp"
             android:layout_height="0dp" />
 
+        <ImageButton
+            android:id="@+id/btnPpTerminal"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/toggle_key_bg"
+            android:src="@drawable/ic_terminal"
+            android:contentDescription="@string/pp_terminal"
+            android:scaleType="centerInside"
+            android:padding="6dp"
+            android:visibility="gone"
+            app:tint="@color/key_text" />
+
+        <View
+            android:id="@+id/ppTerminalSpacer"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btnPpTranslate"
             android:layout_width="wrap_content"

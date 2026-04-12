@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Kohdekieli</string>
     <string name="pp_translate_model">Käännösmalli</string>
     <string name="pp_translate_model_hint">Jätä tyhjäksi oletusarvoa varten (tehokkaampi malli käännöslaadun takaamiseksi)</string>
+    <string name="pp_terminal">Terminaali</string>
+    <string name="pp_terminal_visible">Näytä terminaalitilan painike</string>
+    <string name="pp_terminal_visible_hint">Muuntaa puhesyötteen komentotulkin komennoiksi. Hyödyllinen SSH-/terminaalityössä.</string>
     <string name="pp_open_settings">Jälkikäsittelyn asetukset</string>
 </resources>

@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Zielsprache</string>
     <string name="pp_translate_model">Übersetzungsmodell</string>
     <string name="pp_translate_model_hint">Leer lassen für Standardwert (leistungsstärkeres Modell für Übersetzungsqualität)</string>
+    <string name="pp_terminal">Terminal</string>
+    <string name="pp_terminal_visible">Terminal-Modus-Taste anzeigen</string>
+    <string name="pp_terminal_visible_hint">Wandelt Spracheingabe in Shell-Befehle um. Nützlich für SSH-/Terminal-Arbeit.</string>
     <string name="pp_open_settings">Nachbearbeitung-Einstellungen</string>
 </resources>

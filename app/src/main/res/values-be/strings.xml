@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">Мова перакладу</string>
     <string name="pp_translate_model">Мадэль перакладу</string>
     <string name="pp_translate_model_hint">Пакіньце пустым для значэння па змаўчанні (больш магутная мадэль для якасці перакладу)</string>
+    <string name="pp_terminal">Тэрмінал</string>
+    <string name="pp_terminal_visible">Паказаць кнопку тэрмінала</string>
+    <string name="pp_terminal_visible_hint">Пераўтварае галасавы ўвод у каманды тэрмінала. Карысна для працы з SSH.</string>
     <string name="pp_open_settings">Налады постапрацоўкі</string>
 </resources>

@@ -153,6 +153,7 @@ class DictationInputMethod : InputMethodService() {
                 orchestrator.ppFixActive = true
                 orchestrator.ppShortenActive = false
                 orchestrator.ppRhymeActive = false
+                orchestrator.ppTerminalActive = false
             }
             orchestrator.saveToggleStates()
             updateToggleUI()
@@ -165,6 +166,7 @@ class DictationInputMethod : InputMethodService() {
                 orchestrator.ppShortenActive = true
                 orchestrator.ppFixActive = false
                 orchestrator.ppRhymeActive = false
+                orchestrator.ppTerminalActive = false
             }
             orchestrator.saveToggleStates()
             updateToggleUI()
@@ -183,6 +185,22 @@ class DictationInputMethod : InputMethodService() {
                 orchestrator.ppRhymeActive = true
                 orchestrator.ppFixActive = false
                 orchestrator.ppShortenActive = false
+                orchestrator.ppTerminalActive = false
+            }
+            orchestrator.saveToggleStates()
+            updateToggleUI()
+        }
+
+        panel.btnPpTerminal.setOnClickListener {
+            if (orchestrator.ppTerminalActive) {
+                orchestrator.ppTerminalActive = false
+            } else {
+                orchestrator.ppTerminalActive = true
+                orchestrator.ppFixActive = false
+                orchestrator.ppShortenActive = false
+                orchestrator.ppRhymeActive = false
+                orchestrator.ppEmojiActive = false
+                orchestrator.ppTranslateActive = false
             }
             orchestrator.saveToggleStates()
             updateToggleUI()
@@ -198,7 +216,10 @@ class DictationInputMethod : InputMethodService() {
     private fun refreshPostProcessingUI() {
         val show = orchestrator.isPostProcessingEnabled()
         panel.showPostProcessingButtons(show)
-        if (show) updateToggleUI()
+        if (show) {
+            panel.showTerminalButton(orchestrator.isTerminalVisible())
+            updateToggleUI()
+        }
     }
 
     private fun updateToggleUI() {
@@ -206,6 +227,7 @@ class DictationInputMethod : InputMethodService() {
         panel.updateToggleAppearance(panel.btnPpShorten, orchestrator.ppShortenActive)
         panel.updateToggleAppearance(panel.btnPpEmoji, orchestrator.ppEmojiActive)
         panel.updateToggleAppearance(panel.btnPpRhyme, orchestrator.ppRhymeActive)
+        panel.updateToggleAppearance(panel.btnPpTerminal, orchestrator.ppTerminalActive)
         val translateLang = orchestrator.getTranslateLang()
         panel.updateTranslateToggle(orchestrator.ppTranslateActive, translateLang)
     }

@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">लक्ष्य भाषा</string>
     <string name="pp_translate_model">अनुवाद मॉडल</string>
     <string name="pp_translate_model_hint">डिफ़ॉल्ट के लिए खाली छोड़ें (अनुवाद गुणवत्ता के लिए अधिक शक्तिशाली मॉडल)</string>
+    <string name="pp_terminal">टर्मिनल</string>
+    <string name="pp_terminal_visible">टर्मिनल मोड बटन दिखाएं</string>
+    <string name="pp_terminal_visible_hint">वॉइस इनपुट को शेल कमांड में बदलता है। SSH/टर्मिनल काम के लिए उपयोगी।</string>
     <string name="pp_open_settings">पोस्ट-प्रोसेसिंग सेटिंग्स</string>
 </resources>

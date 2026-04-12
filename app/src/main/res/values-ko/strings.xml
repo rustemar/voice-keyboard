@@ -75,5 +75,8 @@
     <string name="pp_translate_lang">대상 언어</string>
     <string name="pp_translate_model">번역 모델</string>
     <string name="pp_translate_model_hint">기본값을 사용하려면 비워두세요 (번역 품질을 위한 더 강력한 모델l)</string>
+    <string name="pp_terminal">터미널</string>
+    <string name="pp_terminal_visible">터미널 모드 버튼 표시</string>
+    <string name="pp_terminal_visible_hint">음성 입력을 셸 명령어로 변환합니다. SSH/터미널 작업에 유용합니다.</string>
     <string name="pp_open_settings">후처리 설정</string>
 </resources>

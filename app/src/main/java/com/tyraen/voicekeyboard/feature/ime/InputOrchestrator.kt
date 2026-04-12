@@ -55,6 +55,7 @@ class InputOrchestrator(
     var ppEmojiActive = false
     var ppRhymeActive = false
     var ppTranslateActive = false
+    var ppTerminalActive = false
 
     fun loadPreferences() {
         CoroutineScope(Dispatchers.Main).launch {
@@ -82,6 +83,7 @@ class InputOrchestrator(
         ppEmojiActive = toggles.emojiActive
         ppRhymeActive = toggles.rhymeActive
         ppTranslateActive = toggles.translateActive
+        ppTerminalActive = toggles.terminalActive
         DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
 
@@ -89,10 +91,12 @@ class InputOrchestrator(
 
     fun getTranslateLang(): String = ppPreferences?.translateLang ?: "en"
 
+    fun isTerminalVisible(): Boolean = ppPreferences?.terminalVisible == true
+
     fun saveToggleStates() {
         CoroutineScope(Dispatchers.IO).launch {
             preferenceStore.saveToggleStates(
-                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppRhymeActive, ppTranslateActive)
+                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppRhymeActive, ppTranslateActive, ppTerminalActive)
             )
         }
     }
@@ -161,7 +165,8 @@ class InputOrchestrator(
             ppShorten = ppEnabled && ppShortenActive,
             ppEmoji = ppEnabled && ppEmojiActive,
             ppRhyme = ppEnabled && ppRhymeActive,
-            ppTranslate = ppEnabled && ppTranslateActive
+            ppTranslate = ppEnabled && ppTranslateActive,
+            ppTerminal = ppEnabled && ppTerminalActive
         )
 
         // Return to Ready immediately — user can start recording again
