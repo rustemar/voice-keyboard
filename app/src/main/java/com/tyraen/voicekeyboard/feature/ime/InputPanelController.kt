@@ -1,7 +1,10 @@
 package com.tyraen.voicekeyboard.feature.ime
 
+import android.text.TextPaint
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
 
@@ -114,8 +117,35 @@ class InputPanelController(rootView: View) {
         if (text.isNullOrBlank()) {
             clipboardBar.visibility = View.GONE
         } else {
-            clipboardText.text = text.replace('\n', ' ')
+            val displayText = text.replace('\n', ' ')
+            clipboardText.text = displayText
             clipboardBar.visibility = View.VISIBLE
+
+            // Shrink bar to content width when text is short, fill available space when long
+            clipboardBar.post {
+                val textWidth = clipboardText.paint.measureText(displayText)
+                val density = clipboardBar.resources.displayMetrics.density
+                val iconWidth = 18 * density // 18dp icon
+                val textMargin = 8 * density // 8dp marginStart on text
+                val paddingH = clipboardBar.paddingStart + clipboardBar.paddingEnd
+                val contentWidth = (iconWidth + textMargin + textWidth + paddingH).toInt()
+
+                val barParams = clipboardBar.layoutParams as ConstraintLayout.LayoutParams
+                val textParams = clipboardText.layoutParams as LinearLayout.LayoutParams
+                if (contentWidth < clipboardBar.width) {
+                    // Content fits — shrink bar and center it
+                    barParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
+                    textParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                    textParams.weight = 0f
+                } else {
+                    // Content overflows — fill available space, ellipsize
+                    barParams.width = 0 // match constraints
+                    textParams.width = 0
+                    textParams.weight = 1f
+                }
+                clipboardBar.layoutParams = barParams
+                clipboardText.layoutParams = textParams
+            }
         }
     }
 
