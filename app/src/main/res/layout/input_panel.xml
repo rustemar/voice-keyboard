@@ -184,6 +184,21 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <!-- Send button (right of mic, Ctrl+Enter) -->
+    <ImageButton
+        android:id="@+id/btnSend"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/borderless_ripple"
+        android:src="@drawable/ic_send"
+        android:contentDescription="Send"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        app:layout_constraintTop_toTopOf="@id/micFrame"
+        app:layout_constraintBottom_toBottomOf="@id/micFrame"
+        app:layout_constraintStart_toEndOf="@id/micFrame"
+        app:tint="@color/key_text" />
+
     <!-- Cancel button (left of mic) -->
     <ImageButton
         android:id="@+id/btnCancel"

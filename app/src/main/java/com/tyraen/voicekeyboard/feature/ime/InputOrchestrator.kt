@@ -195,6 +195,17 @@ class InputOrchestrator(
         moveTo(InputPhase.Ready)
     }
 
+    /**
+     * Graceful shutdown: if recording is active, finalize and enqueue it.
+     * The queue keeps processing in background (caller should redirect onTextReady to clipboard).
+     */
+    fun gracefulShutdown() {
+        if (currentPhase is InputPhase.Capturing) {
+            finishCaptureAndEnqueue()
+        }
+        // Don't cancel the queue — let it finish in background
+    }
+
     fun destroy() {
         if (capture.isActive) {
             capture.abort()

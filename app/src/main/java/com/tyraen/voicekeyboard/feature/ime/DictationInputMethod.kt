@@ -1,5 +1,6 @@
 package com.tyraen.voicekeyboard.feature.ime
 
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -32,6 +33,7 @@ class DictationInputMethod : InputMethodService() {
     private lateinit var keystrokes: KeystrokeDispatcher
     private var currentTheme: String = ""
     private var clipboardListener: ClipboardManager.OnPrimaryClipChangedListener? = null
+    private var keyboardVisible = false
 
     override fun onEvaluateFullscreenMode(): Boolean = false
 
@@ -54,7 +56,13 @@ class DictationInputMethod : InputMethodService() {
             speechClient = ServiceLocator.speechToTextClient,
             postProcessingClient = ServiceLocator.postProcessingClient,
             capture = MicrophoneCaptureSession(this),
-            onTextReady = { text -> keystrokes.insertText(text) },
+            onTextReady = { text ->
+                if (keyboardVisible) {
+                    keystrokes.insertText(text)
+                } else {
+                    copyToClipboard(text)
+                }
+            },
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
             onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
             onQueueCountChanged = { count -> panel.updateQueueCount(count) },
@@ -70,6 +78,7 @@ class DictationInputMethod : InputMethodService() {
     override fun onWindowShown() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
+        keyboardVisible = true
 
         // Recreate view if theme changed in settings
         val newTheme = ThemeManager.current(this)
@@ -84,7 +93,13 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onWindowHidden() {
         super.onWindowHidden()
-        if (::orchestrator.isInitialized) orchestrator.cancelAll()
+        keyboardVisible = false
+        if (::orchestrator.isInitialized) orchestrator.gracefulShutdown()
+    }
+
+    private fun copyToClipboard(text: String) {
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("Voice transcription", text))
     }
 
     override fun onDestroy() {
@@ -107,6 +122,7 @@ class DictationInputMethod : InputMethodService() {
         val btnCutAll: ImageButton = view.findViewById(R.id.btnCutAll)
         val btnSettings: ImageButton = view.findViewById(R.id.btnSettings)
         val btnHideKeyboard: ImageButton = view.findViewById(R.id.btnHideKeyboard)
+        val btnSend: ImageButton = view.findViewById(R.id.btnSend)
 
         btnMic.setOnClickListener { orchestrator.handleAction(InputAction.ToggleCapture) }
         btnCancel.setOnClickListener { orchestrator.handleAction(InputAction.CancelOperation) }
@@ -147,10 +163,11 @@ class DictationInputMethod : InputMethodService() {
 
         btnHideKeyboard.setOnClickListener { requestHideSelf(0) }
 
+        btnSend.setOnClickListener { keystrokes.sendCtrlEnter() }
+
         // Clipboard bar
         panel.clipboardBar.setOnClickListener {
             keystrokes.pasteFromClipboard(this)
-            panel.updateClipboard(null)
         }
         setupClipboardMonitor()
 

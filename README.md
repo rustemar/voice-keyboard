@@ -20,6 +20,12 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 - Supports OpenAI and Claude as processing providers
 - Customizable prompts and temperature for each mode
 
+### Keyboard
+- **Send button** (paper plane) — sends Ctrl+Enter for quick message sending in messengers
+- **Accelerating backspace** — hold to delete slowly at first, then faster
+- **Clipboard bar** stays visible after paste for repeated pasting
+- **Graceful shutdown** — if keyboard hides during recording, audio is finalized and transcribed to clipboard
+
 ### General
 - 17 interface and transcription languages
 - Light, Dark, and Auto themes
