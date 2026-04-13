@@ -134,7 +134,16 @@ class InputPanelController(rootView: View) {
             clipboardText.text = displayText
             clipboardBar.visibility = View.VISIBLE
 
-            // Shrink bar to content width when text is short, fill available space when long
+            // Reset bar to full width first so we can measure the maximum available space,
+            // then shrink to content width if the text is short enough.
+            val barParams = clipboardBar.layoutParams as ConstraintLayout.LayoutParams
+            val textParams = clipboardText.layoutParams as LinearLayout.LayoutParams
+            barParams.width = 0 // match constraints = full available width
+            textParams.width = 0
+            textParams.weight = 1f
+            clipboardBar.layoutParams = barParams
+            clipboardText.layoutParams = textParams
+
             clipboardBar.post {
                 val textWidth = clipboardText.paint.measureText(displayText)
                 val density = clipboardBar.resources.displayMetrics.density
@@ -143,21 +152,21 @@ class InputPanelController(rootView: View) {
                 val paddingH = clipboardBar.paddingStart + clipboardBar.paddingEnd
                 val contentWidth = (iconWidth + textMargin + textWidth + paddingH).toInt()
 
-                val barParams = clipboardBar.layoutParams as ConstraintLayout.LayoutParams
-                val textParams = clipboardText.layoutParams as LinearLayout.LayoutParams
+                val bp = clipboardBar.layoutParams as ConstraintLayout.LayoutParams
+                val tp = clipboardText.layoutParams as LinearLayout.LayoutParams
                 if (contentWidth < clipboardBar.width) {
                     // Content fits — shrink bar and center it
-                    barParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
-                    textParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
-                    textParams.weight = 0f
+                    bp.width = ConstraintLayout.LayoutParams.WRAP_CONTENT
+                    tp.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                    tp.weight = 0f
                 } else {
                     // Content overflows — fill available space, ellipsize
-                    barParams.width = 0 // match constraints
-                    textParams.width = 0
-                    textParams.weight = 1f
+                    bp.width = 0 // match constraints
+                    tp.width = 0
+                    tp.weight = 1f
                 }
-                clipboardBar.layoutParams = barParams
-                clipboardText.layoutParams = textParams
+                clipboardBar.layoutParams = bp
+                clipboardText.layoutParams = tp
             }
         }
     }
