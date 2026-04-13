@@ -13,7 +13,7 @@
     <!-- Clipboard paste bar (like Google Keyboard) -->
     <LinearLayout
         android:id="@+id/clipboardBar"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="36dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
@@ -24,8 +24,10 @@
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintStart_toEndOf="@id/btnHideKeyboard"
+        app:layout_constraintEnd_toStartOf="@id/btnCutAll"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp">
 
         <ImageView
             android:layout_width="18dp"
@@ -36,14 +38,14 @@
 
         <TextView
             android:id="@+id/clipboardText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:textColor="@color/key_text"
             android:textSize="14sp"
             android:maxLines="1"
-            android:ellipsize="end"
-            android:maxWidth="240dp" />
+            android:ellipsize="end" />
     </LinearLayout>
 
     <!-- Status text -->
