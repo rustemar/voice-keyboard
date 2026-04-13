@@ -1,0 +1,1 @@
+- Release notes now shown directly in the update dialog (no need to visit GitHub)
