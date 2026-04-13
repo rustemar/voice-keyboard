@@ -12,6 +12,8 @@ class InputPanelController(rootView: View) {
     private val btnCancel: ImageButton = rootView.findViewById(R.id.btnCancel)
     private val progressBar: ProgressBar = rootView.findViewById(R.id.progressBar)
     private val queueBadge: TextView = rootView.findViewById(R.id.queueBadge)
+    val clipboardBar: View = rootView.findViewById(R.id.clipboardBar)
+    private val clipboardText: TextView = rootView.findViewById(R.id.clipboardText)
 
     // Post-processing toggle UI
     val ppToggleRow: View = rootView.findViewById(R.id.ppToggleRow)
@@ -106,6 +108,15 @@ class InputPanelController(rootView: View) {
         val visibility = if (show) View.VISIBLE else View.GONE
         btnPpTerminal.visibility = visibility
         ppTerminalSpacer.visibility = visibility
+    }
+
+    fun updateClipboard(text: String?) {
+        if (text.isNullOrBlank()) {
+            clipboardBar.visibility = View.GONE
+        } else {
+            clipboardText.text = text.replace('\n', ' ')
+            clipboardBar.visibility = View.VISIBLE
+        }
     }
 
     fun updateTranslateToggle(active: Boolean, langCode: String) {

@@ -1,5 +1,6 @@
 package com.tyraen.voicekeyboard.feature.ime
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.inputmethodservice.InputMethodService
@@ -30,6 +31,7 @@ class DictationInputMethod : InputMethodService() {
     private lateinit var orchestrator: InputOrchestrator
     private lateinit var keystrokes: KeystrokeDispatcher
     private var currentTheme: String = ""
+    private var clipboardListener: ClipboardManager.OnPrimaryClipChangedListener? = null
 
     override fun onEvaluateFullscreenMode(): Boolean = false
 
@@ -76,6 +78,7 @@ class DictationInputMethod : InputMethodService() {
         }
 
         if (::orchestrator.isInitialized) orchestrator.reloadAndAutoStart()
+        refreshClipboardBar()
     }
 
     override fun onWindowHidden() {
@@ -85,6 +88,10 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        clipboardListener?.let {
+            (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
+                .removePrimaryClipChangedListener(it)
+        }
         if (::orchestrator.isInitialized) orchestrator.destroy()
     }
 
@@ -94,7 +101,6 @@ class DictationInputMethod : InputMethodService() {
         val btnBackspace: ImageButton = view.findViewById(R.id.btnBackspace)
         val btnSpace: Button = view.findViewById(R.id.btnSpace)
         val btnEnter: ImageButton = view.findViewById(R.id.btnEnter)
-        val btnPaste: ImageButton = view.findViewById(R.id.btnPaste)
         val btnQuestion: Button = view.findViewById(R.id.btnQuestion)
         val btnExclamation: Button = view.findViewById(R.id.btnExclamation)
         val btnCutAll: ImageButton = view.findViewById(R.id.btnCutAll)
@@ -129,7 +135,6 @@ class DictationInputMethod : InputMethodService() {
             true
         }
         btnEnter.setOnClickListener { keystrokes.sendEnter() }
-        btnPaste.setOnClickListener { keystrokes.pasteFromClipboard(this) }
         btnQuestion.setOnClickListener { keystrokes.insertText("?") }
         btnExclamation.setOnClickListener { keystrokes.insertText("!") }
 
@@ -141,8 +146,38 @@ class DictationInputMethod : InputMethodService() {
 
         btnHideKeyboard.setOnClickListener { requestHideSelf(0) }
 
+        // Clipboard bar
+        panel.clipboardBar.setOnClickListener {
+            keystrokes.pasteFromClipboard(this)
+            panel.updateClipboard(null)
+        }
+        setupClipboardMonitor()
+
         // Post-processing toggle buttons
         wirePostProcessingToggles()
+    }
+
+    private fun setupClipboardMonitor() {
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        // Remove old listener if any
+        clipboardListener?.let { clipboard.removePrimaryClipChangedListener(it) }
+        val listener = ClipboardManager.OnPrimaryClipChangedListener {
+            refreshClipboardBar()
+        }
+        clipboardListener = listener
+        clipboard.addPrimaryClipChangedListener(listener)
+        // Show current clipboard content
+        refreshClipboardBar()
+    }
+
+    private fun refreshClipboardBar() {
+        if (!::panel.isInitialized) return
+        val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = clipboard.primaryClip
+        val text = if (clip != null && clip.itemCount > 0) {
+            clip.getItemAt(0).coerceToText(this)?.toString()
+        } else null
+        panel.updateClipboard(text)
     }
 
     private fun wirePostProcessingToggles() {
