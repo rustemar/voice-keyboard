@@ -24,6 +24,7 @@ class InputOrchestrator(
     private val onPhaseChanged: (InputPhase) -> Unit,
     private val onAmplitude: (Int) -> Unit,
     private val onQueueCountChanged: (Int) -> Unit,
+    private val onProcessingPhaseChanged: (ProcessingQueue.ProcessingPhase) -> Unit,
     private val onPreferencesLoaded: () -> Unit = {}
 ) {
 
@@ -40,6 +41,9 @@ class InputOrchestrator(
         onTextReady = onTextReady,
         onQueueCountChanged = { count ->
             onQueueCountChanged(count)
+        },
+        onProcessingPhaseChanged = { phase ->
+            onProcessingPhaseChanged(phase)
         },
         onError = { message ->
             DiagnosticLog.record(TAG, "Queue error: $message")

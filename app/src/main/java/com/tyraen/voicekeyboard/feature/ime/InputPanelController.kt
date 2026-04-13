@@ -37,6 +37,7 @@ class InputPanelController(rootView: View) {
         private set
 
     private var currentQueueCount: Int = 0
+    private var currentProcessingPhase: ProcessingQueue.ProcessingPhase = ProcessingQueue.ProcessingPhase.TRANSCRIBING
 
     fun transitionTo(phase: InputPhase) {
         currentPhase = phase
@@ -78,9 +79,21 @@ class InputPanelController(rootView: View) {
         }
     }
 
+    fun updateProcessingPhase(phase: ProcessingQueue.ProcessingPhase) {
+        currentProcessingPhase = phase
+        if (currentPhase is InputPhase.Ready && currentQueueCount > 0) {
+            applyQueueState()
+        }
+    }
+
     private fun applyQueueState() {
         if (currentQueueCount > 0) {
-            statusText.setText(R.string.status_transcribing)
+            when (currentProcessingPhase) {
+                ProcessingQueue.ProcessingPhase.TRANSCRIBING ->
+                    statusText.setText(R.string.status_transcribing)
+                ProcessingQueue.ProcessingPhase.POST_PROCESSING ->
+                    statusText.setText(R.string.status_postprocessing)
+            }
             progressBar.visibility = View.VISIBLE
         } else {
             statusText.setText(R.string.status_idle)

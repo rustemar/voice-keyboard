@@ -15,8 +15,11 @@ class ProcessingQueue(
     private val postProcessingClient: PostProcessingClient,
     private val onTextReady: (String) -> Unit,
     private val onQueueCountChanged: (Int) -> Unit,
+    private val onProcessingPhaseChanged: (ProcessingPhase) -> Unit,
     private val onError: (String) -> Unit
 ) {
+
+    enum class ProcessingPhase { TRANSCRIBING, POST_PROCESSING }
 
     companion object {
         private const val TAG = "ProcessingQueue"
@@ -75,6 +78,7 @@ class ProcessingQueue(
 
     private suspend fun processItem(item: QueueItem) {
         // Step 1: Transcribe
+        onProcessingPhaseChanged(ProcessingPhase.TRANSCRIBING)
         DiagnosticLog.record(TAG, "Transcribing ${item.audioFile.name}")
         val transcriptionResult = speechClient.transcribe(item.audioFile, item.transcriptionConfig)
 
@@ -92,6 +96,11 @@ class ProcessingQueue(
         DiagnosticLog.record(TAG, "Transcription success: ${rawText.take(50)}")
 
         // Step 2: Post-process
+        val hasPostProcessing = item.ppPreferences != null && !item.ppPreferences.apiKey.isBlank() &&
+            (item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal)
+        if (hasPostProcessing) {
+            onProcessingPhaseChanged(ProcessingPhase.POST_PROCESSING)
+        }
         val processed = maybePostProcess(rawText, item)
 
         // Step 3: Insert text

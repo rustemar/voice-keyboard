@@ -58,6 +58,7 @@ class DictationInputMethod : InputMethodService() {
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
             onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
             onQueueCountChanged = { count -> panel.updateQueueCount(count) },
+            onProcessingPhaseChanged = { phase -> panel.updateProcessingPhase(phase) },
             onPreferencesLoaded = { refreshPostProcessingUI() }
         )
 
