@@ -48,7 +48,7 @@
     <string name="link_copied">लिंक कॉपी किया गया</string>
     <string name="status_postprocessing">प्रोसेसिंग\u2026</string>
     <string name="pp_settings_title">पोस्ट-प्रोसेसिंग</string>
-    <string name="pp_settings_description">ट्रांसक्राइब किए गए टेक्स्ट को सुधारने, छोटा करने या बेहतर बनाने के लिए AI का उपयोग करें। OpenAI या Claude API कुंजी आवश्यक है।</string>
+    <string name="pp_settings_description">ट्रांसक्राइब किए गए टेक्स्ट को सुधारें, छोटा करें या बेहतर बनाएं। OpenAI या Claude API कुंजी आवश्यक है।</string>
     <string name="pp_enable">पोस्ट-प्रोसेसिंग सक्षम करें</string>
     <string name="pp_provider">API प्रदाता</string>
     <string name="pp_api_key">API कुंजी</string>

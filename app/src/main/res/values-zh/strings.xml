@@ -48,7 +48,7 @@
     <string name="link_copied">链接已复制</string>
     <string name="status_postprocessing">后处理中\u2026</string>
     <string name="pp_settings_title">后处理</string>
-    <string name="pp_settings_description">使用AI修正、缩短或改善转录文本。需要OpenAI或Claude API密钥。</string>
+    <string name="pp_settings_description">修正、缩短或改善转录文本。需要OpenAI或Claude API密钥。</string>
     <string name="pp_enable">启用后处理</string>
     <string name="pp_provider">API提供商</string>
     <string name="pp_api_key">API密钥</string>

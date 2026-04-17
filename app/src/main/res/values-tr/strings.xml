@@ -48,7 +48,7 @@
     <string name="link_copied">Bağlantı kopyalandı</string>
     <string name="status_postprocessing">İşleniyor\u2026</string>
     <string name="pp_settings_title">Son işleme</string>
-    <string name="pp_settings_description">Yazıya dökülmüş metni düzeltmek, kısaltmak veya geliştirmek için yapay zeka kullanın. OpenAI veya Claude API anahtarı gerektirir.</string>
+    <string name="pp_settings_description">Yazıya dökülmüş metni düzeltin, kısaltın veya geliştirin. OpenAI veya Claude API anahtarı gerektirir.</string>
     <string name="pp_enable">Son işlemeyi etkinleştir</string>
     <string name="pp_provider">API sağlayıcı</string>
     <string name="pp_api_key">API anahtarı</string>

@@ -48,7 +48,7 @@
     <string name="link_copied">リンクをコピーしました</string>
     <string name="status_postprocessing">後処理中\u2026</string>
     <string name="pp_settings_title">後処理</string>
-    <string name="pp_settings_description">AIを使用して文字起こしテキストの修正、短縮、改善を行います。OpenAIまたはClaude APIキーが必要です。</string>
+    <string name="pp_settings_description">文字起こしテキストの修正、短縮、改善を行います。OpenAIまたはClaude APIキーが必要です。</string>
     <string name="pp_enable">後処理を有効にする</string>
     <string name="pp_provider">APIプロバイダー</string>
     <string name="pp_api_key">APIキー</string>

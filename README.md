@@ -1,6 +1,6 @@
 # Voice Keyboard
 
-Android keyboard (IME) for speech-to-text transcription using Whisper API via GroQ with AI-powered post-processing.
+Android keyboard (IME) for speech-to-text transcription using Whisper API via GroQ with optional post-processing.
 
 ## Features
 
@@ -11,7 +11,7 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 - Configurable API endpoint, model, and language
 - Auto-start recording when keyboard opens
 
-### AI Post-Processing
+### Post-Processing
 - **Fix errors** — corrects punctuation, spelling, removes filler words (um, uh)
 - **Shorten** — makes text concise while keeping key points
 - **Emoji** — adds relevant emoji to your messages
@@ -40,7 +40,7 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 2. Go to Settings → System → Languages & input → On-screen keyboard
 3. Enable "Voice Keyboard"
 4. Open the app and enter your [GroQ API key](https://console.groq.com/keys)
-5. (Optional) Configure AI post-processing with your OpenAI or Claude API key
+5. (Optional) Configure post-processing with your OpenAI or Claude API key
 
 ## Building from source
 

@@ -48,7 +48,7 @@
     <string name="link_copied">Ο σύνδεσμος αντιγράφηκε</string>
     <string name="status_postprocessing">Μετεπεξεργασία\u2026</string>
     <string name="pp_settings_title">Μετεπεξεργασία</string>
-    <string name="pp_settings_description">Χρησιμοποιήστε AI για διόρθωση, συντόμευση ή βελτίωση του μεταγεγραμμένου κειμένου. Απαιτεί κλειδί API OpenAI ή Claude.</string>
+    <string name="pp_settings_description">Διόρθωση, συντόμευση ή βελτίωση του μεταγεγραμμένου κειμένου. Απαιτεί κλειδί API OpenAI ή Claude.</string>
     <string name="pp_enable">Ενεργοποίηση μετεπεξεργασίας</string>
     <string name="pp_provider">Πάροχος API</string>
     <string name="pp_api_key">Κλειδί API</string>

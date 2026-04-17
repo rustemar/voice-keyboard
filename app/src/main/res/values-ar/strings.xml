@@ -48,7 +48,7 @@
     <string name="link_copied">تم نسخ الرابط</string>
     <string name="status_postprocessing">جارٍ المعالجة\u2026</string>
     <string name="pp_settings_title">المعالجة اللاحقة</string>
-    <string name="pp_settings_description">استخدم الذكاء الاصطناعي لتصحيح النص المنسوخ أو اختصاره أو تحسينه. يتطلب مفتاح API لـ OpenAI أو Claude.</string>
+    <string name="pp_settings_description">تصحيح النص المنسوخ أو اختصاره أو تحسينه. يتطلب مفتاح API لـ OpenAI أو Claude.</string>
     <string name="pp_enable">تفعيل المعالجة اللاحقة</string>
     <string name="pp_provider">مزود API</string>
     <string name="pp_api_key">مفتاح API</string>

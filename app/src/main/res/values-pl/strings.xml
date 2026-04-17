@@ -48,7 +48,7 @@
     <string name="link_copied">Link skopiowany</string>
     <string name="status_postprocessing">Przetwarzanie\u2026</string>
     <string name="pp_settings_title">Przetwarzanie końcowe</string>
-    <string name="pp_settings_description">Użyj AI do poprawiania, skracania lub ulepszania transkrybowanego tekstu. Wymaga klucza API OpenAI lub Claude.</string>
+    <string name="pp_settings_description">Popraw, skróć lub ulepsz transkrybowany tekst. Wymaga klucza API OpenAI lub Claude.</string>
     <string name="pp_enable">Włącz przetwarzanie końcowe</string>
     <string name="pp_provider">Dostawca API</string>
     <string name="pp_api_key">Klucz API</string>

@@ -48,7 +48,7 @@
     <string name="link_copied">링크가 복사되었습니다</string>
     <string name="status_postprocessing">후처리 중\u2026</string>
     <string name="pp_settings_title">후처리</string>
-    <string name="pp_settings_description">AI를 사용하여 변환된 텍스트를 수정, 축약 또는 개선합니다. OpenAI 또는 Claude API 키가 필요합니다.</string>
+    <string name="pp_settings_description">변환된 텍스트를 수정, 축약 또는 개선합니다. OpenAI 또는 Claude API 키가 필요합니다.</string>
     <string name="pp_enable">후처리 활성화</string>
     <string name="pp_provider">API 제공자</string>
     <string name="pp_api_key">API 키</string>

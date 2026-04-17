@@ -53,7 +53,7 @@
     <string name="link_copied">Link copied</string>
     <string name="status_postprocessing">Post-processing\u2026</string>
     <string name="pp_settings_title">Post-processing</string>
-    <string name="pp_settings_description">Use AI to clean up, shorten, or enhance transcribed text. Requires an OpenAI or Claude API key.</string>
+    <string name="pp_settings_description">Clean up, shorten, or enhance transcribed text. Requires an OpenAI or Claude API key.</string>
     <string name="pp_enable">Enable post-processing</string>
     <string name="pp_provider">API Provider</string>
     <string name="pp_api_key">API Key</string>

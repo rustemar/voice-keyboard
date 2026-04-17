@@ -48,7 +48,7 @@
     <string name="link_copied">Linkki kopioitu</string>
     <string name="status_postprocessing">Jälkikäsittely\u2026</string>
     <string name="pp_settings_title">Jälkikäsittely</string>
-    <string name="pp_settings_description">Käytä tekoälyä litteroidun tekstin korjaamiseen, lyhentämiseen tai parantamiseen. Vaatii OpenAI- tai Claude-API-avaimen.</string>
+    <string name="pp_settings_description">Korjaa, lyhennä tai paranna litteroitua tekstiä. Vaatii OpenAI- tai Claude-API-avaimen.</string>
     <string name="pp_enable">Ota jälkikäsittely käyttöön</string>
     <string name="pp_provider">API-tarjoaja</string>
     <string name="pp_api_key">API-avain</string>

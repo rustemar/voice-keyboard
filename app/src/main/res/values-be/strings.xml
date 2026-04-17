@@ -48,7 +48,7 @@
     <string name="link_copied">Спасылка скапіравана</string>
     <string name="status_postprocessing">Постапрацоўка\u2026</string>
     <string name="pp_settings_title">Постапрацоўка</string>
-    <string name="pp_settings_description">Выкарыстоўвайце ШІ для выпраўлення, скарачэння або паляпшэння распазнанага тэксту. Патрабуецца ключ API OpenAI або Claude.</string>
+    <string name="pp_settings_description">Выпраўленне, скарачэнне або паляпшэнне распазнанага тэксту. Патрабуецца ключ API OpenAI або Claude.</string>
     <string name="pp_enable">Уключыць постапрацоўку</string>
     <string name="pp_provider">Пастаўшчык API</string>
     <string name="pp_api_key">Ключ API</string>

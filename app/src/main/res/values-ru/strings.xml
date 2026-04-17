@@ -48,7 +48,7 @@
     <string name="link_copied">Ссылка скопирована</string>
     <string name="status_postprocessing">Постобработка\u2026</string>
     <string name="pp_settings_title">Постобработка</string>
-    <string name="pp_settings_description">Используйте ИИ для исправления, сокращения или улучшения распознанного текста. Требуется ключ API OpenAI или Claude.</string>
+    <string name="pp_settings_description">Исправление, сокращение или улучшение распознанного текста. Требуется ключ API OpenAI или Claude.</string>
     <string name="pp_enable">Включить постобработку</string>
     <string name="pp_provider">Провайдер API</string>
     <string name="pp_api_key">Ключ API</string>

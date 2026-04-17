@@ -48,7 +48,7 @@
     <string name="link_copied">Lien copié</string>
     <string name="status_postprocessing">Post-traitement\u2026</string>
     <string name="pp_settings_title">Post-traitement</string>
-    <string name="pp_settings_description">Utilisez l\'IA pour corriger, raccourcir ou améliorer le texte transcrit. Nécessite une clé API OpenAI ou Claude.</string>
+    <string name="pp_settings_description">Corrigez, raccourcissez ou améliorez le texte transcrit. Nécessite une clé API OpenAI ou Claude.</string>
     <string name="pp_enable">Activer le post-traitement</string>
     <string name="pp_provider">Fournisseur d\'API</string>
     <string name="pp_api_key">Clé API</string>
