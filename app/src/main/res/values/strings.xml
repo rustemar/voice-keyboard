@@ -85,4 +85,13 @@
     <string name="pp_terminal_visible">Show terminal mode button</string>
     <string name="pp_terminal_visible_hint">Converts voice input into shell commands. Useful for SSH/terminal work.</string>
     <string name="pp_open_settings">Post-processing settings</string>
+    <string name="cd_hide_keyboard">Hide keyboard</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_cut_all">Cut all text</string>
+    <string name="cd_backspace">Delete</string>
+    <string name="cd_record">Record</string>
+    <string name="cd_send">Send</string>
+    <string name="cd_cancel">Cancel</string>
+    <string name="cd_enter">Enter</string>
+    <string name="cd_pending_count">Pending recordings</string>
 </resources>

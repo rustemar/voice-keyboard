@@ -54,13 +54,33 @@ class InputOrchestrator(
     var currentPhase: InputPhase = InputPhase.Ready
         private set
 
-    // Post-processing toggle states
-    var ppFixActive = false
-    var ppShortenActive = false
-    var ppEmojiActive = false
-    var ppRhymeActive = false
-    var ppTranslateActive = false
-    var ppTerminalActive = false
+    enum class PpMode { FIX, SHORTEN, EMOJI, RHYME, TRANSLATE, TERMINAL }
+
+    var toggles: PreferenceStore.ToggleStates = PreferenceStore.ToggleStates()
+        private set
+
+    /**
+     * Apply a click on a post-processing toggle, enforcing exclusivity rules:
+     * - FIX/SHORTEN/RHYME are mutually exclusive (only one can be on at a time).
+     * - TERMINAL excludes everything else.
+     * - EMOJI and TRANSLATE are independent toggles, but TERMINAL clears them too.
+     */
+    fun togglePpMode(mode: PpMode) {
+        val s = toggles
+        toggles = when (mode) {
+            PpMode.FIX -> if (s.fixActive) s.copy(fixActive = false)
+                else s.copy(fixActive = true, shortenActive = false, rhymeActive = false, terminalActive = false)
+            PpMode.SHORTEN -> if (s.shortenActive) s.copy(shortenActive = false)
+                else s.copy(shortenActive = true, fixActive = false, rhymeActive = false, terminalActive = false)
+            PpMode.RHYME -> if (s.rhymeActive) s.copy(rhymeActive = false)
+                else s.copy(rhymeActive = true, fixActive = false, shortenActive = false, terminalActive = false)
+            PpMode.EMOJI -> s.copy(emojiActive = !s.emojiActive)
+            PpMode.TRANSLATE -> s.copy(translateActive = !s.translateActive)
+            PpMode.TERMINAL -> if (s.terminalActive) s.copy(terminalActive = false)
+                else PreferenceStore.ToggleStates(terminalActive = true)
+        }
+        saveToggleStates()
+    }
 
     fun loadPreferences() {
         scope.launch {
@@ -82,13 +102,7 @@ class InputOrchestrator(
     private suspend fun loadPreferencesInternal() {
         preferences = preferenceStore.load()
         ppPreferences = preferenceStore.loadPostProcessing()
-        val toggles = preferenceStore.loadToggleStates()
-        ppFixActive = toggles.fixActive
-        ppShortenActive = toggles.shortenActive
-        ppEmojiActive = toggles.emojiActive
-        ppRhymeActive = toggles.rhymeActive
-        ppTranslateActive = toggles.translateActive
-        ppTerminalActive = toggles.terminalActive
+        toggles = preferenceStore.loadToggleStates()
         DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
 
@@ -98,11 +112,10 @@ class InputOrchestrator(
 
     fun isTerminalVisible(): Boolean = ppPreferences?.terminalVisible == true
 
-    fun saveToggleStates() {
+    private fun saveToggleStates() {
+        val snapshot = toggles
         scope.launch(Dispatchers.IO) {
-            preferenceStore.saveToggleStates(
-                PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppRhymeActive, ppTranslateActive, ppTerminalActive)
-            )
+            preferenceStore.saveToggleStates(snapshot)
         }
     }
 
@@ -160,17 +173,18 @@ class InputOrchestrator(
 
         // Snapshot current post-processing state at enqueue time
         val ppEnabled = ppPreferences?.enabled == true
+        val s = toggles
         val item = ProcessingQueue.QueueItem(
             audioFile = file,
             transcriptionConfig = config,
             addTrailingSpace = prefs.addTrailingSpace,
             ppPreferences = if (ppEnabled) ppPreferences else null,
-            ppFix = ppEnabled && ppFixActive,
-            ppShorten = ppEnabled && ppShortenActive,
-            ppEmoji = ppEnabled && ppEmojiActive,
-            ppRhyme = ppEnabled && ppRhymeActive,
-            ppTranslate = ppEnabled && ppTranslateActive,
-            ppTerminal = ppEnabled && ppTerminalActive
+            ppFix = ppEnabled && s.fixActive,
+            ppShorten = ppEnabled && s.shortenActive,
+            ppEmoji = ppEnabled && s.emojiActive,
+            ppRhyme = ppEnabled && s.rhymeActive,
+            ppTranslate = ppEnabled && s.translateActive,
+            ppTerminal = ppEnabled && s.terminalActive
         )
 
         // Return to Ready immediately — user can start recording again

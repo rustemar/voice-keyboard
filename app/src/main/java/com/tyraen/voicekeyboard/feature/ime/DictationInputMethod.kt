@@ -199,69 +199,20 @@ class DictationInputMethod : InputMethodService() {
     }
 
     private fun wirePostProcessingToggles() {
-        panel.btnPpFix.setOnClickListener {
-            if (orchestrator.ppFixActive) {
-                orchestrator.ppFixActive = false
-            } else {
-                orchestrator.ppFixActive = true
-                orchestrator.ppShortenActive = false
-                orchestrator.ppRhymeActive = false
-                orchestrator.ppTerminalActive = false
-            }
-            orchestrator.saveToggleStates()
-            updateToggleUI()
-        }
-
-        panel.btnPpShorten.setOnClickListener {
-            if (orchestrator.ppShortenActive) {
-                orchestrator.ppShortenActive = false
-            } else {
-                orchestrator.ppShortenActive = true
-                orchestrator.ppFixActive = false
-                orchestrator.ppRhymeActive = false
-                orchestrator.ppTerminalActive = false
-            }
-            orchestrator.saveToggleStates()
-            updateToggleUI()
-        }
-
-        panel.btnPpEmoji.setOnClickListener {
-            orchestrator.ppEmojiActive = !orchestrator.ppEmojiActive
-            orchestrator.saveToggleStates()
-            updateToggleUI()
-        }
-
-        panel.btnPpRhyme.setOnClickListener {
-            if (orchestrator.ppRhymeActive) {
-                orchestrator.ppRhymeActive = false
-            } else {
-                orchestrator.ppRhymeActive = true
-                orchestrator.ppFixActive = false
-                orchestrator.ppShortenActive = false
-                orchestrator.ppTerminalActive = false
-            }
-            orchestrator.saveToggleStates()
-            updateToggleUI()
-        }
-
-        panel.btnPpTerminal.setOnClickListener {
-            if (orchestrator.ppTerminalActive) {
-                orchestrator.ppTerminalActive = false
-            } else {
-                orchestrator.ppTerminalActive = true
-                orchestrator.ppFixActive = false
-                orchestrator.ppShortenActive = false
-                orchestrator.ppRhymeActive = false
-                orchestrator.ppEmojiActive = false
-                orchestrator.ppTranslateActive = false
-            }
-            orchestrator.saveToggleStates()
-            updateToggleUI()
-        }
-
+        bindToggle(panel.btnPpFix, InputOrchestrator.PpMode.FIX)
+        bindToggle(panel.btnPpShorten, InputOrchestrator.PpMode.SHORTEN)
+        bindToggle(panel.btnPpEmoji, InputOrchestrator.PpMode.EMOJI)
+        bindToggle(panel.btnPpRhyme, InputOrchestrator.PpMode.RHYME)
+        bindToggle(panel.btnPpTerminal, InputOrchestrator.PpMode.TERMINAL)
         panel.btnPpTranslate.setOnClickListener {
-            orchestrator.ppTranslateActive = !orchestrator.ppTranslateActive
-            orchestrator.saveToggleStates()
+            orchestrator.togglePpMode(InputOrchestrator.PpMode.TRANSLATE)
+            updateToggleUI()
+        }
+    }
+
+    private fun bindToggle(button: View, mode: InputOrchestrator.PpMode) {
+        button.setOnClickListener {
+            orchestrator.togglePpMode(mode)
             updateToggleUI()
         }
     }
@@ -276,12 +227,12 @@ class DictationInputMethod : InputMethodService() {
     }
 
     private fun updateToggleUI() {
-        panel.updateToggleAppearance(panel.btnPpFix, orchestrator.ppFixActive)
-        panel.updateToggleAppearance(panel.btnPpShorten, orchestrator.ppShortenActive)
-        panel.updateToggleAppearance(panel.btnPpEmoji, orchestrator.ppEmojiActive)
-        panel.updateToggleAppearance(panel.btnPpRhyme, orchestrator.ppRhymeActive)
-        panel.updateToggleAppearance(panel.btnPpTerminal, orchestrator.ppTerminalActive)
-        val translateLang = orchestrator.getTranslateLang()
-        panel.updateTranslateToggle(orchestrator.ppTranslateActive, translateLang)
+        val s = orchestrator.toggles
+        panel.updateToggleAppearance(panel.btnPpFix, s.fixActive)
+        panel.updateToggleAppearance(panel.btnPpShorten, s.shortenActive)
+        panel.updateToggleAppearance(panel.btnPpEmoji, s.emojiActive)
+        panel.updateToggleAppearance(panel.btnPpRhyme, s.rhymeActive)
+        panel.updateToggleAppearance(panel.btnPpTerminal, s.terminalActive)
+        panel.updateTranslateToggle(s.translateActive, orchestrator.getTranslateLang())
     }
 }
