@@ -110,12 +110,11 @@ class InputOrchestrator(
         when (currentPhase) {
             is InputPhase.Ready -> when (action) {
                 InputAction.ToggleCapture -> beginCapture()
-                else -> {}
+                InputAction.CancelOperation -> {}
             }
             is InputPhase.Capturing -> when (action) {
                 InputAction.ToggleCapture -> finishCaptureAndEnqueue()
                 InputAction.CancelOperation -> cancelCapture()
-                else -> {}
             }
             is InputPhase.Failed -> {
                 moveTo(InputPhase.Ready)

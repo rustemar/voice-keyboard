@@ -17,6 +17,9 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         private const val TAG = "PostProcessing"
     }
 
+    class ApiException(val statusCode: Int, val body: String) :
+        Exception("API error $statusCode: ${body.take(200)}")
+
     suspend fun process(
         prompt: PromptParts,
         prefs: PostProcessingPreferences,
@@ -55,21 +58,19 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             callOpenAIOrClaude("Reply with exactly: OK", prefs, maxTokens = 50)
             DiagnosticLog.record(TAG, "Validation success")
             Result.success("API key is valid.")
+        } catch (e: ApiException) {
+            DiagnosticLog.recordFailure(TAG, "Validation failed", e)
+            when (e.statusCode) {
+                401 -> Result.failure(Exception("Invalid API key"))
+                403 -> Result.failure(Exception("Access denied (check region/permissions)"))
+                404 -> Result.failure(Exception("Invalid endpoint URL"))
+                429 -> Result.success("Rate limit exceeded, but key is valid")
+                in 500..599 -> Result.failure(Exception("Server error, try again later"))
+                else -> Result.failure(Exception("API error ${e.statusCode}"))
+            }
         } catch (e: Exception) {
             DiagnosticLog.recordFailure(TAG, "Validation failed", e)
-            val message = when {
-                e.message?.contains("401") == true -> "Invalid API key"
-                e.message?.contains("403") == true -> "Access denied (check region/permissions)"
-                e.message?.contains("404") == true -> "Invalid endpoint URL"
-                e.message?.contains("429") == true -> "Rate limit exceeded, but key is valid"
-                e.message?.contains("5") == true && e.message?.contains("API error 5") == true -> "Server error, try again later"
-                else -> e.message ?: "Unknown error"
-            }
-            if (e.message?.contains("429") == true) {
-                Result.success(message)
-            } else {
-                Result.failure(Exception(message))
-            }
+            Result.failure(Exception(e.message ?: "Unknown error"))
         }
     }
 
@@ -116,7 +117,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         val responseBody = httpClient.newCall(request).execute().use { response ->
             val text = response.body?.string() ?: throw Exception("Empty response")
             if (!response.isSuccessful) {
-                throw Exception("API error ${response.code}: ${text.take(200)}")
+                throw ApiException(response.code, text)
             }
             text
         }
@@ -161,7 +162,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         val responseBody = httpClient.newCall(request).execute().use { response ->
             val text = response.body?.string() ?: throw Exception("Empty response")
             if (!response.isSuccessful) {
-                throw Exception("API error ${response.code}: ${text.take(200)}")
+                throw ApiException(response.code, text)
             }
             text
         }

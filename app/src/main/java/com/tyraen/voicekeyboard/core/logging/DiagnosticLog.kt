@@ -10,21 +10,30 @@ object DiagnosticLog {
 
     private const val ENTRIES_FILE = "app_log.txt"
     private const val CAPACITY = 500
+    private const val TRIM_CHECK_EVERY = 50
 
     @Volatile
     private var target: File? = null
+    private val lock = Any()
+    private var writesSinceTrim = 0
 
     fun init(context: Context) {
         target = File(context.filesDir, ENTRIES_FILE)
     }
 
     fun record(tag: String, message: String) {
-        try {
-            val file = target ?: return
-            val stamp = SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.US).format(Date())
-            file.appendText("$stamp [$tag] $message\n")
-            enforce(file)
-        } catch (_: Exception) {}
+        val file = target ?: return
+        val stamp = SimpleDateFormat("MM-dd HH:mm:ss.SSS", Locale.US).format(Date())
+        synchronized(lock) {
+            try {
+                file.appendText("$stamp [$tag] $message\n")
+                writesSinceTrim++
+                if (writesSinceTrim >= TRIM_CHECK_EVERY) {
+                    writesSinceTrim = 0
+                    enforce(file)
+                }
+            } catch (_: Exception) {}
+        }
     }
 
     fun recordFailure(tag: String, message: String, cause: Throwable? = null) {
@@ -34,11 +43,15 @@ object DiagnosticLog {
 
     fun readEntries(context: Context): String {
         val file = File(context.filesDir, ENTRIES_FILE)
-        return if (file.exists()) file.readText() else "(no logs)"
+        return synchronized(lock) {
+            if (file.exists()) file.readText() else "(no logs)"
+        }
     }
 
     fun purge(context: Context) {
-        File(context.filesDir, ENTRIES_FILE).delete()
+        synchronized(lock) {
+            File(context.filesDir, ENTRIES_FILE).delete()
+        }
     }
 
     fun exportToFile(context: Context): File? {
