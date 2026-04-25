@@ -40,17 +40,18 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                     .post(body)
                     .build()
 
-                val response = http.newCall(request).execute()
-                val responseBody = response.body?.string()?.trim() ?: ""
+                http.newCall(request).execute().use { response ->
+                    val responseBody = response.body?.string()?.trim() ?: ""
 
-                when (response.code) {
-                    200 -> Result.success("API key is valid")
-                    401 -> Result.failure(Exception("Invalid API key. Check that the key is correct and active."))
-                    403 -> Result.failure(Exception("Forbidden. The API may be unavailable in your region."))
-                    404 -> Result.failure(Exception("Endpoint not found. Check the API URL."))
-                    429 -> Result.failure(Exception("Rate limit exceeded. Try again later."))
-                    in 500..599 -> Result.failure(Exception("Server error (${response.code}). Try again later."))
-                    else -> Result.failure(Exception("Error ${response.code}: $responseBody"))
+                    when (response.code) {
+                        200 -> Result.success("API key is valid")
+                        401 -> Result.failure(Exception("Invalid API key. Check that the key is correct and active."))
+                        403 -> Result.failure(Exception("Forbidden. The API may be unavailable in your region."))
+                        404 -> Result.failure(Exception("Endpoint not found. Check the API URL."))
+                        429 -> Result.failure(Exception("Rate limit exceeded. Try again later."))
+                        in 500..599 -> Result.failure(Exception("Server error (${response.code}). Try again later."))
+                        else -> Result.failure(Exception("Error ${response.code}: $responseBody"))
+                    }
                 }
             } finally {
                 tempFile.delete()
@@ -86,13 +87,14 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                 .post(body)
                 .build()
 
-            val response = http.newCall(request).execute()
-            val responseBody = response.body?.string()?.trim() ?: ""
+            http.newCall(request).execute().use { response ->
+                val responseBody = response.body?.string()?.trim() ?: ""
 
-            if (response.isSuccessful) {
-                Result.success(HallucinationFilter.clean(responseBody))
-            } else {
-                Result.failure(Exception("API error ${response.code}: $responseBody"))
+                if (response.isSuccessful) {
+                    Result.success(HallucinationFilter.clean(responseBody))
+                } else {
+                    Result.failure(Exception("API error ${response.code}: $responseBody"))
+                }
             }
         } catch (e: Exception) {
             Result.failure(e)

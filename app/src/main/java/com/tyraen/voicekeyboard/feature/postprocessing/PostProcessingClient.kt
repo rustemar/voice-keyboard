@@ -113,11 +113,12 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             .post(body.toString().toRequestBody("application/json".toMediaType()))
             .build()
 
-        val response = httpClient.newCall(request).execute()
-        val responseBody = response.body?.string() ?: throw Exception("Empty response")
-
-        if (!response.isSuccessful) {
-            throw Exception("API error ${response.code}: ${responseBody.take(200)}")
+        val responseBody = httpClient.newCall(request).execute().use { response ->
+            val text = response.body?.string() ?: throw Exception("Empty response")
+            if (!response.isSuccessful) {
+                throw Exception("API error ${response.code}: ${text.take(200)}")
+            }
+            text
         }
 
         val json = JSONObject(responseBody)
@@ -157,11 +158,12 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             .post(body.toString().toRequestBody("application/json".toMediaType()))
             .build()
 
-        val response = httpClient.newCall(request).execute()
-        val responseBody = response.body?.string() ?: throw Exception("Empty response")
-
-        if (!response.isSuccessful) {
-            throw Exception("API error ${response.code}: ${responseBody.take(200)}")
+        val responseBody = httpClient.newCall(request).execute().use { response ->
+            val text = response.body?.string() ?: throw Exception("Empty response")
+            if (!response.isSuccessful) {
+                throw Exception("API error ${response.code}: ${text.take(200)}")
+            }
+            text
         }
 
         val json = JSONObject(responseBody)

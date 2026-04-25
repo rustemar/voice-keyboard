@@ -18,10 +18,16 @@ android {
     signingConfigs {
         create("release") {
             val keystorePath = System.getenv("KEYSTORE_PATH") ?: rootProject.file("release-keystore.jks").absolutePath
-            storeFile = file(keystorePath)
-            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "voicekeyboard2026"
-            keyAlias = System.getenv("KEY_ALIAS") ?: "voicekeyboard"
-            keyPassword = System.getenv("KEY_PASSWORD") ?: "voicekeyboard2026"
+            val keystorePassword = System.getenv("KEYSTORE_PASSWORD")
+            val signingKeyAlias = System.getenv("KEY_ALIAS")
+            val signingKeyPassword = System.getenv("KEY_PASSWORD")
+
+            if (keystorePassword != null && signingKeyAlias != null && signingKeyPassword != null) {
+                storeFile = file(keystorePath)
+                storePassword = keystorePassword
+                keyAlias = signingKeyAlias
+                keyPassword = signingKeyPassword
+            }
         }
     }
 
