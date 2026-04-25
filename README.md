@@ -42,6 +42,18 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 4. Open the app and enter your [GroQ API key](https://console.groq.com/keys)
 5. (Optional) Configure post-processing with your OpenAI or Claude API key
 
+### Installing via Obtainium (recommended)
+
+[Obtainium](https://github.com/ImranR98/Obtainium) is a third-party Android app that auto-updates apps directly from GitHub Releases. Recommended over the in-app updater if you want to avoid the system "install unknown apps" prompt and Play Protect warnings on each manual install.
+
+1. Install Obtainium from its [releases page](https://github.com/ImranR98/Obtainium/releases) or via [F-Droid](https://apt.izzysoft.de/fdroid/index/apk/dev.imranr.obtainium.fdroid).
+2. In Obtainium, tap **Add App** and paste `https://github.com/rustemar/voice-keyboard`.
+3. Obtainium will install Voice Keyboard and notify you when new releases are published.
+
+## Privacy
+
+The app does not collect, sell, or transmit any analytics or telemetry. Audio you record is sent only to the transcription provider you configure, using your own API key. See [PRIVACY.md](PRIVACY.md) for the full policy.
+
 ## Building from source
 
 ```bash
