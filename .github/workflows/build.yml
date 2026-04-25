@@ -59,10 +59,21 @@ jobs:
         id: notes
         run: |
           if [ -f RELEASE_NOTES.md ]; then
+            FIRST_LINE=$(head -1 RELEASE_NOTES.md)
+            # If first line starts with "v" + digit (e.g. "v1.7.3 — Title"), treat it as the
+            # release title and use the remainder (skipping the blank line after) as the body.
+            # Otherwise fall back to using the entire file as body and let the tag name be the title.
+            if [[ "$FIRST_LINE" =~ ^v[0-9] ]]; then
+              TITLE="$FIRST_LINE"
+              BODY=$(tail -n +3 RELEASE_NOTES.md)
+            else
+              TITLE=""
+              BODY=$(cat RELEASE_NOTES.md)
+            fi
             {
+              echo "title=${TITLE}"
               echo 'body<<RELEASE_EOF'
-              cat RELEASE_NOTES.md
-              echo ''
+              echo "${BODY}"
               echo 'RELEASE_EOF'
             } >> $GITHUB_OUTPUT
           fi
@@ -72,5 +83,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: app/build/outputs/apk/release/*.apk
+          name: ${{ steps.notes.outputs.title }}
           body: ${{ steps.notes.outputs.body }}
           generate_release_notes: ${{ steps.notes.outputs.body == '' }}

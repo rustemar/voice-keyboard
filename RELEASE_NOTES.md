@@ -1,3 +1,5 @@
+v1.7.3 — Smaller, safer, more reliable
+
 - API keys are no longer copied to your Google Drive backup
 - Smaller download (~2.6 MB) with code optimization enabled
 - Fixed memory leaks when keyboard switches or closes mid-recording
