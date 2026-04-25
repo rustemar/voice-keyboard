@@ -1,2 +1,6 @@
-- Updated post-processing description
-- Updated repository URL
+- API keys are no longer copied to your Google Drive backup
+- Smaller download (~2.6 MB) with code optimization enabled
+- Fixed memory leaks when keyboard switches or closes mid-recording
+- More reliable network error handling, no more leaked connections
+- Cleaner logs that no longer slow down the keyboard during heavy use
+- Modernized internals (Java 17, refreshed libraries, unit tests in CI)
