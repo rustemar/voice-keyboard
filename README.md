@@ -1,13 +1,21 @@
 # Voice Keyboard
 
-Android keyboard (IME) for speech-to-text transcription using Whisper API via GroQ with optional post-processing.
+Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible Whisper endpoint of your choice — by default Groq (free tier available), can be pointed at OpenAI or any other compatible provider. Optional LLM post-processing.
+
+<p align="center">
+  <img src="docs/screenshots/keyboard.png" alt="Voice Keyboard with mic button" width="260">
+  &nbsp;
+  <img src="docs/screenshots/setup.png" alt="Setup screen" width="260">
+  &nbsp;
+  <img src="docs/screenshots/postprocessing.png" alt="Post-processing settings" width="260">
+</p>
 
 ## Features
 
 ### Voice Input
 - Real-time voice recording with amplitude visualization
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
-- GroQ Whisper API integration (whisper-large-v3-turbo)
+- Works with any OpenAI-compatible Whisper API; ships with Groq as the default endpoint (whisper-large-v3-turbo)
 - Configurable API endpoint, model, and language
 - Auto-start recording when keyboard opens
 
@@ -39,7 +47,7 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 1. Install the APK from [Releases](https://github.com/rustemar/voice-keyboard/releases)
 2. Go to Settings → System → Languages & input → On-screen keyboard
 3. Enable "Voice Keyboard"
-4. Open the app and enter your [GroQ API key](https://console.groq.com/keys)
+4. Open the app and enter a Whisper API key. The default endpoint is Groq — get a free key at [console.groq.com/keys](https://console.groq.com/keys). You can also point the app at OpenAI's Whisper endpoint or any other OpenAI-compatible provider in the same screen.
 5. (Optional) Configure post-processing with your OpenAI or Claude API key
 
 ### Installing via Obtainium (recommended)
@@ -52,7 +60,13 @@ Android keyboard (IME) for speech-to-text transcription using Whisper API via Gr
 
 ## Privacy
 
-The app does not collect, sell, or transmit any analytics or telemetry. Audio you record is sent only to the transcription provider you configure, using your own API key. See [PRIVACY.md](PRIVACY.md) for the full policy.
+No analytics, no telemetry, no advertising. Audio is sent only to the transcription provider you configure, using your own API key. See [PRIVACY.md](PRIVACY.md) for the full policy.
+
+Before first use of the microphone, the app shows a one-time disclosure explaining what is recorded, where it is sent, and what is **not** collected:
+
+<p align="center">
+  <img src="docs/screenshots/privacy_disclosure.png" alt="Microphone disclosure dialog" width="260">
+</p>
 
 ## Building from source
 
