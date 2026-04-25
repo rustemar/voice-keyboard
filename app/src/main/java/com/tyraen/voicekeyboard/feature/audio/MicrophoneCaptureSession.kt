@@ -10,6 +10,7 @@ class MicrophoneCaptureSession(private val context: Context) {
 
     private var recorder: MediaRecorder? = null
     private var levelMonitor: Job? = null
+    private val scope = MainScope()
     private var fileCounter = 0
     var capturedFile: File? = null
         private set
@@ -41,7 +42,7 @@ class MicrophoneCaptureSession(private val context: Context) {
         }
         recorder = mr
 
-        levelMonitor = CoroutineScope(Dispatchers.Main).launch {
+        levelMonitor = scope.launch {
             while (isActive) {
                 try {
                     onAmplitude(mr.maxAmplitude)
@@ -74,5 +75,10 @@ class MicrophoneCaptureSession(private val context: Context) {
         recorder = null
         capturedFile?.delete()
         capturedFile = null
+    }
+
+    fun release() {
+        abort()
+        scope.cancel()
     }
 }

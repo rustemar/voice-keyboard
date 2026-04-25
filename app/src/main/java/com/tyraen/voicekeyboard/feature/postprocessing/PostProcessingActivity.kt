@@ -11,8 +11,8 @@ import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class PostProcessingActivity : AppCompatActivity() {
@@ -43,6 +43,12 @@ class PostProcessingActivity : AppCompatActivity() {
     private val providerLabels = listOf("OpenAI API", "Claude API")
 
     private var suppressProviderChange = false
+    private val scope = MainScope()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(InterfaceLanguageManager.applyTo(newBase))
@@ -105,7 +111,7 @@ class PostProcessingActivity : AppCompatActivity() {
         btnApply.setOnClickListener { saveAndValidate() }
 
         switchEnabled.setOnCheckedChangeListener { _, isChecked ->
-            CoroutineScope(Dispatchers.Main).launch {
+            scope.launch {
                 val current = preferenceStore.loadPostProcessing()
                 preferenceStore.savePostProcessing(current.copy(enabled = isChecked))
             }
@@ -113,7 +119,7 @@ class PostProcessingActivity : AppCompatActivity() {
     }
 
     private fun loadPreferences() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             val pp = preferenceStore.loadPostProcessing()
             switchEnabled.isChecked = pp.enabled
             checkTerminalVisible.isChecked = pp.terminalVisible
@@ -166,7 +172,7 @@ class PostProcessingActivity : AppCompatActivity() {
         btnApply.isEnabled = false
         showStatus(getString(R.string.pp_validating), Color.GRAY)
 
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             preferenceStore.savePostProcessing(prefs)
 
             if (prefs.apiKey.isBlank()) {

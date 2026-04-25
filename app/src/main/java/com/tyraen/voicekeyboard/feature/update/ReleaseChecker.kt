@@ -20,6 +20,7 @@ import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -34,6 +35,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
     }
 
     private val installer = ApkInstaller(http)
+    private val downloadScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     suspend fun checkForUpdate(context: Context, showUpToDate: Boolean = false) {
         val currentVersion = getCurrentVersion(context) ?: return
@@ -242,16 +244,19 @@ class ReleaseChecker(private val http: OkHttpClient) {
 
         val activity = context as? Activity ?: return
 
-        CoroutineScope(Dispatchers.Main).launch {
+        downloadScope.launch {
             val file = withContext(Dispatchers.IO) {
                 installer.download(context, apkUrl, version) { percent ->
                     activity.runOnUiThread {
-                        progressBar.progress = percent
-                        progressText.text = context.getString(R.string.update_downloading_progress, percent)
+                        if (!activity.isFinishing && !activity.isDestroyed) {
+                            progressBar.progress = percent
+                            progressText.text = context.getString(R.string.update_downloading_progress, percent)
+                        }
                     }
                 }
             }
 
+            if (activity.isFinishing || activity.isDestroyed) return@launch
             dialog.dismiss()
 
             if (file != null) {

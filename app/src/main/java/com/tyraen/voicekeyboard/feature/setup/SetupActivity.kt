@@ -58,6 +58,7 @@ class SetupActivity : AppCompatActivity() {
     private var capture: MicrophoneCaptureSession? = null
     private var isTestRecording = false
     private var activeJob: Job? = null
+    private val scope = MainScope()
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(InterfaceLanguageManager.applyTo(newBase))
@@ -79,8 +80,8 @@ class SetupActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        activeJob?.cancel()
-        if (isTestRecording) capture?.abort()
+        scope.cancel()
+        capture?.release()
     }
 
     private fun bindViews() {
@@ -198,7 +199,7 @@ class SetupActivity : AppCompatActivity() {
                 editPrompt.setText(locale.defaultPrompt)
 
                 val prefs = buildPreferences()
-                CoroutineScope(Dispatchers.Main).launch {
+                scope.launch {
                     preferenceStore.save(prefs)
                     recreate()
                 }
@@ -209,7 +210,7 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun loadCurrentPreferences() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             val p = preferenceStore.load()
             editApiKey.setText(p.apiKey)
             editEndpoint.setText(p.endpoint)
@@ -227,7 +228,7 @@ class SetupActivity : AppCompatActivity() {
         btnApply.isEnabled = false
         showApiStatus("Saving and validating API key...", Color.GRAY)
 
-        activeJob = CoroutineScope(Dispatchers.Main).launch {
+        activeJob = scope.launch {
             preferenceStore.save(prefs)
 
             val result = speechClient.validateCredentials(
@@ -286,7 +287,7 @@ class SetupActivity : AppCompatActivity() {
 
         val prefs = buildPreferences()
 
-        activeJob = CoroutineScope(Dispatchers.Main).launch {
+        activeJob = scope.launch {
             val config = com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig(
                 apiKey = prefs.apiKey,
                 endpoint = prefs.endpoint,
@@ -360,7 +361,7 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun checkForUpdates(showUpToDate: Boolean = false) {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             releaseChecker.checkForUpdate(this@SetupActivity, showUpToDate)
         }
     }

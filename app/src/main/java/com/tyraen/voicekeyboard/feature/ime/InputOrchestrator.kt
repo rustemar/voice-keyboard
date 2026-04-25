@@ -32,6 +32,7 @@ class InputOrchestrator(
         private const val TAG = "Orchestrator"
     }
 
+    private val scope = MainScope()
     private var preferences: UserPreferences? = null
     private var ppPreferences: PostProcessingPreferences? = null
 
@@ -62,14 +63,14 @@ class InputOrchestrator(
     var ppTerminalActive = false
 
     fun loadPreferences() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             loadPreferencesInternal()
             onPreferencesLoaded()
         }
     }
 
     fun reloadAndAutoStart() {
-        CoroutineScope(Dispatchers.Main).launch {
+        scope.launch {
             loadPreferencesInternal()
             onPreferencesLoaded()
             if (preferences?.autoRecord == true && currentPhase is InputPhase.Ready) {
@@ -98,7 +99,7 @@ class InputOrchestrator(
     fun isTerminalVisible(): Boolean = ppPreferences?.terminalVisible == true
 
     fun saveToggleStates() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch(Dispatchers.IO) {
             preferenceStore.saveToggleStates(
                 PreferenceStore.ToggleStates(ppFixActive, ppShortenActive, ppEmojiActive, ppRhymeActive, ppTranslateActive, ppTerminalActive)
             )
@@ -207,10 +208,9 @@ class InputOrchestrator(
     }
 
     fun destroy() {
-        if (capture.isActive) {
-            capture.abort()
-        }
+        capture.release()
         processingQueue.destroy()
+        scope.cancel()
     }
 
     private fun moveTo(phase: InputPhase) {
