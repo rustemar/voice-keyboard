@@ -143,7 +143,7 @@ class DictationInputMethod : InputMethodService() {
             }
         }
 
-        btnCutAll.setOnClickListener { keystrokes.cutAll(this) }
+        btnCutAll.setOnClickListener { keystrokes.cutAll() }
 
         btnSpace.setOnClickListener { keystrokes.insertText(" ") }
         btnSpace.setOnLongClickListener {

@@ -71,7 +71,7 @@ class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?
         }
     }
 
-    fun cutAll(context: Context): Boolean {
+    fun cutAll(): Boolean {
         val ic = connectionProvider() ?: return false
         val extracted = ic.getExtractedText(android.view.inputmethod.ExtractedTextRequest(), 0)
         val text = extracted?.text?.toString() ?: return false
