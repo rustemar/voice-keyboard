@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">إظهار زر وضع الطرفية</string>
     <string name="pp_terminal_visible_hint">يحوّل الإدخال الصوتي إلى أوامر طرفية. مفيد للعمل عبر SSH.</string>
     <string name="pp_open_settings">إعدادات المعالجة اللاحقة</string>
+
+    <string name="mic_disclosure_title">يستخدم Voice Keyboard الميكروفون</string>
+    <string name="mic_disclosure_body">عند الضغط على زر الميكروفون، تُسجّل هذه اللوحة الصوت وترسله إلى خدمة تحويل الكلام إلى نص.\n\n• ما الذي يُرسَل: فقط الصوت من تسجيل تبدؤه أنت بنفسك.\n• إلى أين: افتراضيًا، إلى Groq Whisper. يمكنك تغيير ذلك في الإعدادات إلى أي نقطة نهاية متوافقة مع OpenAI Whisper، بما في ذلك OpenAI نفسها.\n• المصادقة: تُرسَل الطلبات بمفتاح API الخاص بك؛ لا يوجد حساب مدمج في التطبيق.\n• ما لا يُجمَع: لا تتبُّع، ولا إعلانات، ولا يُرفَع الصوت إلى أي مكان غير نقطة النهاية التي تختارها.\n\nلا يُرسَل الصوت إلا أثناء التسجيل النشط فقط — أبدًا في الخلفية.</string>
+    <string name="mic_disclosure_privacy">عرض سياسة الخصوصية</string>
+    <string name="mic_disclosure_continue">فهمت، متابعة</string>
 </resources>

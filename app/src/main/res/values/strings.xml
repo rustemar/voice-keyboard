@@ -94,4 +94,10 @@
     <string name="cd_cancel">Cancel</string>
     <string name="cd_enter">Enter</string>
     <string name="cd_pending_count">Pending recordings</string>
+
+    <!-- Microphone prominent disclosure (shown once, before requesting mic permission) -->
+    <string name="mic_disclosure_title">Voice Keyboard uses your microphone</string>
+    <string name="mic_disclosure_body">When you tap the microphone button, this keyboard records audio and sends it to a speech‑to‑text service to turn your voice into text.\n\n• What is sent: only the audio from a recording you start.\n• Where it goes: by default, to Groq Whisper. You can change this in settings to any OpenAI‑compatible Whisper endpoint, including OpenAI itself.\n• Authentication: requests are made with the API key you provide; the app has no built‑in account.\n• What is not collected: the app has no analytics, no advertising, and never uploads your audio anywhere except to the endpoint you configured.\n\nAudio is sent only while you are actively recording — never in the background.</string>
+    <string name="mic_disclosure_privacy">View privacy policy</string>
+    <string name="mic_disclosure_continue">I understand, continue</string>
 </resources>

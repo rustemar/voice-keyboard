@@ -73,7 +73,7 @@ class SetupActivity : AppCompatActivity() {
         setupLanguageSpinner()
         setupActions()
         loadCurrentPreferences()
-        requestMicPermission()
+        ensureMicDisclosureThenRequestPermission()
         checkPendingCrashReport()
         checkForUpdates()
     }
@@ -364,6 +364,39 @@ class SetupActivity : AppCompatActivity() {
         scope.launch {
             releaseChecker.checkForUpdate(this@SetupActivity, showUpToDate)
         }
+    }
+
+    private fun ensureMicDisclosureThenRequestPermission() {
+        scope.launch {
+            if (preferenceStore.isMicDisclosureAccepted()) {
+                requestMicPermission()
+            } else {
+                showMicDisclosure()
+            }
+        }
+    }
+
+    private fun showMicDisclosure() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.mic_disclosure_title)
+            .setMessage(R.string.mic_disclosure_body)
+            .setCancelable(false)
+            .setPositiveButton(R.string.mic_disclosure_continue) { _, _ ->
+                scope.launch {
+                    preferenceStore.setMicDisclosureAccepted()
+                    requestMicPermission()
+                }
+            }
+            .setNeutralButton(R.string.mic_disclosure_privacy) { _, _ ->
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md")
+                    )
+                )
+                showMicDisclosure()
+            }
+            .show()
     }
 
     private fun requestMicPermission() {

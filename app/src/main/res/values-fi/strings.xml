@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">Näytä terminaalitilan painike</string>
     <string name="pp_terminal_visible_hint">Muuntaa puhesyötteen komentotulkin komennoiksi. Hyödyllinen SSH-/terminaalityössä.</string>
     <string name="pp_open_settings">Jälkikäsittelyn asetukset</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard käyttää mikrofonia</string>
+    <string name="mic_disclosure_body">Kun napautat mikrofoni­painiketta, tämä näppäimistö tallentaa ääntä ja lähettää sen puheentunnistus­palveluun muunnettavaksi tekstiksi.\n\n• Mitä lähetetään: vain itse aloittamasi tallennuksen ääni.\n• Minne menee: oletuksena Groq Whisperiin. Voit vaihtaa asetuksista mihin tahansa OpenAI-yhteensopivaan Whisper-päätepisteeseen, mukaan lukien OpenAI itse.\n• Tunnistautuminen: pyynnöt tehdään omalla API-avaimellasi; sovelluksessa ei ole sisäänrakennettua tiliä.\n• Mitä ei kerätä: ei analytiikkaa, ei mainoksia; ääntäsi ei ladata mihinkään paitsi määrittämääsi päätepisteeseen.\n\nÄänitietoa lähetetään vain aktiivisen tallennuksen aikana — ei koskaan taustalla.</string>
+    <string name="mic_disclosure_privacy">Avaa tietosuojakäytäntö</string>
+    <string name="mic_disclosure_continue">Selvä, jatka</string>
 </resources>

@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">Terminal-Modus-Taste anzeigen</string>
     <string name="pp_terminal_visible_hint">Wandelt Spracheingabe in Shell-Befehle um. Nützlich für SSH-/Terminal-Arbeit.</string>
     <string name="pp_open_settings">Nachbearbeitung-Einstellungen</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard verwendet das Mikrofon</string>
+    <string name="mic_disclosure_body">Wenn Sie auf die Mikrofontaste tippen, nimmt diese Tastatur Audio auf und sendet es an einen Spracherkennungsdienst, um Ihre Stimme in Text umzuwandeln.\n\n• Was gesendet wird: nur das Audio einer Aufnahme, die Sie selbst gestartet haben.\n• Wohin: standardmäßig an Groq Whisper. In den Einstellungen können Sie auf jeden mit OpenAI kompatiblen Whisper-Endpunkt wechseln, einschließlich OpenAI selbst.\n• Authentifizierung: Anfragen werden mit Ihrem eigenen API-Schlüssel gestellt; die App hat kein integriertes Konto.\n• Was nicht erfasst wird: keine Analytik, keine Werbung; Ihr Audio wird nirgendwo hochgeladen außer an den von Ihnen konfigurierten Endpunkt.\n\nAudio wird nur während einer aktiven Aufnahme gesendet — niemals im Hintergrund.</string>
+    <string name="mic_disclosure_privacy">Datenschutzerklärung öffnen</string>
+    <string name="mic_disclosure_continue">Verstanden, fortfahren</string>
 </resources>

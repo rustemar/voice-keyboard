@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">Mostra pulsante modalità terminale</string>
     <string name="pp_terminal_visible_hint">Converte l\'input vocale in comandi shell. Utile per il lavoro SSH/terminale.</string>
     <string name="pp_open_settings">Impostazioni post-elaborazione</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard usa il tuo microfono</string>
+    <string name="mic_disclosure_body">Quando tocchi il pulsante del microfono, questa tastiera registra l\'audio e lo invia a un servizio di riconoscimento vocale per convertirlo in testo.\n\n• Cosa viene inviato: solo l\'audio di una registrazione che avvii tu stesso.\n• Dove va: per impostazione predefinita, a Groq Whisper. Nelle impostazioni puoi cambiarlo con qualsiasi endpoint Whisper compatibile con OpenAI, incluso OpenAI stesso.\n• Autenticazione: le richieste vengono effettuate con la tua chiave API; l\'app non include alcun account integrato.\n• Cosa non viene raccolto: nessuna analisi, nessuna pubblicità; il tuo audio non viene caricato da nessuna parte tranne sull\'endpoint che configuri.\n\nL\'audio viene inviato solo durante una registrazione attiva — mai in background.</string>
+    <string name="mic_disclosure_privacy">Apri l\'informativa sulla privacy</string>
+    <string name="mic_disclosure_continue">Ho capito, continua</string>
 </resources>

@@ -41,6 +41,9 @@ class PreferenceStore(private val context: Context) {
         val PP_TRANSLATE_MODEL = stringPreferencesKey("pp_translate_model")
         val PP_TERMINAL_VISIBLE = booleanPreferencesKey("pp_terminal_visible")
 
+        // Prominent disclosure for microphone use (shown once before requesting RECORD_AUDIO)
+        val MIC_DISCLOSURE_ACCEPTED = booleanPreferencesKey("mic_disclosure_accepted")
+
         // Post-processing toggle states (persist between sessions)
         val PP_FIX_ACTIVE = booleanPreferencesKey("pp_fix_active")
         val PP_SHORTEN_ACTIVE = booleanPreferencesKey("pp_shorten_active")
@@ -115,6 +118,17 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_TRANSLATE_LANG] = prefs.translateLang
             data[Keys.PP_TRANSLATE_MODEL] = prefs.translateModel
             data[Keys.PP_TERMINAL_VISIBLE] = prefs.terminalVisible
+        }
+    }
+
+    suspend fun isMicDisclosureAccepted(): Boolean {
+        val prefs = context.store.data.first()
+        return prefs[Keys.MIC_DISCLOSURE_ACCEPTED] ?: false
+    }
+
+    suspend fun setMicDisclosureAccepted() {
+        context.store.edit { data ->
+            data[Keys.MIC_DISCLOSURE_ACCEPTED] = true
         }
     }
 

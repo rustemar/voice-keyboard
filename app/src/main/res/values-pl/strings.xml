@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">Pokaż przycisk trybu terminala</string>
     <string name="pp_terminal_visible_hint">Zamienia mowę na polecenia terminala. Przydatne do pracy z SSH.</string>
     <string name="pp_open_settings">Ustawienia przetwarzania</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard używa mikrofonu</string>
+    <string name="mic_disclosure_body">Po naciśnięciu przycisku mikrofonu klawiatura nagrywa dźwięk i wysyła go do usługi rozpoznawania mowy w celu zamiany głosu na tekst.\n\n• Co jest wysyłane: wyłącznie dźwięk nagrania, które sam(a) rozpoczynasz.\n• Dokąd trafia: domyślnie do Groq Whisper. W ustawieniach możesz wybrać dowolny zgodny z OpenAI punkt końcowy Whisper, w tym sam OpenAI.\n• Uwierzytelnianie: żądania są wykonywane z Twoim własnym kluczem API; aplikacja nie ma wbudowanego konta.\n• Czego nie zbieramy: żadnej analityki, żadnych reklam; Twój dźwięk nie jest wysyłany nigdzie poza skonfigurowany przez Ciebie punkt końcowy.\n\nDźwięk jest wysyłany tylko podczas aktywnego nagrywania — nigdy w tle.</string>
+    <string name="mic_disclosure_privacy">Otwórz politykę prywatności</string>
+    <string name="mic_disclosure_continue">Rozumiem, kontynuuj</string>
 </resources>

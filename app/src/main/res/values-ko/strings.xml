@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">터미널 모드 버튼 표시</string>
     <string name="pp_terminal_visible_hint">음성 입력을 셸 명령어로 변환합니다. SSH/터미널 작업에 유용합니다.</string>
     <string name="pp_open_settings">후처리 설정</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard에서 마이크를 사용합니다</string>
+    <string name="mic_disclosure_body">마이크 버튼을 누르면 이 키보드가 오디오를 녹음하여 음성‑텍스트 변환 서비스로 전송합니다.\n\n• 전송되는 항목: 사용자가 직접 시작한 녹음의 오디오만.\n• 전송 대상: 기본값은 Groq Whisper. 설정에서 OpenAI 호환 Whisper 엔드포인트(OpenAI 자체 포함)로 변경할 수 있습니다.\n• 인증: 요청은 사용자의 API 키로 이루어지며, 앱 자체 계정은 없습니다.\n• 수집하지 않는 것: 분석, 광고 없음. 사용자가 설정한 엔드포인트 외에는 오디오를 어디에도 업로드하지 않습니다.\n\n오디오는 활성 녹음 중에만 전송되며, 백그라운드에서는 절대 전송되지 않습니다.</string>
+    <string name="mic_disclosure_privacy">개인정보 처리방침 열기</string>
+    <string name="mic_disclosure_continue">이해했습니다, 계속</string>
 </resources>

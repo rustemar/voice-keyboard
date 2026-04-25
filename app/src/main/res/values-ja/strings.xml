@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">ターミナルモードボタンを表示</string>
     <string name="pp_terminal_visible_hint">音声入力をシェルコマンドに変換します。SSH/ターミナル作業に便利です。</string>
     <string name="pp_open_settings">後処理の設定</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard はマイクを使用します</string>
+    <string name="mic_disclosure_body">マイクボタンをタップすると、このキーボードは音声を録音し、音声認識サービスに送信してテキストに変換します。\n\n• 送信される内容：あなた自身が開始した録音の音声のみ。\n• 送信先：デフォルトでは Groq Whisper。設定で OpenAI 互換のあらゆる Whisper エンドポイント（OpenAI 自体を含む）に変更できます。\n• 認証：リクエストはあなたの API キーで行われます。アプリには内蔵アカウントはありません。\n• 収集されないもの：分析データ、広告は一切なく、設定したエンドポイント以外には音声をアップロードしません。\n\n音声は録音中のみ送信されます — バックグラウンドで送信されることは決してありません。</string>
+    <string name="mic_disclosure_privacy">プライバシーポリシーを開く</string>
+    <string name="mic_disclosure_continue">了解、続行</string>
 </resources>

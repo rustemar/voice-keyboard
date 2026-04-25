@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">Terminal modu düğmesini göster</string>
     <string name="pp_terminal_visible_hint">Sesli girdiyi kabuk komutlarına dönüştürür. SSH/terminal çalışması için kullanışlıdır.</string>
     <string name="pp_open_settings">Son işleme ayarları</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard mikrofonunuzu kullanır</string>
+    <string name="mic_disclosure_body">Mikrofon düğmesine dokunduğunuzda, bu klavye sesi kaydeder ve sesinizi metne dönüştürmek için bir konuşma tanıma hizmetine gönderir.\n\n• Ne gönderilir: yalnızca sizin başlattığınız bir kaydın sesi.\n• Nereye gider: varsayılan olarak Groq Whisper\'a. Ayarlardan OpenAI ile uyumlu herhangi bir Whisper uç noktasına (OpenAI dahil) değiştirebilirsiniz.\n• Kimlik doğrulama: istekler kendi API anahtarınızla yapılır; uygulamada yerleşik bir hesap yoktur.\n• Toplanmayanlar: analitik yok, reklam yok; sesiniz, yapılandırdığınız uç nokta dışında hiçbir yere yüklenmez.\n\nSes yalnızca aktif kayıt sırasında gönderilir — asla arka planda gönderilmez.</string>
+    <string name="mic_disclosure_privacy">Gizlilik politikasını aç</string>
+    <string name="mic_disclosure_continue">Anladım, devam et</string>
 </resources>

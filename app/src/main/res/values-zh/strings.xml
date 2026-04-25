@@ -79,4 +79,9 @@
     <string name="pp_terminal_visible">显示终端模式按钮</string>
     <string name="pp_terminal_visible_hint">将语音输入转换为终端命令。适用于SSH/终端工作。</string>
     <string name="pp_open_settings">后处理设置</string>
+
+    <string name="mic_disclosure_title">Voice Keyboard 使用您的麦克风</string>
+    <string name="mic_disclosure_body">当您点按麦克风按钮时，此键盘会录制音频并将其发送至语音转文字服务，以将您的语音转换为文字。\n\n• 发送内容：仅发送您自己开始的录音音频。\n• 发送至哪里：默认发送至 Groq Whisper。您可以在设置中切换至任何兼容 OpenAI 的 Whisper 端点，包括 OpenAI 自身。\n• 身份验证：请求使用您自己的 API 密钥；应用本身不内置任何帐户。\n• 不收集的内容：不进行任何分析，无广告；您的音频不会上传到您配置的端点以外的任何地方。\n\n仅在您主动录音时发送音频 — 绝不会在后台发送。</string>
+    <string name="mic_disclosure_privacy">打开隐私政策</string>
+    <string name="mic_disclosure_continue">明白，继续</string>
 </resources>
