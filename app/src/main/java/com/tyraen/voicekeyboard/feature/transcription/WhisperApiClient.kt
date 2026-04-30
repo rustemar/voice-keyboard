@@ -70,9 +70,15 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
         config: TranscriptionConfig
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
+            val mimeType = when (audioFile.extension.lowercase()) {
+                "ogg" -> "audio/ogg"
+                "m4a", "mp4" -> "audio/mp4"
+                "wav" -> "audio/wav"
+                else -> "audio/mp4"
+            }
             val body = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", audioFile.name, audioFile.asRequestBody("audio/mp4".toMediaType()))
+                .addFormDataPart("file", audioFile.name, audioFile.asRequestBody(mimeType.toMediaType()))
                 .addFormDataPart("model", config.model)
                 .addFormDataPart("response_format", "text")
                 .apply {

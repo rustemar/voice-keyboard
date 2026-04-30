@@ -19,7 +19,9 @@ class MicrophoneCaptureSession(private val context: Context) {
         get() = recorder != null
 
     fun begin(onAmplitude: (Int) -> Unit): File {
-        val file = File(context.externalCacheDir, "recording_${fileCounter++}.m4a")
+        val useOpus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+        val extension = if (useOpus) "ogg" else "m4a"
+        val file = File(context.externalCacheDir, "recording_${fileCounter++}.$extension")
         capturedFile = file
 
         val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -31,10 +33,17 @@ class MicrophoneCaptureSession(private val context: Context) {
 
         mr.apply {
             setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            setAudioSamplingRate(44100)
-            setAudioEncodingBitRate(128000)
+            if (useOpus) {
+                setOutputFormat(MediaRecorder.OutputFormat.OGG)
+                setAudioEncoder(MediaRecorder.AudioEncoder.OPUS)
+                setAudioSamplingRate(48000)
+                setAudioEncodingBitRate(200000)
+            } else {
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setAudioSamplingRate(44100)
+                setAudioEncodingBitRate(128000)
+            }
             setAudioChannels(1)
             setOutputFile(file.absolutePath)
             prepare()

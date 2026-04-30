@@ -1,8 +1,4 @@
-v1.7.3 — Smaller, safer, more reliable
+v1.7.4 — Better transcription quality
 
-- API keys are no longer copied to your Google Drive backup
-- Smaller download (~2.6 MB) with code optimization enabled
-- Fixed memory leaks when keyboard switches or closes mid-recording
-- More reliable network error handling, no more leaked connections
-- Cleaner logs that no longer slow down the keyboard during heavy use
-- Modernized internals (Java 17, refreshed libraries, unit tests in CI)
+- Recording now uses Opus (the same format as Telegram voice messages) on Android 10+, which noticeably improves transcription accuracy
+- Older Android versions keep working with the previous format
