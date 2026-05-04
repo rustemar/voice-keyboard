@@ -7,7 +7,8 @@ data class TranscriptionConfig(
     val endpoint: String,
     val model: String,
     val language: String,
-    val prompt: String
+    val prompt: String,
+    val recordingDurationMs: Long = 0L
 )
 
 interface SpeechToTextClient {

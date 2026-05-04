@@ -97,7 +97,13 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                 val responseBody = response.body?.string()?.trim() ?: ""
 
                 if (response.isSuccessful) {
-                    Result.success(HallucinationFilter.clean(responseBody))
+                    Result.success(
+                        HallucinationFilter.clean(
+                            rawText = responseBody,
+                            prompt = config.prompt,
+                            recordingDurationMs = config.recordingDurationMs
+                        )
+                    )
                 } else {
                     Result.failure(Exception("API error ${response.code}: $responseBody"))
                 }

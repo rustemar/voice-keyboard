@@ -154,7 +154,8 @@ class InputOrchestrator(
 
     fun finishCaptureAndEnqueue() {
         val file = capture.finalize() ?: return
-        DiagnosticLog.record(TAG, "finishCapture, file=${file.name}, size=${file.length()}")
+        val durationMs = capture.lastDurationMs
+        DiagnosticLog.record(TAG, "finishCapture, file=${file.name}, size=${file.length()}, dur=${durationMs}ms")
 
         val prefs = preferences ?: run {
             moveTo(InputPhase.Failed("Settings not loaded"))
@@ -171,7 +172,8 @@ class InputOrchestrator(
             endpoint = prefs.endpoint,
             model = prefs.model,
             language = prefs.language,
-            prompt = WhisperPromptBuilder.build(prefs.prompt, vocabulary)
+            prompt = WhisperPromptBuilder.build(prefs.prompt, vocabulary),
+            recordingDurationMs = durationMs
         )
 
         // Snapshot current post-processing state at enqueue time

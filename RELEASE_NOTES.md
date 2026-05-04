@@ -1,4 +1,5 @@
-v1.7.8 — Fix vocabulary leak on silence
+v1.7.9 — Better silence handling
 
-- Fixed: when nothing was said, post-processing could output a list of vocabulary words
-- The vocabulary is now passed as a strict spelling reference, never as content to insert
+- Catches more empty-recording artifacts: "Спасибо", "Vielen Dank", subtitle credit lines
+- Stops echoes of the style hint from leaking into the field
+- Short clips no longer get silently dropped — only long silent recordings are filtered

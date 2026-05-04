@@ -12,7 +12,10 @@ class MicrophoneCaptureSession(private val context: Context) {
     private var levelMonitor: Job? = null
     private val scope = MainScope()
     private var fileCounter = 0
+    private var startedAtMs: Long = 0
     var capturedFile: File? = null
+        private set
+    var lastDurationMs: Long = 0
         private set
 
     val isActive: Boolean
@@ -50,6 +53,8 @@ class MicrophoneCaptureSession(private val context: Context) {
             start()
         }
         recorder = mr
+        startedAtMs = System.currentTimeMillis()
+        lastDurationMs = 0
 
         levelMonitor = scope.launch {
             while (isActive) {
@@ -72,6 +77,7 @@ class MicrophoneCaptureSession(private val context: Context) {
             recorder?.apply { stop(); release() }
         } catch (_: Exception) {}
         recorder = null
+        lastDurationMs = if (startedAtMs > 0) System.currentTimeMillis() - startedAtMs else 0
         return capturedFile
     }
 
