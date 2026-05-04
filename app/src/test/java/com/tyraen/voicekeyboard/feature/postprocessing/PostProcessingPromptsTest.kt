@@ -58,4 +58,54 @@ class PostProcessingPromptsTest {
         assertTrue(PostProcessingPrompts.hasAnyMode(false, true, false))
         assertTrue(PostProcessingPrompts.hasAnyMode(false, false, true))
     }
+
+    @Test fun `vocabulary is injected into fix shorten emoji combined prompt`() {
+        val vocab = "Аркадий\nТыраен\nPavlinochka"
+        val build = PostProcessingPrompts.build(
+            fix = true, shorten = false, emoji = false,
+            text = "x", prefs = prefs, vocabulary = vocab
+        )
+        assertTrue(build.systemInstruction.contains("Аркадий"))
+        assertTrue(build.systemInstruction.contains("Тыраен"))
+        assertTrue(build.systemInstruction.contains("Pavlinochka"))
+        assertTrue(build.systemInstruction.contains("custom vocabulary"))
+    }
+
+    @Test fun `vocabulary is injected into rhyme prompt`() {
+        val rhyme = PostProcessingPrompts.buildRhyme("x", vocabulary = "Аркадий\nPavlinochka")
+        assertTrue(rhyme.systemInstruction.contains("Аркадий"))
+        assertTrue(rhyme.systemInstruction.contains("Pavlinochka"))
+    }
+
+    @Test fun `vocabulary is injected into translate prompt`() {
+        val translate = PostProcessingPrompts.buildTranslate("x", "en", vocabulary = "Аркадий\nPavlinochka")
+        assertTrue(translate.systemInstruction.contains("Аркадий"))
+        assertTrue(translate.systemInstruction.contains("Pavlinochka"))
+    }
+
+    @Test fun `empty vocabulary leaves prompts unchanged versus omitted vocabulary`() {
+        val withEmpty = PostProcessingPrompts.build(
+            fix = true, shorten = false, emoji = false,
+            text = "x", prefs = prefs, vocabulary = ""
+        )
+        val withoutArg = PostProcessingPrompts.build(
+            fix = true, shorten = false, emoji = false,
+            text = "x", prefs = prefs
+        )
+        assertEquals(withoutArg.systemInstruction, withEmpty.systemInstruction)
+        assertFalse(withEmpty.systemInstruction.contains("custom vocabulary"))
+    }
+
+    @Test fun `whitespace-only vocabulary is treated as empty`() {
+        val build = PostProcessingPrompts.build(
+            fix = true, shorten = false, emoji = false,
+            text = "x", prefs = prefs, vocabulary = "\n\n   \n"
+        )
+        assertFalse(build.systemInstruction.contains("custom vocabulary"))
+    }
+
+    @Test fun `terminal prompt does not get vocabulary injection`() {
+        val terminal = PostProcessingPrompts.buildTerminal("x", prefs)
+        assertFalse(terminal.systemInstruction.contains("custom vocabulary"))
+    }
 }

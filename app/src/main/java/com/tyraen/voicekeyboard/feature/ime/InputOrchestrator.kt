@@ -182,6 +182,7 @@ class InputOrchestrator(
             transcriptionConfig = config,
             addTrailingSpace = prefs.addTrailingSpace,
             singleWordStripPunctuation = prefs.singleWordStripPunctuation,
+            vocabulary = vocabulary,
             ppPreferences = if (ppEnabled) ppPreferences else null,
             ppFix = ppEnabled && s.fixActive,
             ppShorten = ppEnabled && s.shortenActive,

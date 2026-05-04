@@ -30,6 +30,7 @@ class ProcessingQueue(
         val transcriptionConfig: TranscriptionConfig,
         val addTrailingSpace: Boolean,
         val singleWordStripPunctuation: Boolean,
+        val vocabulary: String,
         val ppPreferences: PostProcessingPreferences?,
         val ppFix: Boolean,
         val ppShorten: Boolean,
@@ -139,7 +140,7 @@ class ProcessingQueue(
         // First: fix/shorten/emoji
         if (PostProcessingPrompts.hasAnyMode(item.ppFix, item.ppShorten, item.ppEmoji)) {
             DiagnosticLog.record(TAG, "Post-processing: fix=${item.ppFix}, shorten=${item.ppShorten}, emoji=${item.ppEmoji}")
-            val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp)
+            val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp, item.vocabulary)
             val result = postProcessingClient.process(promptParts, pp)
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
@@ -150,7 +151,7 @@ class ProcessingQueue(
         // Then: rhyme
         if (item.ppRhyme) {
             DiagnosticLog.record(TAG, "Rhyming text")
-            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed)
+            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed, item.vocabulary)
             val result = postProcessingClient.process(rhymePrompt, pp, modelOverride = pp.resolvedTranslateModel())
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
@@ -161,7 +162,7 @@ class ProcessingQueue(
         // Then: translate
         if (item.ppTranslate) {
             DiagnosticLog.record(TAG, "Translating to: ${pp.translateLang}")
-            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang)
+            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang, item.vocabulary)
             val result = postProcessingClient.process(translatePrompt, pp, modelOverride = pp.resolvedTranslateModel())
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
