@@ -1,4 +1,6 @@
-v1.7.4 — Better transcription quality
+v1.7.5 — Smarter text cleanup
 
-- Recording now uses Opus (the same format as Telegram voice messages) on Android 10+, which noticeably improves transcription accuracy
-- Older Android versions keep working with the previous format
+- Fix and Shorten modes now handle self-corrections ("wait no", "не, я имел в виду") — only the corrected version is kept
+- Better removal of false starts, stutters, and accidental repetitions
+- Preserves technical terms, proper nouns, and the speaker's voice more reliably
+- Empty or filler-only input now produces no output

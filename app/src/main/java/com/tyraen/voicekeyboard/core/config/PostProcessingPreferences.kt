@@ -31,10 +31,24 @@ data class PostProcessingPreferences(
         const val DEFAULT_TEMPERATURE = 0.3f
 
         const val DEFAULT_PROMPT_FIX =
-            "Fix ONLY punctuation and spelling errors. Remove filler/hesitation sounds (um, uh, ммм, э, euh, えーと). Do NOT rephrase, shorten, or rewrite the text in any other way. Keep every word the author used, including profanity."
+            "Fix punctuation, spelling, and obvious transcription errors. " +
+            "Remove filler and hesitation sounds (um, uh, like, you know, ммм, э, ну, типа, euh, えーと). " +
+            "Remove false starts, stutters, and accidental repetitions (\"I— I think\", \"я хотел... я хотел сказать\"). " +
+            "For self-corrections (\"wait no\", \"I meant\", \"scratch that\", \"не, я имел в виду\") keep only the corrected version. " +
+            "Preserve the speaker's voice, tone, vocabulary, and intent. " +
+            "Keep technical terms, proper nouns, names, and profanity exactly as spoken. " +
+            "Do NOT rephrase, shorten, or restructure the text. " +
+            "If the input is empty or only filler, output nothing."
 
         const val DEFAULT_PROMPT_SHORTEN =
-            "Make the text more concise: remove repetitions, filler words, and unnecessary verbosity, but keep ALL key points, details, and arguments. Preserve the author's style and tone. Fix spelling and punctuation. Keep profanity unchanged."
+            "Make the text more concise: remove repetitions, filler words, and unnecessary verbosity, " +
+            "but keep ALL key points, details, and arguments. " +
+            "Remove false starts, stutters, and accidental repetitions. " +
+            "For self-corrections (\"wait no\", \"I meant\", \"scratch that\", \"не, я имел в виду\") keep only the corrected version. " +
+            "Preserve the author's voice, tone, and intent. " +
+            "Keep technical terms, proper nouns, names, and profanity exactly as spoken. " +
+            "Fix spelling and punctuation. " +
+            "If the input is empty or only filler, output nothing."
 
         const val DEFAULT_PROMPT_EMOJI =
             "Add relevant emoji to the text sparingly — at most 30% of sentences should get an emoji, but always at least one. " +
