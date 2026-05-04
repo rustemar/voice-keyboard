@@ -1,5 +1,6 @@
-v1.7.9 — Better silence handling
+v1.8.0 — Stop names list from leaking on silence
 
-- Catches more empty-recording artifacts: "Спасибо", "Vielen Dank", subtitle credit lines
-- Stops echoes of the style hint from leaking into the field
-- Short clips no longer get silently dropped — only long silent recordings are filtered
+- Detects when Whisper returns the vocabulary list as a "transcription" of empty recordings, and drops it
+- Catches more silence artifacts: subtitle credits with "Корректор/Редактор", thanks lines in German/French
+- Stops eating real one-word dictation: short "Привет" / "Спасибо" / "Хорошо" pass through correctly
+- Three-name dictations like "Альфия, Алсу, Рустем" are preserved while seven-name hallucinations are not

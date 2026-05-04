@@ -173,6 +173,7 @@ class InputOrchestrator(
             model = prefs.model,
             language = prefs.language,
             prompt = WhisperPromptBuilder.build(prefs.prompt, vocabulary),
+            vocabulary = vocabulary,
             recordingDurationMs = durationMs
         )
 

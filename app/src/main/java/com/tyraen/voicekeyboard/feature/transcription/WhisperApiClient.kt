@@ -101,6 +101,7 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                         HallucinationFilter.clean(
                             rawText = responseBody,
                             prompt = config.prompt,
+                            vocabulary = config.vocabulary,
                             recordingDurationMs = config.recordingDurationMs
                         )
                     )

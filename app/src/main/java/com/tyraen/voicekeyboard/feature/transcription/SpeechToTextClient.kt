@@ -8,6 +8,7 @@ data class TranscriptionConfig(
     val model: String,
     val language: String,
     val prompt: String,
+    val vocabulary: String = "",
     val recordingDurationMs: Long = 0L
 )
 
