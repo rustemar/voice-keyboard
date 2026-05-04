@@ -12,6 +12,7 @@ import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
+import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
 import kotlinx.coroutines.*
 
 class InputOrchestrator(
@@ -35,6 +36,7 @@ class InputOrchestrator(
     private val scope = MainScope()
     private var preferences: UserPreferences? = null
     private var ppPreferences: PostProcessingPreferences? = null
+    private var vocabulary: String = ""
 
     private val processingQueue = ProcessingQueue(
         speechClient = speechClient,
@@ -103,6 +105,7 @@ class InputOrchestrator(
         preferences = preferenceStore.load()
         ppPreferences = preferenceStore.loadPostProcessing()
         toggles = preferenceStore.loadToggleStates()
+        vocabulary = preferenceStore.loadVocabulary()
         DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
 
@@ -168,7 +171,7 @@ class InputOrchestrator(
             endpoint = prefs.endpoint,
             model = prefs.model,
             language = prefs.language,
-            prompt = prefs.prompt
+            prompt = WhisperPromptBuilder.build(prefs.prompt, vocabulary)
         )
 
         // Snapshot current post-processing state at enqueue time
@@ -178,6 +181,7 @@ class InputOrchestrator(
             audioFile = file,
             transcriptionConfig = config,
             addTrailingSpace = prefs.addTrailingSpace,
+            singleWordStripPunctuation = prefs.singleWordStripPunctuation,
             ppPreferences = if (ppEnabled) ppPreferences else null,
             ppFix = ppEnabled && s.fixActive,
             ppShorten = ppEnabled && s.shortenActive,

@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Mikrofon düğmesine dokunduğunuzda, bu klavye sesi kaydeder ve sesinizi metne dönüştürmek için bir konuşma tanıma hizmetine gönderir.\n\n• Ne gönderilir: yalnızca sizin başlattığınız bir kaydın sesi.\n• Nereye gider: varsayılan olarak Groq Whisper\'a. Ayarlardan OpenAI ile uyumlu herhangi bir Whisper uç noktasına (OpenAI dahil) değiştirebilirsiniz.\n• Kimlik doğrulama: istekler kendi API anahtarınızla yapılır; uygulamada yerleşik bir hesap yoktur.\n• Toplanmayanlar: analitik yok, reklam yok; sesiniz, yapılandırdığınız uç nokta dışında hiçbir yere yüklenmez.\n\nSes yalnızca aktif kayıt sırasında gönderilir — asla arka planda gönderilmez.</string>
     <string name="mic_disclosure_privacy">Gizlilik politikasını aç</string>
     <string name="mic_disclosure_continue">Anladım, devam et</string>
+    <string name="vocabulary_open_settings">Özel sözlük</string>
+    <string name="vocabulary_title">Özel sözlük</string>
+    <string name="vocabulary_description">Sıkça yanlış tanınan adları, teknik terimleri veya kelimeleri ekleyin. Liste, doğruluğu artırmak için tanıyıcıya ipucu olarak gönderilir. Adları çıktıda görmek istediğiniz büyük harfle yazın.</string>
+    <string name="vocabulary_input_hint">Kelime veya kısa ifade</string>
+    <string name="vocabulary_add">Ekle</string>
+    <string name="vocabulary_counter">Kelimeler: %1$d · Karakterler: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Henüz boş. En çok kullandığınız ad ve terimleri ekleyin.</string>
+    <string name="vocabulary_delete_cd">Kelimeyi kaldır</string>
+    <string name="vocabulary_error_separator">Ekle düğmesini kullanın — ayırıcılar kabul edilmez</string>
+    <string name="vocabulary_error_duplicate">Zaten listede</string>
+    <string name="vocabulary_error_limit">Karakter sınırına ulaşıldı. Önce bazı kelimeleri kaldırın.</string>
+    <string name="settings_single_word_strip_punct">Tek kelimede nokta koyma</string>
+    <string name="settings_single_word_strip_punct_hint">Kişilerde sesli arama ve diğer kısa sorgular için kullanışlıdır.</string>
 </resources>

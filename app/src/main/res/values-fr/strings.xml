@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Lorsque vous appuyez sur le bouton du microphone, ce clavier enregistre l\'audio et l\'envoie à un service de reconnaissance vocale pour le convertir en texte.\n\n• Ce qui est envoyé : uniquement l\'audio d\'un enregistrement que vous avez lancé vous-même.\n• Vers où : par défaut, vers Groq Whisper. Vous pouvez changer cela dans les paramètres pour tout point de terminaison Whisper compatible OpenAI, y compris OpenAI lui-même.\n• Authentification : les requêtes sont effectuées avec votre propre clé API ; l\'application n\'inclut aucun compte intégré.\n• Ce qui n\'est pas collecté : aucune analytique, aucune publicité ; votre audio n\'est téléversé nulle part en dehors du point de terminaison que vous configurez.\n\nL\'audio n\'est envoyé que pendant un enregistrement actif — jamais en arrière-plan.</string>
     <string name="mic_disclosure_privacy">Voir la politique de confidentialité</string>
     <string name="mic_disclosure_continue">J\'ai compris, continuer</string>
+    <string name="vocabulary_open_settings">Vocabulaire personnalisé</string>
+    <string name="vocabulary_title">Vocabulaire personnalisé</string>
+    <string name="vocabulary_description">Ajoutez des noms, des termes techniques ou des mots souvent mal reconnus. La liste est envoyée comme indication au système de reconnaissance pour améliorer la précision. Écrivez les noms avec la majuscule que vous voulez dans le résultat.</string>
+    <string name="vocabulary_input_hint">Mot ou phrase courte</string>
+    <string name="vocabulary_add">Ajouter</string>
+    <string name="vocabulary_counter">Mots : %1$d · Caractères : %2$d / %3$d</string>
+    <string name="vocabulary_empty">Vide pour l\'instant. Ajoutez les noms et termes que vous utilisez le plus.</string>
+    <string name="vocabulary_delete_cd">Supprimer le mot</string>
+    <string name="vocabulary_error_separator">Utilisez le bouton Ajouter — les séparateurs ne sont pas autorisés</string>
+    <string name="vocabulary_error_duplicate">Déjà dans la liste</string>
+    <string name="vocabulary_error_limit">Limite de caractères atteinte. Supprimez d\'abord quelques mots.</string>
+    <string name="settings_single_word_strip_punct">Pas de point pour un mot seul</string>
+    <string name="settings_single_word_strip_punct_hint">Pratique pour la recherche vocale dans les contacts et autres requêtes courtes.</string>
 </resources>

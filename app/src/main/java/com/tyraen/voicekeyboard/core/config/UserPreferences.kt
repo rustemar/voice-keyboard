@@ -7,5 +7,6 @@ data class UserPreferences(
     val language: String,
     val autoRecord: Boolean,
     val addTrailingSpace: Boolean,
-    val prompt: String
+    val prompt: String,
+    val singleWordStripPunctuation: Boolean = false
 )

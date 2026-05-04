@@ -173,6 +173,25 @@
             android:textColor="@color/key_text"
             android:thumbTint="@color/switch_thumb_color"
             android:trackTint="@color/switch_track_color"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Strip trailing punctuation from single-word transcriptions -->
+        <Switch
+            android:id="@+id/switchSingleWordStripPunct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_single_word_strip_punct"
+            android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_single_word_strip_punct_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
             android:layout_marginBottom="24dp" />
 
         <Button
@@ -206,6 +225,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pp_open_settings"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Vocabulary settings -->
+        <Button
+            android:id="@+id/btnVocabulary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vocabulary_open_settings"
             android:textColor="@color/white"
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="8dp" />

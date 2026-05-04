@@ -18,6 +18,8 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - Works with any OpenAI-compatible Whisper API; ships with Groq as the default endpoint (whisper-large-v3-turbo)
 - Configurable API endpoint, model, and language
 - Auto-start recording when keyboard opens
+- **Custom vocabulary** — add names and technical terms to bias recognition; helps with contacts and rare words
+- **Drop period for single-word output** — handy for voice search where a trailing period gets in the way
 
 ### Post-Processing
 - **Fix errors** — corrects punctuation, spelling, removes filler words (um, uh)

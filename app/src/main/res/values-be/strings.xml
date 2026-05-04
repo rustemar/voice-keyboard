@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Калі вы націскаеце кнопку мікрафона, клавіятура запісвае гук і адпраўляе яго ў сэрвіс распазнання маўлення, каб пераўтварыць голас у тэкст.\n\n• Што адпраўляецца: толькі аўдыя запісу, які вы самі пачынаеце.\n• Куды трапляе: па змаўчанні — у Groq Whisper. У наладах можна выбраць любы сумяшчальны з OpenAI эндпойнт Whisper, у тым ліку сам OpenAI.\n• Аўтарызацыя: запыты адбываюцца з вашым API-ключом; уласнага акаўнта ў дадатку няма.\n• Чаго не збіраем: ніякай аналітыкі, рэкламы; ваша аўдыя не загружаецца нікуды, акрамя наладжанага вамі эндпойнта.\n\nАўдыя адпраўляецца толькі падчас актыўнага запісу — ніколі ў фоне.</string>
     <string name="mic_disclosure_privacy">Адкрыць палітыку прыватнасці</string>
     <string name="mic_disclosure_continue">Зразумела, працягнуць</string>
+    <string name="vocabulary_open_settings">Свой слоўнік</string>
+    <string name="vocabulary_title">Свой слоўнік</string>
+    <string name="vocabulary_description">Дадавайце імёны, тэрміны і словы, якія часта распазнаюцца няправільна. Спіс перадаецца распазнавальніку як падказка і паляпшае дакладнасць. Імёны пішыце з той вялікай літарай, якую хочаце бачыць у выніку.</string>
+    <string name="vocabulary_input_hint">Слова або кароткая фраза</string>
+    <string name="vocabulary_add">Дадаць</string>
+    <string name="vocabulary_counter">Слоў: %1$d · Сімвалаў: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Пакуль пуста. Дадайце імёны і тэрміны, якія выкарыстоўваеце часцей за ўсё.</string>
+    <string name="vocabulary_delete_cd">Выдаліць слова</string>
+    <string name="vocabulary_error_separator">Выкарыстоўвайце кнопку «Дадаць» — раздзяляльнікі не патрэбны</string>
+    <string name="vocabulary_error_duplicate">Ужо ў спісе</string>
+    <string name="vocabulary_error_limit">Дасягнуты ліміт сімвалаў. Выдаліце частку слоў.</string>
+    <string name="settings_single_word_strip_punct">Без кропкі для аднаго слова</string>
+    <string name="settings_single_word_strip_punct_hint">Зручна для галасавога пошуку па кантактах і іншых кароткіх запытах.</string>
 </resources>

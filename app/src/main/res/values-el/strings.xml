@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Όταν πατάτε το κουμπί του μικροφώνου, αυτό το πληκτρολόγιο καταγράφει ήχο και τον στέλνει σε μια υπηρεσία μετατροπής φωνής σε κείμενο.\n\n• Τι αποστέλλεται: μόνο ο ήχος μιας ηχογράφησης που ξεκινήσατε εσείς.\n• Πού πηγαίνει: από προεπιλογή στο Groq Whisper. Μπορείτε να το αλλάξετε στις ρυθμίσεις σε οποιοδήποτε άλλο σημείο αποστολής Whisper συμβατό με το OpenAI, συμπεριλαμβανομένου του OpenAI.\n• Επαλήθευση: τα αιτήματα γίνονται με το δικό σας κλειδί API· η εφαρμογή δεν έχει ενσωματωμένο λογαριασμό.\n• Τι δεν συλλέγεται: καμία αναλυτική, καμία διαφήμιση· ο ήχος σας δεν αποστέλλεται πουθενά εκτός από το σημείο που έχετε ρυθμίσει.\n\nΟ ήχος αποστέλλεται μόνο κατά την ενεργό ηχογράφηση — ποτέ στο παρασκήνιο.</string>
     <string name="mic_disclosure_privacy">Άνοιγμα πολιτικής απορρήτου</string>
     <string name="mic_disclosure_continue">Κατανοητό, συνέχεια</string>
+    <string name="vocabulary_open_settings">Προσωπικό λεξιλόγιο</string>
+    <string name="vocabulary_title">Προσωπικό λεξιλόγιο</string>
+    <string name="vocabulary_description">Προσθέστε ονόματα, τεχνικούς όρους ή λέξεις που αναγνωρίζονται συχνά λανθασμένα. Η λίστα στέλνεται στον αναγνωριστή ως υπόδειξη και βελτιώνει την ακρίβεια. Γράψτε τα ονόματα με το κεφαλαίο γράμμα που θέλετε στο αποτέλεσμα.</string>
+    <string name="vocabulary_input_hint">Λέξη ή σύντομη φράση</string>
+    <string name="vocabulary_add">Προσθήκη</string>
+    <string name="vocabulary_counter">Λέξεις: %1$d · Χαρακτήρες: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Άδειο προς το παρόν. Προσθέστε ονόματα και όρους που χρησιμοποιείτε πιο συχνά.</string>
+    <string name="vocabulary_delete_cd">Αφαίρεση λέξης</string>
+    <string name="vocabulary_error_separator">Χρησιμοποιήστε το κουμπί Προσθήκη — οι διαχωριστικοί δεν επιτρέπονται</string>
+    <string name="vocabulary_error_duplicate">Ήδη στη λίστα</string>
+    <string name="vocabulary_error_limit">Επιτεύχθηκε το όριο χαρακτήρων. Αφαιρέστε πρώτα κάποιες λέξεις.</string>
+    <string name="settings_single_word_strip_punct">Χωρίς τελεία για μία λέξη</string>
+    <string name="settings_single_word_strip_punct_hint">Χρήσιμο για φωνητική αναζήτηση επαφών και άλλα σύντομα ερωτήματα.</string>
 </resources>

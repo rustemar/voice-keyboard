@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">जब आप माइक्रोफ़ोन बटन दबाते हैं, यह कीबोर्ड ऑडियो रिकॉर्ड करता है और उसे टेक्स्ट में बदलने के लिए स्पीच‑टू‑टेक्स्ट सेवा को भेजता है।\n\n• क्या भेजा जाता है: केवल उस रिकॉर्डिंग का ऑडियो जो आप स्वयं शुरू करते हैं।\n• कहाँ जाता है: डिफ़ॉल्ट रूप से, Groq Whisper को। आप इसे सेटिंग्स में किसी भी OpenAI‑कम्पैटिबल Whisper एंडपॉइंट पर बदल सकते हैं, OpenAI सहित।\n• प्रमाणीकरण: अनुरोध आपकी अपनी API कुंजी से किए जाते हैं; ऐप में कोई बिल्ट‑इन अकाउंट नहीं है।\n• क्या एकत्र नहीं किया जाता: कोई एनालिटिक्स नहीं, कोई विज्ञापन नहीं; आपका ऑडियो आपके द्वारा कॉन्फ़िगर किए गए एंडपॉइंट के अलावा कहीं भी अपलोड नहीं होता।\n\nऑडियो केवल सक्रिय रिकॉर्डिंग के दौरान भेजा जाता है — पृष्ठभूमि में कभी नहीं।</string>
     <string name="mic_disclosure_privacy">गोपनीयता नीति खोलें</string>
     <string name="mic_disclosure_continue">समझ गया, जारी रखें</string>
+    <string name="vocabulary_open_settings">कस्टम शब्दकोश</string>
+    <string name="vocabulary_title">कस्टम शब्दकोश</string>
+    <string name="vocabulary_description">नाम, तकनीकी शब्द या ऐसे शब्द जोड़ें जो अक्सर ग़लत पहचाने जाते हैं। सूची सुझाव के रूप में पहचानकर्ता को भेजी जाती है और सटीकता बढ़ाती है। नामों को उसी बड़े अक्षर से लिखें जो आप परिणाम में देखना चाहते हैं।</string>
+    <string name="vocabulary_input_hint">शब्द या छोटा वाक्यांश</string>
+    <string name="vocabulary_add">जोड़ें</string>
+    <string name="vocabulary_counter">शब्द: %1$d · अक्षर: %2$d / %3$d</string>
+    <string name="vocabulary_empty">अभी ख़ाली है। सबसे ज़्यादा उपयोग होने वाले नाम और शब्द जोड़ें।</string>
+    <string name="vocabulary_delete_cd">शब्द हटाएँ</string>
+    <string name="vocabulary_error_separator">जोड़ें बटन का उपयोग करें — विभाजक की अनुमति नहीं है</string>
+    <string name="vocabulary_error_duplicate">पहले से सूची में</string>
+    <string name="vocabulary_error_limit">अक्षर सीमा पूरी हुई। पहले कुछ शब्द हटाएँ।</string>
+    <string name="settings_single_word_strip_punct">एक शब्द के लिए पूर्ण विराम छोड़ें</string>
+    <string name="settings_single_word_strip_punct_hint">संपर्कों में आवाज़ खोज और अन्य छोटे प्रश्नों के लिए उपयोगी।</string>
 </resources>

@@ -25,6 +25,8 @@ class PreferenceStore(private val context: Context) {
         val AUTO_RECORD = booleanPreferencesKey("auto_record")
         val ADD_TRAILING_SPACE = booleanPreferencesKey("add_trailing_space")
         val PROMPT = stringPreferencesKey("prompt")
+        val SINGLE_WORD_STRIP_PUNCT = booleanPreferencesKey("single_word_strip_punct")
+        val VOCABULARY = stringPreferencesKey("vocabulary")
 
         // Post-processing config
         val PP_ENABLED = booleanPreferencesKey("pp_enabled")
@@ -68,7 +70,8 @@ class PreferenceStore(private val context: Context) {
             language = prefs[Keys.LANGUAGE] ?: defaultLang,
             autoRecord = prefs[Keys.AUTO_RECORD] ?: false,
             addTrailingSpace = prefs[Keys.ADD_TRAILING_SPACE] ?: true,
-            prompt = prefs[Keys.PROMPT] ?: defaultPrompt
+            prompt = prefs[Keys.PROMPT] ?: defaultPrompt,
+            singleWordStripPunctuation = prefs[Keys.SINGLE_WORD_STRIP_PUNCT] ?: false
         )
     }
 
@@ -81,6 +84,18 @@ class PreferenceStore(private val context: Context) {
             data[Keys.AUTO_RECORD] = prefs.autoRecord
             data[Keys.ADD_TRAILING_SPACE] = prefs.addTrailingSpace
             data[Keys.PROMPT] = prefs.prompt
+            data[Keys.SINGLE_WORD_STRIP_PUNCT] = prefs.singleWordStripPunctuation
+        }
+    }
+
+    suspend fun loadVocabulary(): String {
+        val prefs = context.store.data.first()
+        return prefs[Keys.VOCABULARY] ?: ""
+    }
+
+    suspend fun saveVocabulary(value: String) {
+        context.store.edit { data ->
+            data[Keys.VOCABULARY] = value
         }
     }
 

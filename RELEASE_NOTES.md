@@ -1,6 +1,5 @@
-v1.7.5 — Smarter text cleanup
+v1.7.6 — Custom vocabulary
 
-- Fix and Shorten modes now handle self-corrections ("wait no", "не, я имел в виду") — only the corrected version is kept
-- Better removal of false starts, stutters, and accidental repetitions
-- Preserves technical terms, proper nouns, and the speaker's voice more reliably
-- Empty or filler-only input now produces no output
+- New "Custom vocabulary" screen in settings — add names, technical terms, and other words that get misrecognized; the list is sent as a hint to the recognizer to improve accuracy
+- New "Drop period for single-word output" toggle — useful for voice search in contacts or search boxes, where a trailing period is unwanted
+- Both features can be edited at any time from Settings

@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Quando você toca no botão do microfone, este teclado grava áudio e o envia para um serviço de reconhecimento de fala para convertê-lo em texto.\n\n• O que é enviado: apenas o áudio de uma gravação que você mesmo inicia.\n• Para onde vai: por padrão, para o Groq Whisper. Nas configurações, você pode mudar para qualquer endpoint Whisper compatível com OpenAI, incluindo o próprio OpenAI.\n• Autenticação: as requisições são feitas com a sua própria chave de API; o app não inclui conta integrada.\n• O que não é coletado: sem analytics, sem publicidade; seu áudio não é enviado para lugar algum além do endpoint que você configurar.\n\nO áudio só é enviado durante uma gravação ativa — nunca em segundo plano.</string>
     <string name="mic_disclosure_privacy">Abrir política de privacidade</string>
     <string name="mic_disclosure_continue">Entendi, continuar</string>
+    <string name="vocabulary_open_settings">Vocabulário personalizado</string>
+    <string name="vocabulary_title">Vocabulário personalizado</string>
+    <string name="vocabulary_description">Adicione nomes, termos técnicos ou palavras frequentemente mal reconhecidas. A lista é enviada como dica ao reconhecedor para melhorar a precisão. Escreva os nomes com a maiúscula que quer ver no resultado.</string>
+    <string name="vocabulary_input_hint">Palavra ou frase curta</string>
+    <string name="vocabulary_add">Adicionar</string>
+    <string name="vocabulary_counter">Palavras: %1$d · Caracteres: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Vazio por enquanto. Adicione os nomes e termos que mais usa.</string>
+    <string name="vocabulary_delete_cd">Remover palavra</string>
+    <string name="vocabulary_error_separator">Use o botão Adicionar — separadores não são permitidos</string>
+    <string name="vocabulary_error_duplicate">Já está na lista</string>
+    <string name="vocabulary_error_limit">Limite de caracteres atingido. Remova algumas palavras primeiro.</string>
+    <string name="settings_single_word_strip_punct">Sem ponto para palavra única</string>
+    <string name="settings_single_word_strip_punct_hint">Útil para pesquisa por voz em contactos e outras consultas curtas.</string>
 </resources>

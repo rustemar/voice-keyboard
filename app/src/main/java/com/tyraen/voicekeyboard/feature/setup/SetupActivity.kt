@@ -26,6 +26,8 @@ import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.core.logging.FaultCapture
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingActivity
+import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
+import com.tyraen.voicekeyboard.feature.vocabulary.VocabularyActivity
 import kotlinx.coroutines.*
 
 class SetupActivity : AppCompatActivity() {
@@ -39,6 +41,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var editPrompt: EditText
     private lateinit var switchAutoRecord: Switch
     private lateinit var switchAddSpace: Switch
+    private lateinit var switchSingleWordStripPunct: Switch
     private lateinit var txtApiStatus: TextView
     private lateinit var txtTestResult: TextView
     private lateinit var txtTestStatus: TextView
@@ -49,6 +52,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var btnClearLogs: Button
     private lateinit var btnCheckUpdate: Button
     private lateinit var btnPostProcessing: Button
+    private lateinit var btnVocabulary: Button
     private lateinit var txtVersion: TextView
 
     private val preferenceStore: PreferenceStore get() = ServiceLocator.preferenceStore
@@ -94,6 +98,7 @@ class SetupActivity : AppCompatActivity() {
         editPrompt = findViewById(R.id.editPrompt)
         switchAutoRecord = findViewById(R.id.switchAutoRecord)
         switchAddSpace = findViewById(R.id.switchAddSpace)
+        switchSingleWordStripPunct = findViewById(R.id.switchSingleWordStripPunct)
         txtApiStatus = findViewById(R.id.txtApiStatus)
         txtTestResult = findViewById(R.id.txtTestResult)
         txtTestStatus = findViewById(R.id.txtTestStatus)
@@ -104,6 +109,7 @@ class SetupActivity : AppCompatActivity() {
         btnClearLogs = findViewById(R.id.btnClearLogs)
         btnCheckUpdate = findViewById(R.id.btnCheckUpdate)
         btnPostProcessing = findViewById(R.id.btnPostProcessing)
+        btnVocabulary = findViewById(R.id.btnVocabulary)
         txtVersion = findViewById(R.id.txtVersion)
 
         val txtGetApiKey: TextView = findViewById(R.id.txtGetApiKey)
@@ -148,6 +154,10 @@ class SetupActivity : AppCompatActivity() {
 
         btnPostProcessing.setOnClickListener {
             startActivity(Intent(this, PostProcessingActivity::class.java))
+        }
+
+        btnVocabulary.setOnClickListener {
+            startActivity(Intent(this, VocabularyActivity::class.java))
         }
     }
 
@@ -219,6 +229,7 @@ class SetupActivity : AppCompatActivity() {
             editPrompt.setText(p.prompt)
             switchAutoRecord.isChecked = p.autoRecord
             switchAddSpace.isChecked = p.addTrailingSpace
+            switchSingleWordStripPunct.isChecked = p.singleWordStripPunctuation
         }
     }
 
@@ -288,12 +299,13 @@ class SetupActivity : AppCompatActivity() {
         val prefs = buildPreferences()
 
         activeJob = scope.launch {
+            val vocabulary = preferenceStore.loadVocabulary()
             val config = com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig(
                 apiKey = prefs.apiKey,
                 endpoint = prefs.endpoint,
                 model = prefs.model,
                 language = prefs.language,
-                prompt = prefs.prompt
+                prompt = WhisperPromptBuilder.build(prefs.prompt, vocabulary)
             )
 
             val result = speechClient.transcribe(file, config)
@@ -321,7 +333,8 @@ class SetupActivity : AppCompatActivity() {
         language = editLanguage.text.toString().trim(),
         autoRecord = switchAutoRecord.isChecked,
         addTrailingSpace = switchAddSpace.isChecked,
-        prompt = editPrompt.text.toString().trim()
+        prompt = editPrompt.text.toString().trim(),
+        singleWordStripPunctuation = switchSingleWordStripPunct.isChecked
     )
 
     private fun showApiStatus(message: String, color: Int) {

@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Wenn Sie auf die Mikrofontaste tippen, nimmt diese Tastatur Audio auf und sendet es an einen Spracherkennungsdienst, um Ihre Stimme in Text umzuwandeln.\n\n• Was gesendet wird: nur das Audio einer Aufnahme, die Sie selbst gestartet haben.\n• Wohin: standardmäßig an Groq Whisper. In den Einstellungen können Sie auf jeden mit OpenAI kompatiblen Whisper-Endpunkt wechseln, einschließlich OpenAI selbst.\n• Authentifizierung: Anfragen werden mit Ihrem eigenen API-Schlüssel gestellt; die App hat kein integriertes Konto.\n• Was nicht erfasst wird: keine Analytik, keine Werbung; Ihr Audio wird nirgendwo hochgeladen außer an den von Ihnen konfigurierten Endpunkt.\n\nAudio wird nur während einer aktiven Aufnahme gesendet — niemals im Hintergrund.</string>
     <string name="mic_disclosure_privacy">Datenschutzerklärung öffnen</string>
     <string name="mic_disclosure_continue">Verstanden, fortfahren</string>
+    <string name="vocabulary_open_settings">Eigenes Wörterbuch</string>
+    <string name="vocabulary_title">Eigenes Wörterbuch</string>
+    <string name="vocabulary_description">Fügen Sie Namen, Fachbegriffe oder andere Wörter hinzu, die oft falsch erkannt werden. Die Liste wird an die Spracherkennung als Hinweis übermittelt und verbessert die Genauigkeit. Schreiben Sie Namen so, wie sie in der Ausgabe erscheinen sollen.</string>
+    <string name="vocabulary_input_hint">Wort oder kurze Phrase</string>
+    <string name="vocabulary_add">Hinzufügen</string>
+    <string name="vocabulary_counter">Wörter: %1$d · Zeichen: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Noch leer. Fügen Sie häufig verwendete Namen und Begriffe hinzu.</string>
+    <string name="vocabulary_delete_cd">Wort entfernen</string>
+    <string name="vocabulary_error_separator">Verwenden Sie die Schaltfläche „Hinzufügen“ — Trennzeichen sind nicht erlaubt</string>
+    <string name="vocabulary_error_duplicate">Bereits in der Liste</string>
+    <string name="vocabulary_error_limit">Zeichenlimit erreicht. Entfernen Sie zuerst einige Wörter.</string>
+    <string name="settings_single_word_strip_punct">Punkt bei Einzelwort weglassen</string>
+    <string name="settings_single_word_strip_punct_hint">Praktisch für Sprachsuche in Kontakten und andere kurze Abfragen.</string>
 </resources>

@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">当您点按麦克风按钮时，此键盘会录制音频并将其发送至语音转文字服务，以将您的语音转换为文字。\n\n• 发送内容：仅发送您自己开始的录音音频。\n• 发送至哪里：默认发送至 Groq Whisper。您可以在设置中切换至任何兼容 OpenAI 的 Whisper 端点，包括 OpenAI 自身。\n• 身份验证：请求使用您自己的 API 密钥；应用本身不内置任何帐户。\n• 不收集的内容：不进行任何分析，无广告；您的音频不会上传到您配置的端点以外的任何地方。\n\n仅在您主动录音时发送音频 — 绝不会在后台发送。</string>
     <string name="mic_disclosure_privacy">打开隐私政策</string>
     <string name="mic_disclosure_continue">明白，继续</string>
+    <string name="vocabulary_open_settings">自定义词汇</string>
+    <string name="vocabulary_title">自定义词汇</string>
+    <string name="vocabulary_description">添加经常被识别错误的姓名、专业术语或单词。该列表作为提示发送给识别器，可提升准确度。请按希望在结果中显示的大小写来输入姓名。</string>
+    <string name="vocabulary_input_hint">单词或短语</string>
+    <string name="vocabulary_add">添加</string>
+    <string name="vocabulary_counter">词数：%1$d · 字符：%2$d / %3$d</string>
+    <string name="vocabulary_empty">暂无内容。添加你最常用的姓名和术语。</string>
+    <string name="vocabulary_delete_cd">移除词</string>
+    <string name="vocabulary_error_separator">请使用「添加」按钮 — 不允许使用分隔符</string>
+    <string name="vocabulary_error_duplicate">已在列表中</string>
+    <string name="vocabulary_error_limit">已达到字符上限。请先移除一些词。</string>
+    <string name="settings_single_word_strip_punct">单词输出不加句号</string>
+    <string name="settings_single_word_strip_punct_hint">适用于联系人语音搜索和其他简短查询。</string>
 </resources>

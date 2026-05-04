@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Kun napautat mikrofoni­painiketta, tämä näppäimistö tallentaa ääntä ja lähettää sen puheentunnistus­palveluun muunnettavaksi tekstiksi.\n\n• Mitä lähetetään: vain itse aloittamasi tallennuksen ääni.\n• Minne menee: oletuksena Groq Whisperiin. Voit vaihtaa asetuksista mihin tahansa OpenAI-yhteensopivaan Whisper-päätepisteeseen, mukaan lukien OpenAI itse.\n• Tunnistautuminen: pyynnöt tehdään omalla API-avaimellasi; sovelluksessa ei ole sisäänrakennettua tiliä.\n• Mitä ei kerätä: ei analytiikkaa, ei mainoksia; ääntäsi ei ladata mihinkään paitsi määrittämääsi päätepisteeseen.\n\nÄänitietoa lähetetään vain aktiivisen tallennuksen aikana — ei koskaan taustalla.</string>
     <string name="mic_disclosure_privacy">Avaa tietosuojakäytäntö</string>
     <string name="mic_disclosure_continue">Selvä, jatka</string>
+    <string name="vocabulary_open_settings">Oma sanasto</string>
+    <string name="vocabulary_title">Oma sanasto</string>
+    <string name="vocabulary_description">Lisää nimiä, teknisiä termejä tai sanoja, jotka tunnistetaan usein väärin. Luettelo lähetetään tunnistimelle vihjeenä ja parantaa tarkkuutta. Kirjoita nimet sillä isolla kirjaimella, jonka haluat tulokseen.</string>
+    <string name="vocabulary_input_hint">Sana tai lyhyt lause</string>
+    <string name="vocabulary_add">Lisää</string>
+    <string name="vocabulary_counter">Sanoja: %1$d · Merkkejä: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Vielä tyhjä. Lisää eniten käyttämäsi nimet ja termit.</string>
+    <string name="vocabulary_delete_cd">Poista sana</string>
+    <string name="vocabulary_error_separator">Käytä Lisää-painiketta — erottimia ei sallita</string>
+    <string name="vocabulary_error_duplicate">Jo luettelossa</string>
+    <string name="vocabulary_error_limit">Merkkiraja saavutettu. Poista ensin joitain sanoja.</string>
+    <string name="settings_single_word_strip_punct">Ei pistettä yksittäiselle sanalle</string>
+    <string name="settings_single_word_strip_punct_hint">Hyödyllinen yhteystietojen äänihaussa ja muissa lyhyissä kyselyissä.</string>
 </resources>

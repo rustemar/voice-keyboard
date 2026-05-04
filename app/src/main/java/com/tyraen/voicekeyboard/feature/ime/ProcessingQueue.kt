@@ -29,6 +29,7 @@ class ProcessingQueue(
         val audioFile: File,
         val transcriptionConfig: TranscriptionConfig,
         val addTrailingSpace: Boolean,
+        val singleWordStripPunctuation: Boolean,
         val ppPreferences: PostProcessingPreferences?,
         val ppFix: Boolean,
         val ppShorten: Boolean,
@@ -95,17 +96,27 @@ class ProcessingQueue(
 
         DiagnosticLog.record(TAG, "Transcription success: ${rawText.take(50)}")
 
+        val cleanedText = if (item.singleWordStripPunctuation) stripSingleWordPunctuation(rawText) else rawText
+
         // Step 2: Post-process
         val hasPostProcessing = item.ppPreferences != null && !item.ppPreferences.apiKey.isBlank() &&
             (item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal)
         if (hasPostProcessing) {
             onProcessingPhaseChanged(ProcessingPhase.POST_PROCESSING)
         }
-        val processed = maybePostProcess(rawText, item)
+        val processed = maybePostProcess(cleanedText, item)
 
         // Step 3: Insert text
         val output = if (item.addTrailingSpace) "$processed " else processed
         onTextReady(output)
+    }
+
+    private fun stripSingleWordPunctuation(text: String): String {
+        val trimmed = text.trim()
+        if (trimmed.isEmpty()) return text
+        // "Single word" = no whitespace inside the trimmed string.
+        if (trimmed.any { it.isWhitespace() }) return text
+        return trimmed.trimEnd('.', '!', '?', '。', '！', '？')
     }
 
     private suspend fun maybePostProcess(text: String, item: QueueItem): String {

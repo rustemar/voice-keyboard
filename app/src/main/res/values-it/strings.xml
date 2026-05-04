@@ -84,4 +84,17 @@
     <string name="mic_disclosure_body">Quando tocchi il pulsante del microfono, questa tastiera registra l\'audio e lo invia a un servizio di riconoscimento vocale per convertirlo in testo.\n\n• Cosa viene inviato: solo l\'audio di una registrazione che avvii tu stesso.\n• Dove va: per impostazione predefinita, a Groq Whisper. Nelle impostazioni puoi cambiarlo con qualsiasi endpoint Whisper compatibile con OpenAI, incluso OpenAI stesso.\n• Autenticazione: le richieste vengono effettuate con la tua chiave API; l\'app non include alcun account integrato.\n• Cosa non viene raccolto: nessuna analisi, nessuna pubblicità; il tuo audio non viene caricato da nessuna parte tranne sull\'endpoint che configuri.\n\nL\'audio viene inviato solo durante una registrazione attiva — mai in background.</string>
     <string name="mic_disclosure_privacy">Apri l\'informativa sulla privacy</string>
     <string name="mic_disclosure_continue">Ho capito, continua</string>
+    <string name="vocabulary_open_settings">Vocabolario personalizzato</string>
+    <string name="vocabulary_title">Vocabolario personalizzato</string>
+    <string name="vocabulary_description">Aggiungi nomi, termini tecnici o parole spesso riconosciute male. L\'elenco viene inviato al riconoscitore come suggerimento per migliorare la precisione. Scrivi i nomi con la maiuscola che vuoi vedere nel risultato.</string>
+    <string name="vocabulary_input_hint">Parola o frase breve</string>
+    <string name="vocabulary_add">Aggiungi</string>
+    <string name="vocabulary_counter">Parole: %1$d · Caratteri: %2$d / %3$d</string>
+    <string name="vocabulary_empty">Ancora vuoto. Aggiungi i nomi e i termini che usi più spesso.</string>
+    <string name="vocabulary_delete_cd">Rimuovi parola</string>
+    <string name="vocabulary_error_separator">Usa il pulsante Aggiungi — i separatori non sono ammessi</string>
+    <string name="vocabulary_error_duplicate">Già nell\'elenco</string>
+    <string name="vocabulary_error_limit">Limite di caratteri raggiunto. Rimuovi prima alcune parole.</string>
+    <string name="settings_single_word_strip_punct">Niente punto per parola singola</string>
+    <string name="settings_single_word_strip_punct_hint">Utile per la ricerca vocale nei contatti e altre query brevi.</string>
 </resources>
