@@ -1,4 +1,4 @@
-v1.7.7 — Vocabulary in post-processing
+v1.7.8 — Fix vocabulary leak on silence
 
-- The custom vocabulary list is now also sent to the post-processing model (Fix, Shorten, Emoji, Rhyme, Translate) — rare names survive cleanup instead of being "corrected" to common spellings
-- Terminal mode is excluded by design
+- Fixed: when nothing was said, post-processing could output a list of vocabulary words
+- The vocabulary is now passed as a strict spelling reference, never as content to insert

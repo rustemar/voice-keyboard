@@ -17,13 +17,13 @@ object PostProcessingPrompts {
 
     fun build(fix: Boolean, shorten: Boolean, emoji: Boolean, text: String, prefs: PostProcessingPreferences, vocabulary: String = ""): PromptParts {
         val parts = mutableListOf(GUARD)
+        val vocabHint = vocabularyHint(vocabulary)
+        if (vocabHint.isNotEmpty()) parts.add(vocabHint)
         when {
             shorten -> parts.add(prefs.resolvedPromptShorten())
             fix -> parts.add(prefs.resolvedPromptFix())
         }
         if (emoji) parts.add(prefs.resolvedPromptEmoji())
-        val vocabHint = vocabularyHint(vocabulary)
-        if (vocabHint.isNotEmpty()) parts.add(vocabHint)
         parts.add(prefs.resolvedPromptSuffix())
 
         return PromptParts(
@@ -35,15 +35,15 @@ object PostProcessingPrompts {
     fun buildTranslate(text: String, targetLangCode: String, vocabulary: String = ""): PromptParts {
         val langName = TranscriptionLocale.resolve(targetLangCode)?.displayName ?: targetLangCode
 
-        val parts = mutableListOf(
-            GUARD,
+        val parts = mutableListOf(GUARD)
+        val vocabHint = vocabularyHint(vocabulary)
+        if (vocabHint.isNotEmpty()) parts.add(vocabHint)
+        parts.add(
             "Translate the text into $langName ($targetLangCode). " +
                 "Preserve the original tone, style, and formatting. " +
                 "Keep proper nouns, brand names, and technical terms unchanged unless they have a standard translation. " +
                 "Output ONLY the translated text."
         )
-        val vocabHint = vocabularyHint(vocabulary)
-        if (vocabHint.isNotEmpty()) parts.add(vocabHint)
 
         return PromptParts(
             systemInstruction = parts.joinToString("\n\n"),
@@ -52,8 +52,10 @@ object PostProcessingPrompts {
     }
 
     fun buildRhyme(text: String, vocabulary: String = ""): PromptParts {
-        val parts = mutableListOf(
-            GUARD,
+        val parts = mutableListOf(GUARD)
+        val vocabHint = vocabularyHint(vocabulary)
+        if (vocabHint.isNotEmpty()) parts.add(vocabHint)
+        parts.add(
             "Rewrite the text as a poem with good rhymes. " +
                 "Preserve the original meaning and key points as closely as possible. " +
                 "Use the same language as the input text. " +
@@ -61,8 +63,6 @@ object PostProcessingPrompts {
                 "Make the rhymes natural and pleasant, not forced. " +
                 "Output ONLY the poem, no titles or explanations."
         )
-        val vocabHint = vocabularyHint(vocabulary)
-        if (vocabHint.isNotEmpty()) parts.add(vocabHint)
 
         return PromptParts(
             systemInstruction = parts.joinToString("\n\n"),
@@ -89,8 +89,8 @@ object PostProcessingPrompts {
             .filter { it.isNotEmpty() }
         if (items.isEmpty()) return ""
         val list = items.joinToString(", ")
-        return "The user has provided a custom vocabulary of names and terms. " +
-            "Preserve these tokens exactly as written — do not change spelling, capitalization, " +
-            "substitute, or translate them: $list."
+        return "Reference vocabulary (spelling hints only — NOT content to insert): $list. " +
+            "NEVER add or introduce any of these terms into the output if they are not already in the input. " +
+            "When a listed term DOES appear in the input, keep its spelling, capitalization, and form exactly."
     }
 }

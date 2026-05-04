@@ -68,7 +68,8 @@ class PostProcessingPromptsTest {
         assertTrue(build.systemInstruction.contains("Аркадий"))
         assertTrue(build.systemInstruction.contains("Тыраен"))
         assertTrue(build.systemInstruction.contains("Pavlinochka"))
-        assertTrue(build.systemInstruction.contains("custom vocabulary"))
+        assertTrue(build.systemInstruction.contains("Reference vocabulary"))
+        assertTrue(build.systemInstruction.contains("NEVER add"))
     }
 
     @Test fun `vocabulary is injected into rhyme prompt`() {
@@ -93,7 +94,7 @@ class PostProcessingPromptsTest {
             text = "x", prefs = prefs
         )
         assertEquals(withoutArg.systemInstruction, withEmpty.systemInstruction)
-        assertFalse(withEmpty.systemInstruction.contains("custom vocabulary"))
+        assertFalse(withEmpty.systemInstruction.contains("Reference vocabulary"))
     }
 
     @Test fun `whitespace-only vocabulary is treated as empty`() {
@@ -101,11 +102,11 @@ class PostProcessingPromptsTest {
             fix = true, shorten = false, emoji = false,
             text = "x", prefs = prefs, vocabulary = "\n\n   \n"
         )
-        assertFalse(build.systemInstruction.contains("custom vocabulary"))
+        assertFalse(build.systemInstruction.contains("Reference vocabulary"))
     }
 
     @Test fun `terminal prompt does not get vocabulary injection`() {
         val terminal = PostProcessingPrompts.buildTerminal("x", prefs)
-        assertFalse(terminal.systemInstruction.contains("custom vocabulary"))
+        assertFalse(terminal.systemInstruction.contains("Reference vocabulary"))
     }
 }
