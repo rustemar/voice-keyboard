@@ -1,6 +1,5 @@
-v1.8.0 — Stop names list from leaking on silence
+v1.8.1 — Strip trailing notes from post-processing output
 
-- Detects when Whisper returns the vocabulary list as a "transcription" of empty recordings, and drops it
-- Catches more silence artifacts: subtitle credits with "Корректор/Редактор", thanks lines in German/French
-- Stops eating real one-word dictation: short "Привет" / "Спасибо" / "Хорошо" pass through correctly
-- Three-name dictations like "Альфия, Алсу, Рустем" are preserved while seven-name hallucinations are not
+- Removes trailing "Note:" / "Footnote:" / "Disclaimer:" blocks (in any supported language) that post-processing sometimes appended after the actual text
+- Removes stray separator lines (---, ***, ___) at the end of the output
+- Strengthened the post-processing prompt to forbid these in the first place; the strip step is a safety net
