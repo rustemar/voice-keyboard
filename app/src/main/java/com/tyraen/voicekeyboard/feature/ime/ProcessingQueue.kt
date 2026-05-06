@@ -2,6 +2,7 @@ package com.tyraen.voicekeyboard.feature.ime
 
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingArtifactStripper
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingPrompts
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
@@ -131,10 +132,11 @@ class ProcessingQueue(
             DiagnosticLog.record(TAG, "Terminal mode")
             val terminalPrompt = PostProcessingPrompts.buildTerminal(processed, pp)
             val result = postProcessingClient.process(terminalPrompt, pp)
-            return result.getOrElse { error ->
+            val raw = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Terminal processing failed, using raw text", error)
                 processed
             }
+            return PostProcessingArtifactStripper.strip(raw)
         }
 
         // First: fix/shorten/emoji
@@ -146,6 +148,7 @@ class ProcessingQueue(
                 DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
                 processed
             }
+            processed = PostProcessingArtifactStripper.strip(processed)
         }
 
         // Then: rhyme
@@ -157,6 +160,7 @@ class ProcessingQueue(
                 DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
                 processed
             }
+            processed = PostProcessingArtifactStripper.strip(processed)
         }
 
         // Then: translate
@@ -168,6 +172,7 @@ class ProcessingQueue(
                 DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
                 processed
             }
+            processed = PostProcessingArtifactStripper.strip(processed)
         }
 
         return processed
