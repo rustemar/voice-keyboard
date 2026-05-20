@@ -1,5 +1,5 @@
-v1.8.1 — Strip trailing notes from post-processing output
+v1.8.2 — Strip trailing "Субтитры создавал X" hallucinations
 
-- Removes trailing "Note:" / "Footnote:" / "Disclaimer:" blocks (in any supported language) that post-processing sometimes appended after the actual text
-- Removes stray separator lines (---, ***, ___) at the end of the output
-- Strengthened the post-processing prompt to forbid these in the first place; the strip step is a safety net
+- Removes Whisper end-card credits appended after legitimate speech (the classic "Субтитры создавал DimaTorzok" tail, plus "Subtitles by …", "Sous-titres réalisés par …", "Untertitelung im Auftrag des …", "Спасибо за просмотр", etc.)
+- Real sentences that just happen to mention subtitles ("Я смотрел фильм. Субтитры были на английском.", "Включи субтитры пожалуйста.") pass through unchanged
+- Initials in credit lines ("И. Иванов", "А. Сёмкин") are recognized as part of the credit, not a sentence boundary

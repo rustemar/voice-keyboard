@@ -56,6 +56,53 @@ object HallucinationFilter {
         RegexOption.IGNORE_CASE
     )
 
+    /** Shape of the *start* of a hallucinated credit / end-card sentence.
+     *  Tighter than [subtitleCreditRegex] — requires a production verb
+     *  after the subtitle stem so that legitimate sentences that happen
+     *  to start with "Субтитры" (e.g. "Субтитры были на английском")
+     *  survive when they appear as the trailing sentence after real
+     *  speech. Used by [creditSentenceRegex]. */
+    private const val CREDIT_OPENER =
+        "(?:" +
+            // RU: "Субтитры / Субтитрирование <production verb>"
+            "(?:редактор\\s+)?(?:субтитры?|субтитрирование)\\s+" +
+            "(?:созда(?:ва)?л[аио]?|сделал[аио]?|подогнал[аио]?|подготовил[аио]?|" +
+            "выполнил[аио]?|редактировал[аио]?|корректировал[аио]?|переводил[аио]?|" +
+            "перев(?:ё|е)л[аио]?|написал[аио]?|оформил[аио]?|прислал[аио]?)\\b" +
+            // RU: "Корректор: X", "Редактор субтитров X"
+            "|корректор\\b\\s*[:.]?\\s*\\S+" +
+            "|редактор\\s+(?:субтитров|титров)\\s+\\S+" +
+            // EN
+            "|subtitles?\\s+(?:by|created\\s+by|provided\\s+by|edited\\s+by|made\\s+by)\\b" +
+            "|closed\\s+captions?\\s+by\\b" +
+            // FR
+            "|sous-titres?\\s+(?:réalisés?\\s+par|de|par|créés?\\s+par)\\b" +
+            "|sous-titrage\\b" +
+            // DE
+            "|untertitel(?:ung)?\\b" +
+            // End-card boilerplate (full known hallucination phrases).
+            "|продолжение\\s+следует\\b" +
+            "|спасибо\\s+за\\s+(?:просмотр|внимание)\\b" +
+            "|thanks?\\s+for\\s+(?:watching|listening)\\b" +
+            "|(?:please\\s+|like\\s+and\\s+)?subscribe\\b" +
+            "|merci\\s+d'avoir\\s+regard[ée]\\b" +
+            ")"
+
+    /** A whole sentence shaped like a credit line. Used to trim trailing
+     *  credit sentences appended after legitimate transcription
+     *  ("...изучить. Субтитры создавал DimaTorzok"). */
+    private val creditSentenceRegex = Regex(
+        "^\\s*$CREDIT_OPENER[^\\n]*\\s*$",
+        RegexOption.IGNORE_CASE
+    )
+
+    /** Splits at `.!?…` + whitespace, but NOT after a single capital letter
+     *  followed by a period — that's an initial ("И. Иванов", "А.Сёмкин"),
+     *  not a sentence boundary. Initials show up inside credit
+     *  hallucinations ("Субтитры подготовил И. Иванов") and a naive split
+     *  would break the credit into two fragments and miss the tail. */
+    private val sentenceBoundary = Regex("(?<=[.!?…])(?<![А-ЯЁA-Z]\\.)\\s+")
+
     private val tokenSplitter = Regex("[\\s,;.!?…]+")
 
     /** A real "Спасибо" / "Thank you" is ~0.5–1 s. Anything longer with
@@ -95,18 +142,44 @@ object HallucinationFilter {
         if (trimmed.isEmpty()) return ""
         if (trimmed.all { it in ".,;:!?…·•–—-~​ " }) return ""
 
-        if (subtitleCreditRegex.matches(trimmed)) return ""
-        if (subtitleCreditCooccurrenceRegex.matches(trimmed)) return ""
+        // Strip trailing credit-shape sentences before running the full-line
+        // checks: Whisper sometimes appends "Субтитры создавал X" / "Sous-
+        // titres réalisés par X" *after* legitimate speech, so the start-
+        // anchored regexes below won't catch it.
+        val stripped = stripTrailingCreditTail(trimmed)
+        if (stripped.isEmpty()) return ""
+        if (stripped.all { it in ".,;:!?…·•–—-~​ " }) return ""
 
-        val normalized = trimmed.trimEnd('.', ',', '!', '?', '…', ' ').lowercase()
+        if (subtitleCreditRegex.matches(stripped)) return ""
+        if (subtitleCreditCooccurrenceRegex.matches(stripped)) return ""
+
+        val normalized = stripped.trimEnd('.', ',', '!', '?', '…', ' ').lowercase()
         if (normalized in alwaysFilterPhrases) return ""
 
         val isLong = recordingDurationMs == 0L || recordingDurationMs > SHORT_RECORDING_THRESHOLD_MS
         if (isLong && normalized in durationGatedPhrases) return ""
 
-        if (isVocabEcho(trimmed, vocabulary)) return ""
+        if (isVocabEcho(stripped, vocabulary)) return ""
 
-        return trimmed
+        return stripped
+    }
+
+    /** Removes trailing sentences shaped like Whisper end-card credits.
+     *  Iterates from the end so chained credits ("...изучить. Субтитры
+     *  создавал X. Спасибо за просмотр.") collapse in one pass. The
+     *  per-sentence regex requires a production verb after the subtitle
+     *  stem, so a real "...И субтитры были на английском." survives. */
+    private fun stripTrailingCreditTail(text: String): String {
+        val sentences = text.split(sentenceBoundary).toMutableList()
+        var changed = false
+        while (sentences.isNotEmpty() &&
+            creditSentenceRegex.matches(sentences.last().trim())
+        ) {
+            sentences.removeAt(sentences.size - 1)
+            changed = true
+        }
+        if (!changed) return text
+        return sentences.joinToString(" ").trimEnd()
     }
 
     /** True when Whisper appears to have regurgitated the vocabulary bias

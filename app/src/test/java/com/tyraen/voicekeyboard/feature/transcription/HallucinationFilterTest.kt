@@ -274,4 +274,86 @@ class HallucinationFilterTest {
             )
         )
     }
+
+    @Test fun `trailing subtitle credit after legitimate speech is stripped`() {
+        // Real log evidence: a long legitimate dictation ended with
+        // "Субтитры создавал DimaTorzok" appended by Whisper. The start-
+        // anchored regex never fired because the whole text isn't a
+        // credit — only the trailing sentence is. The tail-strip should
+        // remove the credit and leave the real text intact.
+        val text = "Я уже твёрдо намерен идти завтра или послезавтра. " +
+            "Субтитры создавал DimaTorzok"
+        assertEquals(
+            "Я уже твёрдо намерен идти завтра или послезавтра.",
+            HallucinationFilter.clean(text, recordingDurationMs = 60_000)
+        )
+    }
+
+    @Test fun `trailing credit handles RU verb variants`() {
+        val variants = listOf(
+            "Привет. Субтитры создавал DimaTorzok",
+            "Привет. Субтитры создал Иван",
+            "Привет. Субтитры сделал корректор",
+            "Привет. Субтитры подогнал DimaTorzok",
+            "Привет. Субтитры подготовил И. Иванов",
+            "Привет. Субтитры выполнил И. Иванов",
+            "Привет. Субтитры перевёл DimaTorzok",
+            "Привет. Субтитры перевел DimaTorzok",
+            "Привет. Редактор субтитров А.Сёмкин",
+            "Привет. Корректор: А.Егорова"
+        )
+        for (text in variants) {
+            assertEquals(
+                "expected tail-strip for: $text",
+                "Привет.",
+                HallucinationFilter.clean(text)
+            )
+        }
+    }
+
+    @Test fun `trailing credit handles non-russian variants`() {
+        assertEquals(
+            "Hello there.",
+            HallucinationFilter.clean("Hello there. Subtitles by Anonymous")
+        )
+        assertEquals(
+            "Bonjour.",
+            HallucinationFilter.clean("Bonjour. Sous-titres réalisés par la communauté")
+        )
+        assertEquals(
+            "Guten Tag.",
+            HallucinationFilter.clean("Guten Tag. Untertitelung im Auftrag des ZDF, 2018")
+        )
+    }
+
+    @Test fun `multiple trailing credit sentences are stripped in one pass`() {
+        val text = "Я закончил мысль. Субтитры создавал DimaTorzok. Спасибо за просмотр."
+        assertEquals(
+            "Я закончил мысль.",
+            HallucinationFilter.clean(text)
+        )
+    }
+
+    @Test fun `trailing sentence starting with субтитры but not a credit survives`() {
+        // The tail-strip requires a production verb after the subtitle stem,
+        // so a legitimate sentence that happens to start with "Субтитры"
+        // ("Субтитры были на английском") must pass through.
+        assertEquals(
+            "Я смотрел фильм. Субтитры были на английском.",
+            HallucinationFilter.clean("Я смотрел фильм. Субтитры были на английском.")
+        )
+        assertEquals(
+            "Включи субтитры пожалуйста.",
+            HallucinationFilter.clean("Включи субтитры пожалуйста.")
+        )
+    }
+
+    @Test fun `legitimate text continuing after the credit is preserved`() {
+        // Defensive: if Whisper somehow puts a credit shape mid-text and
+        // continues with more legitimate speech afterwards, we leave the
+        // text alone — the tail-strip only fires when the credit IS the
+        // trailing sentence(s).
+        val text = "Привет. Субтитры создавал DimaTorzok. Это интересное наблюдение."
+        assertEquals(text, HallucinationFilter.clean(text))
+    }
 }
