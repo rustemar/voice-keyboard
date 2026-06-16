@@ -15,6 +15,8 @@ class InputPanelController(rootView: View) {
     private val btnCancel: ImageButton = rootView.findViewById(R.id.btnCancel)
     private val progressBar: ProgressBar = rootView.findViewById(R.id.progressBar)
     private val queueBadge: TextView = rootView.findViewById(R.id.queueBadge)
+    val retryFrame: View = rootView.findViewById(R.id.retryFrame)
+    private val retryBadge: TextView = rootView.findViewById(R.id.retryBadge)
     val clipboardBar: View = rootView.findViewById(R.id.clipboardBar)
     private val clipboardText: TextView = rootView.findViewById(R.id.clipboardText)
 
@@ -76,6 +78,16 @@ class InputPanelController(rootView: View) {
         // If in Ready phase, update progress bar and status text
         if (currentPhase is InputPhase.Ready) {
             applyQueueState()
+        }
+    }
+
+    /** Show/hide the "resend failed recordings" button and its count badge. */
+    fun updateFailedCount(count: Int) {
+        if (count > 0) {
+            retryBadge.text = count.toString()
+            retryFrame.visibility = View.VISIBLE
+        } else {
+            retryFrame.visibility = View.GONE
         }
     }
 

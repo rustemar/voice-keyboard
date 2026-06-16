@@ -26,6 +26,7 @@ class InputOrchestrator(
     private val onAmplitude: (Int) -> Unit,
     private val onQueueCountChanged: (Int) -> Unit,
     private val onProcessingPhaseChanged: (ProcessingQueue.ProcessingPhase) -> Unit,
+    private val onFailedCountChanged: (Int) -> Unit = {},
     private val onPreferencesLoaded: () -> Unit = {}
 ) {
 
@@ -50,8 +51,16 @@ class InputOrchestrator(
         },
         onError = { message ->
             DiagnosticLog.record(TAG, "Queue error: $message")
+        },
+        onFailedCountChanged = { count ->
+            onFailedCountChanged(count)
         }
     )
+
+    /** Re-send every recording that failed transcription and is waiting for manual retry. */
+    fun retryFailed() {
+        processingQueue.retryFailed()
+    }
 
     var currentPhase: InputPhase = InputPhase.Ready
         private set

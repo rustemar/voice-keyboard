@@ -67,6 +67,7 @@ class DictationInputMethod : InputMethodService() {
             onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
             onQueueCountChanged = { count -> panel.updateQueueCount(count) },
             onProcessingPhaseChanged = { phase -> panel.updateProcessingPhase(phase) },
+            onFailedCountChanged = { count -> panel.updateFailedCount(count) },
             onPreferencesLoaded = { refreshPostProcessingUI() }
         )
 
@@ -123,9 +124,11 @@ class DictationInputMethod : InputMethodService() {
         val btnSettings: ImageButton = view.findViewById(R.id.btnSettings)
         val btnHideKeyboard: ImageButton = view.findViewById(R.id.btnHideKeyboard)
         val btnSend: ImageButton = view.findViewById(R.id.btnSend)
+        val btnRetryFailed: ImageButton = view.findViewById(R.id.btnRetryFailed)
 
         btnMic.setOnClickListener { orchestrator.handleAction(InputAction.ToggleCapture) }
         btnCancel.setOnClickListener { orchestrator.handleAction(InputAction.CancelOperation) }
+        btnRetryFailed.setOnClickListener { orchestrator.retryFailed() }
 
         btnBackspace.setOnTouchListener { v, event ->
             when (event.action) {

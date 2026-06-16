@@ -107,6 +107,7 @@
     <string name="cd_cancel">Cancel</string>
     <string name="cd_enter">Enter</string>
     <string name="cd_pending_count">Pending recordings</string>
+    <string name="cd_retry_failed">Resend recordings that failed to transcribe</string>
 
     <!-- Microphone prominent disclosure (shown once, before requesting mic permission) -->
     <string name="mic_disclosure_title">Voice Keyboard uses your microphone</string>

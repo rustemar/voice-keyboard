@@ -1,5 +1,5 @@
-v1.8.2 — Strip trailing "Субтитры создавал X" hallucinations
+v1.8.3 — Don't lose recordings when the network drops
 
-- Removes Whisper end-card credits appended after legitimate speech (the classic "Субтитры создавал DimaTorzok" tail, plus "Subtitles by …", "Sous-titres réalisés par …", "Untertitelung im Auftrag des …", "Спасибо за просмотр", etc.)
-- Real sentences that just happen to mention subtitles ("Я смотрел фильм. Субтитры были на английском.", "Включи субтитры пожалуйста.") pass through unchanged
-- Initials in credit lines ("И. Иванов", "А. Сёмкин") are recognized as part of the credit, not a sentence boundary
+- Failed transcriptions are now retried automatically (3 attempts with a short backoff), so a brief Wi-Fi↔mobile hand-off no longer eats your dictation
+- If a recording still can't be sent, it's kept instead of discarded: a red counter and "resend" button appear under the backspace key — tap it once the connection is back to transcribe everything that was waiting
+- Permanent errors (wrong API key) stop retrying immediately but the recording is still kept, so you can fix the key and resend

@@ -15,6 +15,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 ### Voice Input
 - Real-time voice recording with amplitude visualization
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
+- **Network-drop recovery** — failed transcriptions auto-retry, and any recording that still can't be sent is kept behind a "resend" button instead of being lost
 - Works with any OpenAI-compatible Whisper API; ships with Groq as the default endpoint (whisper-large-v3-turbo)
 - Configurable API endpoint, model, and language
 - Auto-start recording when keyboard opens

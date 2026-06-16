@@ -17,13 +17,20 @@ class ProcessingQueue(
     private val onTextReady: (String) -> Unit,
     private val onQueueCountChanged: (Int) -> Unit,
     private val onProcessingPhaseChanged: (ProcessingPhase) -> Unit,
-    private val onError: (String) -> Unit
+    private val onError: (String) -> Unit,
+    private val onFailedCountChanged: (Int) -> Unit = {}
 ) {
 
     enum class ProcessingPhase { TRANSCRIBING, POST_PROCESSING }
 
     companion object {
         private const val TAG = "ProcessingQueue"
+        // How many times we re-attempt transcription on a transient network failure
+        // before giving up and parking the recording for manual retry.
+        private const val MAX_TRANSCRIBE_ATTEMPTS = 3
+        // Linear backoff between attempts (1.5s, then 3s) — gives a Wi-Fi↔mobile
+        // hand-off time to settle before we try again.
+        private const val RETRY_BACKOFF_MS = 1500L
     }
 
     data class QueueItem(
@@ -46,7 +53,14 @@ class ProcessingQueue(
     private var isProcessing = false
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
+    // Recordings that failed every transcription attempt. Their audio is kept on
+    // disk (renamed to retry_*.<ext>) so the user can re-send them once the
+    // network recovers, instead of silently losing what they dictated.
+    private val failedItems = mutableListOf<QueueItem>()
+    private var retryFileCounter = 0
+
     val pendingCount: Int get() = queue.size + if (isProcessing) 1 else 0
+    val failedCount: Int get() = failedItems.size
 
     fun enqueue(item: QueueItem) {
         queue.add(item)
@@ -65,35 +79,61 @@ class ProcessingQueue(
         onQueueCountChanged(pendingCount)
 
         processingJob = scope.launch {
+            // When true, the recording was parked for manual retry and must NOT be deleted.
+            var preserved = false
             try {
-                processItem(item)
+                preserved = processItem(item)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 DiagnosticLog.recordFailure(TAG, "Processing failed", e)
                 onError(e.message ?: "Unknown error")
+                preserved = preserveForRetry(item)
             } finally {
-                item.audioFile.delete()
+                if (!preserved) item.audioFile.delete()
                 processNext()
             }
         }
     }
 
-    private suspend fun processItem(item: QueueItem) {
-        // Step 1: Transcribe
+    /**
+     * Runs one queue item end to end.
+     * @return true if the recording was parked for manual retry (caller must keep the audio file).
+     */
+    private suspend fun processItem(item: QueueItem): Boolean {
+        // Step 1: Transcribe — retry transient network failures before giving up.
         onProcessingPhaseChanged(ProcessingPhase.TRANSCRIBING)
         DiagnosticLog.record(TAG, "Transcribing ${item.audioFile.name}")
-        val transcriptionResult = speechClient.transcribe(item.audioFile, item.transcriptionConfig)
 
-        val rawText = transcriptionResult.getOrElse { error ->
-            DiagnosticLog.recordFailure(TAG, "Transcription failed", error)
-            onError(error.message ?: "Transcription failed")
-            return
+        var rawText: String? = null
+        var lastError: Throwable? = null
+        for (attempt in 1..MAX_TRANSCRIBE_ATTEMPTS) {
+            val result = speechClient.transcribe(item.audioFile, item.transcriptionConfig)
+            if (result.isSuccess) {
+                rawText = result.getOrNull()
+                break
+            }
+            lastError = result.exceptionOrNull()
+            val transient = isTransientError(lastError)
+            DiagnosticLog.recordFailure(
+                TAG,
+                "Transcription attempt $attempt/$MAX_TRANSCRIBE_ATTEMPTS failed (transient=$transient)",
+                lastError
+            )
+            // Permanent errors (bad key, bad request) won't fix themselves — stop retrying,
+            // but still park the recording so the user can re-send after correcting settings.
+            if (!transient || attempt == MAX_TRANSCRIBE_ATTEMPTS) break
+            delay(RETRY_BACKOFF_MS * attempt)
+        }
+
+        if (rawText == null) {
+            onError(lastError?.message ?: "Transcription failed")
+            return preserveForRetry(item)
         }
 
         if (rawText.isBlank()) {
             DiagnosticLog.record(TAG, "Transcription returned empty text, skipping")
-            return
+            return false
         }
 
         DiagnosticLog.record(TAG, "Transcription success: ${rawText.take(50)}")
@@ -111,6 +151,66 @@ class ProcessingQueue(
         // Step 3: Insert text
         val output = if (item.addTrailingSpace) "$processed " else processed
         onTextReady(output)
+        return false
+    }
+
+    /** Heuristic: is this failure worth retrying (network blip) or permanent (bad key)? */
+    private fun isTransientError(error: Throwable?): Boolean {
+        when (error) {
+            null -> return false
+            is java.net.SocketTimeoutException,
+            is java.net.UnknownHostException,
+            is java.net.ConnectException,
+            is java.net.SocketException,
+            is java.io.InterruptedIOException,
+            is javax.net.ssl.SSLException -> return true
+        }
+        val msg = error?.message?.lowercase() ?: return true // unknown I/O error → assume transient
+        // Permanent HTTP errors surfaced by WhisperApiClient as "API error <code>: ...".
+        if (Regex("api error 4\\d\\d").containsMatchIn(msg)) return false
+        return listOf(
+            "timeout", "timed out", "connection abort", "connection reset",
+            "unreachable", "failed to connect", "broken pipe", "network", "abort"
+        ).any { msg.contains(it) } || msg.contains("api error 5") || msg.contains("api error 429")
+    }
+
+    /**
+     * Park a recording that exhausted its transcription attempts: move the audio to a
+     * stable retry_*.<ext> file and remember the item so the user can re-send it.
+     * @return true (the audio is kept; the caller must not delete it).
+     */
+    private fun preserveForRetry(item: QueueItem): Boolean {
+        val src = item.audioFile
+        if (!src.exists()) {
+            DiagnosticLog.record(TAG, "preserveForRetry: source file missing (${src.name})")
+            return false
+        }
+        val ext = src.extension.ifBlank { "ogg" }
+        val dest = File(src.parentFile, "retry_${retryFileCounter++}.$ext")
+        val kept = if (src.renameTo(dest)) item.copy(audioFile = dest) else item
+        failedItems.add(kept)
+        DiagnosticLog.record(TAG, "Parked recording for manual retry, failed=${failedItems.size}")
+        onFailedCountChanged(failedItems.size)
+        return true
+    }
+
+    /** Re-enqueue every parked recording. Triggered by the user tapping the retry button. */
+    fun retryFailed() {
+        if (failedItems.isEmpty()) return
+        val items = failedItems.toList()
+        failedItems.clear()
+        onFailedCountChanged(0)
+        DiagnosticLog.record(TAG, "Retrying ${items.size} parked recording(s)")
+        for (item in items) queue.add(item)
+        onQueueCountChanged(pendingCount)
+        if (!isProcessing) processNext()
+    }
+
+    private fun clearFailed() {
+        if (failedItems.isEmpty()) return
+        failedItems.forEach { it.audioFile.delete() }
+        failedItems.clear()
+        onFailedCountChanged(0)
     }
 
     private fun stripSingleWordPunctuation(text: String): String {
@@ -187,6 +287,7 @@ class ProcessingQueue(
             val item = queue.poll() ?: break
             item.audioFile.delete()
         }
+        clearFailed()
         onQueueCountChanged(0)
     }
 
