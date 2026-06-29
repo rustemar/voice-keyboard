@@ -10,3 +10,6 @@
 .cxx
 local.properties
 *.jks
+
+# Exported on-device diagnostic logs — debug artifacts, never commit
+voicekeyboard_log_*.txt
