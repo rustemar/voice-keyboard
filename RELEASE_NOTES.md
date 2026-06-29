@@ -1,5 +1,5 @@
-v1.8.3 — Don't lose recordings when the network drops
+v1.8.4 — Keep trying until your internet comes back
 
-- Failed transcriptions are now retried automatically (3 attempts with a short backoff), so a brief Wi-Fi↔mobile hand-off no longer eats your dictation
-- If a recording still can't be sent, it's kept instead of discarded: a red counter and "resend" button appear under the backspace key — tap it once the connection is back to transcribe everything that was waiting
-- Permanent errors (wrong API key) stop retrying immediately but the recording is still kept, so you can fix the key and resend
+- Recordings that can't be transcribed now wait safely on the device and resend themselves automatically the moment a working internet connection returns — no more giving up after a few tries
+- Waiting recordings survive closing the keyboard, switching apps, and even restarting the phone or the app; nothing is deleted until it has actually been sent
+- The keyboard now checks for a real connection before sending and no longer hangs for minutes trying to reach a dead network

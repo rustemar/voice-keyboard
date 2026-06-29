@@ -11,8 +11,8 @@ android {
         applicationId = "com.tyraen.voicekeyboard"
         minSdk = 24
         targetSdk = 34
-        versionCode = 44
-        versionName = "1.8.3"
+        versionCode = 45
+        versionName = "1.8.4"
     }
 
     signingConfigs {
@@ -72,4 +72,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
     testImplementation("junit:junit:4.13.2")
+    // org.json is part of the Android platform but stubbed in JVM unit tests; bring the real impl
+    // so we can test parked-recording (de)serialization off-device.
+    testImplementation("org.json:json:20240303")
 }

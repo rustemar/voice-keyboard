@@ -9,8 +9,6 @@ import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
-import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
-import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
 import kotlinx.coroutines.*
@@ -18,8 +16,7 @@ import kotlinx.coroutines.*
 class InputOrchestrator(
     private val context: Context,
     private val preferenceStore: PreferenceStore,
-    private val speechClient: SpeechToTextClient,
-    private val postProcessingClient: PostProcessingClient,
+    private val processingQueue: ProcessingQueue,
     private val capture: MicrophoneCaptureSession,
     private val onTextReady: (String) -> Unit,
     private val onPhaseChanged: (InputPhase) -> Unit,
@@ -39,25 +36,24 @@ class InputOrchestrator(
     private var ppPreferences: PostProcessingPreferences? = null
     private var vocabulary: String = ""
 
-    private val processingQueue = ProcessingQueue(
-        speechClient = speechClient,
-        postProcessingClient = postProcessingClient,
-        onTextReady = onTextReady,
-        onQueueCountChanged = { count ->
-            onQueueCountChanged(count)
-        },
-        onProcessingPhaseChanged = { phase ->
-            onProcessingPhaseChanged(phase)
-        },
-        onError = { message ->
+    // Forwards the shared queue's callbacks to this view's UI. Bound on creation, unbound on
+    // destroy so a torn-down panel stops receiving updates (the next panel rebinds instantly).
+    private val queueListener = object : ProcessingQueue.Listener {
+        override fun onTextReady(text: String) = this@InputOrchestrator.onTextReady(text)
+        override fun onQueueCountChanged(count: Int) = this@InputOrchestrator.onQueueCountChanged(count)
+        override fun onProcessingPhaseChanged(phase: ProcessingQueue.ProcessingPhase) =
+            this@InputOrchestrator.onProcessingPhaseChanged(phase)
+        override fun onFailedCountChanged(count: Int) = this@InputOrchestrator.onFailedCountChanged(count)
+        override fun onError(message: String) {
             DiagnosticLog.record(TAG, "Queue error: $message")
-        },
-        onFailedCountChanged = { count ->
-            onFailedCountChanged(count)
         }
-    )
+    }
 
-    /** Re-send every recording that failed transcription and is waiting for manual retry. */
+    init {
+        processingQueue.bindListener(queueListener)
+    }
+
+    /** Re-send every recording that failed transcription and is waiting for retry. */
     fun retryFailed() {
         processingQueue.retryFailed()
     }
@@ -222,7 +218,7 @@ class InputOrchestrator(
         if (capture.isActive) {
             capture.abort()
         }
-        processingQueue.cancelAll()
+        processingQueue.cancelPending()
         moveTo(InputPhase.Ready)
     }
 
@@ -239,7 +235,9 @@ class InputOrchestrator(
 
     fun destroy() {
         capture.release()
-        processingQueue.destroy()
+        // The queue is a process-wide singleton — never destroy it here, just stop receiving its
+        // callbacks. Parked recordings and in-flight work survive this input view.
+        processingQueue.unbindListener(queueListener)
         scope.cancel()
     }
 

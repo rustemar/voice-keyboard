@@ -43,6 +43,10 @@ class DictationInputMethod : InputMethodService() {
     }
 
     private fun createInputView(): View {
+        // Releasing the previous orchestrator unbinds it from the shared queue and frees its mic
+        // session. The queue itself (and any parked recordings) is process-wide and survives this.
+        if (::orchestrator.isInitialized) orchestrator.destroy()
+
         currentTheme = ThemeManager.current(this)
         val themedContext = ThemeManager.applyToContext(this)
         val view = android.view.LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null)
@@ -53,8 +57,7 @@ class DictationInputMethod : InputMethodService() {
         orchestrator = InputOrchestrator(
             context = this,
             preferenceStore = ServiceLocator.preferenceStore,
-            speechClient = ServiceLocator.speechToTextClient,
-            postProcessingClient = ServiceLocator.postProcessingClient,
+            processingQueue = ServiceLocator.transcriptionQueue,
             capture = MicrophoneCaptureSession(this),
             onTextReady = { text ->
                 if (keyboardVisible) {

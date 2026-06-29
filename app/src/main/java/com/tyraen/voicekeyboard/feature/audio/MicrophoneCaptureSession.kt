@@ -5,13 +5,17 @@ import android.media.MediaRecorder
 import android.os.Build
 import kotlinx.coroutines.*
 import java.io.File
+import java.util.concurrent.atomic.AtomicLong
 
 class MicrophoneCaptureSession(private val context: Context) {
+
+    companion object {
+        private val fileSeq = AtomicLong(0)
+    }
 
     private var recorder: MediaRecorder? = null
     private var levelMonitor: Job? = null
     private val scope = MainScope()
-    private var fileCounter = 0
     private var startedAtMs: Long = 0
     var capturedFile: File? = null
         private set
@@ -24,7 +28,9 @@ class MicrophoneCaptureSession(private val context: Context) {
     fun begin(onAmplitude: (Int) -> Unit): File {
         val useOpus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
         val extension = if (useOpus) "ogg" else "m4a"
-        val file = File(context.externalCacheDir, "recording_${fileCounter++}.$extension")
+        // Process-wide unique name: a fresh capture session is created per input view, so a plain
+        // per-instance counter could collide with another view's still-pending recording_0.
+        val file = File(context.externalCacheDir, "recording_${fileSeq.getAndIncrement()}.$extension")
         capturedFile = file
 
         val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

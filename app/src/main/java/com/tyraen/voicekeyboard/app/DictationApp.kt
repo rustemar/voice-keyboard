@@ -20,5 +20,12 @@ class DictationApp : Application() {
         FaultCapture.attach(this)
         DiagnosticLog.init(this)
         DiagnosticLog.record("App", "Application started")
+
+        // Resume any recordings that failed to transcribe in a previous session, and keep retrying
+        // them whenever validated internet becomes available. Registered exactly once, process-wide.
+        ServiceLocator.connectivityMonitor.register {
+            ServiceLocator.transcriptionQueue.onNetworkAvailable()
+        }
+        ServiceLocator.transcriptionQueue.bootstrap()
     }
 }
