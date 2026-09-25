@@ -32,6 +32,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
     companion object {
         private const val RELEASES_URL =
             "https://api.github.com/repos/rustemar/voice-keyboard/releases"
+        private val RELEASE_HEADING = Regex("^v\\d+(\\.\\d+)+ — .*")
     }
 
     private val installer = ApkInstaller(http)
@@ -93,7 +94,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
                             }
                         }
 
-                        newer.add(ReleaseDetails(tagName, htmlUrl, apkUrl, body))
+                        newer.add(ReleaseDetails(tagName, htmlUrl, apkUrl, ownNotes(body)))
                     }
 
                     newer.sortedWith { a, b -> compareVersions(b.version, a.version) }
@@ -113,6 +114,17 @@ class ReleaseChecker(private val http: OkHttpClient) {
     }
 
     internal fun isVersionNewer(remote: String, local: String): Boolean = compareVersions(remote, local) > 0
+
+    /**
+     * Only the release's own notes. Bodies published before v1.9.2 carried every older section too
+     * ("v1.9.0 — …" headings further down), and the dialog joins the notes of every newer release,
+     * so a user several versions behind read the same notes twice.
+     */
+    internal fun ownNotes(body: String): String =
+        body.replace("\r\n", "\n").lineSequence()
+            .takeWhile { !RELEASE_HEADING.matches(it) }
+            .joinToString("\n")
+            .trim()
 
     /**
      * Numeric comparison of dotted versions, so 1.10.0 sorts above 1.9.3 (a string sort would not).

@@ -52,6 +52,21 @@ class ReleaseCheckerTest {
         assertEquals(listOf("1.10.0", "1.9.10", "1.9.3"), sorted)
     }
 
+    @Test fun `older sections are cut from a release body`() {
+        val body = "- New thing\r\n- Other thing\r\n\r\nv1.9.0 — Previous release\r\n\r\n- Old thing\r\n"
+        assertEquals("- New thing\n- Other thing", checker.ownNotes(body))
+    }
+
+    @Test fun `a body with only its own notes is kept whole`() {
+        assertEquals("- Only this\n- And this", checker.ownNotes("- Only this\n- And this\n"))
+        assertEquals("", checker.ownNotes(""))
+    }
+
+    @Test fun `a version mentioned inside a note is not a heading`() {
+        val body = "- Fixes a bug from v1.9.0 — thanks for the report\n- Another"
+        assertEquals(body, checker.ownNotes(body))
+    }
+
     @Test fun `a fork's build suffix does not shift the version`() {
         assertFalse(checker.isVersionNewer("1.9.1-jf.6", "1.9.1"))
         assertTrue(checker.isVersionNewer("1.9.2", "1.9.1-jf.6"))
