@@ -37,8 +37,8 @@ class DictationInputMethod : InputMethodService() {
 
     // The localized base context above hands out a LayoutInflater bound to itself. The platform
     // inflates the IME's own navigation bar (gesture navigation) with LayoutInflater.from(this), and
-    // its back and switcher keys only act when their context is this InputMethodService, so the
-    // nav-bar hide button silently did nothing. Hand out an inflater bound to the service instead.
+    // its back key only acts when its context is this InputMethodService, so the nav-bar hide button
+    // silently did nothing. Hand out an inflater bound to the service instead.
     private val serviceInflater by lazy { LayoutInflater.from(baseContext).cloneInContext(this) }
 
     override fun getSystemService(name: String): Any? =
