@@ -8,6 +8,7 @@ import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -34,6 +35,15 @@ class DictationInputMethod : InputMethodService() {
         super.attachBaseContext(InterfaceLanguageManager.applyTo(newBase))
     }
 
+    // The localized base context above hands out a LayoutInflater bound to itself. The platform
+    // inflates the IME's own navigation bar (gesture navigation) with LayoutInflater.from(this), and
+    // its back and switcher keys only act when their context is this InputMethodService, so the
+    // nav-bar hide button silently did nothing. Hand out an inflater bound to the service instead.
+    private val serviceInflater by lazy { LayoutInflater.from(baseContext).cloneInContext(this) }
+
+    override fun getSystemService(name: String): Any? =
+        if (name == LAYOUT_INFLATER_SERVICE) serviceInflater else super.getSystemService(name)
+
     private lateinit var panel: InputPanelController
     private lateinit var orchestrator: InputOrchestrator
     private lateinit var keystrokes: KeystrokeDispatcher
@@ -59,7 +69,7 @@ class DictationInputMethod : InputMethodService() {
 
         currentTheme = ThemeManager.current(this)
         val themedContext = ThemeManager.applyToContext(this)
-        val view = android.view.LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null)
+        val view = LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null)
 
         panel = InputPanelController(view)
         keystrokes = KeystrokeDispatcher { currentInputConnection }
