@@ -35,8 +35,9 @@ data class ParkedRecording(
         /** Transient failure — keep auto-retrying whenever the network is available. */
         WAITING_NETWORK,
 
-        /** Permanent failure (bad/missing API key, 4xx). Stop auto-retrying; wait for the user to
-         *  fix settings and tap resend, which promotes it back to [WAITING_NETWORK]. */
+        /** Permanent failure (bad/missing API key, 4xx other than 408 and a rate-limit 429). Stop
+         *  auto-retrying; wait for the user to fix settings and tap resend, which promotes it back
+         *  to [WAITING_NETWORK]. */
         NEEDS_ATTENTION
     }
 

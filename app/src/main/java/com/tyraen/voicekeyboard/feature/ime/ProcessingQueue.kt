@@ -30,8 +30,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * - On transient failure a recording is parked durably ([ParkedRecordingStore]) and retried
  *   indefinitely with capped exponential backoff, driven both by a timer and by a
  *   network-available callback. It never gives up and never deletes a parked recording on teardown.
- * - Permanent failures (bad/missing key, 4xx) are parked as NEEDS_ATTENTION and surfaced via the
- *   resend button rather than looped on forever.
+ * - Permanent failures (bad/missing key, 4xx other than 408 and a rate-limit 429) are parked as
+ *   NEEDS_ATTENTION and surfaced via the resend button rather than looped on forever.
  *
  * Threading: this object's own state (queue, listener, retry loop) lives on [scope] (Main). The
  * connectivity callback only ever calls [onNetworkAvailable], which hops onto Main. The durable
@@ -69,6 +69,36 @@ class ProcessingQueue(
         private const val MAX_RETRY_BACKOFF_MS = 5 * 60_000L
         /** Transcripts up to this length may legitimately post-process to nothing ("um, uh"). */
         private const val FILLER_MAX_CHARS = 25
+
+        private val BILLING_429_MARKERS = listOf("insufficient_quota", "credit_balance", "spend_limit", "usage_limit")
+
+        /**
+         * Heuristic: is this failure worth retrying (network blip, rate limit, server error) or
+         * permanent (bad key, bad request)? HTTP codes arrive as "API error <code>: ..." from
+         * WhisperApiClient. 408 and a rate-limit 429 are 4xx but temporary, so they are checked
+         * before the blanket 4xx rule: such a recording waits and resends instead of needing
+         * attention. A billing 429 (no credit, a spend or usage cap) does not lift by waiting.
+         * "billing" itself is not a marker: Groq's rate-limit message links to its billing page.
+         */
+        internal fun isTransientError(error: Throwable?): Boolean {
+            when (error) {
+                null -> return false
+                is java.net.SocketTimeoutException,
+                is java.net.UnknownHostException,
+                is java.net.ConnectException,
+                is java.net.SocketException,
+                is java.io.InterruptedIOException,
+                is javax.net.ssl.SSLException -> return true
+            }
+            val msg = error?.message?.lowercase() ?: return true // unknown I/O error → assume transient
+            if (msg.contains("api error 429")) return BILLING_429_MARKERS.none { msg.contains(it) }
+            if (msg.contains("api error 408")) return true
+            if (Regex("api error 4\\d\\d").containsMatchIn(msg)) return false
+            return listOf(
+                "timeout", "timed out", "connection abort", "connection reset",
+                "unreachable", "failed to connect", "broken pipe", "network", "abort"
+            ).any { msg.contains(it) } || msg.contains("api error 5")
+        }
     }
 
     data class QueueItem(
@@ -238,6 +268,8 @@ class ProcessingQueue(
             DiagnosticLog.recordFailure(
                 TAG, "Transcription attempt $attempt/$IMMEDIATE_ATTEMPTS failed (transient)", lastError
             )
+            // A rate limit rarely lifts within a second; park now and let the timed loop resend.
+            if (lastError?.message?.contains("API error 429") == true) break
             if (attempt < IMMEDIATE_ATTEMPTS) delay(IMMEDIATE_BACKOFF_MS)
         }
 
@@ -368,26 +400,6 @@ class ProcessingQueue(
         retryJob?.cancel()
         retryJob = null
         ensureRetryLoop()
-    }
-
-    /** Heuristic: is this failure worth retrying (network blip) or permanent (bad key)? */
-    private fun isTransientError(error: Throwable?): Boolean {
-        when (error) {
-            null -> return false
-            is java.net.SocketTimeoutException,
-            is java.net.UnknownHostException,
-            is java.net.ConnectException,
-            is java.net.SocketException,
-            is java.io.InterruptedIOException,
-            is javax.net.ssl.SSLException -> return true
-        }
-        val msg = error?.message?.lowercase() ?: return true // unknown I/O error → assume transient
-        // Permanent HTTP errors surfaced by WhisperApiClient as "API error <code>: ...".
-        if (Regex("api error 4\\d\\d").containsMatchIn(msg)) return false
-        return listOf(
-            "timeout", "timed out", "connection abort", "connection reset",
-            "unreachable", "failed to connect", "broken pipe", "network", "abort"
-        ).any { msg.contains(it) } || msg.contains("api error 5") || msg.contains("api error 429")
     }
 
     private fun pushQueueCount() {
