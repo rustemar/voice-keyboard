@@ -160,11 +160,11 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         model: String = prefs.resolvedModel(),
         maxTokens: Int
     ): String {
-        val body = JSONObject().apply {
+        fun body(withTemperature: Boolean) = JSONObject().apply {
             put("model", model)
             put("max_tokens", maxTokens)
             // Anthropic accepts 0..1; the settings field allows up to 2 for OpenAI-style APIs.
-            put("temperature", prefs.resolvedTemperature().toDouble().coerceIn(0.0, 1.0))
+            if (withTemperature) put("temperature", prefs.resolvedTemperature().toDouble().coerceIn(0.0, 1.0))
             if (systemInstruction != null) {
                 put("system", systemInstruction)
             }
@@ -176,6 +176,21 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             })
         }
 
+        var (code, responseBody) = postClaude(prefs, body(withTemperature = true))
+        // Newer Claude models reject sampling parameters with a 400; without this retry
+        // post-processing would quietly fall back to the raw transcript on them.
+        if (code == 400 && responseBody.contains("temperature", ignoreCase = true)) {
+            DiagnosticLog.record(TAG, "Model rejects temperature, retrying without it")
+            val retry = postClaude(prefs, body(withTemperature = false))
+            code = retry.first
+            responseBody = retry.second
+        }
+        if (code !in 200..299) throw ApiException(code, responseBody)
+
+        return PostProcessingResponseParser.claudeText(responseBody)
+    }
+
+    private fun postClaude(prefs: PostProcessingPreferences, body: JSONObject): Pair<Int, String> {
         val request = Request.Builder()
             .url(prefs.resolvedEndpoint())
             .addHeader("x-api-key", prefs.apiKey)
@@ -183,15 +198,9 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             .addHeader("Content-Type", "application/json")
             .post(body.toString().toRequestBody("application/json".toMediaType()))
             .build()
-
-        val responseBody = httpClient.newCall(request).execute().use { response ->
+        return httpClient.newCall(request).execute().use { response ->
             val text = response.body?.string() ?: throw Exception("Empty response")
-            if (!response.isSuccessful) {
-                throw ApiException(response.code, text)
-            }
-            text
+            response.code to text
         }
-
-        return PostProcessingResponseParser.claudeText(responseBody)
     }
 }
