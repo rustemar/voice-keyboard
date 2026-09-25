@@ -1,6 +1,7 @@
 package com.tyraen.voicekeyboard.feature.update
 
 import okhttp3.OkHttpClient
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -37,7 +38,22 @@ class ReleaseCheckerTest {
     }
 
     @Test fun `non-numeric segments are ignored without crash`() {
-        // "1.7.2-rc1" → numeric parts are [1, 7, 2], treated as 1.7.2
+        // "1.7.2-rc1" → the suffix after '-' is dropped, treated as 1.7.2
         assertFalse(checker.isVersionNewer("1.7.2-rc1", "1.7.2"))
+    }
+
+    @Test fun `double-digit parts compare as numbers, not text`() {
+        assertTrue(checker.isVersionNewer("1.10.0", "1.9.3"))
+        assertTrue(checker.compareVersions("1.9.10", "1.9.2") > 0)
+    }
+
+    @Test fun `newer releases sort newest first`() {
+        val sorted = listOf("1.9.3", "1.10.0", "1.9.10").sortedWith { a, b -> checker.compareVersions(b, a) }
+        assertEquals(listOf("1.10.0", "1.9.10", "1.9.3"), sorted)
+    }
+
+    @Test fun `a fork's build suffix does not shift the version`() {
+        assertFalse(checker.isVersionNewer("1.9.1-jf.6", "1.9.1"))
+        assertTrue(checker.isVersionNewer("1.9.2", "1.9.1-jf.6"))
     }
 }

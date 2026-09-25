@@ -95,7 +95,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
                         newer.add(ReleaseDetails(tagName, htmlUrl, apkUrl, body))
                     }
 
-                    newer.sortedByDescending { it.version }
+                    newer.sortedWith { a, b -> compareVersions(b.version, a.version) }
                 }
             } catch (e: Exception) {
                 DiagnosticLog.record("ReleaseChecker", "Failed to check for updates: ${e.message}")
@@ -111,17 +111,21 @@ class ReleaseChecker(private val http: OkHttpClient) {
         }
     }
 
-    internal fun isVersionNewer(remote: String, local: String): Boolean {
-        val remoteParts = remote.split(".").mapNotNull { it.toIntOrNull() }
-        val localParts = local.split(".").mapNotNull { it.toIntOrNull() }
+    internal fun isVersionNewer(remote: String, local: String): Boolean = compareVersions(remote, local) > 0
 
-        for (i in 0 until maxOf(remoteParts.size, localParts.size)) {
-            val r = remoteParts.getOrElse(i) { 0 }
-            val l = localParts.getOrElse(i) { 0 }
-            if (r > l) return true
-            if (r < l) return false
+    /**
+     * Numeric comparison of dotted versions, so 1.10.0 sorts above 1.9.3 (a string sort would not).
+     * A suffix after '-' is ignored: "1.7.2-rc1" and a fork's "1.9.1-jf.6" count as 1.7.2 and 1.9.1.
+     */
+    internal fun compareVersions(a: String, b: String): Int {
+        fun parts(v: String) = v.substringBefore('-').split(".").map { it.takeWhile(Char::isDigit).toIntOrNull() ?: 0 }
+        val ap = parts(a)
+        val bp = parts(b)
+        for (i in 0 until maxOf(ap.size, bp.size)) {
+            val cmp = ap.getOrElse(i) { 0 }.compareTo(bp.getOrElse(i) { 0 })
+            if (cmp != 0) return cmp
         }
-        return false
+        return 0
     }
 
     private fun presentUpdateDialog(context: Context, releases: List<ReleaseDetails>) {
