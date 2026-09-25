@@ -72,7 +72,8 @@ class ReleaseChecker(private val http: OkHttpClient) {
 
                     for (i in 0 until jsonArray.length()) {
                         val json = jsonArray.getJSONObject(i)
-                        if (json.optBoolean("draft", false)) continue
+                        // Drafts and prereleases are never offered; compareVersions would read "1.9.3-rc1" as 1.9.3.
+                        if (json.optBoolean("draft", false) || json.optBoolean("prerelease", false)) continue
 
                         val tagName = json.getString("tag_name").removePrefix("v")
                         if (!isVersionNewer(tagName, currentVersion)) continue
