@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Κωδικοί χωρισμένοι με κόμμα, για παράδειγμα: el, en. Αν προσθέσετε περισσότερους από έναν, εμφανίζεται πλήκτρο γλώσσας στο πληκτρολόγιο. Αφήστε το κενό για αυτόματη ανίχνευση.</string>
     <string name="settings_endpoint">Διεύθυνση API</string>
     <string name="settings_auto_record">Αυτόματη εγγραφή</string>
+    <string name="subtype_label">Φωνητική πληκτρολόγηση</string>
+    <string name="settings_return_to_previous_keyboard">Επιστροφή στο προηγούμενο πληκτρολόγιο</string>
+    <string name="settings_return_to_previous_keyboard_hint">Ενεργοποιήστε το αν ανοίγετε το Voice Keyboard με το πλήκτρο μικροφώνου άλλου πληκτρολογίου: μόλις εισαχθεί το κείμενο, επιστρέφει εκείνο το πληκτρολόγιο, και το πλήκτρο στην επάνω γωνία σάς πηγαίνει επίσης σε αυτό. Αφήστε το απενεργοποιημένο αν το Voice Keyboard είναι το κύριο πληκτρολόγιό σας.</string>
+    <string name="cd_previous_keyboard">Εναλλαγή στο προηγούμενο πληκτρολόγιο</string>
     <string name="settings_add_space">Προσθήκη κενού στο τέλος</string>
     <string name="settings_apply">Εφαρμογή</string>
     <string name="settings_enable_instructions">Για να ενεργοποιήσετε αυτό το πληκτρολόγιο:\n\n1. Μεταβείτε στις Ρυθμίσεις → Σύστημα → Γλώσσες και εισαγωγή → Πληκτρολόγιο οθόνης\n2. Ενεργοποιήστε το \"Voice Keyboard\"\n3. Επιλέξτε το σε οποιοδήποτε πεδίο κειμένου</string>

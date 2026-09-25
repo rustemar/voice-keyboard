@@ -147,6 +147,8 @@ class InputOrchestrator(
 
     fun isPostProcessingEnabled(): Boolean = ppPreferences?.enabled == true
 
+    fun isReturnToPreviousKeyboardEnabled(): Boolean = preferences?.returnToPreviousKeyboard == true
+
     /** Every dictation language the user configured, in the order they listed them. */
     fun getLanguageCodes(): List<String> = preferences?.languageCodes ?: emptyList()
 

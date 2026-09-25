@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Codici separati da virgole, ad esempio: it, en. Indicandone più di una, sulla tastiera compare un tasto della lingua. Lascia vuoto per il rilevamento automatico.</string>
     <string name="settings_endpoint">Endpoint API</string>
     <string name="settings_auto_record">Registrazione automatica</string>
+    <string name="subtype_label">Input vocale</string>
+    <string name="settings_return_to_previous_keyboard">Torna alla tastiera precedente</string>
+    <string name="settings_return_to_previous_keyboard_hint">Attivalo se apri Voice Keyboard con il tasto microfono di un\'altra tastiera: appena il testo viene inserito, torna quella tastiera, e anche il tasto nell\'angolo in alto ti riporta lì. Lascialo disattivato se Voice Keyboard è la tua tastiera principale.</string>
+    <string name="cd_previous_keyboard">Passa alla tastiera precedente</string>
     <string name="settings_add_space">Aggiungi spazio alla fine</string>
     <string name="settings_apply">Applica</string>
     <string name="settings_enable_instructions">Per attivare questa tastiera:\n\n1. Vai in Impostazioni → Sistema → Lingue e immissione → Tastiera su schermo\n2. Attiva \"Voice Keyboard\"\n3. Selezionala in qualsiasi campo di testo</string>

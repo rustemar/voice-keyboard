@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Virgülle ayrılmış kodlar, örneğin: tr, en. Birden fazla eklerseniz klavyede bir dil tuşu görünür. Otomatik algılama için boş bırakın.</string>
     <string name="settings_endpoint">API Adresi</string>
     <string name="settings_auto_record">Otomatik kayıt</string>
+    <string name="subtype_label">Sesle giriş</string>
+    <string name="settings_return_to_previous_keyboard">Önceki klavyeye dön</string>
+    <string name="settings_return_to_previous_keyboard_hint">Voice Keyboard\'u başka bir klavyenin mikrofon tuşuyla açıyorsanız etkinleştirin: metin yazılınca o klavye geri gelir, üst köşedeki tuş da sizi ona geri götürür. Voice Keyboard ana klavyenizse kapalı bırakın.</string>
+    <string name="cd_previous_keyboard">Önceki klavyeye geç</string>
     <string name="settings_add_space">Sona boşluk ekle</string>
     <string name="settings_apply">Uygula</string>
     <string name="settings_enable_instructions">Bu klavyeyi etkinleştirmek için:\n\n1. Ayarlar → Sistem → Diller ve giriş → Ekran klavyesine gidin\n2. \"Voice Keyboard\" etkinleştirin\n3. Herhangi bir metin alanında seçin</string>

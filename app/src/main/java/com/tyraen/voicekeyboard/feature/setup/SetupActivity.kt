@@ -51,6 +51,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var editLanguage: EditText
     private lateinit var editPrompt: EditText
     private lateinit var switchAutoRecord: Switch
+    private lateinit var switchReturnToPreviousKeyboard: Switch
     private lateinit var switchAddSpace: Switch
     private lateinit var switchSingleWordStripPunct: Switch
     private lateinit var switchUpdateCheck: Switch
@@ -143,6 +144,7 @@ class SetupActivity : AppCompatActivity() {
         editLanguage = findViewById(R.id.editLanguage)
         editPrompt = findViewById(R.id.editPrompt)
         switchAutoRecord = findViewById(R.id.switchAutoRecord)
+        switchReturnToPreviousKeyboard = findViewById(R.id.switchReturnToPreviousKeyboard)
         switchAddSpace = findViewById(R.id.switchAddSpace)
         switchSingleWordStripPunct = findViewById(R.id.switchSingleWordStripPunct)
         switchUpdateCheck = findViewById(R.id.switchUpdateCheck)
@@ -371,6 +373,7 @@ class SetupActivity : AppCompatActivity() {
             activeLanguage = p.effectiveLanguage
             editPrompt.setText(p.prompt)
             switchAutoRecord.isChecked = p.autoRecord
+            switchReturnToPreviousKeyboard.isChecked = p.returnToPreviousKeyboard
             switchAddSpace.isChecked = p.addTrailingSpace
             switchSingleWordStripPunct.isChecked = p.singleWordStripPunctuation
             setUpdateSwitch(preferenceStore.isUpdateCheckEnabled())
@@ -491,7 +494,8 @@ class SetupActivity : AppCompatActivity() {
         autoRecord = switchAutoRecord.isChecked,
         addTrailingSpace = switchAddSpace.isChecked,
         prompt = editPrompt.text.toString().trim(),
-        singleWordStripPunctuation = switchSingleWordStripPunct.isChecked
+        singleWordStripPunctuation = switchSingleWordStripPunct.isChecked,
+        returnToPreviousKeyboard = switchReturnToPreviousKeyboard.isChecked
     )
 
     private fun showApiStatus(message: String, color: Int) {

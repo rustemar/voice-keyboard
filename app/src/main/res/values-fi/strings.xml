@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Pilkulla erotetut koodit, esimerkiksi: fi, en. Jos lisäät useamman, näppäimistölle ilmestyy kielinäppäin. Jätä tyhjäksi automaattista tunnistusta varten.</string>
     <string name="settings_endpoint">API-osoite</string>
     <string name="settings_auto_record">Automaattinen nauhoitus</string>
+    <string name="subtype_label">Puhesyöte</string>
+    <string name="settings_return_to_previous_keyboard">Palaa edelliseen näppäimistöön</string>
+    <string name="settings_return_to_previous_keyboard_hint">Ota käyttöön, jos avaat Voice Keyboardin toisen näppäimistön mikrofoninäppäimellä: kun teksti on kirjoitettu, se näppäimistö palaa, ja yläkulman näppäin vie sinut myös siihen. Jätä pois päältä, jos Voice Keyboard on pääasiallinen näppäimistösi.</string>
+    <string name="cd_previous_keyboard">Vaihda edelliseen näppäimistöön</string>
     <string name="settings_add_space">Lisää välilyönti loppuun</string>
     <string name="settings_apply">Ota käyttöön</string>
     <string name="settings_enable_instructions">Ota tämä näppäimistö käyttöön:\n\n1. Siirry kohtaan Asetukset → Järjestelmä → Kielet ja syöttö → Näyttönäppäimistö\n2. Ota käyttöön \"Voice Keyboard\"\n3. Valitse se missä tahansa tekstikentässä</string>

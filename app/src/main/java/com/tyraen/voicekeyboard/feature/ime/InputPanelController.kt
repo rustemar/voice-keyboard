@@ -36,6 +36,7 @@ class InputPanelController(rootView: View) {
     // more than one language to dictate in.
     val btnLanguage: Button = rootView.findViewById(R.id.btnLanguage)
     private val languageSpacer: View = rootView.findViewById(R.id.languageSpacer)
+    private val btnHideKeyboard: ImageButton = rootView.findViewById(R.id.btnHideKeyboard)
 
     val animator = InputPanelAnimator(
         wave1 = rootView.findViewById(R.id.ripple1),
@@ -218,6 +219,16 @@ class InputPanelController(rootView: View) {
                 clipboardText.layoutParams = tp
             }
         }
+    }
+
+    /** With "Return to previous keyboard" on, ⌄ becomes a key back to that keyboard. */
+    fun showHideKeyAsReturn(asReturn: Boolean) {
+        btnHideKeyboard.setImageResource(
+            if (asReturn) R.drawable.ic_keyboard_switch else R.drawable.ic_keyboard_hide
+        )
+        btnHideKeyboard.contentDescription = btnHideKeyboard.context.getString(
+            if (asReturn) R.string.cd_previous_keyboard else R.string.cd_hide_keyboard
+        )
     }
 
     /**

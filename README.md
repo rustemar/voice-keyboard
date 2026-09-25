@@ -20,6 +20,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - Configurable API endpoint, model, and language
 - **Multiple dictation languages** — list several language codes in settings and a language key appears on the keyboard: tap to cycle, long-press to pick one. The formatting prompt follows the language you switch to
 - Auto-start recording when keyboard opens
+- **Voice input for your other keyboard** — a keyboard with a mic key, such as HeliBoard, can open Voice Keyboard for dictation; with *Return to previous keyboard* on, your keyboard comes back as soon as the text is typed
 - **Custom vocabulary** — add names and technical terms to bias recognition; helps with contacts and rare words
 - **Drop period for single-word output** — handy for voice search where a trailing period gets in the way
 
@@ -65,6 +66,16 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
    - **OpenRouter** — provider "OpenAI-compatible", endpoint `https://openrouter.ai/api/v1` (the rest of the path is added automatically), model with the vendor prefix, e.g. `openai/gpt-4o-mini`. The translation model can stay empty; it reuses the model you set.
    - Once post-processing is enabled, a row of toggle buttons (fix, shorten, emoji, rhyme, translate) appears on the keyboard above the space bar.
 
+### Using it with another keyboard
+
+Voice Keyboard has no letter keys. To type by hand as well, keep your usual keyboard and let its mic key open Voice Keyboard:
+
+1. Enable Voice Keyboard in the system keyboard list (step 3 above); you don't have to switch to it.
+2. In your keyboard, turn on the voice input key (in HeliBoard it sits in the toolbar).
+3. In Voice Keyboard settings, turn on **Return to previous keyboard**, and **Auto-start recording** if the mic key should start recording right away.
+
+The mic key now opens Voice Keyboard, and once your text is typed your keyboard comes back by itself; the key in the top corner of the panel takes you back too. Voice Keyboard stays open while there is still something to see: a recording being transcribed, an error, or a recording waiting to be resent. If the mic key opens Google voice typing instead, switch Google voice typing off in the system keyboard list. Gboard and Samsung Keyboard use their own voice input.
+
 ### Installing via Obtainium (recommended)
 
 [Obtainium](https://github.com/ImranR98/Obtainium) is a third-party Android app that auto-updates apps directly from GitHub Releases. Recommended over the in-app update check if you want to avoid the system "install unknown apps" prompt and Play Protect warnings on each manual install.
@@ -76,7 +87,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 ## Troubleshooting
 
 - **The keyboard is not in the list** — tap *Enable keyboard* in the app; it opens the system screen where "Voice Keyboard" has to be switched on.
-- **I can't type my API key** — while Voice Keyboard is the active keyboard its panel has no letter keys. The settings screen says so and offers *Switch keyboard*; long-pressing the space bar on the keyboard does the same.
+- **I can't type my API key** — while Voice Keyboard is the active keyboard its panel has no letter keys. The settings screen says so and offers *Switch keyboard*; long-pressing the space bar on the keyboard does the same. To type by hand and still dictate, see *Using it with another keyboard*.
 - **"Microphone permission required"** — tap the mic again and the system prompt appears. After "Don't ask again" the app opens its settings page instead; allow the microphone there.
 - **Apply says "Not found"** — the provider's own message in brackets tells whether the address or the model name is wrong. A retired model looks the same as a wrong URL without it.
 - **A red counter under backspace** — recordings that could not be transcribed yet. Ones waiting for internet resend themselves; tap to resend after fixing a key; hold twice to delete all of them.

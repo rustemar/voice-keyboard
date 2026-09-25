@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicLong
  * Concurrency model: ALL state ([items], [inFlight], [loaded]) is confined to a single dedicated
  * thread ([dispatcher]). Every public method is a `suspend` that hops onto it, so callers from the
  * IME main thread, the connectivity callback thread, and IO can interleave safely without locks.
- * Only [count] (a thread-safe StateFlow) is read from other threads.
+ * Only [count] (a thread-safe StateFlow) and [isLoaded] (volatile) are read from other threads.
  */
 class ParkedRecordingStore(context: Context) {
 
@@ -44,6 +44,10 @@ class ParkedRecordingStore(context: Context) {
     private val _count = MutableStateFlow(0)
     /** Total parked recordings (any state). Drives the resend badge; survives view rebuilds. */
     val count: StateFlow<Int> = _count
+
+    @Volatile private var loadPublished = false
+    /** Thread-safe read-only signal that the initial load has published its results. */
+    val isLoaded: Boolean get() = loadPublished
 
     /** Scan disk and load any parked recordings. Idempotent; safe to call from app startup. */
     suspend fun ensureLoaded() = withContext(dispatcher) { loadIfNeeded() }
@@ -73,6 +77,7 @@ class ParkedRecordingStore(context: Context) {
         // Note: orphan audio with no sidecar is intentionally left untouched — we can't reconstruct
         // its config, but deleting it is exactly the data loss we are preventing.
         publish()
+        loadPublished = true
         DiagnosticLog.record(TAG, "Loaded ${items.size} parked recording(s)")
     }
 

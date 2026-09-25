@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Kody oddzielone przecinkami, na przykład: pl, en. Po podaniu kilku na klawiaturze pojawi się klawisz języka. Zostaw puste, aby wykrywać automatycznie.</string>
     <string name="settings_endpoint">Punkt końcowy API</string>
     <string name="settings_auto_record">Automatyczne nagrywanie</string>
+    <string name="subtype_label">Wprowadzanie głosowe</string>
+    <string name="settings_return_to_previous_keyboard">Powrót do poprzedniej klawiatury</string>
+    <string name="settings_return_to_previous_keyboard_hint">Włącz, jeśli otwierasz Voice Keyboard przyciskiem mikrofonu innej klawiatury: gdy tekst zostanie wpisany, wraca tamta klawiatura, a przycisk w górnym rogu też na nią przełącza. Zostaw wyłączone, jeśli Voice Keyboard jest Twoją główną klawiaturą.</string>
+    <string name="cd_previous_keyboard">Przełącz na poprzednią klawiaturę</string>
     <string name="settings_add_space">Dodaj spację na końcu</string>
     <string name="settings_apply">Zastosuj</string>
     <string name="settings_enable_instructions">Aby aktywować tę klawiaturę:\n\n1. Przejdź do Ustawienia → System → Języki i wprowadzanie → Klawiatura ekranowa\n2. Włącz \"Voice Keyboard\"\n3. Wybierz ją w dowolnym polu tekstowym</string>

@@ -13,7 +13,9 @@ data class UserPreferences(
     val autoRecord: Boolean,
     val addTrailingSpace: Boolean,
     val prompt: String,
-    val singleWordStripPunctuation: Boolean = false
+    val singleWordStripPunctuation: Boolean = false,
+    /** Hand back to the keyboard that opened this one once a dictation has been typed. */
+    val returnToPreviousKeyboard: Boolean = false
 ) {
     val languageCodes: List<String> get() = TranscriptionLocale.parseCodes(languages)
 

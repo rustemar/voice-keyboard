@@ -27,6 +27,7 @@ class PreferenceStore(private val context: Context) {
         val ADD_TRAILING_SPACE = booleanPreferencesKey("add_trailing_space")
         val PROMPT = stringPreferencesKey("prompt")
         val SINGLE_WORD_STRIP_PUNCT = booleanPreferencesKey("single_word_strip_punct")
+        val RETURN_TO_PREVIOUS_KEYBOARD = booleanPreferencesKey("return_to_previous_keyboard")
         val VOCABULARY = stringPreferencesKey("vocabulary")
 
         // Post-processing config
@@ -81,7 +82,8 @@ class PreferenceStore(private val context: Context) {
             autoRecord = prefs[Keys.AUTO_RECORD] ?: false,
             addTrailingSpace = prefs[Keys.ADD_TRAILING_SPACE] ?: true,
             prompt = prefs[Keys.PROMPT] ?: defaultPrompt,
-            singleWordStripPunctuation = prefs[Keys.SINGLE_WORD_STRIP_PUNCT] ?: false
+            singleWordStripPunctuation = prefs[Keys.SINGLE_WORD_STRIP_PUNCT] ?: false,
+            returnToPreviousKeyboard = prefs[Keys.RETURN_TO_PREVIOUS_KEYBOARD] ?: false
         )
     }
 
@@ -96,6 +98,7 @@ class PreferenceStore(private val context: Context) {
             data[Keys.ADD_TRAILING_SPACE] = prefs.addTrailingSpace
             data[Keys.PROMPT] = prefs.prompt
             data[Keys.SINGLE_WORD_STRIP_PUNCT] = prefs.singleWordStripPunctuation
+            data[Keys.RETURN_TO_PREVIOUS_KEYBOARD] = prefs.returnToPreviousKeyboard
         }
     }
 

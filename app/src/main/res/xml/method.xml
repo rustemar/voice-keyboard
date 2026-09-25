@@ -4,5 +4,6 @@
     android:supportsSwitchingToNextInputMethod="true">
     <subtype
         android:imeSubtypeMode="voice"
-        android:label="@string/app_name" />
+        android:overridesImplicitlyEnabledSubtype="true"
+        android:label="@string/subtype_label" />
 </input-method>

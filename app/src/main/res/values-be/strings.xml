@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Коды праз коску, напрыклад: be, en. Калі ўказаць некалькі, на клавіятуры з\'явіцца кнопка пераключэння мовы. Пакіньце пустым для аўтаматычнага вызначэння.</string>
     <string name="settings_endpoint">Адрас API</string>
     <string name="settings_auto_record">Аўтаматычны запіс</string>
+    <string name="subtype_label">Галасавы ўвод</string>
+    <string name="settings_return_to_previous_keyboard">Вяртацца да папярэдняй клавіятуры</string>
+    <string name="settings_return_to_previous_keyboard_hint">Уключыце, калі адкрываеце Voice Keyboard кнопкай мікрафона іншай клавіятуры: калі тэкст устаўлены, вяртаецца тая клавіятура, а кнопка ў верхнім куце таксама пераключае на яе. Калі Voice Keyboard — ваша асноўная клавіятура, пакіньце выключаным.</string>
+    <string name="cd_previous_keyboard">Пераключыцца на папярэднюю клавіятуру</string>
     <string name="settings_add_space">Дадаваць прабел у канцы</string>
     <string name="settings_apply">Прымяніць</string>
     <string name="settings_enable_instructions">Каб уключыць гэту клавіятуру:\n\n1. Перайдзіце ў Налады → Сістэма → Мовы і ўвод → Экранная клавіятура\n2. Уключыце \"Voice Keyboard\"\n3. Абярыце яе ў любым тэкставым полі</string>

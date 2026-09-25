@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Коды через запятую, например: ru, en. Если указать несколько, на клавиатуре появится кнопка переключения языка. Оставьте пустым для автоопределения.</string>
     <string name="settings_endpoint">Адрес API</string>
     <string name="settings_auto_record">Автозапись</string>
+    <string name="subtype_label">Голосовой ввод</string>
+    <string name="settings_return_to_previous_keyboard">Возвращаться к предыдущей клавиатуре</string>
+    <string name="settings_return_to_previous_keyboard_hint">Включите, если открываете Voice Keyboard кнопкой микрофона другой клавиатуры: когда текст вставлен, возвращается та клавиатура, а кнопка в верхнем углу тоже переключает на неё. Если Voice Keyboard — ваша основная клавиатура, оставьте выключенным.</string>
+    <string name="cd_previous_keyboard">Переключиться на предыдущую клавиатуру</string>
     <string name="settings_add_space">Добавлять пробел в конце</string>
     <string name="settings_apply">Применить</string>
     <string name="settings_enable_instructions">Чтобы включить клавиатуру:\n\n1. Перейдите в Настройки → Система → Языки и ввод → Экранная клавиатура\n2. Включите \"Voice Keyboard\"\n3. Выберите её в любом текстовом поле</string>

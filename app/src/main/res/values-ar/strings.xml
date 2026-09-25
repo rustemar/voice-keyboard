@@ -11,6 +11,10 @@
     <string name="settings_language_hint">رموز مفصولة بفواصل، مثل: ar, en. عند إضافة أكثر من لغة يظهر مفتاح لغة على لوحة المفاتيح. اتركه فارغًا للاكتشاف التلقائي.</string>
     <string name="settings_endpoint">عنوان API</string>
     <string name="settings_auto_record">تسجيل تلقائي</string>
+    <string name="subtype_label">الإدخال الصوتي</string>
+    <string name="settings_return_to_previous_keyboard">العودة إلى لوحة المفاتيح السابقة</string>
+    <string name="settings_return_to_previous_keyboard_hint">فعّله إذا كنت تفتح Voice Keyboard بزر الميكروفون في لوحة مفاتيح أخرى: بمجرد إدخال النص تعود تلك اللوحة، ويعيدك الزر في الزاوية العلوية إليها أيضًا. اتركه معطّلًا إذا كانت Voice Keyboard لوحة مفاتيحك الرئيسية.</string>
+    <string name="cd_previous_keyboard">التبديل إلى لوحة المفاتيح السابقة</string>
     <string name="settings_add_space">إضافة مسافة في النهاية</string>
     <string name="settings_apply">تطبيق</string>
     <string name="settings_enable_instructions">لتفعيل لوحة المفاتيح:\n\n1. اذهب إلى الإعدادات → النظام → اللغات والإدخال → لوحة المفاتيح على الشاشة\n2. فعّل \"Voice Keyboard\"\n3. اختره في أي حقل نصي</string>

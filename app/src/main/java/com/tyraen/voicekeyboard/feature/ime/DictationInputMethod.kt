@@ -5,6 +5,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.inputmethodservice.InputMethodService
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -37,6 +40,10 @@ class DictationInputMethod : InputMethodService() {
     private var currentTheme: String = ""
     private var clipboardListener: ClipboardManager.OnPrimaryClipChangedListener? = null
     private var keyboardVisible = false
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private var lastDictationInserted = false
+    private var clipboardFallbackSinceShown = false
+    private val returnCheck = Runnable { returnToPreviousKeyboardIfDone() }
 
     override fun onEvaluateFullscreenMode(): Boolean = false
 
@@ -65,18 +72,26 @@ class DictationInputMethod : InputMethodService() {
             onTextReady = { text, addTrailingSpace ->
                 // A visible panel can still lack an InputConnection (some apps drop it mid-edit);
                 // the clipboard is the fallback there too, never a silent loss.
-                if (!keyboardVisible || !keystrokes.insertDictation(text, addTrailingSpace)) {
+                val inserted = keyboardVisible && keystrokes.insertDictation(text, addTrailingSpace)
+                if (!inserted) {
                     copyToClipboard(if (addTrailingSpace) "$text " else text)
+                    if (keyboardVisible) clipboardFallbackSinceShown = true
                 }
+                scheduleReturnToPreviousKeyboard(inserted)
             },
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
             onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
-            onQueueCountChanged = { count -> panel.updateQueueCount(count) },
+            onQueueCountChanged = { count ->
+                panel.updateQueueCount(count)
+                // A queue that drains without a delivery (a blank transcript, say) gets the check too.
+                if (count == 0) postReturnCheck()
+            },
             onProcessingPhaseChanged = { phase -> panel.updateProcessingPhase(phase) },
             onFailedCountChanged = { count -> panel.updateFailedCount(count) },
             onPreferencesLoaded = {
                 refreshPostProcessingUI()
                 refreshLanguageKey()
+                panel.showHideKeyAsReturn(orchestrator.isReturnToPreviousKeyboardEnabled())
             },
             onPermissionNeeded = { requestMicPermission() }
         )
@@ -91,6 +106,8 @@ class DictationInputMethod : InputMethodService() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
         keyboardVisible = true
+        lastDictationInserted = false
+        clipboardFallbackSinceShown = false
 
         // Recreate view if theme changed in settings
         val newTheme = ThemeManager.current(this)
@@ -109,6 +126,8 @@ class DictationInputMethod : InputMethodService() {
     override fun onWindowHidden() {
         super.onWindowHidden()
         keyboardVisible = false
+        lastDictationInserted = false
+        mainHandler.removeCallbacks(returnCheck)
         if (::orchestrator.isInitialized) {
             orchestrator.viewVisible = false
             orchestrator.gracefulShutdown()
@@ -130,13 +149,81 @@ class DictationInputMethod : InputMethodService() {
         clipboard.setPrimaryClip(ClipData.newPlainText("Voice transcription", text))
     }
 
+    /**
+     * With "Return to previous keyboard" on, hands the screen back to the keyboard that opened
+     * this one (another keyboard's mic key, say) once the last queued dictation has been typed.
+     * The check runs [ReturnToPreviousKeyboard.DELAY_MS] later rather than inside the delivery; each
+     * new delivery restarts the wait, so only the last one can trigger it.
+     */
+    private fun scheduleReturnToPreviousKeyboard(inserted: Boolean) {
+        lastDictationInserted = inserted
+        postReturnCheck()
+    }
+
+    private fun postReturnCheck() {
+        mainHandler.removeCallbacks(returnCheck)
+        if (!lastDictationInserted || !::orchestrator.isInitialized) return
+        if (orchestrator.isReturnToPreviousKeyboardEnabled()) {
+            mainHandler.postDelayed(returnCheck, ReturnToPreviousKeyboard.DELAY_MS)
+        }
+    }
+
+    private fun returnToPreviousKeyboardIfDone() {
+        if (!::orchestrator.isInitialized) return
+        val parked = ServiceLocator.parkedRecordingStore
+        val handBack = ReturnToPreviousKeyboard.shouldReturnToPreviousKeyboard(
+            enabled = orchestrator.isReturnToPreviousKeyboardEnabled(),
+            visible = keyboardVisible,
+            inserted = lastDictationInserted && !clipboardFallbackSinceShown,
+            idle = orchestrator.currentPhase is InputPhase.Ready,
+            pendingCount = ServiceLocator.transcriptionQueue.pendingCount,
+            failedCount = parked.count.value,
+            parkedLoaded = parked.isLoaded
+        )
+        // If there is no previous keyboard to go back to, stay put: hiding would only bring this
+        // one back on the next field.
+        if (handBack) switchToPreviousKeyboard()
+    }
+
+    /**
+     * Switches to the keyboard that was active before this one; false when there is none or the
+     * platform declines. Below API 28 the service has no such call, so it goes through
+     * InputMethodManager with the window token, like other voice keyboards do.
+     */
+    private fun switchToPreviousKeyboard(): Boolean = runCatching {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            switchToPreviousInputMethod()
+        } else {
+            val token = window?.window?.attributes?.token
+            @Suppress("DEPRECATION")
+            token != null &&
+                (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).switchToLastInputMethod(token)
+        }
+    }.onFailure { DiagnosticLog.recordFailure(TAG, "Switching to the previous keyboard failed", it) }
+        .getOrDefault(false)
+        .also { switched ->
+            DiagnosticLog.record(TAG, "Switch to previous keyboard: ${if (switched) "done" else "nothing to switch to"}")
+            if (!switched) return@also
+            // The service lives on until onDestroy, still holding the editor's connection, which the
+            // app has already deactivated: anything delivered in that gap goes to the clipboard.
+            keyboardVisible = false
+            orchestrator.viewVisible = false
+            mainHandler.removeCallbacks(returnCheck)
+        }
+
     override fun onDestroy() {
         super.onDestroy()
+        mainHandler.removeCallbacks(returnCheck)
         clipboardListener?.let {
             (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
                 .removePrimaryClipChangedListener(it)
         }
-        if (::orchestrator.isInitialized) orchestrator.destroy()
+        if (::orchestrator.isInitialized) {
+            // Switching keyboards (the back key, the system picker) destroys this service without
+            // onWindowHidden: queue a recording still in progress, or destroy() would discard it.
+            orchestrator.gracefulShutdown()
+            orchestrator.destroy()
+        }
     }
 
     private fun wireControls(view: View) {
@@ -207,7 +294,16 @@ class DictationInputMethod : InputMethodService() {
             })
         }
 
-        btnHideKeyboard.setOnClickListener { requestHideSelf(0) }
+        // With "Return to previous keyboard" on, ⌄ goes back to that keyboard instead of hiding this
+        // one, which would only reopen on the next field. With nothing to go back to, it hides.
+        btnHideKeyboard.setOnClickListener {
+            if (orchestrator.isReturnToPreviousKeyboardEnabled()) {
+                // The switch skips onWindowHidden, so a recording in progress is queued here first.
+                orchestrator.gracefulShutdown()
+                if (switchToPreviousKeyboard()) return@setOnClickListener
+            }
+            requestHideSelf(0)
+        }
 
         btnSend.setOnClickListener { keystrokes.sendCtrlEnter() }
 

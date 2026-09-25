@@ -11,6 +11,10 @@
     <string name="settings_language_hint">अल्पविराम से अलग किए गए कोड, उदाहरण: hi, en. एक से अधिक जोड़ने पर कीबोर्ड पर भाषा कुंजी दिखाई देती है। स्वचालित पहचान के लिए खाली छोड़ें।</string>
     <string name="settings_endpoint">API एंडपॉइंट</string>
     <string name="settings_auto_record">स्वतः रिकॉर्डिंग</string>
+    <string name="subtype_label">वॉइस इनपुट</string>
+    <string name="settings_return_to_previous_keyboard">पिछले कीबोर्ड पर लौटें</string>
+    <string name="settings_return_to_previous_keyboard_hint">अगर आप Voice Keyboard को किसी दूसरे कीबोर्ड की माइक कुंजी से खोलते हैं, तो इसे चालू करें: टेक्स्ट डलते ही वही कीबोर्ड वापस आ जाता है, और ऊपरी कोने की कुंजी भी आपको उसी पर ले जाती है। अगर Voice Keyboard आपका मुख्य कीबोर्ड है, तो इसे बंद रखें।</string>
+    <string name="cd_previous_keyboard">पिछले कीबोर्ड पर स्विच करें</string>
     <string name="settings_add_space">अंत में स्पेस जोड़ें</string>
     <string name="settings_apply">लागू करें</string>
     <string name="settings_enable_instructions">इस कीबोर्ड को सक्रिय करने के लिए:\n\n1. सेटिंग्स → सिस्टम → भाषाएँ और इनपुट → ऑन-स्क्रीन कीबोर्ड पर जाएँ\n2. \"Voice Keyboard\" सक्षम करें\n3. किसी भी टेक्स्ट फ़ील्ड में इसे चुनें</string>

@@ -3,7 +3,7 @@ Voice Keyboard is an Android keyboard that types what you say. Switch to it in a
 It has no speech engine of its own and no account. You bring an API key for an OpenAI-compatible Whisper endpoint — Groq and Mistral both offer a free tier — and your audio goes to that endpoint and nowhere else.
 
 <b>Voice input</b>
-<ul><li>Works in any text field, in any app</li><li>Processing queue: start the next recording while the previous one is still being transcribed</li><li>Offline-proof: a recording that cannot be sent is kept on the device and resent automatically once the connection returns</li><li>Several dictation languages on one key: tap to cycle, long-press to pick from the list</li><li>Custom vocabulary for names and technical terms that get misrecognised</li></ul>
+<ul><li>Works in any text field, in any app</li><li>Processing queue: start the next recording while the previous one is still being transcribed</li><li>Offline-proof: a recording that cannot be sent is kept on the device and resent automatically once the connection returns</li><li>Several dictation languages on one key: tap to cycle, long-press to pick from the list</li><li>Custom vocabulary for names and technical terms that get misrecognised</li><li>Can be the voice input of another keyboard, such as HeliBoard, and hand back to it once the text is typed</li></ul>
 
 <b>Optional post-processing</b>
 <ul><li>Fix punctuation, spelling and filler words</li><li>Shorten, add emoji, rewrite as verse, or translate</li><li>Terminal mode turns dictation into shell commands</li><li>Works with OpenAI, Anthropic, or any OpenAI-compatible provider such as OpenRouter; every prompt is editable</li></ul>

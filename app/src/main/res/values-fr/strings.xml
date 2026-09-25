@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Codes séparés par des virgules, par exemple : fr, en. Si vous en indiquez plusieurs, une touche de langue apparaît sur le clavier. Laissez vide pour une détection automatique.</string>
     <string name="settings_endpoint">Point d\'accès API</string>
     <string name="settings_auto_record">Enregistrement automatique</string>
+    <string name="subtype_label">Saisie vocale</string>
+    <string name="settings_return_to_previous_keyboard">Revenir au clavier précédent</string>
+    <string name="settings_return_to_previous_keyboard_hint">À activer si vous ouvrez Voice Keyboard avec la touche micro d\'un autre clavier : dès que le texte est saisi, ce clavier revient, et la touche du coin supérieur vous y ramène aussi. Laissez désactivé si Voice Keyboard est votre clavier principal.</string>
+    <string name="cd_previous_keyboard">Passer au clavier précédent</string>
     <string name="settings_add_space">Ajouter un espace à la fin</string>
     <string name="settings_apply">Appliquer</string>
     <string name="settings_enable_instructions">Pour activer ce clavier :\n\n1. Allez dans Paramètres → Système → Langues et saisie → Clavier à l\'écran\n2. Activez \"Voice Keyboard\"\n3. Sélectionnez-le dans n\'importe quel champ de texte</string>

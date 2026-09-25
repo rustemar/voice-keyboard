@@ -11,6 +11,10 @@
     <string name="settings_language_hint">Códigos separados por comas, por ejemplo: es, en. Si añades más de uno, aparece una tecla de idioma en el teclado. Déjalo vacío para detectarlo automáticamente.</string>
     <string name="settings_endpoint">Endpoint de API</string>
     <string name="settings_auto_record">Grabación automática</string>
+    <string name="subtype_label">Entrada de voz</string>
+    <string name="settings_return_to_previous_keyboard">Volver al teclado anterior</string>
+    <string name="settings_return_to_previous_keyboard_hint">Actívalo si abres Voice Keyboard con la tecla de micrófono de otro teclado: en cuanto se escribe el texto, vuelve ese teclado, y la tecla de la esquina superior también te lleva a él. Déjalo desactivado si Voice Keyboard es tu teclado principal.</string>
+    <string name="cd_previous_keyboard">Cambiar al teclado anterior</string>
     <string name="settings_add_space">Añadir espacio al final</string>
     <string name="settings_apply">Aplicar</string>
     <string name="settings_enable_instructions">Para activar este teclado:\n\n1. Ve a Ajustes → Sistema → Idiomas e introducción → Teclado en pantalla\n2. Activa \"Voice Keyboard\"\n3. Selecciónalo en cualquier campo de texto</string>
