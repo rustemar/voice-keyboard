@@ -13,7 +13,7 @@
     <string name="settings_auto_record">Automatische Aufnahme</string>
     <string name="subtype_label">Spracheingabe</string>
     <string name="settings_return_to_previous_keyboard">Nach dem Diktieren zur vorherigen Tastatur zurückkehren</string>
-    <string name="settings_return_to_previous_keyboard_hint">Aktiviere das, wenn du Voice Keyboard nur zum Diktieren öffnest, über die Mikrofontaste einer anderen Tastatur oder die Tastaturliste: Sobald der Text eingefügt ist, kehrt diese Tastatur von selbst zurück. Lass es aus, wenn du mehrmals hintereinander diktierst oder Voice Keyboard deine Haupttastatur ist. Die Taste in der oberen Ecke bringt dich immer zurück.</string>
+    <string name="settings_return_to_previous_keyboard_hint">Aktivieren Sie das, wenn Sie Voice Keyboard nur zum Diktieren öffnen, über die Mikrofontaste einer anderen Tastatur oder die Tastaturliste: Sobald der Text eingefügt ist, kehrt diese Tastatur von selbst zurück. Lassen Sie es aus, wenn Sie mehrmals hintereinander diktieren oder Voice Keyboard Ihre Haupttastatur ist. Die Taste in der oberen Ecke bringt Sie immer zurück.</string>
     <string name="cd_previous_keyboard">Zur vorherigen Tastatur wechseln</string>
     <string name="settings_add_space">Leerzeichen am Ende hinzufügen</string>
     <string name="settings_apply">Übernehmen</string>
@@ -119,7 +119,7 @@
     <string name="cd_dictation_language">Diktatsprache</string>
     <string name="cd_send">Senden</string>
     <string name="cd_settings">Einstellungen</string>
-    <string name="mic_permission_open_settings">Mikrofonzugriff wurde verweigert. Erlaube ihn in den gerade geöffneten App-Einstellungen.</string>
+    <string name="mic_permission_open_settings">Mikrofonzugriff wurde verweigert. Erlauben Sie ihn in den gerade geöffneten App-Einstellungen.</string>
     <string name="error_mic_permission">Mikrofonberechtigung erforderlich</string>
     <string name="error_mic_unavailable">Mikrofon ist belegt oder nicht verfügbar</string>
     <string name="error_api_key_missing">API-Schlüssel nicht gesetzt</string>
@@ -127,15 +127,15 @@
     <string name="notice_discard_failed_done">Nicht gesendete Aufnahmen gelöscht: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard ist aktiviert</string>
     <string name="keyboard_status_disabled">Voice Keyboard ist noch nicht aktiviert</string>
-    <string name="keyboard_status_active">Voice Keyboard ist gerade deine aktive Tastatur. Um in diese Felder zu tippen, wechsle zu einer anderen Tastatur.</string>
+    <string name="keyboard_status_active">Voice Keyboard ist gerade Ihre aktive Tastatur. Um in diese Felder zu tippen, wechseln Sie zu einer anderen Tastatur.</string>
     <string name="keyboard_open_settings">Tastatur aktivieren</string>
     <string name="keyboard_switch">Tastatur wechseln</string>
     <string name="settings_saved">Einstellungen gespeichert.</string>
     <string name="test_status_set_key">Zuerst den API-Schlüssel eingeben und auf „Übernehmen“ tippen</string>
-    <string name="test_status_recording">Aufnahme… tippe auf „Stopp und transkribieren“, wenn du fertig bist</string>
+    <string name="test_status_recording">Aufnahme… tippen Sie auf „Stopp und transkribieren“, wenn Sie fertig sind</string>
     <string name="test_status_failed">Aufnahme fehlgeschlagen</string>
     <string name="test_status_success">Erfolgreich</string>
-    <string name="test_status_no_speech">Keine Sprache erkannt. Versuche, lauter zu sprechen.</string>
+    <string name="test_status_no_speech">Keine Sprache erkannt. Versuchen Sie, lauter zu sprechen.</string>
     <string name="logs_share">Teilen</string>
     <string name="logs_saved_to">Gespeichert: %s</string>
     <string name="logs_none">Keine Protokolle vorhanden</string>
@@ -149,10 +149,10 @@
     <string name="preset_label">Anbieter-Voreinstellung</string>
     <string name="preset_custom">Benutzerdefiniert</string>
     <string name="update_check_auto">Auf GitHub nach Updates suchen</string>
-    <string name="update_check_auto_hint">Standardmäßig aus. So bezogene Updates kommen direkt vom Entwickler und werden nicht von dem App-Store geprüft, über den du die App installiert hast, zum Beispiel F-Droid.</string>
+    <string name="update_check_auto_hint">Standardmäßig aus. So bezogene Updates kommen direkt vom Entwickler und werden nicht von dem App-Store geprüft, über den Sie die App installiert haben, zum Beispiel F-Droid.</string>
     <string name="update_consent_title">Auf GitHub nach Updates suchen?</string>
-    <string name="update_consent_body">Voice Keyboard kann GitHub Releases nach einer neueren Version durchsuchen und sie für dich installieren.\n\nSo bezogene Updates kommen direkt vom Entwickler. Sie werden nicht von dem App-Store geprüft, über den du die App installiert hast, etwa F-Droid, und dessen Prüfungen gelten für sie nicht.\n\nDie Suche bleibt aus, bis du sie einschaltest, und du kannst das jederzeit in den Einstellungen ändern.</string>
+    <string name="update_consent_body">Voice Keyboard kann GitHub Releases nach einer neueren Version durchsuchen und sie für Sie installieren.\n\nSo bezogene Updates kommen direkt vom Entwickler. Diese Updates werden nicht von dem App-Store geprüft, über den Sie die App installiert haben, etwa F-Droid, und dessen Prüfungen gelten für sie nicht.\n\nDie Suche bleibt aus, bis Sie sie einschalten, und Sie können das jederzeit in den Einstellungen ändern.</string>
     <string name="update_consent_enable">Einschalten</string>
     <string name="update_consent_decline">Aus lassen</string>
-    <string name="update_source_disclosure">Dieses APK wird von GitHub Releases geladen. Es kommt direkt vom Entwickler und wird nicht von dem App-Store geprüft, über den du installiert hast.</string>
+    <string name="update_source_disclosure">Dieses APK wird von GitHub Releases geladen. Es kommt direkt vom Entwickler und wird nicht von dem App-Store geprüft, über den Sie installiert haben.</string>
 </resources>
