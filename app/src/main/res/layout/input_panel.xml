@@ -358,6 +358,10 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:padding="0dp"
+            android:drawableStart="@drawable/ic_translate_arrow"
+            android:drawablePadding="1dp"
+            android:drawableTint="@color/key_text"
+            android:stateListAnimator="@null"
             android:contentDescription="@string/pp_translate" />
     </LinearLayout>
 

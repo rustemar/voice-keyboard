@@ -81,6 +81,7 @@
     <string name="pp_prompt_suffix_label">Çıktı talimatı</string>
     <string name="pp_prompt_suffix_hint">Her prompta eklenir</string>
     <string name="pp_translate">Çevir</string>
+    <string name="pp_translate_into">%1$s diline çevir</string>
     <string name="pp_translate_title">Çeviri</string>
     <string name="pp_translate_lang">Hedef dil</string>
     <string name="pp_translate_model">Çeviri modeli</string>

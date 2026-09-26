@@ -81,6 +81,7 @@
     <string name="pp_prompt_suffix_label">Instruction de sortie</string>
     <string name="pp_prompt_suffix_hint">Ajouté à chaque prompt</string>
     <string name="pp_translate">Traduire</string>
+    <string name="pp_translate_into">Traduire en %1$s</string>
     <string name="pp_translate_title">Traduction</string>
     <string name="pp_translate_lang">Langue cible</string>
     <string name="pp_translate_model">Modèle de traduction</string>

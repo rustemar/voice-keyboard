@@ -1,5 +1,6 @@
 package com.tyraen.voicekeyboard.feature.ime
 
+import android.content.res.ColorStateList
 import android.text.TextPaint
 import android.view.View
 import androidx.annotation.StringRes
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 
@@ -242,15 +244,29 @@ class InputPanelController(rootView: View) {
         if (visible) btnLanguage.text = TranscriptionLocale.shortLabel(code)
     }
 
+    /**
+     * Labels the toggle "→EN": the arrow (a drawable, so it mirrors in RTL) marks a target
+     * language, unlike the language key's bare "RU", which is the language being dictated.
+     * Long-press and TalkBack both say "Translate into English".
+     */
     fun updateTranslateToggle(active: Boolean, langCode: String) {
-        btnPpTranslate.text = langCode.uppercase()
+        btnPpTranslate.text = TranscriptionLocale.shortLabel(langCode)
         val context = btnPpTranslate.context
+        val description = context.getString(
+            R.string.pp_translate_into,
+            TranscriptionLocale.displayNameIn(langCode, context.resources.configuration.locales[0])
+        )
+        btnPpTranslate.contentDescription = description
+        ViewCompat.setTooltipText(btnPpTranslate, description)
+        val textColor: Int
         if (active) {
             btnPpTranslate.setBackgroundResource(R.drawable.toggle_key_bg_active)
-            btnPpTranslate.setTextColor(ContextCompat.getColor(context, R.color.white))
+            textColor = ContextCompat.getColor(context, R.color.white)
         } else {
             btnPpTranslate.setBackgroundResource(R.drawable.toggle_key_bg)
-            btnPpTranslate.setTextColor(ContextCompat.getColor(context, R.color.key_text))
+            textColor = ContextCompat.getColor(context, R.color.key_text)
         }
+        btnPpTranslate.setTextColor(textColor)
+        btnPpTranslate.compoundDrawableTintList = ColorStateList.valueOf(textColor)
     }
 }

@@ -81,6 +81,7 @@
     <string name="pp_prompt_suffix_label">출력 지시</string>
     <string name="pp_prompt_suffix_hint">모든 프롬프트에 추가됩니다</string>
     <string name="pp_translate">번역</string>
+    <string name="pp_translate_into">%1$s로 번역</string>
     <string name="pp_translate_title">번역</string>
     <string name="pp_translate_lang">대상 언어</string>
     <string name="pp_translate_model">번역 모델</string>

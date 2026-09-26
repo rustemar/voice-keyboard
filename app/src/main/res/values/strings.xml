@@ -94,6 +94,7 @@
     <string name="pp_prompt_suffix_hint">Appended to every prompt</string>
     <string name="pp_rhyme">Rhyme</string>
     <string name="pp_translate">Translate</string>
+    <string name="pp_translate_into">Translate into %1$s</string>
     <string name="pp_translate_title">Translation</string>
     <string name="pp_translate_lang">Target language</string>
     <string name="pp_translate_model">Translation model</string>

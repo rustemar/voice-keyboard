@@ -91,3 +91,9 @@ dependencies {
     // so we can test parked-recording (de)serialization off-device.
     testImplementation("org.json:json:20240303")
 }
+
+// StringResourcesTest reads res/values*/strings.xml directly. Declare them as a test input, or an
+// edit to a translation alone leaves testDebugUnitTest UP-TO-DATE and the check never runs locally.
+tasks.withType<Test>().configureEach {
+    inputs.dir("src/main/res").withPropertyName("resources").withPathSensitivity(PathSensitivity.RELATIVE)
+}

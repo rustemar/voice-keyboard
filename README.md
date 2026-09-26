@@ -29,8 +29,8 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - **Shorten** — makes text concise while keeping key points
 - **Emoji** — adds relevant emoji to your messages
 - **Rhyme** — rewrites dictated text as poetry
-- **Translate** — translates to any of the supported languages
-- Modes are switched with toggle buttons right on the keyboard, per recording
+- **Translate** — translates into any of the supported languages; the toggle shows the target, e.g. →EN
+- Modes are switched with toggle buttons right on the keyboard, per recording; on Android 8 and newer, long-press a button to see what it does
 - Works with OpenAI, Claude, or any OpenAI-compatible provider (OpenRouter, Groq, …)
 - Customizable prompts and temperature for each mode
 - Reasoning models work too: their `<think>` blocks are stripped before the text is inserted, and models that reject a custom temperature are retried without it

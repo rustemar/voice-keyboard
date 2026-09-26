@@ -1,5 +1,7 @@
 package com.tyraen.voicekeyboard.core.locale
 
+import java.util.Locale
+
 data class LocaleEntry(
     val code: String,
     val displayName: String,
@@ -90,6 +92,16 @@ object TranscriptionLocale {
 
     /** Short label for the keyboard key: the code itself, uppercased ("ru" -> "RU"). */
     fun shortLabel(code: String): String = code.uppercase()
+
+    /**
+     * The name of [code] in the interface language [uiLocale] ("en" in Russian -> "английский"),
+     * for sentences like "Translate into …". Falls back to the native name, then to the bare code.
+     */
+    fun displayNameIn(code: String, uiLocale: Locale): String {
+        val name = Locale.forLanguageTag(code).getDisplayLanguage(uiLocale)
+        if (name.isNotBlank() && !name.equals(code, ignoreCase = true)) return name
+        return resolve(code)?.displayName ?: code
+    }
 
     /** "Русский (ru)" for known codes, plain "xx" for anything else the user typed. */
     fun longLabel(code: String): String {

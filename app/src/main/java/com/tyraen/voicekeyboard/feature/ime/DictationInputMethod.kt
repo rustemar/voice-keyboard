@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import androidx.core.view.ViewCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.ThemeManager
@@ -384,13 +385,14 @@ class DictationInputMethod : InputMethodService() {
         bindToggle(panel.btnPpEmoji, InputOrchestrator.PpMode.EMOJI)
         bindToggle(panel.btnPpRhyme, InputOrchestrator.PpMode.RHYME)
         bindToggle(panel.btnPpTerminal, InputOrchestrator.PpMode.TERMINAL)
-        panel.btnPpTranslate.setOnClickListener {
-            orchestrator.togglePpMode(InputOrchestrator.PpMode.TRANSLATE)
-            updateToggleUI()
-        }
+        bindToggle(panel.btnPpTranslate, InputOrchestrator.PpMode.TRANSLATE)
     }
 
     private fun bindToggle(button: View, mode: InputOrchestrator.PpMode) {
+        // Long-press names the mode. ViewCompat skips API 24-25: appcompat's fallback there needs
+        // an AppCompat theme the IME doesn't have. Same text as the content description, so
+        // TalkBack reads it once; updateTranslateToggle replaces Translate's with its target.
+        ViewCompat.setTooltipText(button, button.contentDescription)
         button.setOnClickListener {
             orchestrator.togglePpMode(mode)
             updateToggleUI()

@@ -81,6 +81,7 @@
     <string name="pp_prompt_suffix_label">Tulosohje</string>
     <string name="pp_prompt_suffix_hint">Lisätään jokaiseen promptiin</string>
     <string name="pp_translate">Käännä</string>
+    <string name="pp_translate_into">Käännä kielelle %1$s</string>
     <string name="pp_translate_title">Käännös</string>
     <string name="pp_translate_lang">Kohdekieli</string>
     <string name="pp_translate_model">Käännösmalli</string>

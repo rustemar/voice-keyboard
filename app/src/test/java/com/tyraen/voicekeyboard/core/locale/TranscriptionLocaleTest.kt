@@ -3,6 +3,7 @@ package com.tyraen.voicekeyboard.core.locale
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.Locale
 
 class TranscriptionLocaleTest {
 
@@ -93,6 +94,16 @@ class TranscriptionLocaleTest {
     @Test fun `longLabel names known languages and passes unknown codes through`() {
         assertEquals("Русский (ru)", TranscriptionLocale.longLabel("ru"))
         assertEquals("nl", TranscriptionLocale.longLabel("nl"))
+    }
+
+    @Test fun `displayNameIn names the language in the interface language`() {
+        assertEquals("English", TranscriptionLocale.displayNameIn("en", Locale.ENGLISH))
+        assertEquals("русский", TranscriptionLocale.displayNameIn("ru", Locale("ru")))
+    }
+
+    @Test fun `displayNameIn passes an unknown or empty code through`() {
+        assertEquals("xx", TranscriptionLocale.displayNameIn("xx", Locale.ENGLISH))
+        assertEquals("", TranscriptionLocale.displayNameIn("", Locale.ENGLISH))
     }
 
     @Test fun `every catalog entry has a distinct built-in prompt`() {
