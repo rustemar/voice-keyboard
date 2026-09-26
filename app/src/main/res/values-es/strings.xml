@@ -12,8 +12,8 @@
     <string name="settings_endpoint">Endpoint de API</string>
     <string name="settings_auto_record">Grabación automática</string>
     <string name="subtype_label">Entrada de voz</string>
-    <string name="settings_return_to_previous_keyboard">Volver al teclado anterior</string>
-    <string name="settings_return_to_previous_keyboard_hint">Actívalo si abres Voice Keyboard con la tecla de micrófono de otro teclado: en cuanto se escribe el texto, vuelve ese teclado, y la tecla de la esquina superior también te lleva a él. Déjalo desactivado si Voice Keyboard es tu teclado principal.</string>
+    <string name="settings_return_to_previous_keyboard">Volver al teclado anterior tras dictar</string>
+    <string name="settings_return_to_previous_keyboard_hint">Actívalo si abres Voice Keyboard solo para dictar, con la tecla de micrófono de otro teclado o desde la lista de teclados: en cuanto se escribe el texto, ese teclado vuelve solo. Déjalo desactivado si dictas varias veces seguidas o si Voice Keyboard es tu teclado principal. La tecla de la esquina superior siempre te lleva de vuelta.</string>
     <string name="cd_previous_keyboard">Cambiar al teclado anterior</string>
     <string name="settings_add_space">Añadir espacio al final</string>
     <string name="settings_apply">Aplicar</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Cancelar</string>
     <string name="cd_cut_all">Cortar todo el texto</string>
     <string name="cd_enter">Intro</string>
-    <string name="cd_hide_keyboard">Ocultar teclado</string>
     <string name="cd_pending_count">Grabaciones pendientes</string>
     <string name="cd_record">Grabar</string>
     <string name="cd_retry_failed">Reenviar grabaciones que no se pudieron transcribir</string>

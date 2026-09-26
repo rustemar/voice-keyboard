@@ -195,6 +195,13 @@ class PreferenceStore(private val context: Context) {
         }
     }
 
+    /** Saved as soon as the switch is flipped, not only with the rest of the screen on Apply. */
+    suspend fun setReturnToPreviousKeyboard(value: Boolean) {
+        context.store.edit { data ->
+            data[Keys.RETURN_TO_PREVIOUS_KEYBOARD] = value
+        }
+    }
+
     /** Whether the one-time "may I check for updates?" dialog has been answered. */
     suspend fun isUpdateConsentShown(): Boolean {
         val prefs = context.store.data.first()

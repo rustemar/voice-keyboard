@@ -12,8 +12,8 @@
     <string name="settings_endpoint">API एंडपॉइंट</string>
     <string name="settings_auto_record">स्वतः रिकॉर्डिंग</string>
     <string name="subtype_label">वॉइस इनपुट</string>
-    <string name="settings_return_to_previous_keyboard">पिछले कीबोर्ड पर लौटें</string>
-    <string name="settings_return_to_previous_keyboard_hint">अगर आप Voice Keyboard को किसी दूसरे कीबोर्ड की माइक कुंजी से खोलते हैं, तो इसे चालू करें: टेक्स्ट डलते ही वही कीबोर्ड वापस आ जाता है, और ऊपरी कोने की कुंजी भी आपको उसी पर ले जाती है। अगर Voice Keyboard आपका मुख्य कीबोर्ड है, तो इसे बंद रखें।</string>
+    <string name="settings_return_to_previous_keyboard">डिक्टेशन के बाद पिछले कीबोर्ड पर लौटें</string>
+    <string name="settings_return_to_previous_keyboard_hint">अगर आप Voice Keyboard को सिर्फ़ डिक्टेशन के लिए खोलते हैं — किसी दूसरे कीबोर्ड की माइक कुंजी से या कीबोर्ड सूची से — तो इसे चालू करें: टेक्स्ट डलते ही वही कीबोर्ड अपने-आप वापस आ जाता है। अगर आप लगातार कई बार डिक्टेशन करते हैं या Voice Keyboard आपका मुख्य कीबोर्ड है, तो इसे बंद रखें। ऊपरी कोने की कुंजी हमेशा आपको वापस ले जाती है।</string>
     <string name="cd_previous_keyboard">पिछले कीबोर्ड पर स्विच करें</string>
     <string name="settings_add_space">अंत में स्पेस जोड़ें</string>
     <string name="settings_apply">लागू करें</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">रद्द करें</string>
     <string name="cd_cut_all">सारा टेक्स्ट काटें</string>
     <string name="cd_enter">एंटर</string>
-    <string name="cd_hide_keyboard">कीबोर्ड छिपाएं</string>
     <string name="cd_pending_count">लंबित रिकॉर्डिंग</string>
     <string name="cd_record">रिकॉर्ड करें</string>
     <string name="cd_retry_failed">ट्रांसक्राइब न हो पाई रिकॉर्डिंग फिर से भेजें</string>

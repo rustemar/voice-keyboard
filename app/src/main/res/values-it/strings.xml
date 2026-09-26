@@ -12,8 +12,8 @@
     <string name="settings_endpoint">Endpoint API</string>
     <string name="settings_auto_record">Registrazione automatica</string>
     <string name="subtype_label">Input vocale</string>
-    <string name="settings_return_to_previous_keyboard">Torna alla tastiera precedente</string>
-    <string name="settings_return_to_previous_keyboard_hint">Attivalo se apri Voice Keyboard con il tasto microfono di un\'altra tastiera: appena il testo viene inserito, torna quella tastiera, e anche il tasto nell\'angolo in alto ti riporta lì. Lascialo disattivato se Voice Keyboard è la tua tastiera principale.</string>
+    <string name="settings_return_to_previous_keyboard">Torna alla tastiera precedente dopo la dettatura</string>
+    <string name="settings_return_to_previous_keyboard_hint">Attivalo se apri Voice Keyboard solo per dettare, con il tasto microfono di un\'altra tastiera o dall\'elenco delle tastiere: appena il testo viene inserito, quella tastiera torna da sola. Lascialo disattivato se detti più volte di seguito o se Voice Keyboard è la tua tastiera principale. Il tasto nell\'angolo in alto ti riporta sempre indietro.</string>
     <string name="cd_previous_keyboard">Passa alla tastiera precedente</string>
     <string name="settings_add_space">Aggiungi spazio alla fine</string>
     <string name="settings_apply">Applica</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Annulla</string>
     <string name="cd_cut_all">Taglia tutto il testo</string>
     <string name="cd_enter">Invio</string>
-    <string name="cd_hide_keyboard">Nascondi tastiera</string>
     <string name="cd_pending_count">Registrazioni in sospeso</string>
     <string name="cd_record">Registra</string>
     <string name="cd_retry_failed">Reinvia le registrazioni non trascritte</string>

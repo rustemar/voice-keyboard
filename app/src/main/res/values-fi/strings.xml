@@ -12,8 +12,8 @@
     <string name="settings_endpoint">API-osoite</string>
     <string name="settings_auto_record">Automaattinen nauhoitus</string>
     <string name="subtype_label">Puhesyöte</string>
-    <string name="settings_return_to_previous_keyboard">Palaa edelliseen näppäimistöön</string>
-    <string name="settings_return_to_previous_keyboard_hint">Ota käyttöön, jos avaat Voice Keyboardin toisen näppäimistön mikrofoninäppäimellä: kun teksti on kirjoitettu, se näppäimistö palaa, ja yläkulman näppäin vie sinut myös siihen. Jätä pois päältä, jos Voice Keyboard on pääasiallinen näppäimistösi.</string>
+    <string name="settings_return_to_previous_keyboard">Palaa edelliseen näppäimistöön sanelun jälkeen</string>
+    <string name="settings_return_to_previous_keyboard_hint">Ota käyttöön, jos avaat Voice Keyboardin vain sanellaksesi, toisen näppäimistön mikrofoninäppäimellä tai näppäimistöluettelosta: kun teksti on kirjoitettu, se näppäimistö palaa itsestään. Jätä pois päältä, jos sanelet useita kertoja peräkkäin tai Voice Keyboard on pääasiallinen näppäimistösi. Yläkulman näppäin vie sinut aina takaisin.</string>
     <string name="cd_previous_keyboard">Vaihda edelliseen näppäimistöön</string>
     <string name="settings_add_space">Lisää välilyönti loppuun</string>
     <string name="settings_apply">Ota käyttöön</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Peruuta</string>
     <string name="cd_cut_all">Leikkaa kaikki teksti</string>
     <string name="cd_enter">Rivinvaihto</string>
-    <string name="cd_hide_keyboard">Piilota näppäimistö</string>
     <string name="cd_pending_count">Odottavat äänitykset</string>
     <string name="cd_record">Äänitä</string>
     <string name="cd_retry_failed">Lähetä uudelleen äänitykset, joiden litterointi epäonnistui</string>

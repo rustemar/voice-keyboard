@@ -12,8 +12,8 @@
     <string name="settings_endpoint">Punkt końcowy API</string>
     <string name="settings_auto_record">Automatyczne nagrywanie</string>
     <string name="subtype_label">Wprowadzanie głosowe</string>
-    <string name="settings_return_to_previous_keyboard">Powrót do poprzedniej klawiatury</string>
-    <string name="settings_return_to_previous_keyboard_hint">Włącz, jeśli otwierasz Voice Keyboard przyciskiem mikrofonu innej klawiatury: gdy tekst zostanie wpisany, wraca tamta klawiatura, a przycisk w górnym rogu też na nią przełącza. Zostaw wyłączone, jeśli Voice Keyboard jest Twoją główną klawiaturą.</string>
+    <string name="settings_return_to_previous_keyboard">Powrót do poprzedniej klawiatury po dyktowaniu</string>
+    <string name="settings_return_to_previous_keyboard_hint">Włącz, jeśli otwierasz Voice Keyboard tylko po to, by dyktować — przyciskiem mikrofonu innej klawiatury lub z listy klawiatur: gdy tekst zostanie wpisany, tamta klawiatura wraca sama. Zostaw wyłączone, jeśli dyktujesz kilka razy z rzędu lub Voice Keyboard jest Twoją główną klawiaturą. Przycisk w górnym rogu zawsze przełącza z powrotem.</string>
     <string name="cd_previous_keyboard">Przełącz na poprzednią klawiaturę</string>
     <string name="settings_add_space">Dodaj spację na końcu</string>
     <string name="settings_apply">Zastosuj</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Anuluj</string>
     <string name="cd_cut_all">Wytnij cały tekst</string>
     <string name="cd_enter">Enter</string>
-    <string name="cd_hide_keyboard">Ukryj klawiaturę</string>
     <string name="cd_pending_count">Oczekujące nagrania</string>
     <string name="cd_record">Nagrywaj</string>
     <string name="cd_retry_failed">Wyślij ponownie nagrania, których nie udało się przepisać</string>

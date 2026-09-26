@@ -12,8 +12,8 @@
     <string name="settings_endpoint">API 엔드포인트</string>
     <string name="settings_auto_record">자동 녹음</string>
     <string name="subtype_label">음성 입력</string>
-    <string name="settings_return_to_previous_keyboard">이전 키보드로 돌아가기</string>
-    <string name="settings_return_to_previous_keyboard_hint">다른 키보드의 마이크 키로 Voice Keyboard를 여는 경우 켜세요. 텍스트가 입력되면 그 키보드로 돌아가고, 위쪽 모서리의 키로도 그 키보드로 돌아갈 수 있습니다. Voice Keyboard가 주로 쓰는 키보드라면 꺼 두세요.</string>
+    <string name="settings_return_to_previous_keyboard">받아쓰기 후 이전 키보드로 돌아가기</string>
+    <string name="settings_return_to_previous_keyboard_hint">받아쓰기만 하려고 Voice Keyboard를 여는 경우(다른 키보드의 마이크 키나 키보드 목록에서) 켜세요. 텍스트가 입력되면 그 키보드로 자동으로 돌아갑니다. 여러 번 연달아 받아쓰거나 Voice Keyboard가 주로 쓰는 키보드라면 꺼 두세요. 위쪽 모서리의 키로 언제든 이전 키보드로 돌아갈 수 있습니다.</string>
     <string name="cd_previous_keyboard">이전 키보드로 전환</string>
     <string name="settings_add_space">끝에 공백 추가</string>
     <string name="settings_apply">적용</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">취소</string>
     <string name="cd_cut_all">전체 텍스트 잘라내기</string>
     <string name="cd_enter">엔터</string>
-    <string name="cd_hide_keyboard">키보드 숨기기</string>
     <string name="cd_pending_count">대기 중인 녹음</string>
     <string name="cd_record">녹음</string>
     <string name="cd_retry_failed">변환에 실패한 녹음 다시 보내기</string>

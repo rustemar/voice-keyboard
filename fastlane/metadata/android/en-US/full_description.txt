@@ -9,7 +9,7 @@ It has no speech engine of its own and no account. You bring an API key for an O
 <ul><li>Fix punctuation, spelling and filler words</li><li>Shorten, add emoji, rewrite as verse, or translate</li><li>Terminal mode turns dictation into shell commands</li><li>Works with OpenAI, Anthropic, or any OpenAI-compatible provider such as OpenRouter; every prompt is editable</li></ul>
 
 <b>Keyboard</b>
-<ul><li>Punctuation keys, accelerating backspace, send key, persistent clipboard bar</li><li>Spacing around dictated text follows the text already in the field</li><li>Light, dark and automatic themes; 17 interface languages</li></ul>
+<ul><li>One tap takes you back to the keyboard you came from</li><li>Punctuation keys, accelerating backspace, send key, persistent clipboard bar</li><li>Spacing around dictated text follows the text already in the field</li><li>Light, dark and automatic themes; 17 interface languages</li></ul>
 
 <b>Privacy</b>
 <ul><li>No analytics, no advertising, no tracking, no account, no servers of our own</li><li>API keys and settings stay on the device and are excluded from cloud backup</li><li>Audio is sent only to the endpoint you configured, authenticated with your own key</li></ul>

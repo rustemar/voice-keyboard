@@ -8,6 +8,7 @@ import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -58,6 +59,8 @@ class DictationInputMethod : InputMethodService() {
     private var lastDictationInserted = false
     private var clipboardFallbackSinceShown = false
     private val returnCheck = Runnable { returnToPreviousKeyboardIfDone() }
+    private val switchCheck = Runnable { recoverIfSwitchDidNotHappen() }
+    private var hideIfSwitchFails = false
 
     override fun onEvaluateFullscreenMode(): Boolean = false
 
@@ -106,7 +109,6 @@ class DictationInputMethod : InputMethodService() {
             onPreferencesLoaded = {
                 refreshPostProcessingUI()
                 refreshLanguageKey()
-                panel.showHideKeyAsReturn(orchestrator.isReturnToPreviousKeyboardEnabled())
             },
             onPermissionNeeded = { requestMicPermission() }
         )
@@ -158,6 +160,7 @@ class DictationInputMethod : InputMethodService() {
         keyboardVisible = false
         lastDictationInserted = false
         mainHandler.removeCallbacks(returnCheck)
+        mainHandler.removeCallbacks(switchCheck)
         if (::orchestrator.isInitialized) {
             orchestrator.viewVisible = false
             orchestrator.gracefulShutdown()
@@ -212,15 +215,16 @@ class DictationInputMethod : InputMethodService() {
         )
         // If there is no previous keyboard to go back to, stay put: hiding would only bring this
         // one back on the next field.
-        if (handBack) switchToPreviousKeyboard()
+        if (handBack) switchToPreviousKeyboard(hideIfItFails = false)
     }
 
     /**
      * Switches to the keyboard that was active before this one; false when there is none or the
      * platform declines. Below API 28 the service has no such call, so it goes through
-     * InputMethodManager with the window token, like other voice keyboards do.
+     * InputMethodManager with the window token, like other voice keyboards do. A reported switch is
+     * checked a moment later; [hideIfItFails] says what to do if it did not happen after all.
      */
-    private fun switchToPreviousKeyboard(): Boolean = runCatching {
+    private fun switchToPreviousKeyboard(hideIfItFails: Boolean): Boolean = runCatching {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             switchToPreviousInputMethod()
         } else {
@@ -239,11 +243,32 @@ class DictationInputMethod : InputMethodService() {
             keyboardVisible = false
             orchestrator.viewVisible = false
             mainHandler.removeCallbacks(returnCheck)
+            hideIfSwitchFails = hideIfItFails
+            mainHandler.removeCallbacks(switchCheck)
+            mainHandler.postDelayed(switchCheck, ReturnToPreviousKeyboard.VERIFY_DELAY_MS)
         }
+
+    /**
+     * A real switch destroys this service within moments, which cancels this check. If it is still
+     * here, still shown and still the selected keyboard, the platform said "done" without
+     * switching: undo the invisible state set for the switch, so dictations reach the field again,
+     * and hide if the user asked to leave.
+     */
+    private fun recoverIfSwitchDidNotHappen() {
+        val selected = runCatching {
+            Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)
+        }.getOrNull()
+        if (!ReturnToPreviousKeyboard.switchDidNotHappen(selected, packageName) || !isInputViewShown) return
+        DiagnosticLog.record(TAG, "Switch to previous keyboard: reported done, but this keyboard is still selected")
+        keyboardVisible = true
+        if (::orchestrator.isInitialized) orchestrator.viewVisible = true
+        if (hideIfSwitchFails) requestHideSelf(0)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         mainHandler.removeCallbacks(returnCheck)
+        mainHandler.removeCallbacks(switchCheck)
         clipboardListener?.let {
             (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
                 .removePrimaryClipChangedListener(it)
@@ -267,7 +292,7 @@ class DictationInputMethod : InputMethodService() {
         val btnExclamation: Button = view.findViewById(R.id.btnExclamation)
         val btnCutAll: ImageButton = view.findViewById(R.id.btnCutAll)
         val btnSettings: ImageButton = view.findViewById(R.id.btnSettings)
-        val btnHideKeyboard: ImageButton = view.findViewById(R.id.btnHideKeyboard)
+        val btnPreviousKeyboard: ImageButton = view.findViewById(R.id.btnPreviousKeyboard)
         val btnSend: ImageButton = view.findViewById(R.id.btnSend)
         val btnRetryFailed: ImageButton = view.findViewById(R.id.btnRetryFailed)
 
@@ -324,16 +349,19 @@ class DictationInputMethod : InputMethodService() {
             })
         }
 
-        // With "Return to previous keyboard" on, ⌄ goes back to that keyboard instead of hiding this
-        // one, which would only reopen on the next field. With nothing to go back to, it hides.
-        btnHideKeyboard.setOnClickListener {
-            if (orchestrator.isReturnToPreviousKeyboardEnabled()) {
-                // The switch skips onWindowHidden, so a recording in progress is queued here first.
-                orchestrator.gracefulShutdown()
-                if (switchToPreviousKeyboard()) return@setOnClickListener
-            }
-            requestHideSelf(0)
+        // Back to the keyboard the user came from: Gboard via the keyboard list, HeliBoard's mic
+        // key, or whichever keyboard they type with. Just hiding is left to the system back gesture
+        // and button; here it is only the fallback when there is nothing to go back to.
+        btnPreviousKeyboard.setOnClickListener {
+            // A reported switch is still under way (the panel lingers until the app restarts
+            // input): a second tap would have the platform switch straight back to this keyboard.
+            if (!keyboardVisible) return@setOnClickListener
+            // The switch skips onWindowHidden, so a recording in progress is queued here first.
+            orchestrator.gracefulShutdown()
+            if (!switchToPreviousKeyboard(hideIfItFails = true)) requestHideSelf(0)
         }
+        // Long-press names the key, like the mode toggles (see bindToggle).
+        ViewCompat.setTooltipText(btnPreviousKeyboard, btnPreviousKeyboard.contentDescription)
 
         btnSend.setOnClickListener { keystrokes.sendCtrlEnter() }
 

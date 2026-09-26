@@ -15,6 +15,9 @@ object ReturnToPreviousKeyboard {
      */
     const val DELAY_MS = 150L
 
+    /** How long after a switch the platform reported as done to check that it really happened. */
+    const val VERIFY_DELAY_MS = 500L
+
     /**
      * [inserted] is false when a dictation went to the clipboard instead of the field.
      * [idle] means no recording in progress and no error on the status line.
@@ -31,4 +34,14 @@ object ReturnToPreviousKeyboard {
         parkedLoaded: Boolean
     ): Boolean = enabled && visible && inserted && idle &&
         pendingCount == 0 && parkedLoaded && failedCount == 0
+
+    /**
+     * True when a switch the platform reported as done did not happen: this keyboard is still the
+     * one selected in system settings. The platform can report success without switching when the
+     * head of its keyboard history is this keyboard itself; below API 28 a mismatched window token
+     * does the same. [selectedIme] is Settings.Secure.DEFAULT_INPUT_METHOD ("package/.Service");
+     * an unknown value counts as switched, so the check never works against a real switch.
+     */
+    fun switchDidNotHappen(selectedIme: String?, ownPackage: String): Boolean =
+        selectedIme != null && selectedIme.startsWith("$ownPackage/")
 }

@@ -12,8 +12,8 @@
     <string name="settings_endpoint">APIエンドポイント</string>
     <string name="settings_auto_record">自動録音</string>
     <string name="subtype_label">音声入力</string>
-    <string name="settings_return_to_previous_keyboard">前のキーボードに戻る</string>
-    <string name="settings_return_to_previous_keyboard_hint">他のキーボードのマイクキーで Voice Keyboard を開く場合はオンにしてください。テキストが入力されるとそのキーボードに戻り、上の隅のキーでもそのキーボードに戻れます。Voice Keyboard をメインのキーボードとして使う場合はオフのままにしてください。</string>
+    <string name="settings_return_to_previous_keyboard">音声入力の後に前のキーボードに戻る</string>
+    <string name="settings_return_to_previous_keyboard_hint">音声入力のためだけに Voice Keyboard を開く場合（他のキーボードのマイクキーやキーボードの一覧から）はオンにしてください。テキストが入力されると、そのキーボードに自動で戻ります。続けて何度も音声入力する場合や、Voice Keyboard をメインのキーボードとして使う場合はオフのままにしてください。上の隅のキーでいつでも前のキーボードに戻れます。</string>
     <string name="cd_previous_keyboard">前のキーボードに切り替える</string>
     <string name="settings_add_space">末尾にスペースを追加</string>
     <string name="settings_apply">適用</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">キャンセル</string>
     <string name="cd_cut_all">すべてのテキストを切り取り</string>
     <string name="cd_enter">改行</string>
-    <string name="cd_hide_keyboard">キーボードを非表示</string>
     <string name="cd_pending_count">保留中の録音</string>
     <string name="cd_record">録音</string>
     <string name="cd_retry_failed">文字起こしに失敗した録音を再送信</string>

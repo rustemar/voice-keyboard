@@ -12,8 +12,8 @@
     <string name="settings_endpoint">Адрас API</string>
     <string name="settings_auto_record">Аўтаматычны запіс</string>
     <string name="subtype_label">Галасавы ўвод</string>
-    <string name="settings_return_to_previous_keyboard">Вяртацца да папярэдняй клавіятуры</string>
-    <string name="settings_return_to_previous_keyboard_hint">Уключыце, калі адкрываеце Voice Keyboard кнопкай мікрафона іншай клавіятуры: калі тэкст устаўлены, вяртаецца тая клавіятура, а кнопка ў верхнім куце таксама пераключае на яе. Калі Voice Keyboard — ваша асноўная клавіятура, пакіньце выключаным.</string>
+    <string name="settings_return_to_previous_keyboard">Вяртацца да папярэдняй клавіятуры пасля дыктоўкі</string>
+    <string name="settings_return_to_previous_keyboard_hint">Уключыце, калі адкрываеце Voice Keyboard толькі для дыктоўкі — кнопкай мікрафона іншай клавіятуры або са спісу клавіятур: калі тэкст устаўлены, тая клавіятура вяртаецца сама. Пакіньце выключаным, калі дыктуеце некалькі разоў запар або Voice Keyboard — ваша асноўная клавіятура. Кнопка ў верхнім куце заўсёды вяртае назад.</string>
     <string name="cd_previous_keyboard">Пераключыцца на папярэднюю клавіятуру</string>
     <string name="settings_add_space">Дадаваць прабел у канцы</string>
     <string name="settings_apply">Прымяніць</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Скасаваць</string>
     <string name="cd_cut_all">Выразаць увесь тэкст</string>
     <string name="cd_enter">Увод</string>
-    <string name="cd_hide_keyboard">Схаваць клавіятуру</string>
     <string name="cd_pending_count">Запісы ў чарзе</string>
     <string name="cd_record">Запісаць</string>
     <string name="cd_retry_failed">Пераслаць запісы, якія не ўдалося распазнаць</string>

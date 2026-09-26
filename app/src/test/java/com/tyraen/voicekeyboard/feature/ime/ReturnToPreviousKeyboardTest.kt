@@ -68,4 +68,30 @@ class ReturnToPreviousKeyboardTest {
     @Test fun `waits long enough for apps that drop text committed right before a switch`() {
         assertTrue(ReturnToPreviousKeyboard.DELAY_MS in 100L..300L)
     }
+
+    private val own = "com.tyraen.voicekeyboard"
+
+    @Test fun `a switch that left this keyboard selected did not happen`() {
+        assertTrue(ReturnToPreviousKeyboard.switchDidNotHappen("$own/.feature.ime.DictationInputMethod", own))
+    }
+
+    @Test fun `another selected keyboard means the switch happened`() {
+        assertFalse(ReturnToPreviousKeyboard.switchDidNotHappen(
+            "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME", own
+        ))
+        assertFalse(ReturnToPreviousKeyboard.switchDidNotHappen("helium314.keyboard/.latin.LatinIME", own))
+    }
+
+    @Test fun `a keyboard whose package only starts with ours is someone else`() {
+        assertFalse(ReturnToPreviousKeyboard.switchDidNotHappen("$own.jf/$own.feature.ime.DictationInputMethod", own))
+    }
+
+    @Test fun `an unreadable setting never undoes a switch`() {
+        assertFalse(ReturnToPreviousKeyboard.switchDidNotHappen(null, own))
+        assertFalse(ReturnToPreviousKeyboard.switchDidNotHappen("", own))
+    }
+
+    @Test fun `checks after the system has had time to unbind this keyboard`() {
+        assertTrue(ReturnToPreviousKeyboard.VERIFY_DELAY_MS in 300L..1000L)
+    }
 }

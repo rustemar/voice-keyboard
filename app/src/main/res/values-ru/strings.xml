@@ -12,8 +12,8 @@
     <string name="settings_endpoint">Адрес API</string>
     <string name="settings_auto_record">Автозапись</string>
     <string name="subtype_label">Голосовой ввод</string>
-    <string name="settings_return_to_previous_keyboard">Возвращаться к предыдущей клавиатуре</string>
-    <string name="settings_return_to_previous_keyboard_hint">Включите, если открываете Voice Keyboard кнопкой микрофона другой клавиатуры: когда текст вставлен, возвращается та клавиатура, а кнопка в верхнем углу тоже переключает на неё. Если Voice Keyboard — ваша основная клавиатура, оставьте выключенным.</string>
+    <string name="settings_return_to_previous_keyboard">Возвращаться к предыдущей клавиатуре после диктовки</string>
+    <string name="settings_return_to_previous_keyboard_hint">Включите, если открываете Voice Keyboard только для диктовки — кнопкой микрофона другой клавиатуры или из списка клавиатур: когда текст вставлен, та клавиатура возвращается сама. Оставьте выключенным, если диктуете несколько раз подряд или Voice Keyboard — ваша основная клавиатура. Кнопка в верхнем углу всегда возвращает назад.</string>
     <string name="cd_previous_keyboard">Переключиться на предыдущую клавиатуру</string>
     <string name="settings_add_space">Добавлять пробел в конце</string>
     <string name="settings_apply">Применить</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Отмена</string>
     <string name="cd_cut_all">Вырезать весь текст</string>
     <string name="cd_enter">Ввод</string>
-    <string name="cd_hide_keyboard">Скрыть клавиатуру</string>
     <string name="cd_pending_count">Записи в очереди</string>
     <string name="cd_record">Записать</string>
     <string name="cd_retry_failed">Повторно отправить нераспознанные записи</string>

@@ -12,8 +12,8 @@
     <string name="settings_endpoint">Point d\'accès API</string>
     <string name="settings_auto_record">Enregistrement automatique</string>
     <string name="subtype_label">Saisie vocale</string>
-    <string name="settings_return_to_previous_keyboard">Revenir au clavier précédent</string>
-    <string name="settings_return_to_previous_keyboard_hint">À activer si vous ouvrez Voice Keyboard avec la touche micro d\'un autre clavier : dès que le texte est saisi, ce clavier revient, et la touche du coin supérieur vous y ramène aussi. Laissez désactivé si Voice Keyboard est votre clavier principal.</string>
+    <string name="settings_return_to_previous_keyboard">Revenir au clavier précédent après la dictée</string>
+    <string name="settings_return_to_previous_keyboard_hint">À activer si vous ouvrez Voice Keyboard uniquement pour dicter, avec la touche micro d\'un autre clavier ou depuis la liste des claviers : dès que le texte est saisi, ce clavier revient tout seul. Laissez désactivé si vous dictez plusieurs fois de suite ou si Voice Keyboard est votre clavier principal. La touche du coin supérieur vous ramène toujours au clavier précédent.</string>
     <string name="cd_previous_keyboard">Passer au clavier précédent</string>
     <string name="settings_add_space">Ajouter un espace à la fin</string>
     <string name="settings_apply">Appliquer</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">Annuler</string>
     <string name="cd_cut_all">Couper tout le texte</string>
     <string name="cd_enter">Entrée</string>
-    <string name="cd_hide_keyboard">Masquer le clavier</string>
     <string name="cd_pending_count">Enregistrements en attente</string>
     <string name="cd_record">Enregistrer</string>
     <string name="cd_retry_failed">Renvoyer les enregistrements non transcrits</string>

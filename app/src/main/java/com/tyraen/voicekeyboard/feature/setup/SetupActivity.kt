@@ -90,6 +90,7 @@ class SetupActivity : AppCompatActivity() {
 
     /** True while the code sets the update switch, so its listener ignores that echo. */
     private var bindingUpdateSwitch = false
+    private var bindingReturnSwitch = false
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(InterfaceLanguageManager.applyTo(newBase))
@@ -234,6 +235,13 @@ class SetupActivity : AppCompatActivity() {
             scope.launch { preferenceStore.setUpdateCheckEnabled(isChecked) }
         }
 
+        // Saved at once: the rest of the screen waits for Apply, which also checks the API key over
+        // the network, and a switch that silently didn't stick looks like a feature that doesn't work.
+        switchReturnToPreviousKeyboard.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingReturnSwitch) return@setOnCheckedChangeListener
+            scope.launch { preferenceStore.setReturnToPreviousKeyboard(isChecked) }
+        }
+
         btnPostProcessing.setOnClickListener {
             startActivity(Intent(this, PostProcessingActivity::class.java))
         }
@@ -373,7 +381,7 @@ class SetupActivity : AppCompatActivity() {
             activeLanguage = p.effectiveLanguage
             editPrompt.setText(p.prompt)
             switchAutoRecord.isChecked = p.autoRecord
-            switchReturnToPreviousKeyboard.isChecked = p.returnToPreviousKeyboard
+            setReturnSwitch(p.returnToPreviousKeyboard)
             switchAddSpace.isChecked = p.addTrailingSpace
             switchSingleWordStripPunct.isChecked = p.singleWordStripPunctuation
             setUpdateSwitch(preferenceStore.isUpdateCheckEnabled())
@@ -573,6 +581,12 @@ class SetupActivity : AppCompatActivity() {
         bindingUpdateSwitch = true
         switchUpdateCheck.isChecked = value
         bindingUpdateSwitch = false
+    }
+
+    private fun setReturnSwitch(value: Boolean) {
+        bindingReturnSwitch = true
+        switchReturnToPreviousKeyboard.isChecked = value
+        bindingReturnSwitch = false
     }
 
     private fun showUpdateConsentDialog() {

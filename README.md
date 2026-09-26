@@ -20,7 +20,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - Configurable API endpoint, model, and language
 - **Multiple dictation languages** — list several language codes in settings and a language key appears on the keyboard: tap to cycle, long-press to pick one. The formatting prompt follows the language you switch to
 - Auto-start recording when keyboard opens
-- **Voice input for your other keyboard** — a keyboard with a mic key, such as HeliBoard, can open Voice Keyboard for dictation; with *Return to previous keyboard* on, your keyboard comes back as soon as the text is typed
+- **Voice input for your other keyboard** — a keyboard with a mic key, such as HeliBoard, can open Voice Keyboard for dictation; with *Return to previous keyboard after dictation* on, your keyboard comes back as soon as the text is typed
 - **Custom vocabulary** — add names and technical terms to bias recognition; helps with contacts and rare words
 - **Drop period for single-word output** — handy for voice search where a trailing period gets in the way
 
@@ -37,6 +37,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - Provider presets (OpenAI, Claude, OpenRouter, Groq, Mistral, DeepSeek) fill in the endpoint and a model that exists there
 
 ### Keyboard
+- **Back to your keyboard** — the key in the top corner takes you straight back to the keyboard you came from (Gboard, HeliBoard, …); to just hide the panel, use the system back gesture or button
 - **Send button** (paper plane) — sends Ctrl+Enter for quick message sending in messengers
 - **Accelerating backspace** — hold to delete slowly at first, then faster
 - **Punctuation keys** — `.`, `?` and `!` next to the space bar for when dictation gets the punctuation wrong; they swallow the space left by dictation, so "hello " + `.` reads "hello."
@@ -72,9 +73,9 @@ Voice Keyboard has no letter keys. To type by hand as well, keep your usual keyb
 
 1. Enable Voice Keyboard in the system keyboard list (step 3 above); you don't have to switch to it.
 2. In your keyboard, turn on the voice input key (in HeliBoard it sits in the toolbar).
-3. In Voice Keyboard settings, turn on **Return to previous keyboard**, and **Auto-start recording** if the mic key should start recording right away.
+3. In Voice Keyboard settings, turn on **Return to previous keyboard after dictation** if your keyboard should come back by itself, and **Auto-start recording** if the mic key should start recording right away.
 
-The mic key now opens Voice Keyboard, and once your text is typed your keyboard comes back by itself; the key in the top corner of the panel takes you back too. Voice Keyboard stays open while there is still something to see: a recording being transcribed, an error, or a recording waiting to be resent. If the mic key opens Google voice typing instead, switch Google voice typing off in the system keyboard list. Gboard and Samsung Keyboard use their own voice input.
+The mic key now opens Voice Keyboard, and the key in the top corner of the panel takes you back. With the setting on, your keyboard also comes back by itself once your text is typed; Voice Keyboard stays open while there is still something to see: a recording being transcribed, an error, or a recording waiting to be resent. If the mic key opens Google voice typing instead, switch Google voice typing off in the system keyboard list. Gboard and Samsung Keyboard use their own voice input: switch to Voice Keyboard with the system keyboard switcher (in Gboard, long-press the space bar; elsewhere, use the keyboard button in the navigation bar), and tap the key in the top corner to go back.
 
 ### Installing via Obtainium (recommended)
 

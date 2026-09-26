@@ -12,8 +12,8 @@
     <string name="settings_endpoint">API Adresi</string>
     <string name="settings_auto_record">Otomatik kayıt</string>
     <string name="subtype_label">Sesle giriş</string>
-    <string name="settings_return_to_previous_keyboard">Önceki klavyeye dön</string>
-    <string name="settings_return_to_previous_keyboard_hint">Voice Keyboard\'u başka bir klavyenin mikrofon tuşuyla açıyorsanız etkinleştirin: metin yazılınca o klavye geri gelir, üst köşedeki tuş da sizi ona geri götürür. Voice Keyboard ana klavyenizse kapalı bırakın.</string>
+    <string name="settings_return_to_previous_keyboard">Dikteden sonra önceki klavyeye dön</string>
+    <string name="settings_return_to_previous_keyboard_hint">Voice Keyboard\'u yalnızca dikte etmek için, başka bir klavyenin mikrofon tuşuyla ya da klavye listesinden açıyorsanız etkinleştirin: metin yazılınca o klavye kendiliğinden geri gelir. Art arda birkaç kez dikte ediyorsanız veya Voice Keyboard ana klavyenizse kapalı bırakın. Üst köşedeki tuş sizi her zaman geri götürür.</string>
     <string name="cd_previous_keyboard">Önceki klavyeye geç</string>
     <string name="settings_add_space">Sona boşluk ekle</string>
     <string name="settings_apply">Uygula</string>
@@ -113,7 +113,6 @@
     <string name="cd_cancel">İptal</string>
     <string name="cd_cut_all">Tüm metni kes</string>
     <string name="cd_enter">Enter</string>
-    <string name="cd_hide_keyboard">Klavyeyi gizle</string>
     <string name="cd_pending_count">Bekleyen kayıtlar</string>
     <string name="cd_record">Kaydet</string>
     <string name="cd_retry_failed">Yazıya dökülemeyen kayıtları yeniden gönder</string>
