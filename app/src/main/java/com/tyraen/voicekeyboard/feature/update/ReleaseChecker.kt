@@ -30,8 +30,10 @@ import org.json.JSONArray
 class ReleaseChecker(private val http: OkHttpClient) {
 
     companion object {
+        // The API returns 30 releases a page by default; 100 keeps the combined notes complete for
+        // anyone many versions behind, still in one unauthenticated request.
         private const val RELEASES_URL =
-            "https://api.github.com/repos/rustemar/voice-keyboard/releases"
+            "https://api.github.com/repos/rustemar/voice-keyboard/releases?per_page=100"
         private val RELEASE_HEADING = Regex("^v\\d+(\\.\\d+)+ — .*")
     }
 
