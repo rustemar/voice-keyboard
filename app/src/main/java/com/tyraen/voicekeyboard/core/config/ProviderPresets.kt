@@ -30,7 +30,7 @@ object ProviderPresets {
         Preset("OpenRouter", "https://openrouter.ai/api/v1/chat/completions", "openai/gpt-4o-mini", PostProcessingPreferences.PROVIDER_OPENAI),
         Preset("Groq", "https://api.groq.com/openai/v1/chat/completions", "openai/gpt-oss-120b", PostProcessingPreferences.PROVIDER_OPENAI),
         Preset("Mistral", "https://api.mistral.ai/v1/chat/completions", "mistral-small-latest", PostProcessingPreferences.PROVIDER_OPENAI),
-        Preset("DeepSeek", "https://api.deepseek.com/v1/chat/completions", "deepseek-chat", PostProcessingPreferences.PROVIDER_OPENAI),
+        Preset("DeepSeek", "https://api.deepseek.com/v1/chat/completions", "deepseek-flash", PostProcessingPreferences.PROVIDER_OPENAI),
     )
 
     /** Index of the preset served by the host of [endpoint]; -1 when the address is custom or blank. */
