@@ -72,7 +72,13 @@ class DictationInputMethod : InputMethodService() {
     private fun createInputView(): View {
         // Releasing the previous orchestrator unbinds it from the shared queue and frees its mic
         // session. The queue itself (and any parked recordings) is process-wide and survives this.
-        if (::orchestrator.isInitialized) orchestrator.destroy()
+        // The rebuild runs on every configuration change (rotation, dark mode, font size) without
+        // onWindowHidden, so a recording in progress is queued first; the new orchestrator binds to
+        // the queue at once and types the text as usual.
+        if (::orchestrator.isInitialized) {
+            orchestrator.gracefulShutdown()
+            orchestrator.destroy()
+        }
 
         currentTheme = ThemeManager.current(this)
         val themedContext = ThemeManager.applyToContext(this)
