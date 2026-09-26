@@ -1,0 +1,1 @@
+The translate key now shows where your text goes, like →EN, so it no longer looks like the language key. Long-press a mode button to see what it does. The status and navigation bars match the light and dark themes, and the keyboard follows the system's dark mode and font size right away.
