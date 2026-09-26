@@ -36,7 +36,14 @@ object InterfaceLanguageManager {
     private fun configure(context: Context, languageCode: String): Context {
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
+        // Override only the locale (and the layout direction setLocale derives from it). The
+        // platform re-applies an override on every configuration change, so a full copy of the
+        // current configuration froze night mode, font scale and the rest for as long as the
+        // context lived: with the Auto theme the long-lived keyboard kept the old light/dark look.
+        val config = Configuration()
+        // Android 7.x starts a new Configuration at fontScale 1, which would override the user's
+        // font size; 0 means "not set" on every version (AppCompat does the same).
+        config.fontScale = 0f
         config.setLocale(locale)
         return context.createConfigurationContext(config)
     }
