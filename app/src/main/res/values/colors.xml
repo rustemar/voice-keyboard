@@ -18,4 +18,7 @@
     <!-- Fixed colors -->
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <!-- Below API 27 the navigation bar can't have dark buttons, so it stays black there;
+         values-v27 matches it to the background. -->
+    <color name="system_nav_bar">#FF000000</color>
 </resources>

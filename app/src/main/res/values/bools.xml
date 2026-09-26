@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark status- and navigation-bar icons on the light keyboard_bg; white ones would be
+         nearly invisible there. -->
+    <bool name="light_system_bars">true</bool>
+</resources>

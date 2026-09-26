@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From API 27 the navigation bar can have dark buttons, so it takes the screen's own
+         background (light or dark through keyboard_bg). -->
+    <color name="system_nav_bar">@color/keyboard_bg</color>
+</resources>

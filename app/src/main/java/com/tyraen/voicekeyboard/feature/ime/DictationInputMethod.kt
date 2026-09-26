@@ -11,11 +11,14 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.ThemeManager
@@ -71,6 +74,7 @@ class DictationInputMethod : InputMethodService() {
         currentTheme = ThemeManager.current(this)
         val themedContext = ThemeManager.applyToContext(this)
         val view = LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null)
+        matchNavigationBarToPanel(themedContext)
 
         panel = InputPanelController(view)
         keystrokes = KeystrokeDispatcher { currentInputConnection }
@@ -111,6 +115,21 @@ class DictationInputMethod : InputMethodService() {
         orchestrator.loadPreferences()
         wireControls(view)
         return view
+    }
+
+    /**
+     * Paints the navigation bar under the panel in the panel's background, with dark buttons on the
+     * light theme, instead of the default black strip. Android 9+: 8.1 draws no bar colour for the
+     * keyboard window and forces light buttons while it is shown, so there the bar stays as it was.
+     * Re-run on every view rebuild, which is what a theme change triggers.
+     */
+    private fun matchNavigationBarToPanel(themedContext: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return
+        val imeWindow = window.window ?: return
+        imeWindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        imeWindow.navigationBarColor = ContextCompat.getColor(themedContext, R.color.keyboard_bg)
+        WindowInsetsControllerCompat(imeWindow, imeWindow.decorView).isAppearanceLightNavigationBars =
+            themedContext.resources.getBoolean(R.bool.light_system_bars)
     }
 
     override fun onWindowShown() {

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.VoiceKeyboard" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/mic_idle</item>
         <item name="android:statusBarColor">@color/keyboard_bg</item>
+        <item name="android:windowLightStatusBar">@bool/light_system_bars</item>
+        <item name="android:navigationBarColor">@color/system_nav_bar</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">@bool/light_system_bars</item>
         <item name="android:windowBackground">@color/keyboard_bg</item>
     </style>
 
@@ -13,5 +16,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Sits over whatever app the keyboard is in: show that app's bars, not ours. -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 </resources>
