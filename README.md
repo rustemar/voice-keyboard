@@ -3,11 +3,11 @@
 Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible Whisper endpoint of your choice — by default Groq (free tier available), can be pointed at OpenAI, Mistral, or any other compatible provider. Optional LLM post-processing.
 
 <p align="center">
-  <img src="docs/screenshots/keyboard.png" alt="Voice Keyboard with mic button" width="260">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Voice Keyboard in a messaging app, with the post-processing toggles and the dictation-language key" width="260">
   &nbsp;
-  <img src="docs/screenshots/setup.png" alt="Setup screen" width="260">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" alt="Setup screen" width="260">
   &nbsp;
-  <img src="docs/screenshots/postprocessing.png" alt="Post-processing settings" width="260">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" alt="Post-processing settings" width="260">
 </p>
 
 ## Features
