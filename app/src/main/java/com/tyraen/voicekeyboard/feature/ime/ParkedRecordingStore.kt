@@ -148,7 +148,7 @@ class ParkedRecordingStore(context: Context) {
         publish()
     }
 
-    /** A recording was transcribed successfully: delete its sidecar then its audio, drop it. */
+    /** A recording was transcribed successfully: delete its audio, then its sidecar, and drop it. */
     suspend fun markDone(id: String) = withContext(dispatcher) {
         loadIfNeeded()
         val idx = items.indexOfFirst { it.id == id }
