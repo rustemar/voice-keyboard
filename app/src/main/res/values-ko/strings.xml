@@ -113,6 +113,13 @@
     <string name="cd_cancel">취소</string>
     <string name="cd_cut_all">전체 텍스트 잘라내기</string>
     <string name="cd_enter">엔터</string>
+    <string name="cd_action_go">이동</string>
+    <string name="cd_action_search">검색</string>
+    <string name="cd_action_next">다음</string>
+    <string name="cd_action_previous">이전</string>
+    <string name="cd_action_done">완료</string>
+    <string name="cd_new_line">줄바꿈</string>
+    <string name="status_password_field">비밀번호 입력란에서는 음성 입력이 꺼져 있습니다</string>
     <string name="cd_pending_count">대기 중인 녹음</string>
     <string name="cd_record">녹음</string>
     <string name="cd_retry_failed">변환에 실패한 녹음 다시 보내기</string>

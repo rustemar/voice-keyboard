@@ -113,6 +113,13 @@
     <string name="cd_cancel">Peruuta</string>
     <string name="cd_cut_all">Leikkaa kaikki teksti</string>
     <string name="cd_enter">Rivinvaihto</string>
+    <string name="cd_action_go">Siirry</string>
+    <string name="cd_action_search">Hae</string>
+    <string name="cd_action_next">Seuraava</string>
+    <string name="cd_action_previous">Edellinen</string>
+    <string name="cd_action_done">Valmis</string>
+    <string name="cd_new_line">Uusi rivi</string>
+    <string name="status_password_field">Puhesyöte ei ole käytössä salasanakentissä</string>
     <string name="cd_pending_count">Odottavat äänitykset</string>
     <string name="cd_record">Äänitä</string>
     <string name="cd_retry_failed">Lähetä uudelleen äänitykset, joiden litterointi epäonnistui</string>

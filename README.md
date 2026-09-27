@@ -39,6 +39,8 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 ### Keyboard
 - **Back to your keyboard** — the key in the top corner takes you straight back to the keyboard you came from (Gboard, HeliBoard, …); to just hide the panel, use the system back gesture or button
 - **Send button** (paper plane) — sends Ctrl+Enter for quick message sending in messengers
+- **Enter follows the field** — in a search box, address bar or form it runs Search, Go, Send, Next or Done and shows that icon; in chat boxes it still starts a new line, and where a chat box sends on Enter, long-press it for a new line
+- **No voice in password fields** — the microphone is off there and auto-record doesn't start
 - **Accelerating backspace** — hold to delete slowly at first, then faster
 - **Punctuation keys** — `.`, `?` and `!` next to the space bar for when dictation gets the punctuation wrong; they swallow the space left by dictation, so "hello " + `.` reads "hello."
 - **Smart spacing** — dictated text gets a space in front when the cursor sits after a word, and never a doubled one before an existing space or full stop

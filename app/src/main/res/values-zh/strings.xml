@@ -113,6 +113,13 @@
     <string name="cd_cancel">取消</string>
     <string name="cd_cut_all">剪切全部文本</string>
     <string name="cd_enter">回车</string>
+    <string name="cd_action_go">前往</string>
+    <string name="cd_action_search">搜索</string>
+    <string name="cd_action_next">下一步</string>
+    <string name="cd_action_previous">上一步</string>
+    <string name="cd_action_done">完成</string>
+    <string name="cd_new_line">换行</string>
+    <string name="status_password_field">密码输入框中已关闭语音输入</string>
     <string name="cd_pending_count">待处理的录音</string>
     <string name="cd_record">录音</string>
     <string name="cd_retry_failed">重新发送转写失败的录音</string>

@@ -98,6 +98,19 @@ class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?
         }
     }
 
+    /** Enter as the field wants it: its editor action (Search, Go, Send…) or a plain Enter key. */
+    fun pressEnter(enter: EditorField.Enter) {
+        when (enter) {
+            EditorField.Enter.NewLine -> sendEnter()
+            is EditorField.Enter.Action -> connectionProvider()?.performEditorAction(enter.id)
+        }
+    }
+
+    /** A line break typed as text, for fields where the Enter key runs an action instead. */
+    fun insertNewLine() {
+        connectionProvider()?.commitText("\n", 1)
+    }
+
     fun sendCtrlEnter() {
         connectionProvider()?.let { ic ->
             val now = android.os.SystemClock.uptimeMillis()

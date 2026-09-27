@@ -113,6 +113,13 @@
     <string name="cd_cancel">Скасаваць</string>
     <string name="cd_cut_all">Выразаць увесь тэкст</string>
     <string name="cd_enter">Увод</string>
+    <string name="cd_action_go">Перайсці</string>
+    <string name="cd_action_search">Пошук</string>
+    <string name="cd_action_next">Далей</string>
+    <string name="cd_action_previous">Назад</string>
+    <string name="cd_action_done">Гатова</string>
+    <string name="cd_new_line">Новы радок</string>
+    <string name="status_password_field">Галасавы ўвод адключаны ў палях пароля</string>
     <string name="cd_pending_count">Запісы ў чарзе</string>
     <string name="cd_record">Запісаць</string>
     <string name="cd_retry_failed">Пераслаць запісы, якія не ўдалося распазнаць</string>

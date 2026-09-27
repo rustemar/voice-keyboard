@@ -113,6 +113,13 @@
     <string name="cd_cancel">Anuluj</string>
     <string name="cd_cut_all">Wytnij cały tekst</string>
     <string name="cd_enter">Enter</string>
+    <string name="cd_action_go">Przejdź</string>
+    <string name="cd_action_search">Szukaj</string>
+    <string name="cd_action_next">Dalej</string>
+    <string name="cd_action_previous">Wstecz</string>
+    <string name="cd_action_done">Gotowe</string>
+    <string name="cd_new_line">Nowa linia</string>
+    <string name="status_password_field">Wprowadzanie głosowe jest wyłączone w polach hasła</string>
     <string name="cd_pending_count">Oczekujące nagrania</string>
     <string name="cd_record">Nagrywaj</string>
     <string name="cd_retry_failed">Wyślij ponownie nagrania, których nie udało się przepisać</string>

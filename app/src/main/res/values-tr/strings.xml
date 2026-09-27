@@ -113,6 +113,13 @@
     <string name="cd_cancel">İptal</string>
     <string name="cd_cut_all">Tüm metni kes</string>
     <string name="cd_enter">Enter</string>
+    <string name="cd_action_go">Git</string>
+    <string name="cd_action_search">Ara</string>
+    <string name="cd_action_next">İleri</string>
+    <string name="cd_action_previous">Geri</string>
+    <string name="cd_action_done">Bitti</string>
+    <string name="cd_new_line">Yeni satır</string>
+    <string name="status_password_field">Parola alanlarında sesle giriş kapalı</string>
     <string name="cd_pending_count">Bekleyen kayıtlar</string>
     <string name="cd_record">Kaydet</string>
     <string name="cd_retry_failed">Yazıya dökülemeyen kayıtları yeniden gönder</string>

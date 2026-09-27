@@ -5,14 +5,19 @@ import android.text.TextPaint
 import android.view.View
 import androidx.annotation.StringRes
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 
 class InputPanelController(rootView: View) {
+
+    /** What a transient notice is for, so a check can ask for its own notice and no other. */
+    enum class Notice { DISCARD_CONFIRM, PASSWORD_FIELD }
 
     private val statusText: TextView = rootView.findViewById(R.id.statusText)
     private val btnMic: ImageButton = rootView.findViewById(R.id.btnMic)
@@ -38,6 +43,8 @@ class InputPanelController(rootView: View) {
     // more than one language to dictate in.
     val btnLanguage: Button = rootView.findViewById(R.id.btnLanguage)
     private val languageSpacer: View = rootView.findViewById(R.id.languageSpacer)
+    private val btnEnter: ImageButton = rootView.findViewById(R.id.btnEnter)
+    private var voiceBlocked = false
 
     val animator = InputPanelAnimator(
         wave1 = rootView.findViewById(R.id.ripple1),
@@ -54,6 +61,7 @@ class InputPanelController(rootView: View) {
         currentPhase = phase
         when (phase) {
             is InputPhase.Ready -> {
+                applyMicAlpha()
                 btnMic.setBackgroundResource(R.drawable.mic_button_bg)
                 btnMic.visibility = View.VISIBLE
                 btnCancel.visibility = View.GONE
@@ -62,6 +70,7 @@ class InputPanelController(rootView: View) {
                 applyQueueState()
             }
             is InputPhase.Capturing -> {
+                applyMicAlpha()
                 clearNotice()
                 statusText.setText(R.string.status_recording)
                 btnMic.setBackgroundResource(R.drawable.mic_button_recording)
@@ -119,9 +128,55 @@ class InputPanelController(rootView: View) {
             }
             progressBar.visibility = View.VISIBLE
         } else {
-            statusText.setText(R.string.status_idle)
+            statusText.setText(if (voiceBlocked) R.string.status_password_field else R.string.status_idle)
             progressBar.visibility = View.GONE
         }
+    }
+
+    /**
+     * In a password field the mic is dimmed and the idle line says why. A recording that was
+     * already running keeps its normal look, so it can still be stopped.
+     */
+    fun setVoiceBlocked(blocked: Boolean) {
+        if (voiceBlocked == blocked) return
+        voiceBlocked = blocked
+        applyMicAlpha()
+        // The password hint must not outlive the password field; other notices run their course.
+        if (currentPhase is InputPhase.Ready && (noticeReset == null || noticeKind == Notice.PASSWORD_FIELD)) {
+            applyQueueState()
+        }
+    }
+
+    private fun applyMicAlpha() {
+        btnMic.alpha = if (voiceBlocked && currentPhase !is InputPhase.Capturing) 0.4f else 1f
+    }
+
+    /**
+     * The Enter key shows what it will do in this field (see [EditorField.enter]). Where it runs an
+     * action in a multi-line field, long-press types the new line instead, and TalkBack says so.
+     */
+    fun updateEnterKey(enter: EditorField.Enter, newLineOnLongPress: Boolean) {
+        val context = btnEnter.context
+        val (icon, description) = when {
+            enter !is EditorField.Enter.Action -> R.drawable.ic_enter to context.getString(R.string.cd_enter)
+            enter.label != null -> R.drawable.ic_action_go to enter.label.toString()
+            else -> when (enter.id) {
+                EditorInfo.IME_ACTION_GO -> R.drawable.ic_action_go to context.getString(R.string.cd_action_go)
+                EditorInfo.IME_ACTION_SEARCH -> R.drawable.ic_action_search to context.getString(R.string.cd_action_search)
+                EditorInfo.IME_ACTION_SEND -> R.drawable.ic_send to context.getString(R.string.cd_send)
+                EditorInfo.IME_ACTION_NEXT -> R.drawable.ic_action_next to context.getString(R.string.cd_action_next)
+                EditorInfo.IME_ACTION_PREVIOUS -> R.drawable.ic_action_previous to context.getString(R.string.cd_action_previous)
+                EditorInfo.IME_ACTION_DONE -> R.drawable.ic_action_done to context.getString(R.string.cd_action_done)
+                else -> R.drawable.ic_enter to context.getString(R.string.cd_enter)
+            }
+        }
+        btnEnter.setImageResource(icon)
+        btnEnter.contentDescription = description
+        btnEnter.isLongClickable = newLineOnLongPress
+        ViewCompat.replaceAccessibilityAction(
+            btnEnter, AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_LONG_CLICK,
+            if (newLineOnLongPress) context.getString(R.string.cd_new_line) else null, null
+        )
     }
 
     fun displayError(@StringRes reasonRes: Int) {
@@ -131,30 +186,42 @@ class InputPanelController(rootView: View) {
     }
 
     private var noticeReset: Runnable? = null
+    private var noticeKind: Notice? = null
 
     /** Any other status write ends the notice, so [noticeShowing] means the text is really on screen. */
     private fun clearNotice() {
         noticeReset?.let { statusText.removeCallbacks(it) }
         noticeReset = null
+        noticeKind = null
     }
 
     /**
      * Show a transient line in the status area (confirmations, hints) and fall back to the
-     * regular status after [durationMs], unless a recording started meanwhile.
+     * regular status after [durationMs], unless a recording started meanwhile. [kind] marks the
+     * notices that something later asks about.
      */
-    fun showNotice(text: String, durationMs: Long = 4000L) {
+    fun showNotice(text: String, durationMs: Long = 4000L, kind: Notice? = null) {
         clearNotice()
         statusText.text = text
         val reset = Runnable {
             noticeReset = null
+            noticeKind = null
             if (currentPhase is InputPhase.Ready) applyQueueState()
         }
         noticeReset = reset
+        noticeKind = kind
         statusText.postDelayed(reset, durationMs)
     }
 
-    /** Whether a notice is currently on screen (used for two-step confirmations). */
-    val noticeShowing: Boolean get() = noticeReset != null
+    /**
+     * Whether that particular notice is on screen. Two-step confirmations ask for their own
+     * notice, so an unrelated one (the password hint, say) can never arm them.
+     */
+    fun noticeShowing(kind: Notice): Boolean = noticeReset != null && noticeKind == kind
+
+    fun showPasswordFieldNotice() {
+        showNotice(statusText.context.getString(R.string.status_password_field), kind = Notice.PASSWORD_FIELD)
+    }
 
     fun showPostProcessingButtons(show: Boolean) {
         ppToggleRow.visibility = if (show) View.VISIBLE else View.GONE

@@ -29,7 +29,11 @@ class InputOrchestrator(
     private val onFailedCountChanged: (Int) -> Unit = {},
     private val onPreferencesLoaded: () -> Unit = {},
     /** The user tapped the mic without RECORD_AUDIO; the host should start the permission flow. */
-    private val onPermissionNeeded: () -> Unit = {}
+    private val onPermissionNeeded: () -> Unit = {},
+    /** False in fields where dictation must not start, such as passwords; asked on every start. */
+    private val voiceAllowed: () -> Boolean = { true },
+    /** The user tapped the mic where [voiceAllowed] says no; the host explains why. */
+    private val onVoiceBlocked: () -> Unit = {}
 ) {
 
     companion object {
@@ -130,7 +134,7 @@ class InputOrchestrator(
             // record with no window on screen until the next show/hide. Without permission the
             // idle panel is also better than an error on every appearance; the mic tap asks.
             if (preferences?.autoRecord == true && viewVisible &&
-                currentPhase is InputPhase.Ready && hasMicPermission()
+                currentPhase is InputPhase.Ready && hasMicPermission() && voiceAllowed()
             ) {
                 beginCapture(userInitiated = false)
             }
@@ -185,7 +189,7 @@ class InputOrchestrator(
     fun handleAction(action: InputAction) {
         when (currentPhase) {
             is InputPhase.Ready -> when (action) {
-                InputAction.ToggleCapture -> beginCapture()
+                InputAction.ToggleCapture -> beginCaptureIfAllowed()
                 InputAction.CancelOperation -> {}
             }
             is InputPhase.Capturing -> when (action) {
@@ -194,9 +198,18 @@ class InputOrchestrator(
             }
             is InputPhase.Failed -> {
                 moveTo(InputPhase.Ready)
-                if (action is InputAction.ToggleCapture) beginCapture()
+                if (action is InputAction.ToggleCapture) beginCaptureIfAllowed()
             }
         }
+    }
+
+    /** A mic tap. Stopping a recording is never blocked, only starting one where voice is off. */
+    private fun beginCaptureIfAllowed() {
+        if (!voiceAllowed()) {
+            onVoiceBlocked()
+            return
+        }
+        beginCapture()
     }
 
     private fun hasMicPermission(): Boolean =

@@ -113,6 +113,13 @@
     <string name="cd_cancel">キャンセル</string>
     <string name="cd_cut_all">すべてのテキストを切り取り</string>
     <string name="cd_enter">改行</string>
+    <string name="cd_action_go">移動</string>
+    <string name="cd_action_search">検索</string>
+    <string name="cd_action_next">次へ</string>
+    <string name="cd_action_previous">前へ</string>
+    <string name="cd_action_done">完了</string>
+    <string name="cd_new_line">改行</string>
+    <string name="status_password_field">パスワード欄では音声入力はオフです</string>
     <string name="cd_pending_count">保留中の録音</string>
     <string name="cd_record">録音</string>
     <string name="cd_retry_failed">文字起こしに失敗した録音を再送信</string>

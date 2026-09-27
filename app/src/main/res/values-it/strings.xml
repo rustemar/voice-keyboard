@@ -113,6 +113,13 @@
     <string name="cd_cancel">Annulla</string>
     <string name="cd_cut_all">Taglia tutto il testo</string>
     <string name="cd_enter">Invio</string>
+    <string name="cd_action_go">Vai</string>
+    <string name="cd_action_search">Cerca</string>
+    <string name="cd_action_next">Avanti</string>
+    <string name="cd_action_previous">Indietro</string>
+    <string name="cd_action_done">Fine</string>
+    <string name="cd_new_line">Nuova riga</string>
+    <string name="status_password_field">L\'input vocale è disattivato nei campi password</string>
     <string name="cd_pending_count">Registrazioni in sospeso</string>
     <string name="cd_record">Registra</string>
     <string name="cd_retry_failed">Reinvia le registrazioni non trascritte</string>

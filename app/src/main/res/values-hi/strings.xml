@@ -113,6 +113,13 @@
     <string name="cd_cancel">रद्द करें</string>
     <string name="cd_cut_all">सारा टेक्स्ट काटें</string>
     <string name="cd_enter">एंटर</string>
+    <string name="cd_action_go">जाएं</string>
+    <string name="cd_action_search">खोजें</string>
+    <string name="cd_action_next">अगला</string>
+    <string name="cd_action_previous">पिछला</string>
+    <string name="cd_action_done">हो गया</string>
+    <string name="cd_new_line">नई पंक्ति</string>
+    <string name="status_password_field">पासवर्ड फ़ील्ड में वॉइस इनपुट बंद है</string>
     <string name="cd_pending_count">लंबित रिकॉर्डिंग</string>
     <string name="cd_record">रिकॉर्ड करें</string>
     <string name="cd_retry_failed">ट्रांसक्राइब न हो पाई रिकॉर्डिंग फिर से भेजें</string>

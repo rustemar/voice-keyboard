@@ -113,6 +113,13 @@
     <string name="cd_cancel">Ακύρωση</string>
     <string name="cd_cut_all">Αποκοπή όλου του κειμένου</string>
     <string name="cd_enter">Enter</string>
+    <string name="cd_action_go">Μετάβαση</string>
+    <string name="cd_action_search">Αναζήτηση</string>
+    <string name="cd_action_next">Επόμενο</string>
+    <string name="cd_action_previous">Προηγούμενο</string>
+    <string name="cd_action_done">Τέλος</string>
+    <string name="cd_new_line">Νέα γραμμή</string>
+    <string name="status_password_field">Η φωνητική εισαγωγή είναι απενεργοποιημένη στα πεδία κωδικού</string>
     <string name="cd_pending_count">Εκκρεμείς εγγραφές</string>
     <string name="cd_record">Εγγραφή</string>
     <string name="cd_retry_failed">Επαναποστολή εγγραφών που απέτυχαν στη μεταγραφή</string>

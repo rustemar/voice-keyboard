@@ -113,6 +113,13 @@
     <string name="cd_cancel">Отмена</string>
     <string name="cd_cut_all">Вырезать весь текст</string>
     <string name="cd_enter">Ввод</string>
+    <string name="cd_action_go">Перейти</string>
+    <string name="cd_action_search">Поиск</string>
+    <string name="cd_action_next">Далее</string>
+    <string name="cd_action_previous">Назад</string>
+    <string name="cd_action_done">Готово</string>
+    <string name="cd_new_line">Новая строка</string>
+    <string name="status_password_field">Голосовой ввод отключён в полях пароля</string>
     <string name="cd_pending_count">Записи в очереди</string>
     <string name="cd_record">Записать</string>
     <string name="cd_retry_failed">Повторно отправить нераспознанные записи</string>

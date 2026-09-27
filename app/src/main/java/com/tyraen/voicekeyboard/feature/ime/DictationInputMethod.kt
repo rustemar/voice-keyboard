@@ -8,11 +8,13 @@ import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.text.InputType
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageButton
@@ -95,8 +97,10 @@ class DictationInputMethod : InputMethodService() {
             capture = MicrophoneCaptureSession(this),
             onTextReady = { text, addTrailingSpace ->
                 // A visible panel can still lack an InputConnection (some apps drop it mid-edit);
-                // the clipboard is the fallback there too, never a silent loss.
-                val inserted = keyboardVisible && keystrokes.insertDictation(text, addTrailingSpace)
+                // the clipboard is the fallback there too, never a silent loss. A dictation started
+                // elsewhere that arrives while a password field has focus goes there as well.
+                val inserted = keyboardVisible && !inPasswordField() &&
+                    keystrokes.insertDictation(text, addTrailingSpace)
                 if (!inserted) {
                     copyToClipboard(if (addTrailingSpace) "$text " else text)
                     if (keyboardVisible) clipboardFallbackSinceShown = true
@@ -116,14 +120,44 @@ class DictationInputMethod : InputMethodService() {
                 refreshPostProcessingUI()
                 refreshLanguageKey()
             },
-            onPermissionNeeded = { requestMicPermission() }
+            onPermissionNeeded = { requestMicPermission() },
+            voiceAllowed = { !inPasswordField() },
+            onVoiceBlocked = { panel.showPasswordFieldNotice() }
         )
         orchestrator.viewVisible = keyboardVisible
 
         orchestrator.loadPreferences()
         wireControls(view)
+        applyFieldToPanel(currentInputEditorInfo)
         return view
     }
+
+    /** Focus moved to another field (or the keyboard opened on one): follow what it asks for. */
+    override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
+        super.onStartInputView(info, restarting)
+        applyFieldToPanel(info)
+        // A recording started in the previous field (a login's user name, say) stops when focus
+        // moves into a password field, so the mic is not left open there. What was said is still
+        // queued, and while the password field has focus it goes to the clipboard.
+        if (::orchestrator.isInitialized && EditorField.isPassword(info?.inputType ?: InputType.TYPE_NULL)) {
+            orchestrator.gracefulShutdown()
+        }
+    }
+
+    private fun applyFieldToPanel(info: EditorInfo?) {
+        if (!::panel.isInitialized) return
+        val inputType = info?.inputType ?: InputType.TYPE_NULL
+        val enter = enterFor(info)
+        panel.setVoiceBlocked(EditorField.isPassword(inputType))
+        panel.updateEnterKey(enter, newLineOnLongPress = enter is EditorField.Enter.Action && EditorField.isMultiLine(inputType))
+    }
+
+    private fun inPasswordField(): Boolean =
+        EditorField.isPassword(currentInputEditorInfo?.inputType ?: InputType.TYPE_NULL)
+
+    private fun enterFor(info: EditorInfo?): EditorField.Enter =
+        if (info == null) EditorField.Enter.NewLine
+        else EditorField.enter(info.imeOptions, info.actionId, info.actionLabel)
 
     /**
      * Paints the navigation bar under the panel in the panel's background, with dark buttons on the
@@ -308,12 +342,15 @@ class DictationInputMethod : InputMethodService() {
         // Deleting failed recordings is destructive, so it takes two long-presses: the first one
         // explains what a second one will do, and the offer expires with the notice.
         btnRetryFailed.setOnLongClickListener {
-            if (panel.noticeShowing) {
+            if (panel.noticeShowing(InputPanelController.Notice.DISCARD_CONFIRM)) {
                 orchestrator.discardFailed { removed ->
                     panel.showNotice(getString(R.string.notice_discard_failed_done, removed))
                 }
             } else {
-                panel.showNotice(getString(R.string.notice_discard_failed_confirm))
+                panel.showNotice(
+                    getString(R.string.notice_discard_failed_confirm),
+                    kind = InputPanelController.Notice.DISCARD_CONFIRM
+                )
             }
             true
         }
@@ -342,7 +379,12 @@ class DictationInputMethod : InputMethodService() {
             imm.showInputMethodPicker()
             true
         }
-        btnEnter.setOnClickListener { keystrokes.sendEnter() }
+        btnEnter.setOnClickListener { keystrokes.pressEnter(enterFor(currentInputEditorInfo)) }
+        // Only long-clickable where Enter runs an action in a multi-line field (see updateEnterKey).
+        btnEnter.setOnLongClickListener {
+            keystrokes.insertNewLine()
+            true
+        }
         btnPeriod.setOnClickListener { keystrokes.insertPunctuation(".") }
         btnQuestion.setOnClickListener { keystrokes.insertPunctuation("?") }
         btnExclamation.setOnClickListener { keystrokes.insertPunctuation("!") }
@@ -369,7 +411,10 @@ class DictationInputMethod : InputMethodService() {
         // Long-press names the key, like the mode toggles (see bindToggle).
         ViewCompat.setTooltipText(btnPreviousKeyboard, btnPreviousKeyboard.contentDescription)
 
-        btnSend.setOnClickListener { keystrokes.sendCtrlEnter() }
+        btnSend.setOnClickListener {
+            val enter = enterFor(currentInputEditorInfo)
+            if (EditorField.sendsByAction(enter)) keystrokes.pressEnter(enter) else keystrokes.sendCtrlEnter()
+        }
 
         // Dictation language: tap cycles through the configured codes, long-press picks one.
         panel.btnLanguage.setOnClickListener {

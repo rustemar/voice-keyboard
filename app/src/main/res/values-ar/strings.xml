@@ -113,6 +113,13 @@
     <string name="cd_cancel">إلغاء</string>
     <string name="cd_cut_all">قص كل النص</string>
     <string name="cd_enter">إدخال</string>
+    <string name="cd_action_go">انتقال</string>
+    <string name="cd_action_search">بحث</string>
+    <string name="cd_action_next">التالي</string>
+    <string name="cd_action_previous">السابق</string>
+    <string name="cd_action_done">تم</string>
+    <string name="cd_new_line">سطر جديد</string>
+    <string name="status_password_field">الإدخال الصوتي متوقف في حقول كلمة المرور</string>
     <string name="cd_pending_count">تسجيلات معلقة</string>
     <string name="cd_record">تسجيل</string>
     <string name="cd_retry_failed">إعادة إرسال التسجيلات التي فشل تفريغها</string>

@@ -113,6 +113,13 @@
     <string name="cd_cancel">Cancelar</string>
     <string name="cd_cut_all">Cortar todo o texto</string>
     <string name="cd_enter">Enter</string>
+    <string name="cd_action_go">Ir</string>
+    <string name="cd_action_search">Pesquisar</string>
+    <string name="cd_action_next">Próximo</string>
+    <string name="cd_action_previous">Anterior</string>
+    <string name="cd_action_done">Concluído</string>
+    <string name="cd_new_line">Nova linha</string>
+    <string name="status_password_field">A entrada de voz está desativada em campos de senha</string>
     <string name="cd_pending_count">Gravações pendentes</string>
     <string name="cd_record">Gravar</string>
     <string name="cd_retry_failed">Reenviar gravações que falharam ao transcrever</string>

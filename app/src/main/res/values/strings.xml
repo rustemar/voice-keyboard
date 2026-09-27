@@ -123,6 +123,13 @@
     <string name="cd_send">Send</string>
     <string name="cd_cancel">Cancel</string>
     <string name="cd_enter">Enter</string>
+    <string name="cd_action_go">Go</string>
+    <string name="cd_action_search">Search</string>
+    <string name="cd_action_next">Next</string>
+    <string name="cd_action_previous">Previous</string>
+    <string name="cd_action_done">Done</string>
+    <string name="cd_new_line">New line</string>
+    <string name="status_password_field">Voice input is off in password fields</string>
     <string name="cd_pending_count">Pending recordings</string>
     <string name="cd_retry_failed">Resend recordings that failed to transcribe</string>
     <string name="cd_dictation_language">Dictation language</string>

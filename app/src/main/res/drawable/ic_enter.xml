@@ -3,7 +3,8 @@
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:viewportHeight="24"
+    android:autoMirrored="true">
     <!-- Enter/return arrow: horizontal line with downward-left arrow -->
     <path
         android:fillColor="@color/key_text"
