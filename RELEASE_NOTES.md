@@ -1,5 +1,6 @@
-v1.9.5 — One tap back to your keyboard
+v1.9.6 — Enter that fits the field, no voice in password fields
 
-- The key in the top corner now always takes you back to the keyboard you came from, such as Gboard or HeliBoard; to just hide the panel, use the system back gesture or button
-- "Return to previous keyboard after dictation" now only controls the automatic switch back, and it is saved as soon as you flip it
-- A recording in progress is no longer lost when the screen rotates or dark mode switches on or off
+- The Enter key now does what the field expects — Search, Go, Send, Next or Done — and shows the matching icon; in chat boxes and other multi-line fields it still starts a new line
+- The microphone is off in password fields: auto-record doesn't start there, and a dictation that finishes while one is focused goes to the clipboard instead
+- The DeepSeek post-processing preset now fills DeepSeek's current model, since the old one was retired
+- The German translation now uses the formal form throughout

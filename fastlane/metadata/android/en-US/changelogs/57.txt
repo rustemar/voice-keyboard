@@ -1,0 +1,1 @@
+The Enter key now does what the field expects (Search, Go, Send, Next or Done) and shows the matching icon; in chat boxes it still starts a new line. The microphone is off in password fields, and a dictation that finishes while one is focused goes to the clipboard. The DeepSeek preset fills DeepSeek's current model, and the German translation uses the formal form throughout.
