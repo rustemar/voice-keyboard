@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <!-- Plain http is allowed only because users may type the address of their own server on
+         the home network. Every built-in address is https, and the settings screens warn as
+         soon as an address starts with http://. -->
     <application
         android:allowBackup="false"
         android:fullBackupContent="false"
@@ -15,7 +18,7 @@
         android:supportsRtl="true"
         android:name=".app.DictationApp"
         android:theme="@style/Theme.VoiceKeyboard"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".feature.setup.SetupActivity"

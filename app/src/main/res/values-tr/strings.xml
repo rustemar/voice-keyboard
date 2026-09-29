@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">OpenAI uyumlu her Whisper anahtarı çalışır. Groq varsayılan ayarlarla çalışır; Mistral için uç noktayı api.mistral.ai/v1/audio/transcriptions, modeli de voxtral-mini-latest olarak ayarlayın.</string>
     <string name="about_project">GitHub — Proje hakkında</string>
     <string name="link_copied">Bağlantı kopyalandı</string>
+    <string name="no_browser_link_copied">Bağlantıyı açacak tarayıcı yok, bu yüzden kopyalandı</string>
     <string name="status_postprocessing">İşleniyor\u2026</string>
     <string name="pp_settings_title">Son işleme</string>
     <string name="pp_settings_description">Yazıya dökülmüş metni düzeltin, kısaltın veya geliştirin. OpenAI, Claude veya OpenRouter gibi OpenAI uyumlu herhangi bir sağlayıcının API anahtarını gerektirir. Modlar klavyenin üzerindeki düğmelerle açılıp kapatılır.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">API anahtarı</string>
     <string name="pp_endpoint">API uç noktası</string>
     <string name="pp_endpoint_hint">Varsayılan için boş bırakın veya sağlayıcınızın URL\'sini yapıştırın (örn. https://openrouter.ai/api/v1; yolun geri kalanı otomatik eklenir)</string>
+    <string name="endpoint_unencrypted_warning">Şifresiz (http): Bu adrese gönderilen her şey, API anahtarınız dahil, yolda ele geçirilebilir. Yalnızca güvendiğiniz bir ağdaki kendi sunucunuz için kullanın.</string>
     <string name="pp_model">Model</string>
     <string name="pp_model_hint">Varsayılan için boş bırakın. OpenRouter gibi ağ geçitleri sağlayıcı ön eki gerektirir, örn. openai/gpt-4o-mini</string>
     <string name="pp_saved">Ayarlar kaydedildi.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">Mikrofon erişimi reddedildi. Az önce açılan uygulama ayarlarından izin verin.</string>
     <string name="error_mic_permission">Mikrofon izni gerekli</string>
     <string name="error_mic_unavailable">Mikrofon meşgul veya kullanılamıyor</string>
-    <string name="error_api_key_missing">API anahtarı ayarlanmadı</string>
+    <string name="error_api_key_missing">API anahtarı ayarlanmadı — ayarlardan ekleyin</string>
     <string name="notice_discard_failed_confirm">Gönderilmemiş kayıtları silmek için tekrar basılı tutun</string>
     <string name="notice_discard_failed_done">Silinen gönderilmemiş kayıt: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard etkin</string>

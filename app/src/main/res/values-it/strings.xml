@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">Funziona qualsiasi chiave Whisper compatibile con OpenAI. Groq funziona con le impostazioni predefinite; per Mistral, imposta l\'endpoint su api.mistral.ai/v1/audio/transcriptions e il modello su voxtral-mini-latest.</string>
     <string name="about_project">GitHub — Informazioni sul progetto</string>
     <string name="link_copied">Link copiato</string>
+    <string name="no_browser_link_copied">Nessun browser per aprire il link, quindi è stato copiato</string>
     <string name="status_postprocessing">Post-elaborazione\u2026</string>
     <string name="pp_settings_title">Post-elaborazione</string>
     <string name="pp_settings_description">Correggi, abbrevia o migliora il testo trascritto. Richiede una chiave API di OpenAI, Claude o di qualsiasi provider compatibile con OpenAI, come OpenRouter. Le modalità si attivano con i pulsanti sulla tastiera stessa.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">Chiave API</string>
     <string name="pp_endpoint">Endpoint API</string>
     <string name="pp_endpoint_hint">Lascia vuoto per il valore predefinito o incolla l\'URL del tuo provider (es. https://openrouter.ai/api/v1; il resto del percorso viene aggiunto automaticamente)</string>
+    <string name="endpoint_unencrypted_warning">Non cifrato (http): tutto ciò che viene inviato a questo indirizzo, chiave API compresa, può essere intercettato lungo il percorso. Usalo solo per un tuo server su una rete di cui ti fidi.</string>
     <string name="pp_model">Modello</string>
     <string name="pp_model_hint">Lascia vuoto per il valore predefinito. I gateway come OpenRouter richiedono il prefisso del fornitore, es. openai/gpt-4o-mini</string>
     <string name="pp_saved">Impostazioni salvate.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">L\'accesso al microfono è stato negato. Consentilo nelle impostazioni dell\'app appena aperte.</string>
     <string name="error_mic_permission">Serve il permesso per il microfono</string>
     <string name="error_mic_unavailable">Microfono occupato o non disponibile</string>
-    <string name="error_api_key_missing">Chiave API non impostata</string>
+    <string name="error_api_key_missing">Chiave API non impostata — aggiungila nelle impostazioni</string>
     <string name="notice_discard_failed_confirm">Tieni premuto di nuovo per eliminare le registrazioni non inviate</string>
     <string name="notice_discard_failed_done">Registrazioni non inviate eliminate: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard è attivata</string>

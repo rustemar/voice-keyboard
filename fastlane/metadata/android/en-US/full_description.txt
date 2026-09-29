@@ -1,6 +1,6 @@
-Voice Keyboard is an Android keyboard that types what you say. Switch to it in any text field, tap the microphone, speak, and the text lands in whatever app you are using.
+Voice Keyboard is a keyboard that types what you say. Switch to it in any text field, tap the microphone, speak, and the text lands in whatever app you are using.
 
-It has no speech engine of its own and no account. You bring an API key for an OpenAI-compatible Whisper endpoint — Groq and Mistral both offer a free tier — and your audio goes to that endpoint and nowhere else.
+It has no speech engine of its own and no account. You bring an API key for an OpenAI-compatible Whisper endpoint — Groq and Mistral both offer a free tier — or run a server of your own, and your audio goes to that endpoint and nowhere else.
 
 <b>Voice input</b>
 <ul><li>Works in any text field, in any app</li><li>Processing queue: start the next recording while the previous one is still being transcribed</li><li>Offline-proof: a recording that cannot be sent is kept on the device and resent automatically once the connection returns</li><li>Several dictation languages on one key: tap to cycle, long-press to pick from the list</li><li>Custom vocabulary for names and technical terms that get misrecognised</li><li>Can be the voice input of another keyboard, such as HeliBoard, and hand back to it once the text is typed</li></ul>
@@ -14,4 +14,4 @@ It has no speech engine of its own and no account. You bring an API key for an O
 <b>Privacy</b>
 <ul><li>No analytics, no advertising, no tracking, no account, no servers of our own</li><li>API keys and settings stay on the device and are excluded from cloud backup</li><li>Audio is sent only to the endpoint you configured, authenticated with your own key</li></ul>
 
-The app can also check GitHub for new versions, but that is off unless you switch it on: updates obtained that way come straight from the developer and are not reviewed by F-Droid.
+The app can also look for new versions on GitHub: automatically only if you switch that on, or when you press "Check for updates". Updates obtained that way come straight from the developer and are not reviewed by F-Droid.

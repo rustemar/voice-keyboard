@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
@@ -16,6 +15,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
@@ -27,6 +27,7 @@ import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.network.ApiEndpoint
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.core.logging.FaultCapture
+import com.tyraen.voicekeyboard.core.ui.LinkOpener
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingActivity
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
@@ -40,6 +41,7 @@ class SetupActivity : AppCompatActivity() {
         private const val COLOR_OK = "#4CAF50"
         private const val COLOR_ERROR = "#EF4444"
         private const val COLOR_WARN = "#FBBF24"
+        private const val PRIVACY_URL = "https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md"
     }
 
     private lateinit var spinnerTheme: Spinner
@@ -47,6 +49,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var spinnerSttPreset: Spinner
     private lateinit var editApiKey: EditText
     private lateinit var editEndpoint: EditText
+    private lateinit var txtEndpointWarning: TextView
     private lateinit var editModel: EditText
     private lateinit var editLanguage: EditText
     private lateinit var editPrompt: EditText
@@ -130,6 +133,7 @@ class SetupActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        releaseChecker.cancelDownload(owner = this)
         super.onDestroy()
         scope.cancel()
         capture?.release()
@@ -141,6 +145,7 @@ class SetupActivity : AppCompatActivity() {
         spinnerSttPreset = findViewById(R.id.spinnerSttPreset)
         editApiKey = findViewById(R.id.editApiKey)
         editEndpoint = findViewById(R.id.editEndpoint)
+        txtEndpointWarning = findViewById(R.id.txtEndpointWarning)
         editModel = findViewById(R.id.editModel)
         editLanguage = findViewById(R.id.editLanguage)
         editPrompt = findViewById(R.id.editPrompt)
@@ -362,6 +367,7 @@ class SetupActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
+                txtEndpointWarning.isVisible = ApiEndpoint.isUnencrypted(s?.toString() ?: "")
                 val pos = ProviderPresets.indexOf(ProviderPresets.speechToText, s?.toString() ?: "") + 1
                 if (spinnerSttPreset.selectedItemPosition != pos) {
                     presetPosSetByCode = pos
@@ -596,14 +602,7 @@ class SetupActivity : AppCompatActivity() {
             // Same neutral button as the microphone disclosure: the decision is only informed if
             // the policy is reachable from the dialog that asks for it.
             .setNeutralButton(R.string.mic_disclosure_privacy) { _, _ ->
-                try {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md")
-                        )
-                    )
-                } catch (_: Exception) {}
+                LinkOpener.open(this, PRIVACY_URL)
                 showUpdateConsentDialog()
             }
             .setPositiveButton(R.string.update_consent_enable) { _, _ ->
@@ -651,21 +650,14 @@ class SetupActivity : AppCompatActivity() {
                 }
             }
             .setNeutralButton(R.string.mic_disclosure_privacy) { _, _ ->
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md")
-                    )
-                )
+                LinkOpener.open(this, PRIVACY_URL)
                 showMicDisclosure()
             }
             .show()
     }
 
     private fun setupLink(view: TextView, url: String) {
-        view.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        }
+        view.setOnClickListener { LinkOpener.open(this, url) }
         view.setOnLongClickListener {
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipboard.setPrimaryClip(ClipData.newPlainText("URL", url))

@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">Mikä tahansa OpenAI-yhteensopiva Whisper-avain käy. Groq toimii oletusasetuksilla; Mistralia varten aseta päätepisteeksi api.mistral.ai/v1/audio/transcriptions ja malliksi voxtral-mini-latest.</string>
     <string name="about_project">GitHub — Tietoa projektista</string>
     <string name="link_copied">Linkki kopioitu</string>
+    <string name="no_browser_link_copied">Linkin avaamiseen ei ole selainta, joten se kopioitiin</string>
     <string name="status_postprocessing">Jälkikäsittely\u2026</string>
     <string name="pp_settings_title">Jälkikäsittely</string>
     <string name="pp_settings_description">Korjaa, lyhennä tai paranna litteroitua tekstiä. Vaatii API-avaimen OpenAI:lta, Claudelta tai miltä tahansa OpenAI-yhteensopivalta palveluntarjoajalta, kuten OpenRouterilta. Tilat vaihdetaan näppäimistön omilla painikkeilla.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">API-avain</string>
     <string name="pp_endpoint">API-päätepiste</string>
     <string name="pp_endpoint_hint">Jätä tyhjäksi oletusarvoa varten tai liitä palveluntarjoajasi URL-osoite (esim. https://openrouter.ai/api/v1; polun loppuosa lisätään automaattisesti)</string>
+    <string name="endpoint_unencrypted_warning">Salaamaton (http): kaiken tähän osoitteeseen lähetetyn, myös API-avaimesi, voi siepata matkalla. Käytä vain omalle palvelimellesi verkossa, johon luotat.</string>
     <string name="pp_model">Malli</string>
     <string name="pp_model_hint">Jätä tyhjäksi oletusarvoa varten. OpenRouterin kaltaiset välityspalvelut vaativat toimittajan etuliitteen, esim. openai/gpt-4o-mini</string>
     <string name="pp_saved">Asetukset tallennettu.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">Mikrofonin käyttö estettiin. Salli se juuri avautuneissa sovelluksen asetuksissa.</string>
     <string name="error_mic_permission">Mikrofonin käyttöoikeus vaaditaan</string>
     <string name="error_mic_unavailable">Mikrofoni on varattu tai ei käytettävissä</string>
-    <string name="error_api_key_missing">API-avainta ei ole asetettu</string>
+    <string name="error_api_key_missing">API-avainta ei ole asetettu — lisää se asetuksissa</string>
     <string name="notice_discard_failed_confirm">Pidä uudelleen painettuna poistaaksesi lähettämättömät tallenteet</string>
     <string name="notice_discard_failed_done">Lähettämättömiä tallenteita poistettu: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard on käytössä</string>

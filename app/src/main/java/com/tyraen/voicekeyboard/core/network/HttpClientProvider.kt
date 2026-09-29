@@ -14,5 +14,9 @@ object HttpClientProvider {
         // Generous enough that a slow-but-working upload still completes; a true stall fails fast
         // and re-enters the connectivity-gated retry path instead of blocking the queue.
         .callTimeout(180, TimeUnit.SECONDS)
+        // Plain http is allowed for a server the user typed in, so a redirect must not turn an
+        // https address into an unencrypted one behind the user's back (or the other way round).
+        // Redirects that keep the scheme, like GitHub's download links, are still followed.
+        .followSslRedirects(false)
         .build()
 }

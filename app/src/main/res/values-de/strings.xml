@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">Jeder OpenAI-kompatible Whisper-Schlüssel funktioniert. Groq funktioniert mit den Standardeinstellungen; für Mistral den Endpunkt auf api.mistral.ai/v1/audio/transcriptions und das Modell auf voxtral-mini-latest setzen.</string>
     <string name="about_project">GitHub — Über das Projekt</string>
     <string name="link_copied">Link kopiert</string>
+    <string name="no_browser_link_copied">Kein Browser zum Öffnen des Links vorhanden, daher wurde er kopiert</string>
     <string name="status_postprocessing">Nachbearbeitung\u2026</string>
     <string name="pp_settings_title">Nachbearbeitung</string>
     <string name="pp_settings_description">Transkribierten Text korrigieren, kürzen oder verbessern. Erfordert einen API-Schlüssel von OpenAI, Claude oder einem OpenAI-kompatiblen Anbieter wie OpenRouter. Die Modi werden mit den Schaltflächen auf der Tastatur selbst umgeschaltet.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">API-Schlüssel</string>
     <string name="pp_endpoint">API-Endpunkt</string>
     <string name="pp_endpoint_hint">Leer lassen für Standardwert oder die URL Ihres Anbieters einfügen (z. B. https://openrouter.ai/api/v1; der Rest des Pfads wird automatisch ergänzt)</string>
+    <string name="endpoint_unencrypted_warning">Unverschlüsselt (http): Alles, was an diese Adresse geht, einschließlich Ihres API-Schlüssels, kann unterwegs abgefangen werden. Nutzen Sie das nur für Ihren eigenen Server in einem Netz, dem Sie vertrauen.</string>
     <string name="pp_model">Modell</string>
     <string name="pp_model_hint">Leer lassen für Standardwert. Gateways wie OpenRouter benötigen das Anbieter-Präfix, z. B. openai/gpt-4o-mini</string>
     <string name="pp_saved">Einstellungen gespeichert.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">Mikrofonzugriff wurde verweigert. Erlauben Sie ihn in den gerade geöffneten App-Einstellungen.</string>
     <string name="error_mic_permission">Mikrofonberechtigung erforderlich</string>
     <string name="error_mic_unavailable">Mikrofon ist belegt oder nicht verfügbar</string>
-    <string name="error_api_key_missing">API-Schlüssel nicht gesetzt</string>
+    <string name="error_api_key_missing">API-Schlüssel nicht gesetzt — bitte in den Einstellungen eintragen</string>
     <string name="notice_discard_failed_confirm">Erneut gedrückt halten, um die nicht gesendeten Aufnahmen zu löschen</string>
     <string name="notice_discard_failed_done">Nicht gesendete Aufnahmen gelöscht: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard ist aktiviert</string>

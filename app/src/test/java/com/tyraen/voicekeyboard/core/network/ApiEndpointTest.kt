@@ -1,6 +1,8 @@
 package com.tyraen.voicekeyboard.core.network
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ApiEndpointTest {
@@ -44,6 +46,21 @@ class ApiEndpointTest {
     @Test fun `blank input stays blank so callers can fall back to their default`() {
         assertEquals("", ApiEndpoint.complete("", chat))
         assertEquals("", ApiEndpoint.complete("   ", chat))
+    }
+
+    @Test fun `only a plain http address counts as unencrypted`() {
+        assertTrue(ApiEndpoint.isUnencrypted("http://192.168.1.50:8000/v1/audio/transcriptions"))
+        assertTrue(ApiEndpoint.isUnencrypted("  HTTP://nas.local:11434/v1 "))
+        assertFalse(ApiEndpoint.isUnencrypted("https://api.groq.com/openai/v1/audio/transcriptions"))
+        assertFalse(ApiEndpoint.isUnencrypted(""))
+        // A scheme-less address is completed to https, so it is not flagged while being typed.
+        assertFalse(ApiEndpoint.isUnencrypted("api.mistral.ai/v1"))
+    }
+
+    @Test fun `a server on the phone itself is not flagged`() {
+        assertFalse(ApiEndpoint.isUnencrypted("http://localhost:8080/v1"))
+        assertFalse(ApiEndpoint.isUnencrypted("http://127.0.0.1:8000/v1/audio/transcriptions"))
+        assertTrue(ApiEndpoint.isUnencrypted("http://10.0.2.2:8765/v1"))
     }
 
     @Test fun `host and path are split without port credentials or query`() {

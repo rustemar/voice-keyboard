@@ -33,7 +33,9 @@ class InputOrchestrator(
     /** False in fields where dictation must not start, such as passwords; asked on every start. */
     private val voiceAllowed: () -> Boolean = { true },
     /** The user tapped the mic where [voiceAllowed] says no; the host explains why. */
-    private val onVoiceBlocked: () -> Unit = {}
+    private val onVoiceBlocked: () -> Unit = {},
+    /** The user tapped the mic or resend with no API key saved; the host opens the settings. */
+    private val onApiKeyNeeded: () -> Unit = {}
 ) {
 
     companion object {
@@ -49,6 +51,13 @@ class InputOrchestrator(
 
     private val scope = MainScope()
     private var preferences: UserPreferences? = null
+
+    /**
+     * Preference loads still running. Coming back from the settings, the panel reloads while it
+     * appears; a mic tap in that moment must not trust the old, blank key and send the user
+     * straight back to the settings.
+     */
+    private var reloadsInFlight = 0
     private var ppPreferences: PostProcessingPreferences? = null
     private var vocabulary: String = ""
 
@@ -73,9 +82,21 @@ class InputOrchestrator(
         processingQueue.bindListener(queueListener)
     }
 
-    /** Re-send every recording that failed transcription and is waiting for retry. */
+    /**
+     * Re-send every recording that failed transcription and is waiting for retry. Without a key
+     * nothing can go out, and the queue would park everything again without a word, so the user
+     * is sent to the settings instead.
+     */
     fun retryFailed() {
-        processingQueue.retryFailed()
+        scope.launch {
+            // Only the key is read: a full reload could overwrite a toggle change still being saved.
+            if (preferenceStore.load().apiKey.isBlank()) {
+                if (currentPhase !is InputPhase.Capturing) moveTo(InputPhase.Failed(R.string.error_api_key_missing))
+                onApiKeyNeeded()
+                return@launch
+            }
+            processingQueue.retryFailed()
+        }
     }
 
     /** Delete every recording that failed permanently; [onDone] receives how many were removed. */
@@ -125,9 +146,13 @@ class InputOrchestrator(
         scope.launch {
             loadPreferencesInternal()
             onPreferencesLoaded()
-            // Coming back from the permission prompt: the error that sent the user there is stale.
+            // Coming back from the permission prompt or from the settings: the error that sent the
+            // user there is stale once the permission is granted or a key is saved.
             val failed = currentPhase as? InputPhase.Failed
             if (failed?.reasonRes == R.string.error_mic_permission && hasMicPermission()) {
+                moveTo(InputPhase.Ready)
+            }
+            if (failed?.reasonRes == R.string.error_api_key_missing && preferences?.apiKey?.isNotBlank() == true) {
                 moveTo(InputPhase.Ready)
             }
             // The load suspends. If the panel was hidden in the meantime, starting now would
@@ -142,10 +167,15 @@ class InputOrchestrator(
     }
 
     private suspend fun loadPreferencesInternal() {
-        preferences = preferenceStore.load()
-        ppPreferences = preferenceStore.loadPostProcessing()
-        toggles = preferenceStore.loadToggleStates()
-        vocabulary = preferenceStore.loadVocabulary()
+        reloadsInFlight++
+        try {
+            preferences = preferenceStore.load()
+            ppPreferences = preferenceStore.loadPostProcessing()
+            toggles = preferenceStore.loadToggleStates()
+            vocabulary = preferenceStore.loadVocabulary()
+        } finally {
+            reloadsInFlight--
+        }
         DiagnosticLog.record(TAG, "Preferences loaded, apiKey=${if (preferences?.apiKey.isNullOrBlank()) "EMPTY" else "SET"}, pp=${ppPreferences?.enabled}")
     }
 
@@ -220,6 +250,15 @@ class InputOrchestrator(
         if (!hasMicPermission()) {
             moveTo(InputPhase.Failed(R.string.error_mic_permission))
             if (userInitiated) onPermissionNeeded()
+            return
+        }
+        // Known to have no key: say so before the user talks, not after the whole recording.
+        // Before the preferences have loaded, or while they reload, the recording goes ahead,
+        // and enqueue() parks it if the key really is missing.
+        if (reloadsInFlight == 0 && preferences?.apiKey?.isBlank() == true) {
+            DiagnosticLog.record(TAG, "beginCapture: no API key")
+            moveTo(InputPhase.Failed(R.string.error_api_key_missing))
+            if (userInitiated) onApiKeyNeeded()
             return
         }
 

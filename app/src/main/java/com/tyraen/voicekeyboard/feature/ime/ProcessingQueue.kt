@@ -83,6 +83,9 @@ class ProcessingQueue(
         internal fun isTransientError(error: Throwable?): Boolean {
             when (error) {
                 null -> return false
+                // A policy refusal such as "CLEARTEXT communication ... not permitted by network
+                // security policy": it mentions the network but waiting never fixes it.
+                is java.net.UnknownServiceException -> return false
                 is java.net.SocketTimeoutException,
                 is java.net.UnknownHostException,
                 is java.net.ConnectException,

@@ -8,4 +8,5 @@
     <color name="text_primary">#FFFFFFFF</color>
     <color name="divider">#FF3D3D42</color>
     <color name="test_result_bg">#FF2D2D32</color>
+    <color name="warning_text">#FFFBBF24</color>
 </resources>

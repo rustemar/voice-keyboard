@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">Λειτουργεί οποιοδήποτε κλειδί Whisper συμβατό με OpenAI. Το Groq λειτουργεί με τις προεπιλεγμένες ρυθμίσεις· για το Mistral, ορίστε το endpoint σε api.mistral.ai/v1/audio/transcriptions και το μοντέλο σε voxtral-mini-latest.</string>
     <string name="about_project">GitHub — Σχετικά με το έργο</string>
     <string name="link_copied">Ο σύνδεσμος αντιγράφηκε</string>
+    <string name="no_browser_link_copied">Δεν υπάρχει πρόγραμμα περιήγησης για να ανοίξει ο σύνδεσμος, οπότε αντιγράφηκε</string>
     <string name="status_postprocessing">Μετεπεξεργασία\u2026</string>
     <string name="pp_settings_title">Μετεπεξεργασία</string>
     <string name="pp_settings_description">Διόρθωση, συντόμευση ή βελτίωση του μεταγεγραμμένου κειμένου. Απαιτεί κλειδί API από OpenAI, Claude ή οποιονδήποτε πάροχο συμβατό με OpenAI, όπως το OpenRouter. Οι λειτουργίες ενεργοποιούνται με τα κουμπιά στο ίδιο το πληκτρολόγιο.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">Κλειδί API</string>
     <string name="pp_endpoint">Τελικό σημείο API</string>
     <string name="pp_endpoint_hint">Αφήστε κενό για προεπιλογή ή επικολλήστε το URL του παρόχου σας (π.χ. https://openrouter.ai/api/v1· το υπόλοιπο της διαδρομής προστίθεται αυτόματα)</string>
+    <string name="endpoint_unencrypted_warning">Χωρίς κρυπτογράφηση (http): ό,τι στέλνεται σε αυτή τη διεύθυνση, μαζί με το κλειδί API σας, μπορεί να υποκλαπεί στη διαδρομή. Χρησιμοποιήστε το μόνο για δικό σας διακομιστή σε δίκτυο που εμπιστεύεστε.</string>
     <string name="pp_model">Μοντέλο</string>
     <string name="pp_model_hint">Αφήστε κενό για προεπιλογή. Πύλες όπως το OpenRouter απαιτούν το πρόθεμα του προμηθευτή, π.χ. openai/gpt-4o-mini</string>
     <string name="pp_saved">Οι ρυθμίσεις αποθηκεύτηκαν.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">Η πρόσβαση στο μικρόφωνο απορρίφθηκε. Επιτρέψτε την στις ρυθμίσεις της εφαρμογής που μόλις άνοιξαν.</string>
     <string name="error_mic_permission">Απαιτείται άδεια μικροφώνου</string>
     <string name="error_mic_unavailable">Το μικρόφωνο είναι κατειλημμένο ή μη διαθέσιμο</string>
-    <string name="error_api_key_missing">Δεν έχει οριστεί κλειδί API</string>
+    <string name="error_api_key_missing">Δεν έχει οριστεί κλειδί API — προσθέστε το στις ρυθμίσεις</string>
     <string name="notice_discard_failed_confirm">Κρατήστε ξανά πατημένο για να διαγράψετε τις μη απεσταλμένες ηχογραφήσεις</string>
     <string name="notice_discard_failed_done">Διαγράφηκαν μη απεσταλμένες ηχογραφήσεις: %d</string>
     <string name="keyboard_status_enabled">Το Voice Keyboard είναι ενεργοποιημένο</string>

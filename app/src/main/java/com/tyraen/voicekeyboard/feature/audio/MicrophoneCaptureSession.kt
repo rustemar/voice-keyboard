@@ -20,6 +20,14 @@ class MicrophoneCaptureSession(private val context: Context) {
          * upload three times larger, which is exactly what stalls on a weak mobile connection.
          */
         private const val OPUS_BITRATE = 64_000
+
+        /**
+         * Up to 1.9.6 recordings went to externalCacheDir. The queue deletes or parks every file it
+         * finishes, so anything still there is a leftover from a crash; removed at startup.
+         */
+        fun deleteLegacyRecordings(context: Context) {
+            context.externalCacheDir?.listFiles { f -> f.name.startsWith("recording_") }?.forEach { it.delete() }
+        }
         private const val AAC_BITRATE = 128_000
 
         /** Nothing this short contains speech, and MediaRecorder refuses to finalize it anyway. */
@@ -52,7 +60,9 @@ class MicrophoneCaptureSession(private val context: Context) {
         val extension = if (useOpus) "ogg" else "m4a"
         // Process-wide unique name: a fresh capture session is created per input view, so a plain
         // per-instance counter could collide with another view's still-pending recording_0.
-        val dir = context.externalCacheDir ?: context.cacheDir
+        // The private cache, not externalCacheDir: on Android 9 and lower other apps with the
+        // storage permission can read the external one.
+        val dir = context.cacheDir
         val file = File(dir, "recording_${fileSeq.getAndIncrement()}.$extension")
 
         val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

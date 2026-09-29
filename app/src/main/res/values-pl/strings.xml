@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">Działa każdy klucz Whisper zgodny z OpenAI. Groq działa od razu; w przypadku Mistral ustaw endpoint na api.mistral.ai/v1/audio/transcriptions, a model na voxtral-mini-latest.</string>
     <string name="about_project">GitHub — O projekcie</string>
     <string name="link_copied">Link skopiowany</string>
+    <string name="no_browser_link_copied">Brak przeglądarki do otwarcia linku, więc został skopiowany</string>
     <string name="status_postprocessing">Przetwarzanie\u2026</string>
     <string name="pp_settings_title">Przetwarzanie końcowe</string>
     <string name="pp_settings_description">Popraw, skróć lub ulepsz transkrybowany tekst. Wymaga klucza API OpenAI, Claude lub dowolnego dostawcy zgodnego z OpenAI, np. OpenRouter. Tryby przełącza się przyciskami na samej klawiaturze.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">Klucz API</string>
     <string name="pp_endpoint">Punkt końcowy API</string>
     <string name="pp_endpoint_hint">Zostaw puste dla wartości domyślnej lub wklej adres URL swojego dostawcy (np. https://openrouter.ai/api/v1; reszta ścieżki zostanie dodana automatycznie)</string>
+    <string name="endpoint_unencrypted_warning">Bez szyfrowania (http): wszystko, co trafia pod ten adres, łącznie z kluczem API, można po drodze przechwycić. Używaj go tylko z własnym serwerem w sieci, której ufasz.</string>
     <string name="pp_model">Model</string>
     <string name="pp_model_hint">Zostaw puste dla wartości domyślnej. Bramki takie jak OpenRouter wymagają prefiksu dostawcy, np. openai/gpt-4o-mini</string>
     <string name="pp_saved">Ustawienia zapisane.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">Odmówiono dostępu do mikrofonu. Zezwól na niego w otwartych właśnie ustawieniach aplikacji.</string>
     <string name="error_mic_permission">Wymagane uprawnienie do mikrofonu</string>
     <string name="error_mic_unavailable">Mikrofon jest zajęty lub niedostępny</string>
-    <string name="error_api_key_missing">Nie ustawiono klucza API</string>
+    <string name="error_api_key_missing">Nie ustawiono klucza API — dodaj go w ustawieniach</string>
     <string name="notice_discard_failed_confirm">Przytrzymaj ponownie, aby usunąć niewysłane nagrania</string>
     <string name="notice_discard_failed_done">Usunięto niewysłane nagrania: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard jest włączona</string>

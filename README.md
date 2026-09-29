@@ -17,6 +17,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
 - **Offline-proof recovery** — recordings that can't be transcribed are saved on the device and resent automatically as soon as a validated internet connection returns; they survive closing the keyboard, app rebuilds, and reboots, and are kept until successfully sent (a "resend" button is also available to force a retry)
 - Works with any OpenAI-compatible Whisper API; ships with Groq as the default endpoint (whisper-large-v3-turbo). Free keys are available from both Groq and Mistral
+- **Your own server** — a speech server on your home network works too, over plain `http://` if need be; the settings warn that such an address is not encrypted
 - Configurable API endpoint, model, and language
 - **Multiple dictation languages** — list several language codes in settings and a language key appears on the keyboard: tap to cycle, long-press to pick one. The formatting prompt follows the language you switch to
 - Auto-start recording when keyboard opens
@@ -65,6 +66,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
    - **Groq** (default, free) — get a key at [console.groq.com/keys](https://console.groq.com/keys); nothing else to change.
    - **Mistral** (free) — get a key at [console.mistral.ai](https://console.mistral.ai/api-keys), then pick *Mistral* in the provider preset list (or set the endpoint to `https://api.mistral.ai/v1/audio/transcriptions` and the model to `voxtral-mini-latest`).
    - **OpenAI** or any other compatible provider — pick the preset, or set the endpoint and model in the same screen.
+   - **Your own server** — anything with an OpenAI-compatible `/v1/audio/transcriptions` endpoint, such as Speaches, LocalAI or whisper.cpp's server (started with `--inference-path /v1/audio/transcriptions`). Set the endpoint to its address, e.g. `http://192.168.1.50:8000/v1`, and the model to one the server has; if it needs no key, type anything in the key field. Plain `http://` is fine on your home network, but it is not encrypted, and the settings show a warning.
 5. (Optional) Configure post-processing with an OpenAI or Claude API key, or any OpenAI-compatible provider:
    - **OpenRouter** — provider "OpenAI-compatible", endpoint `https://openrouter.ai/api/v1` (the rest of the path is added automatically), model with the vendor prefix, e.g. `openai/gpt-4o-mini`. The translation model can stay empty; it reuses the model you set.
    - Once post-processing is enabled, a row of toggle buttons (fix, shorten, emoji, rhyme, translate) appears on the keyboard above the space bar.

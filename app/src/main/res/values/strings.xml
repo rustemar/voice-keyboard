@@ -65,6 +65,7 @@
     <string name="settings_provider_hint">Any OpenAI-compatible Whisper key works. Groq works out of the box; for Mistral, set the endpoint to api.mistral.ai/v1/audio/transcriptions and the model to voxtral-mini-latest.</string>
     <string name="about_project">GitHub — About the project</string>
     <string name="link_copied">Link copied</string>
+    <string name="no_browser_link_copied">No browser to open the link, so it was copied</string>
     <string name="status_postprocessing">Post-processing\u2026</string>
     <string name="pp_settings_title">Post-processing</string>
     <string name="pp_settings_description">Clean up, shorten, or enhance transcribed text. Requires an API key from OpenAI, Claude, or any OpenAI-compatible provider such as OpenRouter. Modes are switched with the toggle buttons on the keyboard itself.</string>
@@ -76,6 +77,7 @@
     <string name="pp_api_key">API Key</string>
     <string name="pp_endpoint">API Endpoint</string>
     <string name="pp_endpoint_hint">Leave empty for default, or paste your provider\'s URL (e.g. https://openrouter.ai/api/v1; the rest of the path is added automatically)</string>
+    <string name="endpoint_unencrypted_warning">Not encrypted (http): everything sent to this address, your API key included, can be intercepted on the way. Use it only for your own server on a network you trust.</string>
     <string name="pp_model">Model</string>
     <string name="pp_model_hint">Leave empty for default. Gateways like OpenRouter need the vendor prefix, e.g. openai/gpt-4o-mini</string>
     <string name="pp_saved">Settings saved.</string>
@@ -144,7 +146,7 @@
     <!-- Keyboard status line -->
     <string name="error_mic_permission">Microphone permission required</string>
     <string name="error_mic_unavailable">Microphone is busy or unavailable</string>
-    <string name="error_api_key_missing">API key not set</string>
+    <string name="error_api_key_missing">API key not set — add it in settings</string>
     <string name="notice_discard_failed_confirm">Hold again to delete the unsent recordings</string>
     <string name="notice_discard_failed_done">Deleted unsent recordings: %d</string>
 

@@ -1,14 +1,13 @@
 package com.tyraen.voicekeyboard.feature.setup
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
+import com.tyraen.voicekeyboard.core.ui.LinkOpener
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -60,11 +59,7 @@ class MicrophonePermissionActivity : AppCompatActivity() {
                 }
             }
             .setNeutralButton(R.string.mic_disclosure_privacy) { _, _ ->
-                try {
-                    startActivity(
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md"))
-                    )
-                } catch (_: Exception) {}
+                LinkOpener.open(this, "https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md")
                 showDisclosure()
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> finish() }

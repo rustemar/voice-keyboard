@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">OpenAI 호환 Whisper 키라면 모두 사용할 수 있습니다. Groq는 기본 설정 그대로 작동하며, Mistral의 경우 엔드포인트를 api.mistral.ai/v1/audio/transcriptions로, 모델을 voxtral-mini-latest로 설정하세요.</string>
     <string name="about_project">GitHub — 프로젝트 소개</string>
     <string name="link_copied">링크가 복사되었습니다</string>
+    <string name="no_browser_link_copied">링크를 열 브라우저가 없어 링크를 복사했습니다</string>
     <string name="status_postprocessing">후처리 중\u2026</string>
     <string name="pp_settings_title">후처리</string>
     <string name="pp_settings_description">변환된 텍스트를 수정, 축약 또는 개선합니다. OpenAI, Claude 또는 OpenRouter와 같은 OpenAI 호환 제공자의 API 키가 필요합니다. 모드는 키보드의 버튼으로 전환합니다.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">API 키</string>
     <string name="pp_endpoint">API 엔드포인트</string>
     <string name="pp_endpoint_hint">기본값을 사용하려면 비워두거나 제공자의 URL을 붙여넣으세요 (예: https://openrouter.ai/api/v1, 나머지 경로는 자동으로 추가됩니다)</string>
+    <string name="endpoint_unencrypted_warning">암호화되지 않음(http): 이 주소로 보내는 모든 내용은 API 키를 포함해 전송 중에 가로챌 수 있습니다. 신뢰하는 네트워크에 있는 본인 서버에만 사용하세요.</string>
     <string name="pp_model">모델</string>
     <string name="pp_model_hint">기본값을 사용하려면 비워두세요. OpenRouter 같은 게이트웨이는 공급자 접두사가 필요합니다 (예: openai/gpt-4o-mini)</string>
     <string name="pp_saved">설정이 저장되었습니다.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">마이크 접근이 거부되었습니다. 방금 열린 앱 설정에서 허용해 주세요.</string>
     <string name="error_mic_permission">마이크 권한이 필요합니다</string>
     <string name="error_mic_unavailable">마이크가 사용 중이거나 사용할 수 없습니다</string>
-    <string name="error_api_key_missing">API 키가 설정되지 않았습니다</string>
+    <string name="error_api_key_missing">API 키가 설정되지 않았습니다. 설정에서 추가하세요</string>
     <string name="notice_discard_failed_confirm">전송되지 않은 녹음을 삭제하려면 다시 길게 누르세요</string>
     <string name="notice_discard_failed_done">삭제된 미전송 녹음: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard가 활성화되어 있습니다</string>

@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">Qualquer chave Whisper compatível com OpenAI funciona. O Groq funciona sem configuração; para o Mistral, defina o endpoint como api.mistral.ai/v1/audio/transcriptions e o modelo como voxtral-mini-latest.</string>
     <string name="about_project">GitHub — Sobre o projeto</string>
     <string name="link_copied">Link copiado</string>
+    <string name="no_browser_link_copied">Não há navegador para abrir o link, então ele foi copiado</string>
     <string name="status_postprocessing">Pós-processamento\u2026</string>
     <string name="pp_settings_title">Pós-processamento</string>
     <string name="pp_settings_description">Corrija, encurte ou melhore o texto transcrito. Requer uma chave API da OpenAI, Claude ou de qualquer provedor compatível com OpenAI, como o OpenRouter. Os modos são ativados com os botões no próprio teclado.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">Chave API</string>
     <string name="pp_endpoint">Endpoint da API</string>
     <string name="pp_endpoint_hint">Deixe vazio para o valor padrão ou cole a URL do seu provedor (ex.: https://openrouter.ai/api/v1; o restante do caminho é adicionado automaticamente)</string>
+    <string name="endpoint_unencrypted_warning">Sem criptografia (http): tudo o que é enviado para este endereço, incluindo sua chave de API, pode ser interceptado no caminho. Use apenas com o seu próprio servidor, em uma rede de confiança.</string>
     <string name="pp_model">Modelo</string>
     <string name="pp_model_hint">Deixe vazio para o valor padrão. Gateways como o OpenRouter exigem o prefixo do fornecedor, ex.: openai/gpt-4o-mini</string>
     <string name="pp_saved">Configurações salvas.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">O acesso ao microfone foi negado. Permita-o nas configurações do app que acabaram de abrir.</string>
     <string name="error_mic_permission">Permissão de microfone necessária</string>
     <string name="error_mic_unavailable">Microfone ocupado ou indisponível</string>
-    <string name="error_api_key_missing">Chave de API não definida</string>
+    <string name="error_api_key_missing">Chave de API não definida — adicione-a nas configurações</string>
     <string name="notice_discard_failed_confirm">Segure novamente para excluir as gravações não enviadas</string>
     <string name="notice_discard_failed_done">Gravações não enviadas excluídas: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard está ativado</string>

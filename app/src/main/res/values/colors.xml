@@ -8,6 +8,7 @@
     <color name="text_primary">#FF1B1B1F</color>
     <color name="divider">#FFD1D5DB</color>
     <color name="test_result_bg">#FFE5E7EB</color>
+    <color name="warning_text">#FFB45309</color>
 
     <!-- Accent colors (same in both themes) -->
     <color name="mic_idle">#FF7C4DFF</color>

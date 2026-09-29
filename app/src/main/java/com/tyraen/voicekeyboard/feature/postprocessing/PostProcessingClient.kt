@@ -63,7 +63,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
                     maxTokens = null
                 )
             }
-            DiagnosticLog.record(TAG, "Success: ${result.take(80)}")
+            DiagnosticLog.record(TAG, "Success: ${result.take(50)}")
             Result.success(result)
         } catch (e: Exception) {
             DiagnosticLog.recordFailure(TAG, "Failed", e)

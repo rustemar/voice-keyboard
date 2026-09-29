@@ -122,7 +122,8 @@ class DictationInputMethod : InputMethodService() {
             },
             onPermissionNeeded = { requestMicPermission() },
             voiceAllowed = { !inPasswordField() },
-            onVoiceBlocked = { panel.showPasswordFieldNotice() }
+            onVoiceBlocked = { panel.showPasswordFieldNotice() },
+            onApiKeyNeeded = { openSettings() }
         )
         orchestrator.viewVisible = keyboardVisible
 
@@ -214,6 +215,14 @@ class DictationInputMethod : InputMethodService() {
     private fun requestMicPermission() {
         startActivity(Intent(this, MicrophonePermissionActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
+    }
+
+    private fun openSettings() {
+        // SINGLE_TOP reuses a settings screen that is already open instead of stacking a second
+        // one on top of it.
+        startActivity(Intent(this, SetupActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         })
     }
 
@@ -389,13 +398,7 @@ class DictationInputMethod : InputMethodService() {
         btnQuestion.setOnClickListener { keystrokes.insertPunctuation("?") }
         btnExclamation.setOnClickListener { keystrokes.insertPunctuation("!") }
 
-        btnSettings.setOnClickListener {
-            // SINGLE_TOP reuses a settings screen that is already open instead of stacking a
-            // second one on top of it.
-            startActivity(Intent(this, SetupActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            })
-        }
+        btnSettings.setOnClickListener { openSettings() }
 
         // Back to the keyboard the user came from: Gboard via the keyboard list, HeliBoard's mic
         // key, or whichever keyboard they type with. Just hiding is left to the system back gesture

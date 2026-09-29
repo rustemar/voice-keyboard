@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
@@ -28,6 +29,7 @@ class PostProcessingActivity : AppCompatActivity() {
     private lateinit var spinnerLlmPreset: Spinner
     private lateinit var editApiKey: EditText
     private lateinit var editEndpoint: EditText
+    private lateinit var txtEndpointWarning: TextView
     private lateinit var editModel: EditText
     private lateinit var editTemperature: EditText
     private lateinit var editPromptFix: EditText
@@ -84,6 +86,7 @@ class PostProcessingActivity : AppCompatActivity() {
         spinnerLlmPreset = findViewById(R.id.spinnerLlmPreset)
         editApiKey = findViewById(R.id.editPpApiKey)
         editEndpoint = findViewById(R.id.editPpEndpoint)
+        txtEndpointWarning = findViewById(R.id.txtPpEndpointWarning)
         editModel = findViewById(R.id.editPpModel)
         editTemperature = findViewById(R.id.editPpTemperature)
         editPromptFix = findViewById(R.id.editPromptFix)
@@ -141,6 +144,7 @@ class PostProcessingActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
+                txtEndpointWarning.isVisible = ApiEndpoint.isUnencrypted(s?.toString() ?: "")
                 val pos = ProviderPresets.indexOf(ProviderPresets.postProcessing, s?.toString() ?: "") + 1
                 if (spinnerLlmPreset.selectedItemPosition != pos) {
                     presetPosSetByCode = pos

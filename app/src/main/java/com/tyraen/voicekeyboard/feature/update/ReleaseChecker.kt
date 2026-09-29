@@ -2,8 +2,6 @@ package com.tyraen.voicekeyboard.feature.update
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -18,8 +16,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.core.ui.LinkOpener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,6 +39,26 @@ class ReleaseChecker(private val http: OkHttpClient) {
 
     private val installer = ApkInstaller(http)
     private val downloadScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    /** The running update download, its progress dialog and the screen that owns both. */
+    private var downloadJob: Job? = null
+    private var downloadDialog: AlertDialog? = null
+    private var downloadOwner: Context? = null
+
+    /**
+     * Stops an update download: the dialog's Cancel button, and the settings screen going away
+     * (the dialog belongs to it, and a result arriving after it is gone was dropped anyway).
+     * With an [owner], only a download started from that screen is stopped.
+     */
+    fun cancelDownload(owner: Context? = null) {
+        if (owner != null && owner !== downloadOwner) return
+        downloadJob?.cancel()
+        installer.cancelDownload()
+        downloadDialog?.takeIf { it.isShowing }?.dismiss()
+        downloadJob = null
+        downloadDialog = null
+        downloadOwner = null
+    }
 
     suspend fun checkForUpdate(context: Context, showUpToDate: Boolean = false) {
         val currentVersion = getCurrentVersion(context) ?: return
@@ -186,7 +206,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
             }
         } else {
             builder.setPositiveButton(context.getString(R.string.update_open_browser)) { _, _ ->
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(latest.pageUrl)))
+                LinkOpener.open(context, latest.pageUrl)
             }
         }
 
@@ -217,7 +237,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
             val url = span.url
             result.setSpan(object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    LinkOpener.open(context, url)
                 }
             }, span.start, span.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
@@ -229,7 +249,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
                 val url = match.value
                 result.setSpan(object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                        LinkOpener.open(context, url)
                     }
                 }, match.range.first, match.range.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
@@ -258,16 +278,21 @@ class ReleaseChecker(private val http: OkHttpClient) {
             addView(progressBar)
         }
 
+        // Cancel has to stop the download for real: it used to only close the dialog, and the
+        // install prompt still appeared once the file was in.
+        cancelDownload()
         val dialog = AlertDialog.Builder(context)
             .setTitle(context.getString(R.string.update_downloading))
             .setView(layout)
             .setCancelable(false)
-            .setNegativeButton(context.getString(R.string.update_cancel), null)
+            .setNegativeButton(context.getString(R.string.update_cancel)) { _, _ -> cancelDownload() }
             .show()
+        downloadDialog = dialog
+        downloadOwner = context
 
         val activity = context as? Activity ?: return
 
-        downloadScope.launch {
+        downloadJob = downloadScope.launch {
             val file = withContext(Dispatchers.IO) {
                 installer.download(context, apkUrl, version) { percent ->
                     activity.runOnUiThread {
@@ -279,6 +304,9 @@ class ReleaseChecker(private val http: OkHttpClient) {
                 }
             }
 
+            downloadJob = null
+            downloadDialog = null
+            downloadOwner = null
             if (activity.isFinishing || activity.isDestroyed) return@launch
             dialog.dismiss()
 

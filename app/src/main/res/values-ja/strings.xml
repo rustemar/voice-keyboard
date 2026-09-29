@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">OpenAI互換のWhisperキーであれば利用できます。Groqは初期設定のままで使えます。Mistralの場合は、エンドポイントを api.mistral.ai/v1/audio/transcriptions、モデルを voxtral-mini-latest に設定してください。</string>
     <string name="about_project">GitHub — プロジェクトについて</string>
     <string name="link_copied">リンクをコピーしました</string>
+    <string name="no_browser_link_copied">リンクを開くブラウザがないため、リンクをコピーしました</string>
     <string name="status_postprocessing">後処理中\u2026</string>
     <string name="pp_settings_title">後処理</string>
     <string name="pp_settings_description">文字起こしテキストの修正、短縮、改善を行います。OpenAI、Claude、または OpenRouter などの OpenAI 互換プロバイダーの API キーが必要です。モードはキーボード上のボタンで切り替えます。</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">APIキー</string>
     <string name="pp_endpoint">APIエンドポイント</string>
     <string name="pp_endpoint_hint">デフォルトを使用する場合は空欄。またはプロバイダーの URL を貼り付けてください（例: https://openrouter.ai/api/v1。残りのパスは自動で追加されます）</string>
+    <string name="endpoint_unencrypted_warning">暗号化なし（http）：このアドレスに送るものは API キーも含めて途中で傍受される可能性があります。信頼できるネットワーク上の自分のサーバーにだけ使ってください。</string>
     <string name="pp_model">モデル</string>
     <string name="pp_model_hint">デフォルトを使用する場合は空欄。OpenRouter などのゲートウェイにはベンダー接頭辞が必要です（例: openai/gpt-4o-mini）</string>
     <string name="pp_saved">設定を保存しました。</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">マイクへのアクセスが拒否されました。開いたアプリ設定で許可してください。</string>
     <string name="error_mic_permission">マイクの権限が必要です</string>
     <string name="error_mic_unavailable">マイクが使用中か利用できません</string>
-    <string name="error_api_key_missing">APIキーが設定されていません</string>
+    <string name="error_api_key_missing">APIキーが設定されていません。設定で追加してください</string>
     <string name="notice_discard_failed_confirm">未送信の録音を削除するにはもう一度長押ししてください</string>
     <string name="notice_discard_failed_done">未送信の録音を削除しました: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard は有効です</string>

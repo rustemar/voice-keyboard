@@ -53,6 +53,7 @@
     <string name="settings_provider_hint">يعمل أي مفتاح Whisper متوافق مع OpenAI. يعمل Groq مباشرةً بالإعدادات الافتراضية؛ أما مع Mistral، فاضبط نقطة النهاية على api.mistral.ai/v1/audio/transcriptions والنموذج على voxtral-mini-latest.</string>
     <string name="about_project">GitHub — حول المشروع</string>
     <string name="link_copied">تم نسخ الرابط</string>
+    <string name="no_browser_link_copied">لا يوجد متصفح لفتح الرابط، لذلك تم نسخه</string>
     <string name="status_postprocessing">جارٍ المعالجة\u2026</string>
     <string name="pp_settings_title">المعالجة اللاحقة</string>
     <string name="pp_settings_description">تصحيح النص المنسوخ أو اختصاره أو تحسينه. يتطلب مفتاح API من OpenAI أو Claude أو أي مزود متوافق مع OpenAI مثل OpenRouter. يتم تبديل الأوضاع بالأزرار الموجودة على لوحة المفاتيح نفسها.</string>
@@ -64,6 +65,7 @@
     <string name="pp_api_key">مفتاح API</string>
     <string name="pp_endpoint">نقطة نهاية API</string>
     <string name="pp_endpoint_hint">اتركه فارغاً للقيمة الافتراضية أو الصق عنوان URL لمزودك (مثل https://openrouter.ai/api/v1؛ تتم إضافة بقية المسار تلقائياً)</string>
+    <string name="endpoint_unencrypted_warning">غير مشفّر (http): كل ما يُرسَل إلى هذا العنوان، بما في ذلك مفتاح API، يمكن اعتراضه في الطريق. استخدمه فقط لخادمك الخاص على شبكة تثق بها.</string>
     <string name="pp_model">النموذج</string>
     <string name="pp_model_hint">اتركه فارغاً للقيمة الافتراضية. تتطلب البوابات مثل OpenRouter بادئة المورّد، مثل openai/gpt-4o-mini</string>
     <string name="pp_saved">تم حفظ الإعدادات.</string>
@@ -129,7 +131,7 @@
     <string name="mic_permission_open_settings">تم رفض الوصول إلى الميكروفون. اسمح به في إعدادات التطبيق التي فُتحت للتو.</string>
     <string name="error_mic_permission">إذن الميكروفون مطلوب</string>
     <string name="error_mic_unavailable">الميكروفون مشغول أو غير متاح</string>
-    <string name="error_api_key_missing">لم يتم تعيين مفتاح API</string>
+    <string name="error_api_key_missing">لم يتم تعيين مفتاح API — أضفه من الإعدادات</string>
     <string name="notice_discard_failed_confirm">اضغط مطولًا مرة أخرى لحذف التسجيلات غير المرسلة</string>
     <string name="notice_discard_failed_done">تم حذف التسجيلات غير المرسلة: %d</string>
     <string name="keyboard_status_enabled">Voice Keyboard مفعّلة</string>

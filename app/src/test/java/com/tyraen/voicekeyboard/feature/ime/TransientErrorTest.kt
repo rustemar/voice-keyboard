@@ -40,6 +40,12 @@ class TransientErrorTest {
         assertTrue(transient("Failed to connect to /10.0.2.2:8765"))
     }
 
+    @Test fun `a security policy refusal needs attention`() {
+        assertFalse(ProcessingQueue.isTransientError(java.net.UnknownServiceException(
+            "CLEARTEXT communication to 192.168.1.50 not permitted by network security policy"
+        )))
+    }
+
     @Test fun `no error is not transient, an error without a message is`() {
         assertFalse(ProcessingQueue.isTransientError(null))
         assertTrue(transient(null))

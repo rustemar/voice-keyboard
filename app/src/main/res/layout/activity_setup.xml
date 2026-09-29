@@ -180,6 +180,16 @@
             android:textColor="@color/text_primary"
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/txtEndpointWarning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/endpoint_unencrypted_warning"
+            android:textColor="@color/warning_text"
+            android:textSize="12sp"
+            android:layout_marginTop="-12dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone" />
 
         <!-- Model -->
         <TextView

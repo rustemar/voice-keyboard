@@ -12,10 +12,27 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Pinned rather than ubuntu-latest: F-Droid rebuilds every release and ships it only if the
+    # bytes match this APK, so a new runner image is taken on purpose, after comparing builds.
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v7
+
+      # F-Droid builds each new v* tag and downloads the APK from the release named after the
+      # version; a tag that differs from versionName, a version with letters in it, or a missing
+      # store changelog breaks that update without anyone noticing.
+      - name: Check tag, version and changelog
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION_NAME=$(grep 'versionName' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          VERSION_CODE=$(grep 'versionCode' app/build.gradle.kts | head -1 | sed -E 's/.*versionCode *= *([0-9]+).*/\1/')
+          CHANGELOG="fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
+          [ "$GITHUB_REF_NAME" = "v$VERSION_NAME" ] || { echo "::error::Tag $GITHUB_REF_NAME does not match versionName $VERSION_NAME"; exit 1; }
+          [[ "$VERSION_NAME" =~ ^[0-9]+(\.[0-9]+)*$ ]] || { echo "::error::versionName $VERSION_NAME must be numbers and dots only"; exit 1; }
+          [ -f "$CHANGELOG" ] || { echo "::error::$CHANGELOG is missing"; exit 1; }
+          CHARS=$(LC_ALL=C.UTF-8 wc -m < "$CHANGELOG")
+          [ "$CHARS" -le 500 ] || { echo "::error::$CHANGELOG has $CHARS characters, the store limit is 500"; exit 1; }
 
       - name: Set up JDK 17
         uses: actions/setup-java@v6

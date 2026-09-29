@@ -2,12 +2,12 @@
 
 **Voice Keyboard** is an Android keyboard (input method) that converts speech to text using third‑party transcription APIs. This document describes what data the app handles, where it goes, and what stays on your device.
 
-_Last updated: 2026‑09‑22_
+_Last updated: 2026‑09‑29_
 
 ## TL;DR
 
 - The app does **not** collect, sell, or transmit any analytics, telemetry, advertising IDs, or device identifiers.
-- Audio you record is sent **only** to the speech‑to‑text provider you configure (Groq, OpenAI, Mistral or any OpenAI‑compatible endpoint), using **your own API key**.
+- Audio you record is sent **only** to the speech‑to‑text provider you configure (Groq, OpenAI, Mistral or any OpenAI‑compatible endpoint, including a server of your own), using **your own API key**.
 - Optional post‑processing sends the transcribed text to the language‑model provider you configure (OpenAI, Anthropic, or an OpenAI‑compatible one such as OpenRouter, Groq, Mistral or DeepSeek), again using **your own API key**.
 - All settings, API keys, diagnostic logs, and crash reports stay on your device. They are explicitly excluded from Google Drive backup and device‑transfer.
 - The app is open source: <https://github.com/rustemar/voice-keyboard>.
@@ -16,7 +16,7 @@ _Last updated: 2026‑09‑22_
 
 ### Audio
 
-When you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In password fields the microphone is off and auto-record does not start. The audio is sent over HTTPS together with your API key. The app does **not** keep audio after a successful transcription: recordings live briefly in the app's private cache directory and are deleted as soon as the text comes back. A recording that could **not** be transcribed is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after a successful send; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
+When you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In password fields the microphone is off and auto-record does not start. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). The app does **not** keep audio after a successful transcription: recordings live briefly in the app's private cache directory and are deleted as soon as the text comes back. A recording that could **not** be transcribed is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after a successful send; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
 
 The app does **not** receive a copy of the audio after sending — handling and retention of submitted audio is governed by the policy of the provider you choose:
 
@@ -66,7 +66,7 @@ The pending crash file is deleted whether you choose to save it or not.
 |---|---|
 | `RECORD_AUDIO` | To capture your voice when you press the microphone button. Used only while the keyboard is visible and you have started a recording. |
 | `INTERNET` | To send the recorded audio to the transcription provider you configured, and to send transcribed text to the post‑processing provider when you use that feature. |
-| `REQUEST_INSTALL_PACKAGES` | To let you install the latest version directly from inside the app, **if** you switch the GitHub update check on — it is off by default. When enabled, the app checks GitHub Releases and offers to download and install a newer APK signed with the same key. You can also obtain updates entirely outside the app (e.g. via Obtainium, F‑Droid, or by downloading the APK from GitHub manually). |
+| `REQUEST_INSTALL_PACKAGES` | To let you install a newer version directly from inside the app. The app looks for one only if you switch the GitHub update check on (it is off by default) or press “Check for updates” yourself; it then offers to download and install a newer APK signed with the same key. You can also obtain updates entirely outside the app (e.g. via Obtainium, F‑Droid, or by downloading the APK from GitHub manually). |
 
 The app does **not** request access to contacts, SMS, location, photos, files outside its own sandbox, or any system identifier.
 
@@ -83,7 +83,9 @@ The only outbound network requests the app ever makes are:
 1. To the transcription endpoint you configured (default: `api.groq.com`).
 2. To the post‑processing endpoint you configured, if you use post‑processing (default: `api.anthropic.com`).
    Provider presets in the settings only fill in an address; no request is made until you record or press Apply.
-3. To the GitHub Releases API to check whether a newer version of the app exists — **only if you turned the update check on**, which is off by default — and, if you accept the update, to GitHub's download URL for the APK.
+3. To the GitHub Releases API to check whether a newer version of the app exists — on its own **only if you turned the update check on**, which is off by default, or when you press “Check for updates” — and, if you accept the update, to GitHub's download URL for the APK.
+
+Every built‑in address uses HTTPS. If you type a plain `http://` address for either endpoint, for example a server on your home network, everything sent to it (audio, text and your API key) travels unencrypted; the settings screens show a warning under the address when that is the case.
 
 You can verify all of the above by reading the source.
 
