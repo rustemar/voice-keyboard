@@ -1,7 +1,5 @@
-v1.9.7 — Your own server over http, a clearer start without a key
+v1.9.8 — More dictation options, smoother provider switching
 
-- Speech and text-processing addresses can now be plain http://, for a server of your own on your home network. The settings show a warning under such an address, because everything sent to it travels unencrypted
-- Without an API key, the microphone now opens the settings straight away instead of recording first and failing afterwards; the resend key does the same
-- On a device without a browser, links in the app no longer close it: the link is copied instead
-- Cancel during an update download now really stops it
-- While a recording is made and sent, it now stays in the app's private storage; older versions used a folder that other apps could read on Android 9 and earlier
+- Dictate through compatible Chat Completions audio endpoints. Enter the full chat endpoint URL and an audio-capable model in speech settings; use Test Recording to check support for your device's audio format
+- Incomplete transcripts and refusals in the new chat mode keep the recording available for retry
+- Choosing a post-processing provider preset now resets the separate translation/rhyme model to the provider's default, and the displayed default follows the current endpoint and main model

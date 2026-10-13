@@ -1,0 +1,1 @@
+More dictation options: use compatible audio-capable models through a Chat Completions endpoint. Test Recording checks support for your device's audio format. Incomplete transcripts and refusals keep the recording available for retry. Choosing a post-processing provider preset now resets the translation/rhyme model to its default and refreshes the displayed default.
