@@ -123,7 +123,7 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
     }
 }
 
-private object SilentWavGenerator {
+internal object SilentWavGenerator {
     fun generate(): ByteArray {
         val sampleRate = 16000
         val numSamples = sampleRate / 10

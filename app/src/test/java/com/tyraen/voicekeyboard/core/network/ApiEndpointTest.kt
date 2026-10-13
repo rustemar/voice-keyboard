@@ -70,4 +70,11 @@ class ApiEndpointTest {
         assertEquals("/api/v1", ApiEndpoint.pathOf("https://openrouter.ai/api/v1?x=1#frag"))
         assertEquals("", ApiEndpoint.pathOf("https://openrouter.ai"))
     }
+
+    @Test fun `chat audio is selected only by a complete chat completions url`() {
+        assertTrue(ApiEndpoint.usesChatCompletions("https://example.com/v1/chat/completions"))
+        assertTrue(ApiEndpoint.usesChatCompletions("https://example.com/v1/chat/completions?api-version=1"))
+        assertFalse(ApiEndpoint.usesChatCompletions("https://example.com/v1"))
+        assertFalse(ApiEndpoint.usesChatCompletions("https://example.com/v1/audio/transcriptions"))
+    }
 }

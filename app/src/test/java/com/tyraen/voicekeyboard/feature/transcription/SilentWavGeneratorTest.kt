@@ -2,22 +2,12 @@ package com.tyraen.voicekeyboard.feature.transcription
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.lang.reflect.Method
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-/**
- * SilentWavGenerator is private to WhisperApiClient.kt — exercised via reflection
- * to keep the production surface small while still verifying header correctness.
- */
 class SilentWavGeneratorTest {
 
-    private val bytes: ByteArray by lazy {
-        val cls = Class.forName("com.tyraen.voicekeyboard.feature.transcription.SilentWavGenerator")
-        val instance = cls.getDeclaredField("INSTANCE").get(null)
-        val method: Method = cls.getDeclaredMethod("generate")
-        method.invoke(instance) as ByteArray
-    }
+    private val bytes: ByteArray by lazy { SilentWavGenerator.generate() }
 
     @Test fun `header starts with RIFF and WAVE markers`() {
         assertEquals('R'.code.toByte(), bytes[0])

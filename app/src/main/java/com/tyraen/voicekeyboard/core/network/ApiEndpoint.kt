@@ -18,6 +18,10 @@ package com.tyraen.voicekeyboard.core.network
  */
 object ApiEndpoint {
 
+    /** A complete chat URL opts into audio-in-chat; base URLs still use Whisper by default. */
+    fun usesChatCompletions(url: String): Boolean =
+        pathOf(url).trimEnd('/').endsWith("/chat/completions")
+
     fun complete(raw: String, defaultPath: String): String {
         var url = raw.trim().trimEnd('/')
         if (url.isEmpty()) return ""

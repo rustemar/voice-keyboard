@@ -1,6 +1,6 @@
 # Voice Keyboard
 
-Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible Whisper endpoint of your choice — by default Groq (free tier available), can be pointed at OpenAI, Mistral, or any other compatible provider. Optional LLM post-processing.
+Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible transcription endpoints or chat endpoints accepting `input_audio` — by default Groq (free tier available), with optional LLM post-processing.
 
 <p align="center">
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Voice Keyboard in a messaging app, with the post-processing toggles and the dictation-language key" width="260">
@@ -16,7 +16,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 - Real-time voice recording with amplitude visualization
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
 - **Offline-proof recovery** — recordings that can't be transcribed are saved on the device and resent automatically as soon as a validated internet connection returns; they survive closing the keyboard, app rebuilds, and reboots, and are kept until successfully sent (a "resend" button is also available to force a retry)
-- Works with any OpenAI-compatible Whisper API; ships with Groq as the default endpoint (whisper-large-v3-turbo). Free keys are available from both Groq and Mistral
+- Works with OpenAI-compatible `/audio/transcriptions` and `/chat/completions` audio APIs; ships with Groq as the default (whisper-large-v3-turbo). Free keys are available from both Groq and Mistral
 - **Your own server** — a speech server on your home network works too, over plain `http://` if need be; the settings warn that such an address is not encrypted
 - Configurable API endpoint, model, and language
 - **Multiple dictation languages** — list several language codes in settings and a language key appears on the keyboard: tap to cycle, long-press to pick one. The formatting prompt follows the language you switch to
@@ -62,11 +62,12 @@ Android keyboard (IME) for speech-to-text. Sends audio to any OpenAI-compatible 
 1. Install the APK from [Releases](https://github.com/rustemar/voice-keyboard/releases)
 2. Open the app and tap **Enable keyboard** (or go to Settings → System → Languages & input → On-screen keyboard)
 3. Enable "Voice Keyboard"; the app shows whether it is enabled and which keyboard is active
-4. Enter a speech-to-text API key. Any OpenAI-compatible Whisper endpoint works:
+4. Enter a speech-to-text API key. Supported endpoints:
    - **Groq** (default, free) — get a key at [console.groq.com/keys](https://console.groq.com/keys); nothing else to change.
    - **Mistral** (free) — get a key at [console.mistral.ai](https://console.mistral.ai/api-keys), then pick *Mistral* in the provider preset list (or set the endpoint to `https://api.mistral.ai/v1/audio/transcriptions` and the model to `voxtral-mini-latest`).
    - **OpenAI** or any other compatible provider — pick the preset, or set the endpoint and model in the same screen.
    - **Your own server** — anything with an OpenAI-compatible `/v1/audio/transcriptions` endpoint, such as Speaches, LocalAI or whisper.cpp's server (started with `--inference-path /v1/audio/transcriptions`). Set the endpoint to its address, e.g. `http://192.168.1.50:8000/v1`, and the model to one the server has; if it needs no key, type anything in the key field. Plain `http://` is fine on your home network, but it is not encrypted, and the settings show a warning.
+   - **Chat Completions audio** — for servers accepting OpenAI-style `input_audio`, enter the **full** `/v1/chat/completions` URL and the model. No separate mode setting is needed. A base URL ending in `/v1` still uses `/audio/transcriptions` by default. Chat uploads the device's recorded OGG/Opus (Android 10+) or MP4/AAC (older Android), so the server must accept that audio format. **Apply** only checks a silent WAV; use **Test Recording** to confirm that the provider supports the device's recorded format.
 5. (Optional) Configure post-processing with an OpenAI or Claude API key, or any OpenAI-compatible provider:
    - **OpenRouter** — provider "OpenAI-compatible", endpoint `https://openrouter.ai/api/v1` (the rest of the path is added automatically), model with the vendor prefix, e.g. `openai/gpt-4o-mini`. The translation model can stay empty; it reuses the model you set.
    - Once post-processing is enabled, a row of toggle buttons (fix, shorten, emoji, rhyme, translate) appears on the keyboard above the space bar.
