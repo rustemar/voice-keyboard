@@ -58,6 +58,8 @@
     <string name="pp_settings_title">पोस्ट-प्रोसेसिंग</string>
     <string name="pp_settings_description">ट्रांसक्राइब किए गए टेक्स्ट को सुधारें, छोटा करें या बेहतर बनाएं। OpenAI, Claude या OpenRouter जैसे किसी भी OpenAI-संगत प्रदाता की API कुंजी आवश्यक है। मोड कीबोर्ड पर मौजूद बटनों से चालू या बंद किए जाते हैं।</string>
     <string name="pp_enable">पोस्ट-प्रोसेसिंग सक्षम करें</string>
+    <string name="pp_context_enable">हाल के वॉइस इनपुट को संदर्भ बनाएं</string>
+    <string name="pp_context_hint">पिछले 5 वॉइस इनपुट तक संदर्भ के लिए पोस्ट-प्रोसेसिंग प्रदाता को भेजता है। केवल मेमोरी में रखता है; ऐप बदलने या विकल्प बंद करने पर मिटा देता है। अनुरोधों का आकार थोड़ा बढ़ता है।</string>
     <string name="pp_provider">API प्रदाता</string>
     <string name="pp_provider_openai">OpenAI-संगत (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

@@ -58,6 +58,8 @@
     <string name="pp_settings_title">後処理</string>
     <string name="pp_settings_description">文字起こしテキストの修正、短縮、改善を行います。OpenAI、Claude、または OpenRouter などの OpenAI 互換プロバイダーの API キーが必要です。モードはキーボード上のボタンで切り替えます。</string>
     <string name="pp_enable">後処理を有効にする</string>
+    <string name="pp_context_enable">最近の音声入力を文脈に使用</string>
+    <string name="pp_context_hint">直近5件までの音声入力を文脈として後処理プロバイダーに送信します。メモリ内のみに保持し、アプリの切り替えや無効化で消去します。リクエストのサイズが少し増えます。</string>
     <string name="pp_provider">APIプロバイダー</string>
     <string name="pp_provider_openai">OpenAI 互換（OpenAI、OpenRouter、Groq…）</string>
     <string name="pp_provider_claude">Anthropic（Claude）</string>

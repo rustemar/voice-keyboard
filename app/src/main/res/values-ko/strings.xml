@@ -58,6 +58,8 @@
     <string name="pp_settings_title">후처리</string>
     <string name="pp_settings_description">변환된 텍스트를 수정, 축약 또는 개선합니다. OpenAI, Claude 또는 OpenRouter와 같은 OpenAI 호환 제공자의 API 키가 필요합니다. 모드는 키보드의 버튼으로 전환합니다.</string>
     <string name="pp_enable">후처리 활성화</string>
+    <string name="pp_context_enable">최근 받아쓰기를 문맥으로 사용</string>
+    <string name="pp_context_hint">최근 받아쓰기 최대 5개를 문맥으로 후처리 제공자에게 전송합니다. 메모리에만 보관하며 앱을 전환하거나 옵션을 끄면 지워집니다. 요청 크기가 조금 늘어납니다.</string>
     <string name="pp_provider">API 제공자</string>
     <string name="pp_provider_openai">OpenAI 호환 (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

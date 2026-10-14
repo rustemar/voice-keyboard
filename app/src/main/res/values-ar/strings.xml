@@ -58,6 +58,8 @@
     <string name="pp_settings_title">المعالجة اللاحقة</string>
     <string name="pp_settings_description">تصحيح النص المنسوخ أو اختصاره أو تحسينه. يتطلب مفتاح API من OpenAI أو Claude أو أي مزود متوافق مع OpenAI مثل OpenRouter. يتم تبديل الأوضاع بالأزرار الموجودة على لوحة المفاتيح نفسها.</string>
     <string name="pp_enable">تفعيل المعالجة اللاحقة</string>
+    <string name="pp_context_enable">استخدام الإملاءات الأخيرة كسياق</string>
+    <string name="pp_context_hint">يرسل حتى 5 إملاءات أخيرة إلى مزوّد المعالجة اللاحقة كسياق. تُحفظ في الذاكرة فقط وتُمسح عند تبديل التطبيق أو تعطيل الخيار. يزيد حجم الطلبات قليلًا.</string>
     <string name="pp_provider">مزود API</string>
     <string name="pp_provider_openai">متوافق مع OpenAI (OpenAI، OpenRouter، Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

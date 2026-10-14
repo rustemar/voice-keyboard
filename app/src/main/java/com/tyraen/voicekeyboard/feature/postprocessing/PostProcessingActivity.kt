@@ -25,6 +25,7 @@ class PostProcessingActivity : AppCompatActivity() {
 
     private lateinit var scrollView: ScrollView
     private lateinit var switchEnabled: Switch
+    private lateinit var switchContextEnabled: Switch
     private lateinit var checkTerminalVisible: CheckBox
     private lateinit var spinnerProvider: Spinner
     private lateinit var spinnerLlmPreset: Spinner
@@ -54,6 +55,7 @@ class PostProcessingActivity : AppCompatActivity() {
     }
 
     private var suppressProviderChange = false
+    private var loadingPreferences = true
     /** Position the code itself put the preset spinner at; its echo callback is ignored. */
     private var presetPosSetByCode = -1
     private val scope = MainScope()
@@ -82,6 +84,7 @@ class PostProcessingActivity : AppCompatActivity() {
     private fun bindViews() {
         scrollView = findViewById(R.id.scrollPp)
         switchEnabled = findViewById(R.id.switchPpEnabled)
+        switchContextEnabled = findViewById(R.id.switchPpContextEnabled)
         checkTerminalVisible = findViewById(R.id.checkTerminalVisible)
         spinnerProvider = findViewById(R.id.spinnerProvider)
         spinnerLlmPreset = findViewById(R.id.spinnerLlmPreset)
@@ -185,9 +188,17 @@ class PostProcessingActivity : AppCompatActivity() {
         editModel.doAfterTextChanged { updateTranslateModelHint() }
 
         switchEnabled.setOnCheckedChangeListener { _, isChecked ->
+            if (loadingPreferences) return@setOnCheckedChangeListener
+            if (!isChecked) ServiceLocator.transcriptionQueue.clearPostProcessingContext()
             scope.launch {
-                val current = preferenceStore.loadPostProcessing()
-                preferenceStore.savePostProcessing(current.copy(enabled = isChecked))
+                preferenceStore.setPostProcessingEnabled(isChecked)
+            }
+        }
+        switchContextEnabled.setOnCheckedChangeListener { _, isChecked ->
+            if (loadingPreferences) return@setOnCheckedChangeListener
+            if (!isChecked) ServiceLocator.transcriptionQueue.clearPostProcessingContext()
+            scope.launch {
+                preferenceStore.setPostProcessingContextEnabled(isChecked)
             }
         }
     }
@@ -196,6 +207,7 @@ class PostProcessingActivity : AppCompatActivity() {
         scope.launch {
             val pp = preferenceStore.loadPostProcessing()
             switchEnabled.isChecked = pp.enabled
+            switchContextEnabled.isChecked = pp.contextEnabled
             checkTerminalVisible.isChecked = pp.terminalVisible
 
             suppressProviderChange = true
@@ -219,6 +231,7 @@ class PostProcessingActivity : AppCompatActivity() {
             spinnerTranslateLang.setSelection(TranscriptionLocale.positionOf(pp.translateLang))
             editTranslateModel.setText(pp.translateModel)
             updateTranslateModelHint()
+            loadingPreferences = false
         }
     }
 
@@ -260,7 +273,8 @@ class PostProcessingActivity : AppCompatActivity() {
             promptSuffix = PostProcessingPreferences.normalizePrompt(editPromptSuffix.text.toString(), PostProcessingPreferences.DEFAULT_PROMPT_SUFFIX),
             translateLang = TranscriptionLocale.entries[spinnerTranslateLang.selectedItemPosition].code,
             translateModel = editTranslateModel.text.toString().trim(),
-            terminalVisible = checkTerminalVisible.isChecked
+            terminalVisible = checkTerminalVisible.isChecked,
+            contextEnabled = switchContextEnabled.isChecked
         )
 
         val saved = listOfNotNull(switchedNote, getString(R.string.pp_saved)).joinToString("\n")
@@ -269,6 +283,10 @@ class PostProcessingActivity : AppCompatActivity() {
         showStatus(getString(R.string.pp_validating), Color.GRAY)
 
         scope.launch {
+            val previous = preferenceStore.loadPostProcessing()
+            if (previous.provider != prefs.provider || previous.resolvedEndpoint() != prefs.resolvedEndpoint()) {
+                ServiceLocator.transcriptionQueue.clearPostProcessingContext()
+            }
             preferenceStore.savePostProcessing(prefs)
 
             if (prefs.apiKey.isBlank()) {

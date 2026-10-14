@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Jälkikäsittely</string>
     <string name="pp_settings_description">Korjaa, lyhennä tai paranna litteroitua tekstiä. Vaatii API-avaimen OpenAI:lta, Claudelta tai miltä tahansa OpenAI-yhteensopivalta palveluntarjoajalta, kuten OpenRouterilta. Tilat vaihdetaan näppäimistön omilla painikkeilla.</string>
     <string name="pp_enable">Ota jälkikäsittely käyttöön</string>
+    <string name="pp_context_enable">Käytä viime saneluja kontekstina</string>
+    <string name="pp_context_hint">Lähettää enintään 5 viime sanelua jälkikäsittelypalvelulle kontekstiksi. Vain muistissa; tyhjennetään sovellusta vaihdettaessa tai poistettaessa käytöstä. Kasvattaa pyyntöjen kokoa hieman.</string>
     <string name="pp_provider">API-tarjoaja</string>
     <string name="pp_provider_openai">OpenAI-yhteensopiva (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

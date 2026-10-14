@@ -116,4 +116,19 @@ class ParkedRecordingTest {
         assertNull(ParkedRecording.fromJson("not json"))
         assertNull(ParkedRecording.fromJson("{}"))
     }
+
+    @Test fun `parked recordings cannot persist or reuse the live context session`() {
+        val original = sampleItem(withPp = true).let {
+            it.copy(ppPreferences = it.ppPreferences!!.copy(contextEnabled = true), contextToken = 123L)
+        }
+        val json = ParkedRecording.fromQueueItem(
+            original, "context_case", "/files/parked/context.ogg",
+            ParkedRecording.State.WAITING_NETWORK, 0
+        ).toJson()
+        assertFalse(json.contains("contextToken"))
+        assertFalse(json.contains("contextEnabled"))
+        val restored = ParkedRecording.fromJson(json)!!.toQueueItem("STT", "PP")
+        assertNull(restored.contextToken)
+        assertFalse(restored.ppPreferences!!.contextEnabled)
+    }
 }

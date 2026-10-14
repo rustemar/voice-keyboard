@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Przetwarzanie końcowe</string>
     <string name="pp_settings_description">Popraw, skróć lub ulepsz transkrybowany tekst. Wymaga klucza API OpenAI, Claude lub dowolnego dostawcy zgodnego z OpenAI, np. OpenRouter. Tryby przełącza się przyciskami na samej klawiaturze.</string>
     <string name="pp_enable">Włącz przetwarzanie końcowe</string>
+    <string name="pp_context_enable">Używaj ostatnich dyktowań jako kontekstu</string>
+    <string name="pp_context_hint">Wysyła do 5 ostatnich dyktowań do dostawcy przetwarzania końcowego jako kontekst. Tylko w pamięci; usuwane po zmianie aplikacji lub wyłączeniu opcji. Nieco zwiększa rozmiar żądań.</string>
     <string name="pp_provider">Dostawca API</string>
     <string name="pp_provider_openai">Zgodny z OpenAI (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

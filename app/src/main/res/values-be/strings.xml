@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Постапрацоўка</string>
     <string name="pp_settings_description">Выпраўленне, скарачэнне або паляпшэнне распазнанага тэксту. Патрабуецца ключ API OpenAI, Claude або любога OpenAI-сумяшчальнага правайдара, напрыклад OpenRouter. Рэжымы ўключаюцца кнопкамі на самой клавіятуры.</string>
     <string name="pp_enable">Уключыць постапрацоўку</string>
+    <string name="pp_context_enable">Улічваць нядаўнія дыктоўкі</string>
+    <string name="pp_context_hint">Перадае да 5 апошніх дыктовак правайдару постапрацоўкі. Гісторыя захоўваецца толькі ў памяці і ачышчаецца пры змене праграмы або адключэнні. Крыху павялічвае памер запытаў.</string>
     <string name="pp_provider">Пастаўшчык API</string>
     <string name="pp_provider_openai">OpenAI-сумяшчальны (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

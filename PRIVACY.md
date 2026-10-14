@@ -2,13 +2,13 @@
 
 **Voice Keyboard** is an Android keyboard (input method) that converts speech to text using third‑party transcription APIs. This document describes what data the app handles, where it goes, and what stays on your device.
 
-_Last updated: 2026‑09‑29_
+_Last updated: 2026‑10‑14_
 
 ## TL;DR
 
 - The app does **not** collect, sell, or transmit any analytics, telemetry, advertising IDs, or device identifiers.
 - Audio you record is sent **only** to the speech‑to‑text provider you configure (Groq, OpenAI, Mistral or any OpenAI‑compatible endpoint, including a server of your own), using **your own API key**.
-- Optional post‑processing sends the transcribed text to the language‑model provider you configure (OpenAI, Anthropic, or an OpenAI‑compatible one such as OpenRouter, Groq, Mistral or DeepSeek), again using **your own API key**.
+- Optional post‑processing sends the transcribed text to the language‑model provider you configure (OpenAI, Anthropic, or an OpenAI‑compatible one such as OpenRouter, Groq, Mistral or DeepSeek), again using **your own API key**. Recent dictations are included as context only if you enable that separate option, which is off by default.
 - All settings, API keys, diagnostic logs, and crash reports stay on your device. They are explicitly excluded from Google Drive backup and device‑transfer.
 - The app is open source: <https://github.com/rustemar/voice-keyboard>.
 
@@ -33,6 +33,14 @@ The text returned by the transcription provider is inserted into the app you are
 - DeepSeek: <https://platform.deepseek.com/downloads/DeepSeek%20Privacy%20Policy.html>
 
 If post‑processing is disabled (the default for most modes), no third‑party request is made for text — the Whisper response is inserted directly.
+
+### Recent dictation context
+
+**Use recent dictations as context** is optional and **off by default**. When enabled, the app keeps up to 5 of your own completed dictations, excluding Terminal mode, in RAM. Each is limited to 1,000 UTF-16 code units. This context buffer is never written to disk or restored after the app process restarts.
+
+The app sends this additional text to your chosen post-processing provider with subsequent post-processing requests. It does not read conversations or other text from the receiving app to build this history. Context is scoped to the app, so switching between chats in the same app can reuse earlier dictations.
+
+The buffer is cleared when you switch apps, enter a password field or a field that requests no personalized learning, turn off context or post-processing, save a different post-processing provider or endpoint, or restart the app process. It also expires after 30 minutes of inactivity. The provider's own policy governs text already sent to it.
 
 ### API keys
 

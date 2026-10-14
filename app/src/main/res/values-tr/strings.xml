@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Son işleme</string>
     <string name="pp_settings_description">Yazıya dökülmüş metni düzeltin, kısaltın veya geliştirin. OpenAI, Claude veya OpenRouter gibi OpenAI uyumlu herhangi bir sağlayıcının API anahtarını gerektirir. Modlar klavyenin üzerindeki düğmelerle açılıp kapatılır.</string>
     <string name="pp_enable">Son işlemeyi etkinleştir</string>
+    <string name="pp_context_enable">Son dikteleri bağlam olarak kullan</string>
+    <string name="pp_context_hint">Son 5 dikteyi bağlam olarak son işleme sağlayıcısına gönderir. Yalnızca bellekte tutulur; uygulama değişince veya seçenek kapatılınca silinir. İstek boyutunu biraz artırır.</string>
     <string name="pp_provider">API sağlayıcı</string>
     <string name="pp_provider_openai">OpenAI uyumlu (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

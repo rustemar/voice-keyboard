@@ -60,6 +60,7 @@ class InputOrchestrator(
     private var reloadsInFlight = 0
     private var ppPreferences: PostProcessingPreferences? = null
     private var vocabulary: String = ""
+    private var captureContextToken: Long? = null
 
     /** Whether the input view is currently shown. Set by the host from its window callbacks. */
     var viewVisible: Boolean = false
@@ -267,10 +268,13 @@ class InputOrchestrator(
             moveTo(InputPhase.Failed(R.string.error_mic_unavailable))
             return
         }
+        captureContextToken = processingQueue.capturePostProcessingContextToken()
         moveTo(InputPhase.Capturing())
     }
 
     fun finishCaptureAndEnqueue() {
+        val contextToken = captureContextToken
+        captureContextToken = null
         val file = capture.finalize()
         val durationMs = capture.lastDurationMs
         // Back to Ready right away: the user can start the next recording while this one uploads.
@@ -287,14 +291,14 @@ class InputOrchestrator(
             // ends before they arrive waits for them instead of being thrown away.
             handoverScope.launch {
                 loadPreferencesInternal()
-                enqueue(file, durationMs, preferences ?: return@launch)
+                enqueue(file, durationMs, preferences ?: return@launch, contextToken)
             }
             return
         }
-        enqueue(file, durationMs, prefs)
+        enqueue(file, durationMs, prefs, contextToken)
     }
 
-    private fun enqueue(file: File, durationMs: Long, prefs: UserPreferences) {
+    private fun enqueue(file: File, durationMs: Long, prefs: UserPreferences, contextToken: Long?) {
         if (prefs.apiKey.isBlank()) {
             // Still queued: the queue parks it as "needs attention", so the recording survives
             // until a key is entered and resend is tapped.
@@ -329,7 +333,8 @@ class InputOrchestrator(
             ppEmoji = ppEnabled && s.emojiActive,
             ppRhyme = ppEnabled && s.rhymeActive,
             ppTranslate = ppEnabled && s.translateActive,
-            ppTerminal = ppEnabled && s.terminalActive
+            ppTerminal = ppEnabled && s.terminalActive,
+            contextToken = contextToken
         )
         processingQueue.enqueue(item)
     }

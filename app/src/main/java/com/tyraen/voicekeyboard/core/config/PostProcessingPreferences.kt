@@ -15,7 +15,8 @@ data class PostProcessingPreferences(
     val promptSuffix: String = "",
     val translateLang: String = "en",
     val translateModel: String = "",
-    val terminalVisible: Boolean = false
+    val terminalVisible: Boolean = false,
+    val contextEnabled: Boolean = false
 ) {
     companion object {
         const val PROVIDER_OPENAI = "openai"

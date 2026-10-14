@@ -44,6 +44,7 @@ class PreferenceStore(private val context: Context) {
         val PP_TRANSLATE_LANG = stringPreferencesKey("pp_translate_lang")
         val PP_TRANSLATE_MODEL = stringPreferencesKey("pp_translate_model")
         val PP_TERMINAL_VISIBLE = booleanPreferencesKey("pp_terminal_visible")
+        val PP_CONTEXT_ENABLED = booleanPreferencesKey("pp_context_enabled")
 
         // Prominent disclosure for microphone use (shown once before requesting RECORD_AUDIO)
         val MIC_DISCLOSURE_ACCEPTED = booleanPreferencesKey("mic_disclosure_accepted")
@@ -139,7 +140,8 @@ class PreferenceStore(private val context: Context) {
             promptSuffix = prefs[Keys.PP_PROMPT_SUFFIX] ?: "",
             translateLang = prefs[Keys.PP_TRANSLATE_LANG] ?: "en",
             translateModel = prefs[Keys.PP_TRANSLATE_MODEL] ?: "",
-            terminalVisible = prefs[Keys.PP_TERMINAL_VISIBLE] ?: false
+            terminalVisible = prefs[Keys.PP_TERMINAL_VISIBLE] ?: false,
+            contextEnabled = prefs[Keys.PP_CONTEXT_ENABLED] ?: false
         )
     }
 
@@ -158,6 +160,19 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PP_TRANSLATE_LANG] = prefs.translateLang
             data[Keys.PP_TRANSLATE_MODEL] = prefs.translateModel
             data[Keys.PP_TERMINAL_VISIBLE] = prefs.terminalVisible
+            data[Keys.PP_CONTEXT_ENABLED] = prefs.contextEnabled
+        }
+    }
+
+    suspend fun setPostProcessingEnabled(value: Boolean) {
+        context.store.edit { data ->
+            data[Keys.PP_ENABLED] = value
+        }
+    }
+
+    suspend fun setPostProcessingContextEnabled(value: Boolean) {
+        context.store.edit { data ->
+            data[Keys.PP_CONTEXT_ENABLED] = value
         }
     }
 

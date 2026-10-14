@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Μετεπεξεργασία</string>
     <string name="pp_settings_description">Διόρθωση, συντόμευση ή βελτίωση του μεταγεγραμμένου κειμένου. Απαιτεί κλειδί API από OpenAI, Claude ή οποιονδήποτε πάροχο συμβατό με OpenAI, όπως το OpenRouter. Οι λειτουργίες ενεργοποιούνται με τα κουμπιά στο ίδιο το πληκτρολόγιο.</string>
     <string name="pp_enable">Ενεργοποίηση μετεπεξεργασίας</string>
+    <string name="pp_context_enable">Χρήση πρόσφατων υπαγορεύσεων ως πλαίσιο</string>
+    <string name="pp_context_hint">Στέλνει έως 5 πρόσφατες υπαγορεύσεις στον πάροχο μετεπεξεργασίας ως πλαίσιο. Μόνο στη μνήμη· διαγράφονται όταν αλλάζετε εφαρμογή ή απενεργοποιείτε την επιλογή. Αυξάνει λίγο το μέγεθος των αιτημάτων.</string>
     <string name="pp_provider">Πάροχος API</string>
     <string name="pp_provider_openai">Συμβατός με OpenAI (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

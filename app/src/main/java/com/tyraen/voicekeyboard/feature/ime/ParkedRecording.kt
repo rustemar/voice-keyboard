@@ -12,8 +12,9 @@ import java.io.File
  * Secrets are deliberately NOT stored here: the Whisper and post-processing API keys are re-read
  * from [com.tyraen.voicekeyboard.core.config.PreferenceStore] at retry time via [toQueueItem].
  * This keeps a single source of truth for keys (rotation works on retry) and avoids duplicating
- * them into a second on-disk file. Everything else is a faithful snapshot of the toggle/config
- * state at record time, so a delayed retry produces the same output the immediate run would have.
+ * them into a second on-disk file. Durable fields preserve the toggle/config state at record time.
+ * Recent dictation context is deliberately excluded: neither its text, capture generation nor
+ * opt-in is serialized, so a delayed retry cannot reuse an unrelated session's history.
  */
 data class ParkedRecording(
     val id: String,

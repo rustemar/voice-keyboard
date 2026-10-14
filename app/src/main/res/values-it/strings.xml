@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Post-elaborazione</string>
     <string name="pp_settings_description">Correggi, abbrevia o migliora il testo trascritto. Richiede una chiave API di OpenAI, Claude o di qualsiasi provider compatibile con OpenAI, come OpenRouter. Le modalità si attivano con i pulsanti sulla tastiera stessa.</string>
     <string name="pp_enable">Attiva post-elaborazione</string>
+    <string name="pp_context_enable">Usa le dettature recenti come contesto</string>
+    <string name="pp_context_hint">Invia fino a 5 dettature recenti al fornitore di post-elaborazione come contesto. Solo in memoria; eliminate cambiando app o disattivando l’opzione. Aumenta leggermente le dimensioni delle richieste.</string>
     <string name="pp_provider">Fornitore API</string>
     <string name="pp_provider_openai">Compatibile OpenAI (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

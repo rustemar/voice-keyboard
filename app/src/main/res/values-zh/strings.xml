@@ -58,6 +58,8 @@
     <string name="pp_settings_title">后处理</string>
     <string name="pp_settings_description">修正、缩短或改善转录文本。需要 OpenAI、Claude 或任何 OpenAI 兼容提供商（如 OpenRouter）的 API 密钥。模式通过键盘上的按钮切换。</string>
     <string name="pp_enable">启用后处理</string>
+    <string name="pp_context_enable">使用最近的听写作为上下文</string>
+    <string name="pp_context_hint">将最近最多5条听写作为上下文发送给后处理服务商。仅保存在内存中，切换应用或关闭选项时清除。请求大小会略有增加。</string>
     <string name="pp_provider">API提供商</string>
     <string name="pp_provider_openai">OpenAI 兼容（OpenAI、OpenRouter、Groq…）</string>
     <string name="pp_provider_claude">Anthropic（Claude）</string>

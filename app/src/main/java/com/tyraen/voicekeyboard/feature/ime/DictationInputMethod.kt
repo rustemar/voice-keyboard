@@ -133,6 +133,16 @@ class DictationInputMethod : InputMethodService() {
         return view
     }
 
+    override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
+        super.onStartInput(info, restarting)
+        val contextAllowed = info != null &&
+            !EditorField.isPassword(info.inputType) &&
+            info.imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING == 0
+        ServiceLocator.transcriptionQueue.setPostProcessingContextScope(
+            if (contextAllowed) info?.packageName else null
+        )
+    }
+
     /** Focus moved to another field (or the keyboard opened on one): follow what it asks for. */
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)

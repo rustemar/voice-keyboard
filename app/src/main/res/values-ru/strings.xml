@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Постобработка</string>
     <string name="pp_settings_description">Исправление, сокращение или улучшение распознанного текста. Требуется ключ API OpenAI, Claude или любого OpenAI-совместимого провайдера, например OpenRouter. Режимы включаются кнопками на самой клавиатуре.</string>
     <string name="pp_enable">Включить постобработку</string>
+    <string name="pp_context_enable">Учитывать недавние диктовки</string>
+    <string name="pp_context_hint">Передаёт до 5 последних диктовок провайдеру постобработки. История хранится только в памяти и очищается при смене приложения или отключении. Немного увеличивает размер запросов.</string>
     <string name="pp_provider">Провайдер API</string>
     <string name="pp_provider_openai">OpenAI-совместимый (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

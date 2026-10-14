@@ -70,6 +70,8 @@
     <string name="pp_settings_title">Post-processing</string>
     <string name="pp_settings_description">Clean up, shorten, or enhance transcribed text. Requires an API key from OpenAI, Claude, or any OpenAI-compatible provider such as OpenRouter. Modes are switched with the toggle buttons on the keyboard itself.</string>
     <string name="pp_enable">Enable post-processing</string>
+    <string name="pp_context_enable">Use recent dictations as context</string>
+    <string name="pp_context_hint">Sends up to 5 recent dictations to your post-processing provider as context. Kept only in memory; cleared when you switch apps or turn this off. Slightly increases request size.</string>
     <string name="pp_provider">API Provider</string>
     <string name="pp_provider_openai">OpenAI-compatible (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

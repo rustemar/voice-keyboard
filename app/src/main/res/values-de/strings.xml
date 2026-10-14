@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Nachbearbeitung</string>
     <string name="pp_settings_description">Transkribierten Text korrigieren, kürzen oder verbessern. Erfordert einen API-Schlüssel von OpenAI, Claude oder einem OpenAI-kompatiblen Anbieter wie OpenRouter. Die Modi werden mit den Schaltflächen auf der Tastatur selbst umgeschaltet.</string>
     <string name="pp_enable">Nachbearbeitung aktivieren</string>
+    <string name="pp_context_enable">Letzte Diktate als Kontext verwenden</string>
+    <string name="pp_context_hint">Sendet bis zu 5 letzte Diktate als Kontext an den Nachbearbeitungsanbieter. Nur im Arbeitsspeicher; beim App-Wechsel oder Ausschalten gelöscht. Vergrößert Anfragen geringfügig.</string>
     <string name="pp_provider">API-Anbieter</string>
     <string name="pp_provider_openai">OpenAI-kompatibel (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

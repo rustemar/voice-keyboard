@@ -3,6 +3,7 @@ package com.tyraen.voicekeyboard.feature.ime
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.SystemClock
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
@@ -10,6 +11,7 @@ import com.tyraen.voicekeyboard.core.network.ConnectivityMonitor
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingArtifactStripper
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingPrompts
+import com.tyraen.voicekeyboard.feature.postprocessing.RecentDictationContext
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import kotlinx.coroutines.*
@@ -118,13 +120,17 @@ class ProcessingQueue(
         val ppTranslate: Boolean,
         val ppTerminal: Boolean,
         /** Non-null when this item came from the durable parked store (vs a fresh capture). */
-        val parkedId: String? = null
+        val parkedId: String? = null,
+        /** RAM-only capture generation. Restored parked recordings deliberately have none. */
+        val contextToken: Long? = null
     )
 
     private val queue = ConcurrentLinkedQueue<QueueItem>()
     private var processingJob: Job? = null
     private var isProcessing = false
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    // Includes device sleep, so returning to the phone does not revive hours-old references.
+    private val recentContext = RecentDictationContext { SystemClock.elapsedRealtime() }
 
     @Volatile
     private var listener: Listener? = null
@@ -147,6 +153,13 @@ class ProcessingQueue(
     }
 
     val pendingCount: Int get() = queue.size + if (isProcessing) 1 else 0
+
+    fun setPostProcessingContextScope(packageName: String?) = recentContext.setScope(packageName)
+
+    fun capturePostProcessingContextToken(): Long? = recentContext.captureToken()
+
+    /** Also invalidates work already in flight; a late result must not resurrect the history. */
+    fun clearPostProcessingContext() = recentContext.clear()
 
     /** Called once from Application.onCreate: recover persisted recordings and resume retrying. */
     fun bootstrap() {
@@ -314,6 +327,7 @@ class ProcessingQueue(
         } else processed
 
         deliver(output, item.addTrailingSpace)
+        if (canUseContext(item)) recentContext.remember(item.contextToken, output)
         if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
     }
 
@@ -421,6 +435,16 @@ class ProcessingQueue(
         val pp = item.ppPreferences ?: return text
         if (pp.apiKey.isBlank()) return text
 
+        // The option is live consent, even for a recording whose other preferences were
+        // snapshotted earlier. Settings also invalidate the generation synchronously on disable.
+        if (!canUseContext(item)) {
+            val live = preferenceStore.loadPostProcessing()
+            if (!live.enabled || !live.contextEnabled) recentContext.clear()
+        }
+        // Re-read this same generation before each stage: turning the option off during a call
+        // removes history from subsequent stages too, without ever adding this dictation to itself.
+        fun context() = if (pp.contextEnabled) recentContext.snapshot(item.contextToken) else emptyList()
+
         var processed = text
 
         // Terminal mode: convert voice to shell commands (exclusive, skips all other modes)
@@ -438,7 +462,7 @@ class ProcessingQueue(
         // First: fix/shorten/emoji
         if (PostProcessingPrompts.hasAnyMode(item.ppFix, item.ppShorten, item.ppEmoji)) {
             DiagnosticLog.record(TAG, "Post-processing: fix=${item.ppFix}, shorten=${item.ppShorten}, emoji=${item.ppEmoji}")
-            val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp, item.vocabulary)
+            val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp, item.vocabulary, context())
             val result = postProcessingClient.process(promptParts, pp)
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
@@ -450,7 +474,7 @@ class ProcessingQueue(
         // Then: rhyme
         if (item.ppRhyme) {
             DiagnosticLog.record(TAG, "Rhyming text")
-            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed, item.vocabulary)
+            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed, item.vocabulary, context())
             val result = postProcessingClient.process(rhymePrompt, pp, modelOverride = pp.resolvedTranslateModel())
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
@@ -462,7 +486,7 @@ class ProcessingQueue(
         // Then: translate
         if (item.ppTranslate) {
             DiagnosticLog.record(TAG, "Translating to: ${pp.translateLang}")
-            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang, item.vocabulary)
+            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang, item.vocabulary, context())
             val result = postProcessingClient.process(translatePrompt, pp, modelOverride = pp.resolvedTranslateModel())
             processed = result.getOrElse { error ->
                 DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
@@ -472,6 +496,12 @@ class ProcessingQueue(
         }
 
         return processed
+    }
+
+    private suspend fun canUseContext(item: QueueItem): Boolean {
+        if (item.ppPreferences?.contextEnabled != true || item.ppTerminal || item.contextToken == null) return false
+        val live = preferenceStore.loadPostProcessing()
+        return live.enabled && live.contextEnabled
     }
 
     /** Cancel only the not-yet-parked pending queue. Parked recordings are durable and untouched. */

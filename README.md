@@ -36,6 +36,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - Customizable prompts and temperature for each mode
 - Reasoning models work too: their `<think>` blocks are stripped before the text is inserted, and models that reject a custom temperature are retried without it
 - Provider presets (OpenAI, Claude, OpenRouter, Groq, Mistral, DeepSeek) fill in the endpoint and a model that exists there
+- **Recent dictation context** (off by default) — optionally send up to 5 of your own recent dictations to the post-processing provider to help correct names and terms misheard by speech recognition. Kept only in memory and cleared when you change apps or turn it off. It does not read your chats; context is shared between chats within the same app.
 
 ### Keyboard
 - **Back to your keyboard** — the key in the top corner takes you straight back to the keyboard you came from (Gboard, HeliBoard, …); to just hide the panel, use the system back gesture or button
@@ -102,7 +103,7 @@ The mic key now opens Voice Keyboard, and the key in the top corner of the panel
 
 ## Privacy
 
-No analytics, no telemetry, no advertising. Audio is sent only to the transcription provider you configure, using your own API key. See [PRIVACY.md](PRIVACY.md) for the full policy.
+No analytics, no telemetry, no advertising. Audio is sent only to the transcription provider you configure, using your own API key. Optional post-processing sends text to your chosen provider, including recent dictations if you enable context. See [PRIVACY.md](PRIVACY.md) for the full policy.
 
 Before first use of the microphone, the app shows a one-time disclosure explaining what is recorded, where it is sent, and what is **not** collected:
 

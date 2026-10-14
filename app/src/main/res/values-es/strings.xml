@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Postprocesamiento</string>
     <string name="pp_settings_description">Corrige, acorta o mejora el texto transcrito. Requiere una clave API de OpenAI, Claude o cualquier proveedor compatible con OpenAI, como OpenRouter. Los modos se activan con los botones del propio teclado.</string>
     <string name="pp_enable">Activar postprocesamiento</string>
+    <string name="pp_context_enable">Usar dictados recientes como contexto</string>
+    <string name="pp_context_hint">Envía hasta 5 dictados recientes al proveedor de postprocesamiento como contexto. Solo en memoria; se borran al cambiar de aplicación o desactivar la opción. Aumenta un poco el tamaño de las solicitudes.</string>
     <string name="pp_provider">Proveedor de API</string>
     <string name="pp_provider_openai">Compatible con OpenAI (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>

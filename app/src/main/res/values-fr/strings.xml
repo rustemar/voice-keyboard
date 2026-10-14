@@ -58,6 +58,8 @@
     <string name="pp_settings_title">Post-traitement</string>
     <string name="pp_settings_description">Corrigez, raccourcissez ou améliorez le texte transcrit. Nécessite une clé API OpenAI, Claude ou de tout fournisseur compatible OpenAI, comme OpenRouter. Les modes s\'activent avec les boutons du clavier lui-même.</string>
     <string name="pp_enable">Activer le post-traitement</string>
+    <string name="pp_context_enable">Utiliser les dictées récentes comme contexte</string>
+    <string name="pp_context_hint">Envoie jusqu’à 5 dictées récentes au fournisseur de post-traitement comme contexte. En mémoire uniquement ; effacées au changement d’application ou à la désactivation. Augmente légèrement la taille des requêtes.</string>
     <string name="pp_provider">Fournisseur d\'API</string>
     <string name="pp_provider_openai">Compatible OpenAI (OpenAI, OpenRouter, Groq…)</string>
     <string name="pp_provider_claude">Anthropic (Claude)</string>
