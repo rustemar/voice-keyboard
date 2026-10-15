@@ -11,8 +11,8 @@ android {
         applicationId = "com.tyraen.voicekeyboard"
         minSdk = 24
         targetSdk = 34
-        versionCode = 59
-        versionName = "1.9.8"
+        versionCode = 60
+        versionName = "1.9.9"
     }
 
     signingConfigs {

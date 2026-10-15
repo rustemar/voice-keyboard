@@ -1,5 +1,6 @@
-v1.9.8 — More dictation options, smoother provider switching
+v1.9.9 — Better corrections with recent context
 
-- Dictate through compatible Chat Completions audio endpoints. Enter the full chat endpoint URL and an audio-capable model in speech settings; use Test Recording to check support for your device's audio format
-- Incomplete transcripts and refusals in the new chat mode keep the recording available for retry
-- Choosing a post-processing provider preset now resets the separate translation/rhyme model to the provider's default, and the displayed default follows the current endpoint and main model
+- Optional recent dictation context helps post-processing recover misheard names and terms when earlier wording provides a strong sound and meaning match
+- Off by default. Enable it in post-processing settings to send up to 5 of your own recent dictations as reference to your chosen provider. History stays only in memory
+- Context is shared across chats in the same app. It clears when input moves to another app or a private field, when disabled, after 30 minutes idle, or on process restart
+- No conversations are read. Only the current dictation is processed; Terminal mode neither uses nor adds context
