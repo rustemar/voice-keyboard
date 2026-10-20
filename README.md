@@ -94,6 +94,7 @@ The mic key now opens Voice Keyboard, and the key in the top corner of the panel
 
 ## Troubleshooting
 
+- **Termius says voice input is off in password fields** — update Voice Keyboard to 1.9.10 or newer. Earlier versions also work with Termius Settings → Terminal → Experimental Keyboard Support enabled.
 - **The keyboard is not in the list** — tap *Enable keyboard* in the app; it opens the system screen where "Voice Keyboard" has to be switched on.
 - **I can't type my API key** — while Voice Keyboard is the active keyboard its panel has no letter keys. The settings screen says so and offers *Switch keyboard*; long-pressing the space bar on the keyboard does the same. To type by hand and still dictate, see *Using it with another keyboard*.
 - **"Microphone permission required"** — tap the mic again and the system prompt appears. After "Don't ask again" the app opens its settings page instead; allow the microphone there.

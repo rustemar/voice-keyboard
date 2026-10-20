@@ -5,16 +5,18 @@ import android.view.inputmethod.EditorInfo
 
 /**
  * What the focused field asks of the keyboard, read from the EditorInfo the app hands over.
- * Pure functions over its ints and label, so they run in JVM tests; the rules follow AOSP LatinIME.
+ * Pure rules over its values and resource identity, so they run in JVM tests.
  */
 object EditorField {
 
+    const val TERMIUS_PACKAGE = "com.server.auditor.ssh.client"
+    private const val TERMIUS_TERMINAL_FIELD = "$TERMIUS_PACKAGE:id/terminalView"
+
     /**
-     * Password fields of every kind, including the visible-password variation that "show password"
-     * toggles switch to: no dictation there, since the audio and the transcript would go to the
-     * cloud provider and the transcript into the diagnostic log. The same set AOSP LatinIME hides
-     * its mic in (InputAttributes: isPasswordInputType || isVisiblePasswordInputType). Termux sends
-     * the visible-password variation without a class, so it does not match.
+     * Strict password classification, including the visible-password variation used by "show
+     * password" toggles. This excludes recent context; voice uses [blocksVoice] for its narrow
+     * terminal exception. The set matches AOSP LatinIME's isPasswordInputType and
+     * isVisiblePasswordInputType. Termux sends the variation without a class, so it does not match.
      */
     fun isPassword(inputType: Int): Boolean {
         val masked = inputType and (InputType.TYPE_MASK_CLASS or InputType.TYPE_MASK_VARIATION)
@@ -22,6 +24,21 @@ object EditorField {
             masked == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD ||
             masked == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD ||
             masked == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+    }
+
+    /**
+     * Termius marks its terminal view as a visible password to suppress keyboard suggestions.
+     * Its credential fields still follow the normal password rules. Resolve the resource name
+     * from the editor app: numeric view IDs change between releases. Unknown fields stay blocked.
+     * [isPassword] remains strict for recent-context privacy, including this terminal view.
+     */
+    fun blocksVoice(inputType: Int, packageName: String?, fieldResourceName: String?): Boolean {
+        if (!isPassword(inputType)) return false
+        val masked = inputType and (InputType.TYPE_MASK_CLASS or InputType.TYPE_MASK_VARIATION)
+        val termiusTerminal = packageName == TERMIUS_PACKAGE &&
+            fieldResourceName == TERMIUS_TERMINAL_FIELD &&
+            masked == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        return !termiusTerminal
     }
 
     /** A text field that takes line breaks. */

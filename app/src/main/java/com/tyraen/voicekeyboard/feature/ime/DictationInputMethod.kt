@@ -4,6 +4,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.os.Handler
@@ -99,7 +101,7 @@ class DictationInputMethod : InputMethodService() {
                 // A visible panel can still lack an InputConnection (some apps drop it mid-edit);
                 // the clipboard is the fallback there too, never a silent loss. A dictation started
                 // elsewhere that arrives while a password field has focus goes there as well.
-                val inserted = keyboardVisible && !inPasswordField() &&
+                val inserted = keyboardVisible && !isVoiceBlocked() &&
                     keystrokes.insertDictation(text, addTrailingSpace)
                 if (!inserted) {
                     copyToClipboard(if (addTrailingSpace) "$text " else text)
@@ -121,7 +123,7 @@ class DictationInputMethod : InputMethodService() {
                 refreshLanguageKey()
             },
             onPermissionNeeded = { requestMicPermission() },
-            voiceAllowed = { !inPasswordField() },
+            voiceAllowed = { !isVoiceBlocked() },
             onVoiceBlocked = { panel.showPasswordFieldNotice() },
             onApiKeyNeeded = { openSettings() }
         )
@@ -150,7 +152,7 @@ class DictationInputMethod : InputMethodService() {
         // A recording started in the previous field (a login's user name, say) stops when focus
         // moves into a password field, so the mic is not left open there. What was said is still
         // queued, and while the password field has focus it goes to the clipboard.
-        if (::orchestrator.isInitialized && EditorField.isPassword(info?.inputType ?: InputType.TYPE_NULL)) {
+        if (::orchestrator.isInitialized && isVoiceBlocked(info)) {
             orchestrator.gracefulShutdown()
         }
     }
@@ -159,12 +161,23 @@ class DictationInputMethod : InputMethodService() {
         if (!::panel.isInitialized) return
         val inputType = info?.inputType ?: InputType.TYPE_NULL
         val enter = enterFor(info)
-        panel.setVoiceBlocked(EditorField.isPassword(inputType))
+        panel.setVoiceBlocked(isVoiceBlocked(info))
         panel.updateEnterKey(enter, newLineOnLongPress = enter is EditorField.Enter.Action && EditorField.isMultiLine(inputType))
     }
 
-    private fun inPasswordField(): Boolean =
-        EditorField.isPassword(currentInputEditorInfo?.inputType ?: InputType.TYPE_NULL)
+    private fun isVoiceBlocked(info: EditorInfo? = currentInputEditorInfo): Boolean {
+        val inputType = info?.inputType ?: InputType.TYPE_NULL
+        if (!EditorField.isPassword(inputType)) return false
+        if (info?.packageName != EditorField.TERMIUS_PACKAGE) return true
+        val fieldResourceName = try {
+            packageManager.getResourcesForApplication(info.packageName).getResourceName(info.fieldId)
+        } catch (_: PackageManager.NameNotFoundException) {
+            null
+        } catch (_: Resources.NotFoundException) {
+            null
+        }
+        return EditorField.blocksVoice(inputType, info.packageName, fieldResourceName)
+    }
 
     private fun enterFor(info: EditorInfo?): EditorField.Enter =
         if (info == null) EditorField.Enter.NewLine

@@ -11,6 +11,8 @@ class EditorFieldTest {
 
     private val text = InputType.TYPE_CLASS_TEXT
     private val number = InputType.TYPE_CLASS_NUMBER
+    private val termiusPackage = "com.server.auditor.ssh.client"
+    private val termiusTerminal = "$termiusPackage:id/terminalView"
 
     @Test fun `text, web and number password fields are passwords`() {
         assertTrue(EditorField.isPassword(text or InputType.TYPE_TEXT_VARIATION_PASSWORD))
@@ -45,6 +47,74 @@ class EditorFieldTest {
         assertFalse(EditorField.isPassword(InputType.TYPE_CLASS_PHONE))
         // The password variation value under another class means something else.
         assertFalse(EditorField.isPassword(number or InputType.TYPE_TEXT_VARIATION_PASSWORD))
+    }
+
+    @Test fun `Termius terminal permits voice but keeps its password classification for context`() {
+        // Verified Termius 7.11.2 default: inputType 0x91, imeOptions 0x52080006.
+        assertTrue(EditorField.isPassword(0x91))
+        assertFalse(EditorField.blocksVoice(0x91, termiusPackage, termiusTerminal))
+    }
+
+    @Test fun `Termius terminal input flags do not remove its narrow voice exception`() {
+        val visiblePassword = text or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        for (flags in listOf(
+            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS,
+            InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        )) {
+            val inputType = visiblePassword or flags
+            assertTrue(EditorField.isPassword(inputType))
+            assertFalse(EditorField.blocksVoice(inputType, termiusPackage, termiusTerminal))
+        }
+    }
+
+    @Test fun `a visible password needs both the exact Termius app and full terminal resource name`() {
+        val identities = listOf(
+            "example.password.app" to termiusTerminal,
+            "$termiusPackage.beta" to termiusTerminal,
+            null to termiusTerminal,
+            termiusPackage to null,
+            termiusPackage to "$termiusPackage:id/password",
+            termiusPackage to "terminalView",
+            termiusPackage to "example.password.app:id/terminalView"
+        )
+        for ((packageName, resourceName) in identities) {
+            assertTrue(
+                "Visible password unexpectedly allowed for $packageName / $resourceName",
+                EditorField.blocksVoice(0x91, packageName, resourceName)
+            )
+        }
+    }
+
+    @Test fun `real text web and numeric passwords remain blocked even with the terminal identity`() {
+        for (inputType in listOf(
+            text or InputType.TYPE_TEXT_VARIATION_PASSWORD,
+            text or InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD,
+            number or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        )) {
+            assertTrue(EditorField.blocksVoice(inputType, termiusPackage, termiusTerminal))
+            assertTrue(EditorField.blocksVoice(
+                inputType or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS,
+                termiusPackage,
+                termiusTerminal
+            ))
+        }
+    }
+
+    @Test fun `ordinary fields and class-less Termux input remain voice eligible without an exception`() {
+        for (inputType in listOf(
+            InputType.TYPE_NULL,
+            text,
+            0x80001, // Termius's optional normal input type: TEXT | NO_SUGGESTIONS.
+            text or InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+            number,
+            InputType.TYPE_CLASS_PHONE,
+            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+        )) {
+            assertFalse(EditorField.blocksVoice(inputType, null, null))
+            assertFalse(EditorField.blocksVoice(inputType, termiusPackage, termiusTerminal))
+        }
     }
 
     @Test fun `a field that asks for no enter action gets a new line`() {

@@ -1,6 +1,4 @@
-v1.9.9 — Better corrections with recent context
+v1.9.10 — Voice input in Termius
 
-- Optional recent dictation context helps post-processing recover misheard names and terms when earlier wording provides a strong sound and meaning match
-- Off by default. Enable it in post-processing settings to send up to 5 of your own recent dictations as reference to your chosen provider. History stays only in memory
-- Context is shared across chats in the same app. It clears when input moves to another app or a private field, when disabled, after 30 minutes idle, or on process restart
-- No conversations are read. Only the current dictation is processed; Terminal mode neither uses nor adds context
+- Voice input now works in the Termius terminal, which reports its command line as a visible-password field
+- The exception applies only to the Termius terminal view. Login and other form password fields keep their protection, and recent dictation context stays off in that view
