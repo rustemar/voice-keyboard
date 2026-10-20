@@ -1,4 +1,4 @@
 v1.9.10 — Voice input in Termius
 
 - Voice input now works in the Termius terminal, which reports its command line as a visible-password field
-- The exception applies only to the Termius terminal view. Login and other form password fields keep their protection, and recent dictation context stays off in that view
+- The exception applies only to the Termius terminal view. Login and other form password fields keep their protection; recent dictation context remains disabled for password-marked fields
