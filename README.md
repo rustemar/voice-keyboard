@@ -96,6 +96,8 @@ This optional integration supports two standard Android interfaces:
 3. For apps using the default speech-recognition service, tap **Android voice input settings**, open **Voice input** under **Speech**, and select **Voice Keyboard**. The exact screen depends on your Android version and device; some manufacturers hide this selector.
 4. For apps that open a dictation window, choose **Voice Keyboard** in Android’s app chooser. This route works without changing the default recognition service or enabling the keyboard itself.
 
+On some older Android versions, the **Voice input** selector appears only after choosing **None** as the default digital assistant. This changes your assistant choice; Voice Keyboard never changes it automatically. You can use the dictation-window route without making that change.
+
 The service uses the language requested by the calling app and returns the transcript directly. It does not apply keyboard post-processing, vocabulary prompts, recent context, clipboard delivery or delayed retries. A pause ends recording automatically; you can also stop or cancel from the calling app. Sessions are limited to 45 seconds of recording and 45 seconds for the provider request. A network connection to your configured provider is required; on-device recognition, partial results, segmented sessions and supplied-audio input are not provided.
 
 Apps choosing a fixed component or using their own speech/pronunciation engine may ignore Android’s default service. AnkiDroid-style service calls and Tasks-style dictation windows are useful examples of the two interfaces; compatibility with a particular app/version still depends on that app. Duolingo has not yet been verified.
