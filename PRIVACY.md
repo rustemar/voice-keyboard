@@ -50,6 +50,8 @@ These requests do not use keyboard post-processing, custom vocabulary, recent di
 
 The service uses Android’s caller permissions and attribution checks. It receives a recognition request, not the requesting app’s focused field or chat history, so the keyboard’s password-field detection does not apply to this separate interface. On modern Android, microphone access is attributed to the requesting app through the platform API. Apps that use their own fixed recognition engine are outside this integration.
 
+The app declares `QUERY_ALL_PACKAGES`, which allows package visibility on Android 11 and newer. Android’s speech-service permission checks need this visibility to verify microphone grants for arbitrary requesting apps; otherwise, a hidden caller can be rejected despite having microphone permission. Voice Keyboard does not enumerate, store or transmit a list of installed apps. This permission does not enable the integration or grant microphone access: the integration remains off by default, and Android’s microphone permission and attribution checks still apply.
+
 ### API keys
 
 Your API keys are stored on your device using Android's `DataStore`, in the app's private storage. They are:
@@ -81,6 +83,7 @@ The pending crash file is deleted whether you choose to save it or not.
 | Permission | Purpose |
 |---|---|
 | `RECORD_AUDIO` | To capture speech for keyboard dictation, a settings test, or an explicitly enabled Android speech-recognition request. Recording ends when you finish or cancel; recognition sessions also stop after a pause or a bounded timeout. |
+| `QUERY_ALL_PACKAGES` | To let Android’s speech-service permission checks verify microphone grants for any requesting app. The app does not enumerate, store or transmit your installed-app list. |
 | `INTERNET` | To send the recorded audio to the transcription provider you configured, and to send transcribed text to the post‑processing provider when you use that feature. |
 | `REQUEST_INSTALL_PACKAGES` | To let you install a newer version directly from inside the app. The app looks for one only if you switch the GitHub update check on (it is off by default) or press “Check for updates” yourself; it then offers to download and install a newer APK signed with the same key. You can also obtain updates entirely outside the app (e.g. via Obtainium, F‑Droid, or by downloading the APK from GitHub manually). |
 

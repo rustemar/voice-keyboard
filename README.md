@@ -98,6 +98,8 @@ This optional integration supports two standard Android interfaces:
 
 On some older Android versions, the **Voice input** selector appears only after choosing **None** as the default digital assistant. This changes your assistant choice; Voice Keyboard never changes it automatically. You can use the dictation-window route without making that change.
 
+Voice Keyboard declares Android’s `QUERY_ALL_PACKAGES` permission so the system speech service can verify microphone grants for any requesting app. Without this package visibility, Android can reject a caller even when it has microphone permission. Voice Keyboard does not enumerate, store or transmit your installed-app list. The integration remains off until you enable it, and microphone permission checks still apply.
+
 The service uses the language requested by the calling app and returns the transcript directly. It does not apply keyboard post-processing, vocabulary prompts, recent context, clipboard delivery or delayed retries. A pause ends recording automatically; you can also stop or cancel from the calling app. Sessions are limited to 45 seconds of recording and 45 seconds for the provider request. A network connection to your configured provider is required; on-device recognition, partial results, segmented sessions and supplied-audio input are not provided.
 
 Apps choosing a fixed component or using their own speech/pronunciation engine may ignore Android’s default service. AnkiDroid-style service calls and Tasks-style dictation windows are useful examples of the two interfaces; compatibility with a particular app/version still depends on that app. Duolingo has not yet been verified.
