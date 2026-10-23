@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Ενεργοποίηση</string>
     <string name="update_consent_decline">Να παραμείνει ανενεργό</string>
     <string name="update_source_disclosure">Αυτό το APK λαμβάνεται από το GitHub Releases. Έρχεται απευθείας από τον προγραμματιστή και δεν ελέγχεται από το κατάστημα από το οποίο εγκαταστήσατε.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Σύνθετες ρυθμίσεις</string>
+    <string name="recognition_apps">Φωνητική εισαγωγή για άλλες εφαρμογές</string>
+    <string name="recognition_apps_hint">Επιτρέψτε στις εφαρμογές να χρησιμοποιούν τον αποθηκευμένο πάροχο ομιλίας και το κλειδί API. Απαιτείται σύνδεση δικτύου με τον πάροχο ομιλίας. Χωρίς επεξεργασία κειμένου ή πρόσφατα συμφραζόμενα.</string>
+    <string name="recognition_select">Ρυθμίσεις φωνητικής εισαγωγής Android</string>
+    <string name="recognition_select_hint">Επιλέξτε Voice Keyboard αν το Android προσφέρει επιλογή υπηρεσίας αναγνώρισης ομιλίας. Οι συμβατές εφαρμογές μπορούν επίσης να ανοίξουν το παράθυρο υπαγόρευσης χωρίς αλλαγή της προεπιλεγμένης υπηρεσίας. Οι εφαρμογές με δική τους αναγνώριση ενδέχεται να αγνοήσουν αυτήν την επιλογή.</string>
+    <string name="recognition_disabled">Η φωνητική εισαγωγή για εφαρμογές είναι κλειστή. Ενεργοποιήστε τη στις σύνθετες ρυθμίσεις.</string>
+    <string name="recognition_start">Έναρξη υπαγόρευσης</string>
+    <string name="recognition_failed">Η αναγνώριση απέτυχε. Ελέγξτε τις ρυθμίσεις του παρόχου ομιλίας.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Συμπαγές πληκτρολόγιο τερματικού</string>
+    <string name="terminal_compact_hint">Μικρότερο πλαίσιο όταν η λειτουργία τερματικού είναι ενεργή στη μετεπεξεργασία. Το κουμπί επέκτασης εμφανίζει όλα τα πλήκτρα.</string>
+    <string name="terminal_compact_expand">Εμφάνιση πλήρους πληκτρολογίου</string>
+    <string name="recognition_setup">Οδηγίες ρύθμισης</string>
 </resources>

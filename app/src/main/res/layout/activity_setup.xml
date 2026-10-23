@@ -368,6 +368,16 @@
             android:background="@color/divider"
             android:layout_marginBottom="16dp" />
 
+        <Button
+            android:id="@+id/btnAdvancedSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_advanced"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg"
+            android:layout_marginBottom="24dp" />
+
         <!-- Test section -->
         <TextView
             android:layout_width="wrap_content"

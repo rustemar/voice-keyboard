@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Activar</string>
     <string name="update_consent_decline">Dejar desactivado</string>
     <string name="update_source_disclosure">Este APK se descarga de GitHub Releases. Viene directamente del desarrollador y no lo revisa la tienda desde la que instalaste.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Ajustes avanzados</string>
+    <string name="recognition_apps">Entrada de voz para otras aplicaciones</string>
+    <string name="recognition_apps_hint">Permitir que las aplicaciones usen su proveedor de voz y clave API guardados. Requiere conexión de red al proveedor de voz. Sin posprocesamiento ni contexto reciente.</string>
+    <string name="recognition_select">Ajustes de entrada de voz de Android</string>
+    <string name="recognition_select_hint">Elige Voice Keyboard si Android permite seleccionar el servicio de reconocimiento de voz. Las aplicaciones compatibles también pueden abrir su ventana de dictado sin cambiar el servicio predeterminado. Las aplicaciones con reconocimiento propio pueden ignorar esta elección.</string>
+    <string name="recognition_disabled">La entrada de voz para aplicaciones está desactivada. Actívela en los ajustes avanzados.</string>
+    <string name="recognition_start">Iniciar dictado</string>
+    <string name="recognition_failed">Error de reconocimiento. Compruebe los ajustes del proveedor de voz.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Teclado compacto para terminal</string>
+    <string name="terminal_compact_hint">Usar un panel más pequeño cuando el modo Terminal esté activo en el posprocesamiento. El botón de ampliar muestra todas las teclas.</string>
+    <string name="terminal_compact_expand">Mostrar teclado completo</string>
+    <string name="recognition_setup">Instrucciones de configuración</string>
 </resources>

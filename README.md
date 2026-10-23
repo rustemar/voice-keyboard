@@ -15,7 +15,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 ### Voice Input
 - Real-time voice recording with amplitude visualization
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
-- **Cancel the latest dictation** (unreleased) — the × button stays available during recognition and post-processing. It cancels only the newest unfinished recording, including one waiting to be resent; earlier recordings continue.
+- **Cancel the latest dictation** — the × button stays available during recognition and post-processing. It cancels only the newest unfinished recording, including one waiting to be resent; earlier recordings continue.
 - **Offline-proof recovery** — recordings that can't be transcribed are saved on the device and resent automatically as soon as a validated internet connection returns; they survive closing the keyboard, app rebuilds, and reboots, and are kept until successfully sent (a "resend" button is also available to force a retry)
 - Works with OpenAI-compatible `/audio/transcriptions` and `/chat/completions` audio APIs; ships with Groq as the default (whisper-large-v3-turbo). Free keys are available from both Groq and Mistral
 - **Your own server** — a speech server on your home network works too, over plain `http://` if need be; the settings warn that such an address is not encrypted
@@ -23,6 +23,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - **Multiple dictation languages** — list several language codes in settings and a language key appears on the keyboard: tap to cycle, long-press to pick one. The formatting prompt follows the language you switch to
 - Auto-start recording when keyboard opens
 - **Voice input for your other keyboard** — a keyboard with a mic key, such as HeliBoard, can open Voice Keyboard for dictation; with *Return to previous keyboard after dictation* on, your keyboard comes back as soon as the text is typed
+- **Voice input for other apps** (off by default) — apps using Android speech recognition can use your configured speech provider directly, through the system recognition service or a standard dictation window. Enable it in Advanced settings, then select Voice Keyboard in Android voice input settings. Returns text without post-processing or recent context; requires a connection to your speech provider. Apps using a fixed or private speech engine are unaffected.
 - **Custom vocabulary** — add names and technical terms to bias recognition; helps with contacts and rare words
 - **Drop period for single-word output** — handy for voice search where a trailing period gets in the way
 
@@ -48,6 +49,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - **Punctuation keys** — `.`, `?` and `!` next to the space bar for when dictation gets the punctuation wrong; they swallow the space left by dictation, so "hello " + `.` reads "hello."
 - **Smart spacing** — dictated text gets a space in front when the cursor sits after a word, and never a doubled one before an existing space or full stop
 - **Clipboard bar** stays visible after paste for repeated pasting
+- **Compact terminal panel** (off by default) — enable it in Advanced settings to use a smaller panel while Terminal mode is active. Keeps microphone, cancel, backspace, Enter and keyboard switching accessible; expand it during recording without interrupting the dictation. Narrow windows keep the full panel.
 - **Graceful shutdown** — if keyboard hides during recording, audio is finalized and transcribed to clipboard
 
 ### General
@@ -84,6 +86,19 @@ Voice Keyboard has no letter keys. To type by hand as well, keep your usual keyb
 3. In Voice Keyboard settings, turn on **Return to previous keyboard after dictation** if your keyboard should come back by itself, and **Auto-start recording** if the mic key should start recording right away.
 
 The mic key now opens Voice Keyboard, and the key in the top corner of the panel takes you back. With the setting on, your keyboard also comes back by itself once your text is typed; Voice Keyboard stays open while there is still something to see: a recording being transcribed, an error, or a recording waiting to be resent. If the mic key opens Google voice typing instead, switch Google voice typing off in the system keyboard list. Gboard and Samsung Keyboard use their own voice input: switch to Voice Keyboard with the system keyboard switcher (in Gboard, long-press the space bar; elsewhere, use the keyboard button in the navigation bar), and tap the key in the top corner to go back.
+
+### Voice input for other apps
+
+This optional integration supports two standard Android interfaces:
+
+1. Save your speech provider, model and API key in the main settings.
+2. Open **Advanced settings** and enable **Voice input for other apps**. Allow microphone access if requested.
+3. For apps using the default speech-recognition service, tap **Android voice input settings**, open **Voice input** under **Speech**, and select **Voice Keyboard**. The exact screen depends on your Android version and device; some manufacturers hide this selector.
+4. For apps that open a dictation window, choose **Voice Keyboard** in Android’s app chooser. This route works without changing the default recognition service or enabling the keyboard itself.
+
+The service uses the language requested by the calling app and returns the transcript directly. It does not apply keyboard post-processing, vocabulary prompts, recent context, clipboard delivery or delayed retries. A pause ends recording automatically; you can also stop or cancel from the calling app. Sessions are limited to 45 seconds of recording and 45 seconds for the provider request. A network connection to your configured provider is required; on-device recognition, partial results, segmented sessions and supplied-audio input are not provided.
+
+Apps choosing a fixed component or using their own speech/pronunciation engine may ignore Android’s default service. AnkiDroid-style service calls and Tasks-style dictation windows are useful examples of the two interfaces; compatibility with a particular app/version still depends on that app. Duolingo has not yet been verified.
 
 ### Installing via Obtainium (recommended)
 

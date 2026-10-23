@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Attiva</string>
     <string name="update_consent_decline">Lascia disattivato</string>
     <string name="update_source_disclosure">Questo APK viene scaricato da GitHub Releases. Arriva direttamente dallo sviluppatore e non è verificato dallo store da cui hai installato.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Impostazioni avanzate</string>
+    <string name="recognition_apps">Input vocale per altre app</string>
+    <string name="recognition_apps_hint">Consenti alle app di usare il servizio vocale e la chiave API salvati. Richiede una connessione di rete al servizio vocale. Senza post-elaborazione o contesto recente.</string>
+    <string name="recognition_select">Impostazioni di input vocale Android</string>
+    <string name="recognition_select_hint">Scegli Voice Keyboard se Android permette di selezionare il servizio di riconoscimento vocale. Le app compatibili possono anche aprire la finestra di dettatura senza cambiare il servizio predefinito. Le app con un proprio riconoscimento possono ignorare questa scelta.</string>
+    <string name="recognition_disabled">Input vocale per le app disattivato. Attivalo nelle impostazioni avanzate.</string>
+    <string name="recognition_start">Avvia dettatura</string>
+    <string name="recognition_failed">Riconoscimento non riuscito. Controlla le impostazioni del servizio vocale.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Tastiera compatta per terminale</string>
+    <string name="terminal_compact_hint">Usa un pannello ridotto quando la modalità Terminale è attiva nella post-elaborazione. Il pulsante di espansione mostra tutti i tasti.</string>
+    <string name="terminal_compact_expand">Mostra tastiera completa</string>
+    <string name="recognition_setup">Istruzioni di configurazione</string>
 </resources>

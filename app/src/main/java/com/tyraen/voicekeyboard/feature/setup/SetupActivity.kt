@@ -254,6 +254,9 @@ class SetupActivity : AppCompatActivity() {
         btnVocabulary.setOnClickListener {
             startActivity(Intent(this, VocabularyActivity::class.java))
         }
+        findViewById<Button>(R.id.btnAdvancedSettings).setOnClickListener {
+            startActivity(Intent(this, AdvancedSettingsActivity::class.java))
+        }
     }
 
     /**

@@ -166,4 +166,20 @@
     <string name="update_consent_enable">चालू करें</string>
     <string name="update_consent_decline">बंद रहने दें</string>
     <string name="update_source_disclosure">यह APK GitHub Releases से डाउनलोड होता है। यह सीधे डेवलपर से आता है और जिस स्टोर से आपने इंस्टॉल किया उसकी समीक्षा से नहीं गुज़रता।</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">उन्नत सेटिंग्स</string>
+    <string name="recognition_apps">अन्य ऐप के लिए वॉइस इनपुट</string>
+    <string name="recognition_apps_hint">ऐप को आपके सहेजे गए वॉइस प्रदाता और API कुंजी का उपयोग करने दें। वॉइस प्रदाता से नेटवर्क कनेक्शन आवश्यक है। पोस्ट-प्रोसेसिंग या हाल का संदर्भ नहीं भेजा जाता।</string>
+    <string name="recognition_select">Android की वॉइस इनपुट सेटिंग</string>
+    <string name="recognition_select_hint">अगर Android में वाक् पहचान सेवा चुनने का विकल्प हो, तो Voice Keyboard चुनें। संगत ऐप डिफ़ॉल्ट सेवा बदले बिना इसकी डिक्टेशन विंडो भी खोल सकते हैं। अपनी पहचान प्रणाली वाले ऐप इस विकल्प को अनदेखा कर सकते हैं।</string>
+    <string name="recognition_disabled">ऐप के लिए वॉइस इनपुट बंद है। इसे उन्नत सेटिंग्स में चालू करें।</string>
+    <string name="recognition_start">डिक्टेशन शुरू करें</string>
+    <string name="recognition_failed">पहचान विफल रही। अपने वॉइस प्रदाता की सेटिंग्स जाँचें।</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">कॉम्पैक्ट टर्मिनल कीबोर्ड</string>
+    <string name="terminal_compact_hint">पोस्ट-प्रोसेसिंग में टर्मिनल मोड चालू होने पर छोटा पैनल दिखाएँ। सभी कुंजियों के लिए पैनल को बड़ा करें।</string>
+    <string name="terminal_compact_expand">पूरा कीबोर्ड दिखाएँ</string>
+    <string name="recognition_setup">सेटअप के निर्देश</string>
 </resources>

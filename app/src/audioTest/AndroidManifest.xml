@@ -6,6 +6,9 @@
     <application android:name="android.app.Application" android:label="@string/audio_test_app_name"
         tools:replace="android:name,android:label">
         <activity android:name=".feature.setup.SetupActivity" tools:node="remove" />
+        <activity android:name=".feature.setup.AdvancedSettingsActivity" tools:node="remove" />
+        <activity android:name=".feature.recognition.RecognitionActivity" tools:node="remove" />
+        <service android:name=".feature.recognition.DictationRecognitionService" tools:node="remove" />
         <activity android:name=".feature.setup.MicrophonePermissionActivity" tools:node="remove" />
         <activity android:name=".feature.postprocessing.PostProcessingActivity" tools:node="remove" />
         <activity android:name=".feature.vocabulary.VocabularyActivity" tools:node="remove" />

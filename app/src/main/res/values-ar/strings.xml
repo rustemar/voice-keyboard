@@ -166,4 +166,20 @@
     <string name="update_consent_enable">تفعيل</string>
     <string name="update_consent_decline">إبقاؤه مُعطّلًا</string>
     <string name="update_source_disclosure">يُنزَّل ملف APK هذا من GitHub Releases. يأتي مباشرةً من المطوّر ولا يراجعه المتجر الذي ثبّتَ منه.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">إعدادات متقدمة</string>
+    <string name="recognition_apps">إدخال صوتي للتطبيقات الأخرى</string>
+    <string name="recognition_apps_hint">السماح للتطبيقات باستخدام خدمة الصوت ومفتاح API المحفوظين. يتطلب اتصال شبكة بخدمة الصوت. دون معالجة لاحقة أو سياق حديث.</string>
+    <string name="recognition_select">إعدادات الإدخال الصوتي في Android</string>
+    <string name="recognition_select_hint">اختر Voice Keyboard إذا كان Android يتيح اختيار خدمة التعرف على الكلام. يمكن للتطبيقات المتوافقة أيضًا فتح نافذة الإملاء دون تغيير الخدمة الافتراضية. قد تتجاهل التطبيقات التي تستخدم نظام التعرف الخاص بها هذا الاختيار.</string>
+    <string name="recognition_disabled">الإدخال الصوتي للتطبيقات مغلق. فعّله في الإعدادات المتقدمة.</string>
+    <string name="recognition_start">بدء الإملاء</string>
+    <string name="recognition_failed">فشل التعرف. تحقق من إعدادات خدمة الصوت.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">لوحة مفاتيح طرفية مدمجة</string>
+    <string name="terminal_compact_hint">استخدام لوحة أصغر عند تفعيل وضع الطرفية في المعالجة اللاحقة. يعرض زر التوسيع جميع المفاتيح.</string>
+    <string name="terminal_compact_expand">إظهار لوحة المفاتيح الكاملة</string>
+    <string name="recognition_setup">تعليمات الإعداد</string>
 </resources>

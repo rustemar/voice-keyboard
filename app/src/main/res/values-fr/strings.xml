@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Activer</string>
     <string name="update_consent_decline">Laisser désactivé</string>
     <string name="update_source_disclosure">Cet APK est téléchargé depuis GitHub Releases. Il vient directement du développeur et n\'est pas vérifié par la boutique depuis laquelle vous avez installé.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Paramètres avancés</string>
+    <string name="recognition_apps">Saisie vocale pour les autres applications</string>
+    <string name="recognition_apps_hint">Autoriser les applications à utiliser votre service vocal et votre clé API enregistrés. Une connexion réseau au service vocal est requise. Sans post-traitement ni contexte récent.</string>
+    <string name="recognition_select">Paramètres de saisie vocale Android</string>
+    <string name="recognition_select_hint">Choisissez Voice Keyboard si Android permet de sélectionner le service de reconnaissance vocale. Les applications compatibles peuvent aussi ouvrir sa fenêtre de dictée sans changer le service par défaut. Les applications avec leur propre reconnaissance peuvent ignorer ce choix.</string>
+    <string name="recognition_disabled">La saisie vocale pour les applications est désactivée. Activez-la dans les paramètres avancés.</string>
+    <string name="recognition_start">Commencer la dictée</string>
+    <string name="recognition_failed">Échec de la reconnaissance. Vérifiez les paramètres de votre service vocal.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Clavier compact pour terminal</string>
+    <string name="terminal_compact_hint">Utiliser un panneau réduit lorsque le mode Terminal est actif dans le post-traitement. Le bouton d’agrandissement affiche toutes les touches.</string>
+    <string name="terminal_compact_expand">Afficher le clavier complet</string>
+    <string name="recognition_setup">Instructions de configuration</string>
 </resources>

@@ -2,7 +2,7 @@
 
 **Voice Keyboard** is an Android keyboard (input method) that converts speech to text using third‑party transcription APIs. This document describes what data the app handles, where it goes, and what stays on your device.
 
-_Last updated: 2026‑10‑14_
+_Last updated: 2026‑10‑23_
 
 ## TL;DR
 
@@ -16,7 +16,7 @@ _Last updated: 2026‑10‑14_
 
 ### Audio
 
-When you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In password fields the microphone is off and auto-record does not start. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). The app does **not** keep audio after a successful transcription: recordings live briefly in the app's private cache directory and are deleted as soon as the text comes back. A recording that could **not** be transcribed is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after a successful send; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
+For keyboard dictation, when you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). The app does **not** keep audio after a successful transcription: recordings live briefly in the app's private cache directory and are deleted as soon as the text comes back. A recording that could **not** be transcribed is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after a successful send; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
 
 The app does **not** receive a copy of the audio after sending — handling and retention of submitted audio is governed by the policy of the provider you choose:
 
@@ -26,7 +26,7 @@ The app does **not** receive a copy of the audio after sending — handling and 
 
 ### Transcribed text
 
-The text returned by the transcription provider is inserted into the app you are typing in (as if you typed it yourself). If you enable a post‑processing mode (Fix, Shorten, Emoji, Rhyme, Translate, Terminal), the transcribed text is additionally sent to the post‑processing provider you selected using your own API key, and the cleaned‑up text replaces the original.
+For keyboard dictation, the text returned by the transcription provider is inserted into the app you are typing in (as if you typed it yourself). If you enable a post‑processing mode (Fix, Shorten, Emoji, Rhyme, Translate, Terminal), the transcribed text is additionally sent to the post‑processing provider you selected using your own API key, and the cleaned‑up text replaces the original.
 
 - Anthropic: <https://www.anthropic.com/legal/privacy>
 - OpenRouter: <https://openrouter.ai/privacy>
@@ -42,6 +42,14 @@ The app sends this additional text to your chosen post-processing provider with 
 
 The buffer is cleared when you switch apps, enter a password field or a field that requests no personalized learning, turn off context or post-processing, save a different post-processing provider or endpoint, or restart the app process. It also expires after 30 minutes of inactivity. The provider's own policy governs text already sent to it.
 
+### Voice input for other apps
+
+This separate integration is **off by default**. If you enable it in Advanced settings, compatible apps can request speech recognition using Android’s speech-recognition service or a visible dictation window. You choose the default recognition service in Android settings; some apps select a service themselves. The app sends each recording to your saved speech provider using your API key and returns the transcript to the requesting app. The device needs network access to your configured speech provider, including a local server if you use one.
+
+These requests do not use keyboard post-processing, custom vocabulary, recent dictations, clipboard delivery, or the keyboard’s saved-recording queue. Temporary audio is deleted on success, failure, cancellation or session teardown; it is not retained for later retry. A pause ends recording automatically, and capture and network operations have time limits. Cancelling stops local processing; audio already received by your provider remains subject to its policy.
+
+The service uses Android’s caller permissions and attribution checks. It receives a recognition request, not the requesting app’s focused field or chat history, so the keyboard’s password-field detection does not apply to this separate interface. On modern Android, microphone access is attributed to the requesting app through the platform API. Apps that use their own fixed recognition engine are outside this integration.
+
 ### API keys
 
 Your API keys are stored on your device using Android's `DataStore`, in the app's private storage. They are:
@@ -54,7 +62,7 @@ If you uninstall the app, the keys are deleted with it.
 
 ### Settings
 
-Your preferences (selected language, theme, post‑processing mode, prompt text, endpoint URLs, etc.) are stored locally in the same `DataStore` and are likewise excluded from cloud backup.
+Your preferences (selected language, theme, post‑processing mode, prompt text, endpoint URLs, etc.) are stored locally in `DataStore`; advanced opt-ins use private `SharedPreferences`. Both are excluded from cloud backup and device transfer.
 
 ### Diagnostic log
 
@@ -72,7 +80,7 @@ The pending crash file is deleted whether you choose to save it or not.
 
 | Permission | Purpose |
 |---|---|
-| `RECORD_AUDIO` | To capture your voice when you press the microphone button. Used only while the keyboard is visible and you have started a recording. |
+| `RECORD_AUDIO` | To capture speech for keyboard dictation, a settings test, or an explicitly enabled Android speech-recognition request. Recording ends when you finish or cancel; recognition sessions also stop after a pause or a bounded timeout. |
 | `INTERNET` | To send the recorded audio to the transcription provider you configured, and to send transcribed text to the post‑processing provider when you use that feature. |
 | `REQUEST_INSTALL_PACKAGES` | To let you install a newer version directly from inside the app. The app looks for one only if you switch the GitHub update check on (it is off by default) or press “Check for updates” yourself; it then offers to download and install a newer APK signed with the same key. You can also obtain updates entirely outside the app (e.g. via Obtainium, F‑Droid, or by downloading the APK from GitHub manually). |
 

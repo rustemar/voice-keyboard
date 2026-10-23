@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Włącz</string>
     <string name="update_consent_decline">Pozostaw wyłączone</string>
     <string name="update_source_disclosure">Ten plik APK jest pobierany z GitHub Releases. Pochodzi bezpośrednio od dewelopera i nie jest sprawdzany przez sklep, z którego zainstalowano aplikację.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Ustawienia zaawansowane</string>
+    <string name="recognition_apps">Wprowadzanie głosowe w innych aplikacjach</string>
+    <string name="recognition_apps_hint">Zezwól aplikacjom używać zapisanego dostawcy mowy i klucza API. Wymaga połączenia sieciowego z dostawcą mowy. Bez przetwarzania tekstu i ostatniego kontekstu.</string>
+    <string name="recognition_select">Ustawienia wprowadzania głosowego Androida</string>
+    <string name="recognition_select_hint">Wybierz Voice Keyboard, jeśli Android pozwala wybrać usługę rozpoznawania mowy. Zgodne aplikacje mogą też otwierać okno dyktowania bez zmiany usługi domyślnej. Aplikacje z własnym rozpoznawaniem mogą ignorować ten wybór.</string>
+    <string name="recognition_disabled">Wprowadzanie głosowe dla aplikacji jest wyłączone. Włącz je w ustawieniach zaawansowanych.</string>
+    <string name="recognition_start">Rozpocznij dyktowanie</string>
+    <string name="recognition_failed">Rozpoznawanie nie powiodło się. Sprawdź ustawienia dostawcy mowy.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Kompaktowa klawiatura terminala</string>
+    <string name="terminal_compact_hint">Używaj mniejszego panelu, gdy tryb terminala jest włączony w przetwarzaniu końcowym. Przycisk rozwijania pokazuje wszystkie klawisze.</string>
+    <string name="terminal_compact_expand">Pokaż pełną klawiaturę</string>
+    <string name="recognition_setup">Instrukcja konfiguracji</string>
 </resources>

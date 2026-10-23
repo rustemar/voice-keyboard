@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Включить</string>
     <string name="update_consent_decline">Оставить выключенной</string>
     <string name="update_source_disclosure">Этот APK загружается с GitHub Releases. Он приходит напрямую от разработчика и не проходит проверку магазина приложений, из которого вы установили приложение.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Расширенные настройки</string>
+    <string name="recognition_apps">Голосовой ввод для других приложений</string>
+    <string name="recognition_apps_hint">Разрешить приложениям использовать ваш сервис распознавания и сохранённый API-ключ. Нужен доступ к сервису распознавания по сети. Без постобработки и контекста.</string>
+    <string name="recognition_select">Настройки голосового ввода Android</string>
+    <string name="recognition_select_hint">Выберите Voice Keyboard, если Android позволяет выбрать службу распознавания речи. Совместимые приложения также могут открыть окно диктовки без смены службы по умолчанию. Приложения с собственным распознаванием могут игнорировать этот выбор.</string>
+    <string name="recognition_disabled">Голосовой ввод для приложений выключен. Включите его в расширенных настройках.</string>
+    <string name="recognition_start">Начать диктовку</string>
+    <string name="recognition_failed">Не удалось распознать речь. Проверьте настройки сервиса распознавания.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Компактная клавиатура терминала</string>
+    <string name="terminal_compact_hint">Уменьшать панель, когда в постобработке включён режим терминала. Кнопка раскрытия возвращает все клавиши.</string>
+    <string name="terminal_compact_expand">Показать полную клавиатуру</string>
+    <string name="recognition_setup">Инструкция по настройке</string>
 </resources>

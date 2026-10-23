@@ -21,11 +21,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
+import com.tyraen.voicekeyboard.core.config.AdvancedPreferences
 import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
@@ -54,6 +56,8 @@ class DictationInputMethod : InputMethodService() {
         if (name == LAYOUT_INFLATER_SERVICE) serviceInflater else super.getSystemService(name)
 
     private lateinit var panel: InputPanelController
+    private lateinit var compactTerminalPanel: CompactTerminalPanel
+    private val advancedPreferences by lazy { AdvancedPreferences(this) }
     private lateinit var orchestrator: InputOrchestrator
     private lateinit var keystrokes: KeystrokeDispatcher
     private var currentTheme: String = ""
@@ -86,7 +90,9 @@ class DictationInputMethod : InputMethodService() {
 
         currentTheme = ThemeManager.current(this)
         val themedContext = ThemeManager.applyToContext(this)
-        val view = LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null)
+        val fullPanel = LayoutInflater.from(themedContext).inflate(R.layout.input_panel, null) as ConstraintLayout
+        compactTerminalPanel = CompactTerminalPanel(fullPanel)
+        val view = compactTerminalPanel.root
         matchNavigationBarToPanel(themedContext)
 
         panel = InputPanelController(view)
@@ -530,6 +536,8 @@ class DictationInputMethod : InputMethodService() {
         if (show) {
             panel.showTerminalButton(orchestrator.isTerminalVisible())
             updateToggleUI()
+        } else {
+            refreshCompactTerminal()
         }
     }
 
@@ -541,5 +549,15 @@ class DictationInputMethod : InputMethodService() {
         panel.updateToggleAppearance(panel.btnPpRhyme, s.rhymeActive)
         panel.updateToggleAppearance(panel.btnPpTerminal, s.terminalActive)
         panel.updateTranslateToggle(s.translateActive, orchestrator.getTranslateLang())
+        refreshCompactTerminal()
+    }
+
+    private fun refreshCompactTerminal() {
+        compactTerminalPanel.updateOptions(
+            advancedPreferences.compactTerminal,
+            orchestrator.isPostProcessingEnabled(),
+            orchestrator.isTerminalVisible(),
+            orchestrator.toggles.terminalActive
+        )
     }
 }

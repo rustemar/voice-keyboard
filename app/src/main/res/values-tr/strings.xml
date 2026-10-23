@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Aç</string>
     <string name="update_consent_decline">Kapalı bırak</string>
     <string name="update_source_disclosure">Bu APK, GitHub Releases\'ten indirilir. Doğrudan geliştiriciden gelir ve kurulum yaptığınız mağaza tarafından incelenmez.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Gelişmiş ayarlar</string>
+    <string name="recognition_apps">Diğer uygulamalar için sesli giriş</string>
+    <string name="recognition_apps_hint">Uygulamaların kayıtlı konuşma sağlayıcınızı ve API anahtarınızı kullanmasına izin verin. Konuşma sağlayıcısına ağ bağlantısı gerekir. Son işleme ve son bağlam kullanılmaz.</string>
+    <string name="recognition_select">Android sesli giriş ayarları</string>
+    <string name="recognition_select_hint">Android konuşma tanıma hizmeti seçmeye izin veriyorsa Voice Keyboard seçin. Uyumlu uygulamalar varsayılan hizmeti değiştirmeden dikte penceresini de açabilir. Kendi tanıma sistemini kullanan uygulamalar bu seçimi yok sayabilir.</string>
+    <string name="recognition_disabled">Uygulamalar için sesli giriş kapalı. Gelişmiş ayarlardan açın.</string>
+    <string name="recognition_start">Dikteyi başlat</string>
+    <string name="recognition_failed">Tanıma başarısız. Konuşma sağlayıcınızın ayarlarını kontrol edin.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Kompakt terminal klavyesi</string>
+    <string name="terminal_compact_hint">Son işlemede Terminal modu açıkken daha küçük bir panel kullanın. Genişletme düğmesi tüm tuşları gösterir.</string>
+    <string name="terminal_compact_expand">Tam klavyeyi göster</string>
+    <string name="recognition_setup">Kurulum talimatları</string>
 </resources>

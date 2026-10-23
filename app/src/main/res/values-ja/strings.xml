@@ -166,4 +166,20 @@
     <string name="update_consent_enable">オンにする</string>
     <string name="update_consent_decline">オフのままにする</string>
     <string name="update_source_disclosure">この APK は GitHub Releases からダウンロードされます。開発者から直接届き、インストール元のストアの審査は受けていません。</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">詳細設定</string>
+    <string name="recognition_apps">他のアプリの音声入力</string>
+    <string name="recognition_apps_hint">保存した音声サービスと API キーを他のアプリで使用できます。音声サービスへのネットワーク接続が必要です。後処理や最近の文脈は使いません。</string>
+    <string name="recognition_select">Android の音声入力設定</string>
+    <string name="recognition_select_hint">Android で音声認識サービスを選択できる場合は、Voice Keyboard を選んでください。対応アプリは、既定のサービスを変更せずに音声入力ウィンドウを開くこともできます。独自の音声認識を使うアプリには、この選択が適用されない場合があります。</string>
+    <string name="recognition_disabled">他のアプリの音声入力は無効です。詳細設定で有効にしてください。</string>
+    <string name="recognition_start">音声入力を開始</string>
+    <string name="recognition_failed">認識に失敗しました。音声サービスの設定を確認してください。</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">ターミナル用コンパクトキーボード</string>
+    <string name="terminal_compact_hint">後処理でターミナルモードが有効な場合に、小さいパネルを使用します。展開ボタンですべてのキーを表示できます。</string>
+    <string name="terminal_compact_expand">フルキーボードを表示</string>
+    <string name="recognition_setup">設定手順</string>
 </resources>

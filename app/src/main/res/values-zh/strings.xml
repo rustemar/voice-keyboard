@@ -166,4 +166,20 @@
     <string name="update_consent_enable">开启</string>
     <string name="update_consent_decline">保持关闭</string>
     <string name="update_source_disclosure">此 APK 从 GitHub Releases 下载。它直接来自开发者，未经你安装所用商店的审核。</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">高级设置</string>
+    <string name="recognition_apps">为其他应用提供语音输入</string>
+    <string name="recognition_apps_hint">允许应用使用您保存的语音服务和 API 密钥。需要通过网络连接语音服务。不使用后处理或最近的上下文。</string>
+    <string name="recognition_select">Android 语音输入设置</string>
+    <string name="recognition_select_hint">如果 Android 提供语音识别服务选择，请选择 Voice Keyboard。兼容的应用也可以直接打开听写窗口，无需更改默认服务。使用自有语音识别的应用可能会忽略此选择。</string>
+    <string name="recognition_disabled">其他应用的语音输入已关闭。请在高级设置中启用。</string>
+    <string name="recognition_start">开始语音输入</string>
+    <string name="recognition_failed">识别失败。请检查语音服务设置。</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">终端紧凑键盘</string>
+    <string name="terminal_compact_hint">在后处理的终端模式开启时使用较小面板。点击展开按钮可显示全部按键。</string>
+    <string name="terminal_compact_expand">显示完整键盘</string>
+    <string name="recognition_setup">设置说明</string>
 </resources>

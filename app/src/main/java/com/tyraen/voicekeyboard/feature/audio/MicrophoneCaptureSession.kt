@@ -35,6 +35,7 @@ class MicrophoneCaptureSession(private val context: Context) {
     }
 
     private var recorder: MediaRecorder? = null
+    private var microphoneLease: MicrophoneGate.Lease? = null
     private var levelMonitor: Job? = null
     private val scope = MainScope()
     private var startedAtMs: Long = 0
@@ -64,15 +65,17 @@ class MicrophoneCaptureSession(private val context: Context) {
         // storage permission can read the external one.
         val dir = context.cacheDir
         val file = File(dir, "recording_${fileSeq.getAndIncrement()}.$extension")
+        val lease = MicrophoneGate.shared.acquire() ?: return false
 
-        val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            MediaRecorder(context)
-        } else {
-            @Suppress("DEPRECATION")
-            MediaRecorder()
-        }
-
+        var candidate: MediaRecorder? = null
         try {
+            val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                MediaRecorder(context)
+            } else {
+                @Suppress("DEPRECATION")
+                MediaRecorder()
+            }
+            candidate = mr
             mr.apply {
                 setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION)
                 if (useOpus) {
@@ -93,13 +96,16 @@ class MicrophoneCaptureSession(private val context: Context) {
             }
         } catch (e: Exception) {
             DiagnosticLog.recordFailure(TAG, "Microphone unavailable", e)
-            runCatching { mr.reset() }
-            runCatching { mr.release() }
+            runCatching { candidate?.reset() }
+            runCatching { candidate?.release() }
+            lease.close()
             file.delete()
             return false
         }
 
+        val mr = checkNotNull(candidate)
         recorder = mr
+        microphoneLease = lease
         capturedFile = file
         startedAtMs = System.currentTimeMillis()
         lastDurationMs = 0
@@ -144,6 +150,8 @@ class MicrophoneCaptureSession(private val context: Context) {
             false
         }
         runCatching { mr.release() }
+        microphoneLease?.close()
+        microphoneLease = null
 
         val usable = stopped && lastDurationMs >= MIN_CAPTURE_MS &&
             file != null && file.exists() && file.length() > 0L
@@ -166,6 +174,8 @@ class MicrophoneCaptureSession(private val context: Context) {
             runCatching { mr.release() }
         }
         recorder = null
+        microphoneLease?.close()
+        microphoneLease = null
         capturedFile?.delete()
         capturedFile = null
     }

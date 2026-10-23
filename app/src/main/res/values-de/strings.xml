@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Einschalten</string>
     <string name="update_consent_decline">Aus lassen</string>
     <string name="update_source_disclosure">Dieses APK wird von GitHub Releases geladen. Es kommt direkt vom Entwickler und wird nicht von dem App-Store geprüft, über den Sie installiert haben.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Erweiterte Einstellungen</string>
+    <string name="recognition_apps">Spracheingabe für andere Apps</string>
+    <string name="recognition_apps_hint">Apps dürfen Ihren gespeicherten Sprachanbieter und API-Schlüssel verwenden. Eine Netzwerkverbindung zum Sprachanbieter ist erforderlich. Keine Nachbearbeitung und kein Verlaufskontext.</string>
+    <string name="recognition_select">Android-Einstellungen für die Spracheingabe</string>
+    <string name="recognition_select_hint">Wähle Voice Keyboard, wenn Android eine Auswahl des Spracherkennungsdienstes anbietet. Kompatible Apps können auch das Diktierfenster öffnen, ohne den Standarddienst zu ändern. Apps mit eigener Spracherkennung können diese Auswahl ignorieren.</string>
+    <string name="recognition_disabled">Spracheingabe für andere Apps ist aus. Aktivieren Sie sie in den erweiterten Einstellungen.</string>
+    <string name="recognition_start">Diktat starten</string>
+    <string name="recognition_failed">Erkennung fehlgeschlagen. Prüfen Sie die Einstellungen Ihres Sprachanbieters.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Kompakte Terminaltastatur</string>
+    <string name="terminal_compact_hint">Kleines Bedienfeld verwenden, wenn der Terminalmodus in der Nachbearbeitung aktiv ist. Die Schaltfläche zum Vergrößern zeigt alle Tasten.</string>
+    <string name="terminal_compact_expand">Vollständige Tastatur anzeigen</string>
+    <string name="recognition_setup">Anleitung zur Einrichtung</string>
 </resources>

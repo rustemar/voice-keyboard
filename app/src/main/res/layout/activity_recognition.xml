@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:gravity="center"
+    android:padding="24dp" android:background="@color/keyboard_bg">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/app_name" android:textColor="@color/text_primary"
+        android:textSize="24sp" android:textStyle="bold" android:gravity="center" />
+    <TextView android:id="@+id/recognitionStatus" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="@string/recognition_start"
+        android:textSize="18sp" android:textColor="@color/text_primary"
+        android:gravity="center" android:accessibilityLiveRegion="polite"
+        android:layout_marginTop="24dp" android:layout_marginBottom="16dp" />
+    <ProgressBar android:id="@+id/recognitionProgress" android:layout_width="48dp"
+        android:layout_height="48dp" android:visibility="gone" />
+    <Button android:id="@+id/btnRecognitionStartStop" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:minHeight="56dp"
+        android:text="@string/recognition_start" android:textColor="@color/white"
+        android:backgroundTint="@color/mic_idle" />
+    <Button android:id="@+id/btnRecognitionCancel" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:minHeight="48dp"
+        android:text="@android:string/cancel" android:textColor="@color/text_primary"
+        android:backgroundTint="@color/key_bg" />
+    <Button android:id="@+id/btnRecognitionAdvanced" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:minHeight="48dp"
+        android:text="@string/settings_advanced" android:textColor="@color/text_primary"
+        android:backgroundTint="@color/key_bg" />
+</LinearLayout>

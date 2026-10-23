@@ -166,4 +166,20 @@
     <string name="update_consent_enable">켜기</string>
     <string name="update_consent_decline">끈 상태로 두기</string>
     <string name="update_source_disclosure">이 APK는 GitHub Releases에서 다운로드됩니다. 개발자에게서 바로 오며, 설치한 스토어의 검토를 거치지 않습니다.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">고급 설정</string>
+    <string name="recognition_apps">다른 앱의 음성 입력</string>
+    <string name="recognition_apps_hint">앱에서 저장된 음성 서비스와 API 키를 사용하도록 허용합니다. 음성 서비스에 연결할 네트워크가 필요하며 후처리와 최근 문맥은 사용하지 않습니다.</string>
+    <string name="recognition_select">Android 음성 입력 설정</string>
+    <string name="recognition_select_hint">Android에서 음성 인식 서비스를 선택할 수 있다면 Voice Keyboard를 선택하세요. 호환 앱은 기본 서비스를 바꾸지 않고도 받아쓰기 창을 열 수 있습니다. 자체 음성 인식을 사용하는 앱은 이 선택을 무시할 수 있습니다.</string>
+    <string name="recognition_disabled">다른 앱의 음성 입력이 꺼져 있습니다. 고급 설정에서 켜세요.</string>
+    <string name="recognition_start">음성 입력 시작</string>
+    <string name="recognition_failed">인식하지 못했습니다. 음성 서비스 설정을 확인하세요.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">터미널용 간소화 키보드</string>
+    <string name="terminal_compact_hint">후처리에서 터미널 모드가 켜져 있을 때 작은 패널을 사용합니다. 확장 버튼으로 모든 키를 표시할 수 있습니다.</string>
+    <string name="terminal_compact_expand">전체 키보드 표시</string>
+    <string name="recognition_setup">설정 안내</string>
 </resources>

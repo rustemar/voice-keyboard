@@ -176,4 +176,20 @@
     <string name="crash_save_failed">Could not save the report</string>
     <string name="preset_label">Provider preset</string>
     <string name="preset_custom">Custom</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Advanced settings</string>
+    <string name="recognition_apps">Voice input for other apps</string>
+    <string name="recognition_apps_hint">Allow apps to use your saved speech provider and API key. Needs a network connection to the speech provider. No post-processing or recent context.</string>
+    <string name="recognition_select">Android voice input settings</string>
+    <string name="recognition_select_hint">Choose Voice Keyboard if Android offers a speech-service selector. Compatible apps can also open its dictation window without changing the default service. Apps with their own recognizer may ignore this choice.</string>
+    <string name="recognition_disabled">Voice input for other apps is off. Enable it in Advanced settings.</string>
+    <string name="recognition_start">Start dictation</string>
+    <string name="recognition_failed">Recognition failed. Check your speech provider settings.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Compact terminal keyboard</string>
+    <string name="terminal_compact_hint">Use a smaller panel while Terminal mode is enabled in post-processing. The expand button shows all keyboard controls.</string>
+    <string name="terminal_compact_expand">Show full keyboard</string>
+    <string name="recognition_setup">Setup instructions</string>
 </resources>

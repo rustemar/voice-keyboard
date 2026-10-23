@@ -166,4 +166,20 @@
     <string name="update_consent_enable">Ota käyttöön</string>
     <string name="update_consent_decline">Jätä pois päältä</string>
     <string name="update_source_disclosure">Tämä APK ladataan GitHub Releasesista. Se tulee suoraan kehittäjältä, eikä sitä tarkasta kauppa, josta asensit.</string>
+
+    <!-- Optional Android speech integration -->
+    <string name="settings_advanced">Lisäasetukset</string>
+    <string name="recognition_apps">Puheensyöttö muille sovelluksille</string>
+    <string name="recognition_apps_hint">Salli sovellusten käyttää tallennettua puhepalvelua ja API-avainta. Vaatii verkkoyhteyden puhepalveluun. Ei jälkikäsittelyä tai viimeaikaista kontekstia.</string>
+    <string name="recognition_select">Androidin puhesyötön asetukset</string>
+    <string name="recognition_select_hint">Valitse Voice Keyboard, jos Android tarjoaa puheentunnistuspalvelun valinnan. Yhteensopivat sovellukset voivat myös avata saneluikkunan vaihtamatta oletuspalvelua. Omaa puheentunnistusta käyttävät sovellukset voivat ohittaa tämän valinnan.</string>
+    <string name="recognition_disabled">Sovellusten puheensyöttö on pois käytöstä. Ota se käyttöön lisäasetuksissa.</string>
+    <string name="recognition_start">Aloita sanelu</string>
+    <string name="recognition_failed">Tunnistus epäonnistui. Tarkista puhepalvelun asetukset.</string>
+
+    <!-- Optional compact terminal panel -->
+    <string name="terminal_compact_show">Kompakti päätenäppäimistö</string>
+    <string name="terminal_compact_hint">Käytä pienempää paneelia, kun jälkikäsittelyn päätetila on käytössä. Laajennuspainike näyttää kaikki näppäimet.</string>
+    <string name="terminal_compact_expand">Näytä koko näppäimistö</string>
+    <string name="recognition_setup">Määritysohjeet</string>
 </resources>

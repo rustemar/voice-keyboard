@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Before Android 12 SpeechRecognizer binds as the app itself, not a system broker. -->
+    <string name="recognition_bind_permission" translatable="false">android.permission.RECORD_AUDIO</string>
+</resources>

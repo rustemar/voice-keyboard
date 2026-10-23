@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recognition_bind_permission" translatable="false">android.permission.BIND_SPEECH_RECOGNITION_SERVICE</string>
+</resources>

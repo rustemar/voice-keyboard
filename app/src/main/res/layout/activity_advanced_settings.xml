@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/keyboard_bg">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_advanced" android:textColor="@color/text_primary"
+            android:textSize="24sp" android:textStyle="bold" android:layout_marginBottom="24dp" />
+        <Switch android:id="@+id/switchRecognitionApps" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:minHeight="48dp"
+            android:text="@string/recognition_apps" android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color" android:trackTint="@color/switch_track_color" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/recognition_apps_hint" android:textColor="@color/status_text"
+            android:textSize="14sp" android:layout_marginTop="8dp" android:layout_marginBottom="16dp" />
+        <Button android:id="@+id/btnRecognitionSettings" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:minHeight="48dp"
+            android:text="@string/recognition_select" android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/recognition_select_hint" android:textColor="@color/status_text"
+            android:textSize="14sp" android:layout_marginTop="8dp" android:layout_marginBottom="24dp" />
+        <Button android:id="@+id/btnRecognitionGuide" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:minHeight="48dp"
+            android:text="@string/recognition_setup" android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg" android:layout_marginBottom="24dp" />
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="@color/divider" android:layout_marginBottom="16dp" />
+        <Switch android:id="@+id/switchCompactTerminal" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:minHeight="48dp"
+            android:text="@string/terminal_compact_show" android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color" android:trackTint="@color/switch_track_color" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/terminal_compact_hint" android:textColor="@color/status_text"
+            android:textSize="14sp" android:layout_marginTop="8dp" />
+    </LinearLayout>
+</ScrollView>
