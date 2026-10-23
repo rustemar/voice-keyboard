@@ -16,8 +16,8 @@ class MicrophoneCaptureSession(private val context: Context) {
 
         /**
          * Opus, 48 kHz mono. Reduced from 200 kbps in v1.9.0 to make uploads smaller.
-         * Whisper's 16 kHz inference rate does not establish equal recognition accuracy at
-         * different lossy encoding bitrates; 64 vs 200 kbps has not been A/B-tested here.
+         * Whisper's 16 kHz inference rate alone does not establish equal recognition accuracy
+         * at different lossy encoding bitrates.
          */
         private const val OPUS_BITRATE = 64_000
 
