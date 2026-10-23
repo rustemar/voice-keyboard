@@ -64,6 +64,16 @@ android {
             )
         }
     }
+    buildTypes.create("audioTest") {
+        initWith(buildTypes.getByName("release"))
+        applicationIdSuffix = ".audiotest"
+        versionNameSuffix = "-audio-test.1"
+        matchingFallbacks += listOf("release")
+        // Installs beside the keyboard. CI uses the developer key; local builds without
+        // release credentials use the debug key and cannot replace the published test APK.
+        signingConfig = signingConfigs.findByName("release")?.takeIf { it.storeFile != null }
+            ?: signingConfigs.getByName("debug")
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -90,6 +100,7 @@ dependencies {
     // org.json is part of the Android platform but stubbed in JVM unit tests; bring the real impl
     // so we can test parked-recording (de)serialization off-device.
     testImplementation("org.json:json:20240303")
+    add("testAudioTestImplementation", "com.squareup.okhttp3:mockwebserver:4.12.0")
 }
 
 // StringResourcesTest reads res/values*/strings.xml directly. Declare them as a test input, or an

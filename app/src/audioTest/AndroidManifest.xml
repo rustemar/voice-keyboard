@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
+    <queries tools:node="remove" />
+    <application android:name="android.app.Application" android:label="@string/audio_test_app_name"
+        tools:replace="android:name,android:label">
+        <activity android:name=".feature.setup.SetupActivity" tools:node="remove" />
+        <activity android:name=".feature.setup.MicrophonePermissionActivity" tools:node="remove" />
+        <activity android:name=".feature.postprocessing.PostProcessingActivity" tools:node="remove" />
+        <activity android:name=".feature.vocabulary.VocabularyActivity" tools:node="remove" />
+        <service android:name=".feature.ime.DictationInputMethod" tools:node="remove" />
+        <provider android:name="androidx.core.content.FileProvider" tools:node="remove" />
+        <activity android:name=".feature.audio.diagnostics.AudioComparisonActivity"
+            android:exported="true" android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/audio_test_app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
