@@ -95,6 +95,7 @@ class AudioComparisonActivity : AppCompatActivity() {
         }
         cancel = panel.button(R.string.audio_test_cancel) { cancelWork(); message(R.string.audio_test_cancelled) }
         status = panel.label("")
+        export = panel.button(R.string.audio_test_export) { saveZip.launch("voice-audio-comparison.zip") }
         panel.label(getString(R.string.audio_test_settings), 18f, true)
         endpoint = panel.field(R.string.audio_test_endpoint, "https://api.groq.com/openai/v1/audio/transcriptions")
         model = panel.field(R.string.audio_test_model, "whisper-large-v3-turbo")
@@ -109,7 +110,6 @@ class AudioComparisonActivity : AppCompatActivity() {
         panel.button(R.string.audio_test_use_sample) { reference.setText(getString(R.string.audio_test_sample)) }
         panel.label(getString(R.string.audio_test_network_notice))
         recognize = panel.button(R.string.audio_test_recognize) { recognizeVariants() }
-        export = panel.button(R.string.audio_test_export) { saveZip.launch("voice-audio-comparison.zip") }
         panel.label(getString(R.string.audio_test_results), 18f, true)
         output = panel.label("").apply { typeface = Typeface.MONOSPACE; setTextIsSelectable(true) }
         panel.label(getString(R.string.audio_test_scope))

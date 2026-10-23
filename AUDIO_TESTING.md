@@ -21,7 +21,9 @@ to each test download.
    you leave the app during capture.
 3. Inspect the available WAV, Opus 64/128/200 kbps and AAC 128 kbps
    variants. Recording and **Save audio and report ZIP** need no API key.
-4. To compare recognition, enter your own key and check the endpoint,
+   You can send this ZIP for comparison without entering a key in the
+   app. The following recognition steps are optional.
+4. To compare recognition in the app, enter your own key and check the endpoint,
    model and language. The default is Groq `whisper-large-v3-turbo`.
    The key stays in memory and must be entered again after closing.
 5. Optionally add the text you actually read as the reference. The
