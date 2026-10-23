@@ -1,6 +1,8 @@
 package com.tyraen.voicekeyboard.feature.transcription
 
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingResponseParser
+import com.tyraen.voicekeyboard.core.network.awaitResponse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -41,7 +43,7 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                     .post(body)
                     .build()
 
-                http.newCall(request).execute().use { response ->
+                http.newCall(request).awaitResponse { response ->
                     val responseBody = response.body?.string()?.trim() ?: ""
 
                     // The provider's own message tells a retired or mistyped model apart from a
@@ -64,6 +66,8 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
             } finally {
                 tempFile.delete()
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: java.net.UnknownHostException) {
             Result.failure(Exception("Cannot reach server. Check internet connection and endpoint URL."))
         } catch (e: java.net.SocketTimeoutException) {
@@ -101,7 +105,7 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                 .post(body)
                 .build()
 
-            http.newCall(request).execute().use { response ->
+            http.newCall(request).awaitResponse { response ->
                 val responseBody = response.body?.string()?.trim() ?: ""
 
                 if (response.isSuccessful) {
@@ -117,6 +121,8 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
                     Result.failure(Exception("API error ${response.code}: $responseBody"))
                 }
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }

@@ -15,6 +15,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 ### Voice Input
 - Real-time voice recording with amplitude visualization
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
+- **Cancel the latest dictation** (unreleased) — the × button stays available during recognition and post-processing. It cancels only the newest unfinished recording, including one waiting to be resent; earlier recordings continue.
 - **Offline-proof recovery** — recordings that can't be transcribed are saved on the device and resent automatically as soon as a validated internet connection returns; they survive closing the keyboard, app rebuilds, and reboots, and are kept until successfully sent (a "resend" button is also available to force a retry)
 - Works with OpenAI-compatible `/audio/transcriptions` and `/chat/completions` audio APIs; ships with Groq as the default (whisper-large-v3-turbo). Free keys are available from both Groq and Mistral
 - **Your own server** — a speech server on your home network works too, over plain `http://` if need be; the settings warn that such an address is not encrypted

@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">Praktisch für Sprachsuche in Kontakten und andere kurze Abfragen.</string>
     <string name="pp_rhyme">Reim</string>
     <string name="cd_backspace">Löschen</string>
-    <string name="cd_cancel">Abbrechen</string>
+    <string name="cd_cancel">Letztes Diktat abbrechen</string>
     <string name="cd_cut_all">Gesamten Text ausschneiden</string>
     <string name="cd_enter">Eingabe</string>
     <string name="cd_action_go">Los</string>

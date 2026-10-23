@@ -118,6 +118,7 @@ class DictationInputMethod : InputMethodService() {
             },
             onProcessingPhaseChanged = { phase -> panel.updateProcessingPhase(phase) },
             onFailedCountChanged = { count -> panel.updateFailedCount(count) },
+            onCancellableWorkChanged = { available -> panel.updateCancellableWork(available) },
             onPreferencesLoaded = {
                 refreshPostProcessingUI()
                 refreshLanguageKey()

@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">Удобно для голосового поиска по контактам и других коротких запросов.</string>
     <string name="pp_rhyme">Рифма</string>
     <string name="cd_backspace">Удалить</string>
-    <string name="cd_cancel">Отмена</string>
+    <string name="cd_cancel">Отменить последнюю диктовку</string>
     <string name="cd_cut_all">Вырезать весь текст</string>
     <string name="cd_enter">Ввод</string>
     <string name="cd_action_go">Перейти</string>

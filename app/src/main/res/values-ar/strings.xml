@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">مفيد للبحث الصوتي في جهات الاتصال والاستعلامات القصيرة الأخرى.</string>
     <string name="pp_rhyme">قافية</string>
     <string name="cd_backspace">حذف</string>
-    <string name="cd_cancel">إلغاء</string>
+    <string name="cd_cancel">إلغاء آخر إملاء</string>
     <string name="cd_cut_all">قص كل النص</string>
     <string name="cd_enter">إدخال</string>
     <string name="cd_action_go">انتقال</string>

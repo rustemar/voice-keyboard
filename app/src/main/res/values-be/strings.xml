@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">Зручна для галасавога пошуку па кантактах і іншых кароткіх запытах.</string>
     <string name="pp_rhyme">Рыфма</string>
     <string name="cd_backspace">Выдаліць</string>
-    <string name="cd_cancel">Скасаваць</string>
+    <string name="cd_cancel">Скасаваць апошнюю дыктоўку</string>
     <string name="cd_cut_all">Выразаць увесь тэкст</string>
     <string name="cd_enter">Увод</string>
     <string name="cd_action_go">Перайсці</string>

@@ -1,5 +1,7 @@
 package com.tyraen.voicekeyboard.feature.transcription
 
+import com.tyraen.voicekeyboard.core.network.awaitResponse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -81,23 +83,31 @@ class ChatCompletionsSpeechClient(private val http: OkHttpClient) : SpeechToText
 
     override suspend fun validateCredentials(apiKey: String, endpoint: String, model: String, cacheDir: File): Result<String> =
         withContext(Dispatchers.IO) {
-            runCatching {
+            try {
                 require(apiKey.isNotBlank()) { "API key is empty" }
                 post(SilentWavGenerator.generate(), "wav", TranscriptionConfig(apiKey, endpoint, model, "", ""))
-                "WAV probe passed. Use Test Recording below to check OGG/Opus or M4A/AAC support."
+                Result.success("WAV probe passed. Use Test Recording below to check OGG/Opus or M4A/AAC support.")
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Result.failure(e)
             }
         }
 
     override suspend fun transcribe(audioFile: File, config: TranscriptionConfig): Result<String> =
         withContext(Dispatchers.IO) {
-            runCatching {
+            try {
                 require(audioFile.isFile && audioFile.length() > 0) { "Audio file is empty or missing" }
                 require(audioFile.length() <= MAX_AUDIO_BYTES) { "Chat audio is too large; use /audio/transcriptions" }
-                post(audioFile.readBytes(), audioFormat(audioFile), config)
+                Result.success(post(audioFile.readBytes(), audioFormat(audioFile), config))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Result.failure(e)
             }
         }
 
-    private fun post(bytes: ByteArray, format: String, config: TranscriptionConfig): String {
+    private suspend fun post(bytes: ByteArray, format: String, config: TranscriptionConfig): String {
         val body = requestBody(config.model, bytes.toByteString().base64(), format, config.language, config.prompt)
         val request = Request.Builder()
             .url(config.endpoint)
@@ -105,7 +115,7 @@ class ChatCompletionsSpeechClient(private val http: OkHttpClient) : SpeechToText
             .post(body.toString().toRequestBody("application/json".toMediaType()))
             .build()
 
-        return http.newCall(request).execute().use { response ->
+        return http.newCall(request).awaitResponse { response ->
             val text = response.body?.string().orEmpty()
             if (!response.isSuccessful) throw IOException("API error ${response.code}: ${text.take(500)}")
             responseText(text)

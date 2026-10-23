@@ -2,6 +2,8 @@ package com.tyraen.voicekeyboard.feature.postprocessing
 
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.core.network.awaitResponse
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -65,6 +67,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             }
             DiagnosticLog.record(TAG, "Success: ${result.take(50)}")
             Result.success(result)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             DiagnosticLog.recordFailure(TAG, "Failed", e)
             Result.failure(e)
@@ -78,6 +82,8 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             callOpenAIOrClaude("Reply with exactly: OK", prefs, maxTokens = 50)
             DiagnosticLog.record(TAG, "Validation success")
             Result.success("API key is valid.")
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: ApiException) {
             DiagnosticLog.recordFailure(TAG, "Validation failed", e)
             if (e.statusCode == 429) {
@@ -91,7 +97,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         }
     }
 
-    private fun callOpenAIOrClaude(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
+    private suspend fun callOpenAIOrClaude(prompt: String, prefs: PostProcessingPreferences, maxTokens: Int): String {
         return when (prefs.provider) {
             PostProcessingPreferences.PROVIDER_CLAUDE -> callClaude(systemInstruction = null, userText = prompt, prefs = prefs, maxTokens = maxTokens)
             // No token cap here: OpenAI's reasoning models reject max_tokens outright, and the
@@ -100,7 +106,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         }
     }
 
-    private fun callOpenAI(
+    private suspend fun callOpenAI(
         systemInstruction: String?,
         userText: String,
         prefs: PostProcessingPreferences,
@@ -140,20 +146,20 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         return PostProcessingResponseParser.openAiText(responseBody)
     }
 
-    private fun postOpenAI(prefs: PostProcessingPreferences, body: JSONObject): Pair<Int, String> {
+    private suspend fun postOpenAI(prefs: PostProcessingPreferences, body: JSONObject): Pair<Int, String> {
         val request = Request.Builder()
             .url(prefs.resolvedEndpoint())
             .addHeader("Authorization", "Bearer ${prefs.apiKey}")
             .addHeader("Content-Type", "application/json")
             .post(body.toString().toRequestBody("application/json".toMediaType()))
             .build()
-        return httpClient.newCall(request).execute().use { response ->
+        return httpClient.newCall(request).awaitResponse { response ->
             val text = response.body?.string() ?: throw Exception("Empty response")
             response.code to text
         }
     }
 
-    private fun callClaude(
+    private suspend fun callClaude(
         systemInstruction: String?,
         userText: String,
         prefs: PostProcessingPreferences,
@@ -190,7 +196,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
         return PostProcessingResponseParser.claudeText(responseBody)
     }
 
-    private fun postClaude(prefs: PostProcessingPreferences, body: JSONObject): Pair<Int, String> {
+    private suspend fun postClaude(prefs: PostProcessingPreferences, body: JSONObject): Pair<Int, String> {
         val request = Request.Builder()
             .url(prefs.resolvedEndpoint())
             .addHeader("x-api-key", prefs.apiKey)
@@ -198,7 +204,7 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
             .addHeader("Content-Type", "application/json")
             .post(body.toString().toRequestBody("application/json".toMediaType()))
             .build()
-        return httpClient.newCall(request).execute().use { response ->
+        return httpClient.newCall(request).awaitResponse { response ->
             val text = response.body?.string() ?: throw Exception("Empty response")
             response.code to text
         }

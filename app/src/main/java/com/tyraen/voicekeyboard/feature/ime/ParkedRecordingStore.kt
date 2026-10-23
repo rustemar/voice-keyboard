@@ -2,6 +2,7 @@ package com.tyraen.voicekeyboard.feature.ime
 
 import android.content.Context
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,18 @@ import java.util.concurrent.atomic.AtomicLong
  * IME main thread, the connectivity callback thread, and IO can interleave safely without locks.
  * Only [count] (a thread-safe StateFlow) and [isLoaded] (volatile) are read from other threads.
  */
-class ParkedRecordingStore(context: Context) {
+class ParkedRecordingStore internal constructor(
+    private val dir: File,
+    private val dispatcher: CoroutineDispatcher
+) {
+    constructor(context: Context) : this(
+        File(context.filesDir, DIR_NAME),
+        Executors.newSingleThreadExecutor { r ->
+            Thread(r, "parked-store").apply { isDaemon = true }
+        }.asCoroutineDispatcher()
+    )
+
+    init { dir.mkdirs() }
 
     companion object {
         private const val TAG = "ParkedStore"
@@ -30,20 +42,21 @@ class ParkedRecordingStore(context: Context) {
         private val seq = AtomicLong(0)
     }
 
-    private val dir = File(context.filesDir, DIR_NAME).apply { mkdirs() }
-    private val dispatcher = Executors.newSingleThreadExecutor { r ->
-        Thread(r, "parked-store").apply { isDaemon = true }
-    }.asCoroutineDispatcher()
 
     // --- confined to [dispatcher] ---
     private val items = ArrayList<ParkedRecording>()
     private val inFlight = HashSet<String>()
     private var loaded = false
+    private val cancelledWork = HashSet<String>()
     // ---
 
     private val _count = MutableStateFlow(0)
     /** Total parked recordings (any state). Drives the resend badge; survives view rebuilds. */
     val count: StateFlow<Int> = _count
+
+    private val _recordings = MutableStateFlow<List<ParkedRecording>>(emptyList())
+    /** Immutable published snapshot, including claimed items, for single-item queue controls. */
+    val recordings: StateFlow<List<ParkedRecording>> = _recordings
 
     @Volatile private var loadPublished = false
     /** Thread-safe read-only signal that the initial load has published its results. */
@@ -63,6 +76,11 @@ class ParkedRecordingStore(context: Context) {
                 sidecar.delete() // unparseable sidecar — drop it
                 continue
             }
+            if (rec.state == ParkedRecording.State.CANCELLED) {
+                cancelledWork.add(rec.workId)
+                deleteRecording(rec)
+                continue
+            }
             if (!File(rec.audioPath).exists()) {
                 sidecar.delete() // audio gone — nothing left to retry
                 continue
@@ -74,6 +92,7 @@ class ParkedRecordingStore(context: Context) {
                 else rec.copy(state = ParkedRecording.State.WAITING_NETWORK)
             )
         }
+        items.sortWith(compareBy<ParkedRecording> { it.createdAt }.thenBy { it.id })
         // Note: orphan audio with no sidecar is intentionally left untouched — we can't reconstruct
         // its config, but deleting it is exactly the data loss we are preventing.
         publish()
@@ -105,6 +124,10 @@ class ParkedRecordingStore(context: Context) {
         attemptCount: Int
     ): ParkedRecording? = withContext(dispatcher) {
         loadIfNeeded()
+        if (item.workId in cancelledWork) {
+            source.delete()
+            return@withContext null
+        }
         if (!source.exists()) {
             DiagnosticLog.record(TAG, "park: source missing ${source.name}")
             return@withContext null
@@ -163,6 +186,28 @@ class ParkedRecordingStore(context: Context) {
         inFlight.remove(id)
         publish()
         DiagnosticLog.record(TAG, "Done $id total=${items.size}")
+    }
+
+    /**
+     * Cancel exactly one capture identity. Serialized with park/claim/update: a late park cannot
+     * recreate a cancelled item. Persist the marker before deleting so restart cannot retry it.
+     */
+    suspend fun cancel(workId: String) = withContext(dispatcher) {
+        loadIfNeeded()
+        cancelledWork.add(workId)
+        val doomed = items.filter { it.workId == workId }
+        for (rec in doomed) {
+            writeSidecar(rec.copy(state = ParkedRecording.State.CANCELLED))
+            items.remove(rec)
+            inFlight.remove(rec.id)
+            deleteRecording(rec)
+        }
+        if (doomed.isNotEmpty()) publish()
+    }
+
+    private fun deleteRecording(rec: ParkedRecording) {
+        val audio = File(rec.audioPath)
+        if (!audio.exists() || audio.delete()) File(dir, sidecarName(rec.id)).delete()
     }
 
     /** Manual resend: give every NEEDS_ATTENTION item another chance (user likely fixed the key). */
@@ -225,6 +270,7 @@ class ParkedRecordingStore(context: Context) {
     }
 
     private fun publish() {
+        _recordings.value = items.toList()
         _count.value = items.size
     }
 }

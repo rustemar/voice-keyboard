@@ -30,7 +30,10 @@ data class ParkedRecording(
     val prompt: String,
     val recordingDurationMs: Long,
     val pp: Pp?,
-    val flags: Flags
+    val flags: Flags,
+    /** Stable capture identity/order; retrying is not a new dictation. */
+    val workId: String = id,
+    val createdAt: Long = legacyCreatedAt(id)
 ) {
     enum class State {
         /** Transient failure — keep auto-retrying whenever the network is available. */
@@ -39,7 +42,10 @@ data class ParkedRecording(
         /** Permanent failure (bad/missing API key, 4xx other than 408 and a rate-limit 429). Stop
          *  auto-retrying; wait for the user to fix settings and tap resend, which promotes it back
          *  to [WAITING_NETWORK]. */
-        NEEDS_ATTENTION
+        NEEDS_ATTENTION,
+
+        /** Durable cancellation marker: never retry, even if deletion is interrupted. */
+        CANCELLED
     }
 
     /** Non-secret post-processing config snapshot. */
@@ -72,6 +78,8 @@ data class ParkedRecording(
         o.put("audioPath", audioPath)
         o.put("state", state.name)
         o.put("attemptCount", attemptCount)
+        o.put("workId", workId)
+        o.put("createdAt", createdAt)
         o.put("addTrailingSpace", addTrailingSpace)
         o.put("singleWordStripPunctuation", singleWordStripPunctuation)
         o.put("vocabulary", vocabulary)
@@ -147,11 +155,16 @@ data class ParkedRecording(
             ppRhyme = flags.rhyme,
             ppTranslate = flags.translate,
             ppTerminal = flags.terminal,
-            parkedId = id
+            parkedId = id,
+            workId = workId,
+            createdAt = createdAt
         )
     }
 
     companion object {
+        private fun legacyCreatedAt(id: String): Long =
+            id.removePrefix("parked_").substringBefore('_').toLongOrNull() ?: 0L
+
         fun fromJson(text: String): ParkedRecording? = try {
             val o = JSONObject(text)
             val ppObj = o.optJSONObject("pp")
@@ -176,6 +189,8 @@ data class ParkedRecording(
                 audioPath = o.getString("audioPath"),
                 state = runCatching { State.valueOf(o.optString("state")) }.getOrDefault(State.WAITING_NETWORK),
                 attemptCount = o.optInt("attemptCount", 0),
+                workId = o.optString("workId", o.getString("id")),
+                createdAt = o.optLong("createdAt", legacyCreatedAt(o.getString("id"))),
                 addTrailingSpace = o.optBoolean("addTrailingSpace", true),
                 singleWordStripPunctuation = o.optBoolean("singleWordStripPunctuation", false),
                 vocabulary = o.optString("vocabulary"),
@@ -227,6 +242,8 @@ data class ParkedRecording(
                 audioPath = audioPath,
                 state = state,
                 attemptCount = attemptCount,
+                workId = item.workId,
+                createdAt = item.createdAt,
                 addTrailingSpace = item.addTrailingSpace,
                 singleWordStripPunctuation = item.singleWordStripPunctuation,
                 vocabulary = item.vocabulary,

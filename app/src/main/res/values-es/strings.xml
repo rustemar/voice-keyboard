@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">Útil para la búsqueda por voz en contactos y otras consultas cortas.</string>
     <string name="pp_rhyme">Rima</string>
     <string name="cd_backspace">Borrar</string>
-    <string name="cd_cancel">Cancelar</string>
+    <string name="cd_cancel">Cancelar el último dictado</string>
     <string name="cd_cut_all">Cortar todo el texto</string>
     <string name="cd_enter">Intro</string>
     <string name="cd_action_go">Ir</string>

@@ -100,7 +100,8 @@ dependencies {
     // org.json is part of the Android platform but stubbed in JVM unit tests; bring the real impl
     // so we can test parked-recording (de)serialization off-device.
     testImplementation("org.json:json:20240303")
-    add("testAudioTestImplementation", "com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
 }
 
 // StringResourcesTest reads res/values*/strings.xml directly. Declare them as a test input, or an

@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">适用于联系人语音搜索和其他简短查询。</string>
     <string name="pp_rhyme">押韵</string>
     <string name="cd_backspace">删除</string>
-    <string name="cd_cancel">取消</string>
+    <string name="cd_cancel">取消最近一次语音输入</string>
     <string name="cd_cut_all">剪切全部文本</string>
     <string name="cd_enter">回车</string>
     <string name="cd_action_go">前往</string>

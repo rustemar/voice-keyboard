@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">संपर्कों में आवाज़ खोज और अन्य छोटे प्रश्नों के लिए उपयोगी।</string>
     <string name="pp_rhyme">तुकबंदी</string>
     <string name="cd_backspace">मिटाएं</string>
-    <string name="cd_cancel">रद्द करें</string>
+    <string name="cd_cancel">आखिरी डिक्टेशन रद्द करें</string>
     <string name="cd_cut_all">सारा टेक्स्ट काटें</string>
     <string name="cd_enter">एंटर</string>
     <string name="cd_action_go">जाएं</string>

@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">연락처 음성 검색과 기타 짧은 쿼리에 유용합니다.</string>
     <string name="pp_rhyme">운율</string>
     <string name="cd_backspace">삭제</string>
-    <string name="cd_cancel">취소</string>
+    <string name="cd_cancel">마지막 음성 입력 취소</string>
     <string name="cd_cut_all">전체 텍스트 잘라내기</string>
     <string name="cd_enter">엔터</string>
     <string name="cd_action_go">이동</string>

@@ -8,6 +8,7 @@ import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.core.network.ConnectivityMonitor
+import com.tyraen.voicekeyboard.feature.postprocessing.PromptParts
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingArtifactStripper
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingPrompts
@@ -19,6 +20,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.io.File
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * Process-wide engine that turns recordings into inserted text: transcribe → post-process →
@@ -39,14 +42,39 @@ import java.util.concurrent.ConcurrentLinkedQueue
  * connectivity callback only ever calls [onNetworkAvailable], which hops onto Main. The durable
  * store is independently thread-confined.
  */
-class ProcessingQueue(
+class ProcessingQueue internal constructor(
     private val speechClient: SpeechToTextClient,
-    private val postProcessingClient: PostProcessingClient,
+    private val processText: suspend (PromptParts, PostProcessingPreferences, String?) -> Result<String>,
     private val store: ParkedRecordingStore,
-    private val connectivity: ConnectivityMonitor,
-    private val preferenceStore: PreferenceStore,
-    private val appContext: Context
+    private val isOnline: () -> Boolean,
+    private val loadApiKey: suspend () -> String,
+    private val loadPostProcessing: suspend () -> PostProcessingPreferences,
+    private val clipboardDelivery: (String, Boolean) -> Unit,
+    private val scope: CoroutineScope,
+    elapsedRealtime: () -> Long
 ) {
+    constructor(
+        speechClient: SpeechToTextClient,
+        postProcessingClient: PostProcessingClient,
+        store: ParkedRecordingStore,
+        connectivity: ConnectivityMonitor,
+        preferenceStore: PreferenceStore,
+        appContext: Context
+    ) : this(
+        speechClient,
+        { prompt, prefs, model -> postProcessingClient.process(prompt, prefs, model) },
+        store,
+        connectivity::isOnline,
+        { preferenceStore.load().apiKey },
+        preferenceStore::loadPostProcessing,
+        { text, trailingSpace ->
+            val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = if (trailingSpace) "$text " else text
+            clipboard.setPrimaryClip(ClipData.newPlainText("Voice transcription", clip))
+        },
+        CoroutineScope(Dispatchers.Main + SupervisorJob()),
+        SystemClock::elapsedRealtime
+    )
 
     enum class ProcessingPhase { TRANSCRIBING, POST_PROCESSING }
 
@@ -59,10 +87,15 @@ class ProcessingQueue(
         fun onProcessingPhaseChanged(phase: ProcessingPhase)
         fun onFailedCountChanged(count: Int)
         fun onError(message: String)
+        fun onCancellableWorkChanged(available: Boolean) {}
     }
 
     companion object {
         private const val TAG = "ProcessingQueue"
+        private val creationOrder = AtomicLong(0)
+        private fun nextCreatedAt(): Long = creationOrder.updateAndGet {
+            maxOf(System.currentTimeMillis(), it + 1)
+        }
         // A couple of quick in-line attempts absorb a momentary blip without the parking round-trip.
         private const val IMMEDIATE_ATTEMPTS = 2
         private const val IMMEDIATE_BACKOFF_MS = 1000L
@@ -106,6 +139,8 @@ class ProcessingQueue(
         }
     }
 
+    data class WorkIdentity(val workId: String, val createdAt: Long)
+
     data class QueueItem(
         val audioFile: File,
         val transcriptionConfig: TranscriptionConfig,
@@ -122,15 +157,22 @@ class ProcessingQueue(
         /** Non-null when this item came from the durable parked store (vs a fresh capture). */
         val parkedId: String? = null,
         /** RAM-only capture generation. Restored parked recordings deliberately have none. */
-        val contextToken: Long? = null
+        val contextToken: Long? = null,
+        val workId: String = UUID.randomUUID().toString(),
+        val createdAt: Long = nextCreatedAt()
     )
 
     private val queue = ConcurrentLinkedQueue<QueueItem>()
     private var processingJob: Job? = null
     private var isProcessing = false
-    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var activeItem: QueueItem? = null
+    private var activePhase: ProcessingPhase? = null
+    private val cancelledWork = HashSet<String>()
+    private val deliveredWork = HashSet<String>()
+    private data class Reservation(val identity: WorkIdentity, val onCancel: () -> Unit, val finalized: Boolean = false)
+    private val reservations = LinkedHashMap<String, Reservation>()
     // Includes device sleep, so returning to the phone does not revive hours-old references.
-    private val recentContext = RecentDictationContext { SystemClock.elapsedRealtime() }
+    private val recentContext = RecentDictationContext(elapsedRealtime)
 
     @Volatile
     private var listener: Listener? = null
@@ -144,15 +186,21 @@ class ProcessingQueue(
         // its own thread, so hop to Main before touching any UI-facing listener.
         store.count
             .onEach { count ->
-                withContext(Dispatchers.Main.immediate) {
-                    failedCountCache = count
-                    listener?.onFailedCountChanged(count)
-                }
+                failedCountCache = count
+                listener?.onFailedCountChanged(count)
+                pushCancellableWork()
             }
             .launchIn(scope)
+        store.recordings.onEach { records ->
+            records.maxOfOrNull { it.createdAt }?.let { latest ->
+                creationOrder.updateAndGet { maxOf(it, latest) }
+            }
+            pushCancellableWork()
+        }.launchIn(scope)
     }
 
-    val pendingCount: Int get() = queue.size + if (isProcessing) 1 else 0
+    val pendingCount: Int get() = queue.size + reservations.values.count { it.finalized } +
+        if (activeItem?.let { it.workId !in cancelledWork && it.workId !in deliveredWork } == true) 1 else 0
 
     fun setPostProcessingContextScope(packageName: String?) = recentContext.setScope(packageName)
 
@@ -174,13 +222,41 @@ class ProcessingQueue(
         listener = l
         l.onQueueCountChanged(pendingCount)
         l.onFailedCountChanged(failedCountCache)
+        activePhase?.let(l::onProcessingPhaseChanged)
+        l.onCancellableWorkChanged(hasCancellableWork)
     }
 
     fun unbindListener(l: Listener) {
         if (listener === l) listener = null
     }
 
+    /** Reserve capture order before asynchronous preferences or view handover can delay enqueue. */
+    fun reserveDictation(onCancel: () -> Unit): WorkIdentity {
+        val identity = WorkIdentity(UUID.randomUUID().toString(), nextCreatedAt())
+        reservations[identity.workId] = Reservation(identity, onCancel)
+        pushCancellableWork()
+        return identity
+    }
+
+    fun updateReservation(identity: WorkIdentity, onCancel: () -> Unit): Boolean {
+        if (!reservations.containsKey(identity.workId) || identity.workId in cancelledWork) return false
+        reservations[identity.workId] = Reservation(identity, onCancel, finalized = true)
+        pushQueueCount()
+        return true
+    }
+
+    fun releaseReservation(identity: WorkIdentity) {
+        reservations.remove(identity.workId)
+        pushQueueCount()
+    }
+
     fun enqueue(item: QueueItem) {
+        reservations.remove(item.workId)
+        if (item.workId in cancelledWork) {
+            item.audioFile.delete()
+            pushCancellableWork()
+            return
+        }
         queue.add(item)
         DiagnosticLog.record(TAG, "Enqueued item, pending=$pendingCount")
         pushQueueCount()
@@ -219,29 +295,56 @@ class ProcessingQueue(
     private fun processNext() {
         val item = queue.poll() ?: run {
             isProcessing = false
+            activeItem = null
+            activePhase = null
+            processingJob = null
             pushQueueCount()
             return
         }
         isProcessing = true
+        activeItem = item
+        activePhase = ProcessingPhase.TRANSCRIBING
         pushQueueCount()
 
-        processingJob = scope.launch {
+        // Assign before starting: a synchronous cancellation must always reach this exact job.
+        val job = scope.launch(start = CoroutineStart.LAZY) {
             try {
                 processItem(item)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
+                currentCoroutineContext().ensureActive()
                 DiagnosticLog.recordFailure(TAG, "Processing failed", e)
                 listener?.onError(e.message ?: "Unknown error")
                 handleFailure(item, permanent = false)
-            } finally {
-                processNext()
             }
         }
+        processingJob = job
+        // Completion also runs when cancel wins before the dispatched coroutine body starts.
+        job.invokeOnCompletion { cause ->
+            if (cause is CancellationException) cancelledWork.add(item.workId)
+            scope.launch {
+                if (item.workId in cancelledWork) {
+                    withContext(NonCancellable) {
+                        store.cancel(item.workId)
+                        item.audioFile.delete()
+                    }
+                }
+                deliveredWork.remove(item.workId)
+                if (activeItem === item) processNext()
+            }
+        }
+        job.start()
+    }
+
+    private fun setPhase(phase: ProcessingPhase) {
+        activePhase = phase
+        listener?.onProcessingPhaseChanged(phase)
     }
 
     private suspend fun processItem(item: QueueItem) {
-        listener?.onProcessingPhaseChanged(ProcessingPhase.TRANSCRIBING)
+        checkActive(item)
+        setPhase(ProcessingPhase.TRANSCRIBING)
         DiagnosticLog.record(TAG, "Transcribing ${item.audioFile.name}")
 
         if (!item.audioFile.exists()) {
@@ -260,7 +363,7 @@ class ProcessingQueue(
 
         // Pre-flight: don't fire into a dead network and wait minutes for a timeout — park and let
         // the connectivity-driven loop pick it up when validated internet returns.
-        if (!connectivity.isOnline()) {
+        if (!isOnline()) {
             DiagnosticLog.record(TAG, "Offline — parking ${item.audioFile.name} for later")
             handleFailure(item, permanent = false)
             return
@@ -271,6 +374,8 @@ class ProcessingQueue(
         var permanent = false
         for (attempt in 1..IMMEDIATE_ATTEMPTS) {
             val result = speechClient.transcribe(item.audioFile, item.transcriptionConfig)
+            checkActive(item)
+            result.exceptionOrNull()?.let { if (it is CancellationException) throw it }
             if (result.isSuccess) {
                 rawText = result.getOrNull()
                 break
@@ -308,7 +413,7 @@ class ProcessingQueue(
         val hasPostProcessing = item.ppPreferences != null && item.ppPreferences.apiKey.isNotBlank() &&
             (item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal)
         if (hasPostProcessing) {
-            listener?.onProcessingPhaseChanged(ProcessingPhase.POST_PROCESSING)
+            setPhase(ProcessingPhase.POST_PROCESSING)
         }
         val processed = maybePostProcess(cleanedText, item)
 
@@ -326,8 +431,14 @@ class ProcessingQueue(
             cleanedText
         } else processed
 
+        // Consent can suspend. Resolve it before the non-suspending delivery boundary so cancel
+        // either wins completely, or the already-delivered result is no longer cancellable.
+        val remember = canUseContext(item)
+        checkActive(item)
+        deliveredWork.add(item.workId)
+        pushCancellableWork()
         deliver(output, item.addTrailingSpace)
-        if (canUseContext(item)) recentContext.remember(item.contextToken, output)
+        if (remember) recentContext.remember(item.contextToken, output)
         if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
     }
 
@@ -338,9 +449,7 @@ class ProcessingQueue(
             l.onTextReady(text, addTrailingSpace)
         } else {
             try {
-                val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = if (addTrailingSpace) "$text " else text
-                clipboard.setPrimaryClip(ClipData.newPlainText("Voice transcription", clip))
+                clipboardDelivery(text, addTrailingSpace)
                 DiagnosticLog.record(TAG, "No input view bound — delivered to clipboard")
             } catch (e: Exception) {
                 DiagnosticLog.recordFailure(TAG, "Clipboard delivery failed", e)
@@ -353,28 +462,32 @@ class ProcessingQueue(
      * and keep the indefinite retry loop alive for transient failures.
      */
     private suspend fun handleFailure(item: QueueItem, permanent: Boolean) {
+        checkActive(item)
         val state = if (permanent) ParkedRecording.State.NEEDS_ATTENTION else ParkedRecording.State.WAITING_NETWORK
-        if (item.parkedId != null) {
-            store.update(item.parkedId, state)
-        } else {
-            store.park(item, item.audioFile, state, attemptCount = 1)
+        // Once disk mutation starts, finish it even if cancelled. The completion handler then
+        // serializes exact cancellation behind that mutation, including a just-created sidecar.
+        withContext(NonCancellable) {
+            if (item.parkedId != null) store.update(item.parkedId, state)
+            else store.park(item, item.audioFile, state, attemptCount = 1)
         }
+        checkActive(item)
         if (!permanent) ensureRetryLoop()
     }
 
     /** Move every claimable parked recording into the live queue, re-reading API keys from prefs. */
     private suspend fun drainParked() {
-        if (!connectivity.isOnline()) {
+        if (!isOnline()) {
             DiagnosticLog.record(TAG, "drainParked skipped — still offline")
             return
         }
         val claimed = store.claimWaiting()
         if (claimed.isEmpty()) return
 
-        val apiKey = preferenceStore.load().apiKey
-        val ppApiKey = preferenceStore.loadPostProcessing().apiKey
+        val apiKey = loadApiKey()
+        val ppApiKey = loadPostProcessing().apiKey
         var enqueued = 0
         for (rec in claimed) {
+            if (rec.workId in cancelledWork || rec.workId in deliveredWork) continue
             if (apiKey.isBlank()) {
                 // Can't transcribe without a key — surface for attention instead of looping.
                 store.update(rec.id, ParkedRecording.State.NEEDS_ATTENTION)
@@ -401,7 +514,7 @@ class ProcessingQueue(
         retryJob = scope.launch {
             while (isActive && store.waitingCount() > 0) {
                 delay(retryBackoffMs)
-                if (connectivity.isOnline()) {
+                if (isOnline()) {
                     drainParked()
                 }
                 retryBackoffMs = (retryBackoffMs * 2).coerceAtMost(MAX_RETRY_BACKOFF_MS)
@@ -421,6 +534,7 @@ class ProcessingQueue(
 
     private fun pushQueueCount() {
         listener?.onQueueCountChanged(pendingCount)
+        pushCancellableWork()
     }
 
     private fun stripSingleWordPunctuation(text: String): String {
@@ -432,27 +546,31 @@ class ProcessingQueue(
     }
 
     private suspend fun maybePostProcess(text: String, item: QueueItem): String {
+        checkActive(item)
         val pp = item.ppPreferences ?: return text
         if (pp.apiKey.isBlank()) return text
 
         // The option is live consent, even for a recording whose other preferences were
         // snapshotted earlier. Settings also invalidate the generation synchronously on disable.
         if (!canUseContext(item)) {
-            val live = preferenceStore.loadPostProcessing()
+            val live = loadPostProcessing()
             if (!live.enabled || !live.contextEnabled) recentContext.clear()
         }
         // Re-read this same generation before each stage: turning the option off during a call
         // removes history from subsequent stages too, without ever adding this dictation to itself.
         fun context() = if (pp.contextEnabled) recentContext.snapshot(item.contextToken) else emptyList()
 
+        checkActive(item)
         var processed = text
 
         // Terminal mode: convert voice to shell commands (exclusive, skips all other modes)
         if (item.ppTerminal) {
             DiagnosticLog.record(TAG, "Terminal mode")
             val terminalPrompt = PostProcessingPrompts.buildTerminal(processed, pp)
-            val result = postProcessingClient.process(terminalPrompt, pp)
+            val result = processText(terminalPrompt, pp, null)
+            checkActive(item)
             val raw = result.getOrElse { error ->
+                if (error is CancellationException) throw error
                 DiagnosticLog.recordFailure(TAG, "Terminal processing failed, using raw text", error)
                 processed
             }
@@ -463,8 +581,10 @@ class ProcessingQueue(
         if (PostProcessingPrompts.hasAnyMode(item.ppFix, item.ppShorten, item.ppEmoji)) {
             DiagnosticLog.record(TAG, "Post-processing: fix=${item.ppFix}, shorten=${item.ppShorten}, emoji=${item.ppEmoji}")
             val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp, item.vocabulary, context())
-            val result = postProcessingClient.process(promptParts, pp)
+            val result = processText(promptParts, pp, null)
+            checkActive(item)
             processed = result.getOrElse { error ->
+                if (error is CancellationException) throw error
                 DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
                 processed
             }
@@ -475,8 +595,10 @@ class ProcessingQueue(
         if (item.ppRhyme) {
             DiagnosticLog.record(TAG, "Rhyming text")
             val rhymePrompt = PostProcessingPrompts.buildRhyme(processed, item.vocabulary, context())
-            val result = postProcessingClient.process(rhymePrompt, pp, modelOverride = pp.resolvedTranslateModel())
+            val result = processText(rhymePrompt, pp, pp.resolvedTranslateModel())
+            checkActive(item)
             processed = result.getOrElse { error ->
+                if (error is CancellationException) throw error
                 DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
                 processed
             }
@@ -487,8 +609,10 @@ class ProcessingQueue(
         if (item.ppTranslate) {
             DiagnosticLog.record(TAG, "Translating to: ${pp.translateLang}")
             val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang, item.vocabulary, context())
-            val result = postProcessingClient.process(translatePrompt, pp, modelOverride = pp.resolvedTranslateModel())
+            val result = processText(translatePrompt, pp, pp.resolvedTranslateModel())
+            checkActive(item)
             processed = result.getOrElse { error ->
+                if (error is CancellationException) throw error
                 DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
                 processed
             }
@@ -500,18 +624,62 @@ class ProcessingQueue(
 
     private suspend fun canUseContext(item: QueueItem): Boolean {
         if (item.ppPreferences?.contextEnabled != true || item.ppTerminal || item.contextToken == null) return false
-        val live = preferenceStore.loadPostProcessing()
+        val live = loadPostProcessing()
         return live.enabled && live.contextEnabled
     }
 
-    /** Cancel only the not-yet-parked pending queue. Parked recordings are durable and untouched. */
+    private suspend fun checkActive(item: QueueItem) {
+        currentCoroutineContext().ensureActive()
+        if (item.workId in cancelledWork) throw CancellationException("Dictation cancelled")
+    }
+
+    private fun latestWork(): WorkIdentity? {
+        val candidates = sequence {
+            reservations.values.forEach { yield(it.identity) }
+            queue.forEach { yield(WorkIdentity(it.workId, it.createdAt)) }
+            activeItem?.let { yield(WorkIdentity(it.workId, it.createdAt)) }
+            store.recordings.value.forEach { yield(WorkIdentity(it.workId, it.createdAt)) }
+        }
+        return candidates.filter { it.workId !in cancelledWork && it.workId !in deliveredWork }
+            .maxWithOrNull(compareBy<WorkIdentity> { it.createdAt }.thenBy { it.workId })
+    }
+
+    val hasCancellableWork: Boolean get() = latestWork() != null
+
+    private fun pushCancellableWork() {
+        listener?.onCancellableWorkChanged(hasCancellableWork)
+    }
+
+    /** Cancel one newest-created undelivered item, regardless of its current processing stage. */
+    fun cancelLatest(): Boolean {
+        val identity = latestWork() ?: return false
+        cancelledWork.add(identity.workId) // synchronous fence before callbacks or any suspension
+        val reservation = reservations.remove(identity.workId)
+        val removed = queue.filter { it.workId == identity.workId }
+        removed.forEach(queue::remove)
+        if (activeItem?.workId == identity.workId) processingJob?.cancel()
+        try {
+            reservation?.onCancel?.invoke()
+        } catch (e: Exception) {
+            DiagnosticLog.recordFailure(TAG, "Capture cancellation failed", e)
+        }
+        scope.launch {
+            withContext(NonCancellable) {
+                store.cancel(identity.workId)
+                removed.forEach { it.audioFile.delete() }
+            }
+        }
+        pushQueueCount()
+        return true
+    }
+
+    /** Legacy teardown action. Parked recordings remain durable; the cancel button uses cancelLatest. */
     fun cancelPending() {
-        processingJob?.cancel()
-        processingJob = null
-        isProcessing = false
-        while (true) {
-            val item = queue.poll() ?: break
-            if (item.parkedId == null) item.audioFile.delete()
+        val fresh = queue.filter { it.parkedId == null }
+        fresh.forEach { cancelledWork.add(it.workId); queue.remove(it); it.audioFile.delete() }
+        activeItem?.takeIf { it.parkedId == null }?.let {
+            cancelledWork.add(it.workId)
+            processingJob?.cancel()
         }
         pushQueueCount()
     }

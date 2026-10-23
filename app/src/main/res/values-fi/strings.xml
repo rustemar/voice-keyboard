@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">Hyödyllinen yhteystietojen äänihaussa ja muissa lyhyissä kyselyissä.</string>
     <string name="pp_rhyme">Riimi</string>
     <string name="cd_backspace">Poista</string>
-    <string name="cd_cancel">Peruuta</string>
+    <string name="cd_cancel">Peruuta viimeisin sanelu</string>
     <string name="cd_cut_all">Leikkaa kaikki teksti</string>
     <string name="cd_enter">Rivinvaihto</string>
     <string name="cd_action_go">Siirry</string>

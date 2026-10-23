@@ -55,6 +55,7 @@ class InputPanelController(rootView: View) {
         private set
 
     private var currentQueueCount: Int = 0
+    private var cancellableWork = false
     private var currentProcessingPhase: ProcessingQueue.ProcessingPhase = ProcessingQueue.ProcessingPhase.TRANSCRIBING
 
     fun transitionTo(phase: InputPhase) {
@@ -64,7 +65,6 @@ class InputPanelController(rootView: View) {
                 applyMicAlpha()
                 btnMic.setBackgroundResource(R.drawable.mic_button_bg)
                 btnMic.visibility = View.VISIBLE
-                btnCancel.visibility = View.GONE
                 animator.haltPulse()
                 // Status and progress depend on queue state
                 applyQueueState()
@@ -75,7 +75,6 @@ class InputPanelController(rootView: View) {
                 statusText.setText(R.string.status_recording)
                 btnMic.setBackgroundResource(R.drawable.mic_button_recording)
                 btnMic.visibility = View.VISIBLE
-                btnCancel.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
                 animator.beginPulse()
             }
@@ -83,6 +82,19 @@ class InputPanelController(rootView: View) {
                 displayError(phase.reasonRes)
             }
         }
+        applyCancelVisibility()
+    }
+
+    /** The queue includes parked work and recordings waiting for their settings to load. */
+    fun updateCancellableWork(available: Boolean) {
+        cancellableWork = available
+        applyCancelVisibility()
+    }
+
+    private fun applyCancelVisibility() {
+        btnCancel.visibility = if (currentPhase is InputPhase.Capturing || cancellableWork) {
+            View.VISIBLE
+        } else View.GONE
     }
 
     fun updateQueueCount(count: Int) {

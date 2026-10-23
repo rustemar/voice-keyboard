@@ -35,7 +35,8 @@ class InputOrchestrator(
     /** The user tapped the mic where [voiceAllowed] says no; the host explains why. */
     private val onVoiceBlocked: () -> Unit = {},
     /** The user tapped the mic or resend with no API key saved; the host opens the settings. */
-    private val onApiKeyNeeded: () -> Unit = {}
+    private val onApiKeyNeeded: () -> Unit = {},
+    private val onCancellableWorkChanged: (Boolean) -> Unit = {}
 ) {
 
     companion object {
@@ -61,6 +62,7 @@ class InputOrchestrator(
     private var ppPreferences: PostProcessingPreferences? = null
     private var vocabulary: String = ""
     private var captureContextToken: Long? = null
+    private var captureIdentity: ProcessingQueue.WorkIdentity? = null
 
     /** Whether the input view is currently shown. Set by the host from its window callbacks. */
     var viewVisible: Boolean = false
@@ -74,6 +76,8 @@ class InputOrchestrator(
         override fun onProcessingPhaseChanged(phase: ProcessingQueue.ProcessingPhase) =
             this@InputOrchestrator.onProcessingPhaseChanged(phase)
         override fun onFailedCountChanged(count: Int) = this@InputOrchestrator.onFailedCountChanged(count)
+        override fun onCancellableWorkChanged(available: Boolean) =
+            this@InputOrchestrator.onCancellableWorkChanged(available)
         override fun onError(message: String) {
             DiagnosticLog.record(TAG, "Queue error: $message")
         }
@@ -218,6 +222,12 @@ class InputOrchestrator(
     }
 
     fun handleAction(action: InputAction) {
+        if (action is InputAction.CancelOperation) {
+            if (processingQueue.cancelLatest() && currentPhase is InputPhase.Failed) {
+                moveTo(InputPhase.Ready)
+            }
+            return
+        }
         when (currentPhase) {
             is InputPhase.Ready -> when (action) {
                 InputAction.ToggleCapture -> beginCaptureIfAllowed()
@@ -225,7 +235,7 @@ class InputOrchestrator(
             }
             is InputPhase.Capturing -> when (action) {
                 InputAction.ToggleCapture -> finishCaptureAndEnqueue()
-                InputAction.CancelOperation -> cancelCapture()
+                InputAction.CancelOperation -> {}
             }
             is InputPhase.Failed -> {
                 moveTo(InputPhase.Ready)
@@ -268,37 +278,61 @@ class InputOrchestrator(
             moveTo(InputPhase.Failed(R.string.error_mic_unavailable))
             return
         }
+        lateinit var identity: ProcessingQueue.WorkIdentity
+        identity = processingQueue.reserveDictation {
+            if (captureIdentity == identity) cancelCapture()
+        }
+        captureIdentity = identity
         captureContextToken = processingQueue.capturePostProcessingContextToken()
         moveTo(InputPhase.Capturing())
     }
 
     fun finishCaptureAndEnqueue() {
+        val identity = captureIdentity ?: return
+        captureIdentity = null
         val contextToken = captureContextToken
         captureContextToken = null
         val file = capture.finalize()
         val durationMs = capture.lastDurationMs
-        // Back to Ready right away: the user can start the next recording while this one uploads.
-        moveTo(InputPhase.Ready)
         if (file == null) {
+            processingQueue.releaseReservation(identity)
+            moveTo(InputPhase.Ready)
             DiagnosticLog.record(TAG, "finishCapture: nothing usable captured (${durationMs}ms)")
             return
         }
+        // Keep the same queue identity while the process-wide handover waits for preferences.
+        // A view rebuild or a second recording must not hide this item from cancellation.
+        var handoverJob: Job? = null
+        if (!processingQueue.updateReservation(identity) {
+                handoverJob?.cancel()
+                file.delete()
+            }) {
+            file.delete()
+            moveTo(InputPhase.Ready)
+            return
+        }
+        // Back to Ready right away: the user can start the next recording while this one uploads.
+        moveTo(InputPhase.Ready)
         DiagnosticLog.record(TAG, "finishCapture, file=${file.name}, size=${file.length()}, dur=${durationMs}ms")
 
         val prefs = preferences
         if (prefs == null) {
             // Preferences load asynchronously right after the view is created. A recording that
             // ends before they arrive waits for them instead of being thrown away.
-            handoverScope.launch {
+            handoverJob = handoverScope.launch {
                 loadPreferencesInternal()
-                enqueue(file, durationMs, preferences ?: return@launch, contextToken)
+                ensureActive()
+                enqueue(file, durationMs, preferences ?: return@launch, contextToken, identity)
             }
             return
         }
-        enqueue(file, durationMs, prefs, contextToken)
+        enqueue(file, durationMs, prefs, contextToken, identity)
     }
 
-    private fun enqueue(file: File, durationMs: Long, prefs: UserPreferences, contextToken: Long?) {
+    private fun enqueue(
+        file: File, durationMs: Long, prefs: UserPreferences, contextToken: Long?,
+        identity: ProcessingQueue.WorkIdentity
+    ) {
         if (prefs.apiKey.isBlank()) {
             // Still queued: the queue parks it as "needs attention", so the recording survives
             // until a key is entered and resend is tapped.
@@ -334,13 +368,17 @@ class InputOrchestrator(
             ppRhyme = ppEnabled && s.rhymeActive,
             ppTranslate = ppEnabled && s.translateActive,
             ppTerminal = ppEnabled && s.terminalActive,
-            contextToken = contextToken
+            contextToken = contextToken,
+            workId = identity.workId,
+            createdAt = identity.createdAt
         )
         processingQueue.enqueue(item)
     }
 
     /** Cancel only the current recording; the queue keeps processing. */
     private fun cancelCapture() {
+        captureIdentity = null
+        captureContextToken = null
         if (capture.isActive) {
             capture.abort()
         }
@@ -349,6 +387,9 @@ class InputOrchestrator(
 
     /** Cancel everything: current recording + the entire queue. */
     fun cancelAll() {
+        captureIdentity?.let { processingQueue.releaseReservation(it) }
+        captureIdentity = null
+        captureContextToken = null
         if (capture.isActive) {
             capture.abort()
         }
@@ -369,6 +410,9 @@ class InputOrchestrator(
 
     fun destroy() {
         // Releases only a capture still in progress; files already handed to the queue are its own.
+        captureIdentity?.let { processingQueue.releaseReservation(it) }
+        captureIdentity = null
+        captureContextToken = null
         capture.release()
         // The queue is a process-wide singleton — never destroy it here, just stop receiving its
         // callbacks. Parked recordings and in-flight work survive this input view.

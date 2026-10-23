@@ -114,7 +114,7 @@
     <string name="settings_single_word_strip_punct_hint">連絡先の音声検索や短いクエリに便利です。</string>
     <string name="pp_rhyme">韻</string>
     <string name="cd_backspace">削除</string>
-    <string name="cd_cancel">キャンセル</string>
+    <string name="cd_cancel">最後の音声入力をキャンセル</string>
     <string name="cd_cut_all">すべてのテキストを切り取り</string>
     <string name="cd_enter">改行</string>
     <string name="cd_action_go">移動</string>
