@@ -5,3 +5,9 @@ v1.10.0 — Voice input for apps and a compact terminal
 - Cancel the latest unfinished dictation during recording, recognition, post-processing or while waiting to be resent. Earlier recordings keep their order; cancelled results are not inserted or added to context.
 
 Both new options are off by default. Speech recognition needs a network connection to your provider. Apps with their own speech engine may not use the system service; on-device recognition is not provided.
+
+Thanks to the community for the ideas and examples that helped shape this release:
+
+- The [cartwmic fork](https://github.com/cartwmic/voice-keyboard) for the compact keyboard idea.
+- [@homremwork](https://github.com/homremwork/voice-keyboard/tree/feature/system-recognition-service) for the early Android speech-recognition service prototype.
+- [@theScrabi](https://github.com/rustemar/voice-keyboard/issues/8) for requesting speech input in other apps and sharing reference projects and a compatibility tester.
