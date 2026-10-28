@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
@@ -48,6 +49,8 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var spinnerTheme: Spinner
     private lateinit var spinnerLanguage: Spinner
     private lateinit var spinnerSttPreset: Spinner
+    private lateinit var openRouterSpeechOptions: View
+    private lateinit var txtOpenRouterModel: TextView
     private lateinit var editApiKey: EditText
     private lateinit var editEndpoint: EditText
     private lateinit var txtEndpointWarning: TextView
@@ -152,6 +155,8 @@ class SetupActivity : AppCompatActivity() {
         spinnerTheme = findViewById(R.id.spinnerTheme)
         spinnerLanguage = findViewById(R.id.spinnerLanguage)
         spinnerSttPreset = findViewById(R.id.spinnerSttPreset)
+        openRouterSpeechOptions = findViewById(R.id.openRouterSpeechOptions)
+        txtOpenRouterModel = findViewById(R.id.txtOpenRouterModel)
         editApiKey = findViewById(R.id.editApiKey)
         editEndpoint = findViewById(R.id.editEndpoint)
         txtEndpointWarning = findViewById(R.id.txtEndpointWarning)
@@ -192,11 +197,14 @@ class SetupActivity : AppCompatActivity() {
 
         setupLink(txtGetApiKey, "https://console.groq.com/keys")
         setupLink(txtGetApiKeyMistral, "https://console.mistral.ai/api-keys")
+        setupLink(findViewById(R.id.txtGetApiKeyOpenRouter), "https://openrouter.ai/settings/keys")
+        setupLink(findViewById(R.id.txtOpenRouterModels), "https://openrouter.ai/collections/speech-to-text-models")
         setupLink(txtGithub, "https://github.com/rustemar/voice-keyboard")
     }
 
     private fun setupActions() {
         btnApply.setOnClickListener { saveAndValidate() }
+        findViewById<Button>(R.id.btnOpenRouterModel).setOnClickListener { chooseOpenRouterModel() }
 
         btnEnableKeyboard.setOnClickListener {
             try {
@@ -387,6 +395,7 @@ class SetupActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 txtEndpointWarning.isVisible = ApiEndpoint.isUnencrypted(s?.toString() ?: "")
                 if (txtEndpointWarning.isVisible) sections.setExpanded(R.id.btnRecognitionDetails, true)
+                updateOpenRouterHelp()
                 val pos = ProviderPresets.indexOf(ProviderPresets.speechToText, s?.toString() ?: "") + 1
                 if (spinnerSttPreset.selectedItemPosition != pos) {
                     presetPosSetByCode = pos
@@ -394,6 +403,47 @@ class SetupActivity : AppCompatActivity() {
                 }
             }
         })
+        editModel.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { updateOpenRouterHelp() }
+        })
+    }
+
+    private fun updateOpenRouterHelp() {
+        val endpoint = ApiEndpoint.complete(editEndpoint.text.toString(), "")
+        val openRouter = ApiEndpoint.isOpenRouter(endpoint)
+        // Chat-audio accepts prompts and uses a different model catalog.
+        openRouterSpeechOptions.isVisible = openRouter && !ApiEndpoint.usesChatCompletions(endpoint)
+        txtOpenRouterModel.text = getString(R.string.stt_openrouter_model_summary, editModel.text.toString().trim())
+        findViewById<View>(R.id.txtGetApiKeyOpenRouter).isVisible = openRouter
+        findViewById<View>(R.id.txtGetApiKey).isVisible = !openRouter
+        findViewById<View>(R.id.txtGetApiKeyMistral).isVisible = !openRouter
+        findViewById<View>(R.id.txtProviderHint).isVisible = !openRouter
+    }
+
+    private fun chooseOpenRouterModel() {
+        val models = ProviderPresets.openRouterSpeechModels
+        val labels = models.map { "${it.name}\n${it.id}" } + getString(R.string.stt_openrouter_custom_model)
+        val selected = models.indexOfFirst { it.id == editModel.text.toString().trim() }
+            .let { if (it < 0) models.size else it }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.stt_openrouter_choose_model)
+            .setSingleChoiceItems(labels.toTypedArray(), selected) { dialog, position ->
+                dialog.dismiss()
+                val model = models.getOrNull(position)
+                if (model != null) {
+                    editModel.setText(model.id)
+                } else {
+                    sections.setExpanded(R.id.btnRecognitionDetails, true)
+                    editModel.requestFocus()
+                    editModel.post {
+                        editModel.requestRectangleOnScreen(Rect(0, 0, editModel.width, editModel.height))
+                    }
+                }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun loadCurrentPreferences() {

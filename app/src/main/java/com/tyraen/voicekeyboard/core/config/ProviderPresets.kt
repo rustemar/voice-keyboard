@@ -18,10 +18,20 @@ object ProviderPresets {
         val provider: String? = null
     )
 
+    data class ModelSuggestion(val name: String, val id: String)
+
+    /** A few transcription models to get started; the model field remains freely editable. */
+    val openRouterSpeechModels: List<ModelSuggestion> = listOf(
+        ModelSuggestion("Whisper Large V3 Turbo", "openai/whisper-large-v3-turbo"),
+        ModelSuggestion("Whisper Large V3", "openai/whisper-large-v3"),
+        ModelSuggestion("Mistral Voxtral Mini Transcribe", "mistralai/voxtral-mini-transcribe"),
+    )
+
     val speechToText: List<Preset> = listOf(
         Preset("Groq", "https://api.groq.com/openai/v1/audio/transcriptions", "whisper-large-v3-turbo"),
         Preset("OpenAI", "https://api.openai.com/v1/audio/transcriptions", "whisper-1"),
         Preset("Mistral", "https://api.mistral.ai/v1/audio/transcriptions", "voxtral-mini-latest"),
+        Preset("OpenRouter", "https://openrouter.ai/api/v1/audio/transcriptions", openRouterSpeechModels.first().id),
     )
 
     val postProcessing: List<Preset> = listOf(

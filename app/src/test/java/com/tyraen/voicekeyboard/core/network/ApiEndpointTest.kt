@@ -77,4 +77,22 @@ class ApiEndpointTest {
         assertFalse(ApiEndpoint.usesChatCompletions("https://example.com/v1"))
         assertFalse(ApiEndpoint.usesChatCompletions("https://example.com/v1/audio/transcriptions"))
     }
+
+    @Test fun `OpenRouter hosts are recognized with or without a scheme`() {
+        assertTrue(ApiEndpoint.isOpenRouter("https://openrouter.ai/api/v1/audio/transcriptions"))
+        assertTrue(ApiEndpoint.isOpenRouter("  OpenRouter.AI/api/v1/  "))
+        assertTrue(ApiEndpoint.isOpenRouter("https://eu.openrouter.ai/api/v1"))
+        assertTrue(ApiEndpoint.isOpenRouter("eu.openrouter.ai/api/v1/audio/transcriptions"))
+    }
+
+    @Test fun `OpenRouter detection checks the actual hostname rather than a matching substring`() {
+        assertFalse(ApiEndpoint.isOpenRouter("https://evil-openrouter.ai/api/v1"))
+        assertFalse(ApiEndpoint.isOpenRouter("https://openrouter.ai.example.org/api/v1"))
+        assertFalse(ApiEndpoint.isOpenRouter("https://openrouter.ai@proxy.example.org/api/v1"))
+        assertFalse(ApiEndpoint.isOpenRouter("https://proxy.example.org/openrouter.ai/api/v1"))
+        assertFalse(ApiEndpoint.isOpenRouter("https://proxy.example.org/api/v1?host=openrouter.ai"))
+        assertFalse(ApiEndpoint.isOpenRouter("https://api.groq.com/openai/v1"))
+        assertFalse(ApiEndpoint.isOpenRouter(""))
+        assertFalse(ApiEndpoint.isOpenRouter("not a url"))
+    }
 }

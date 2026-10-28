@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">النموذج: %1$s</string>
+    <string name="stt_openrouter_choose_model">اختيار نموذج…</string>
+    <string name="stt_openrouter_custom_model">نموذج آخر…</string>
+    <string name="stt_openrouter_model_hint">استخدم معرّف النموذج الكامل من OpenRouter، بما في ذلك بادئة مزوّد الخدمة.</string>
+    <string name="stt_openrouter_models_link">نماذج تحويل الكلام إلى نص → OpenRouter</string>
+    <string name="stt_openrouter_key_link">مفتاح API لـ OpenRouter → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">يتجاهل OpenRouter إرشادات التنسيق والمفردات المخصصة عند التعرّف على الكلام.</string>
+</resources>

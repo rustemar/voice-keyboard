@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">Μοντέλο: %1$s</string>
+    <string name="stt_openrouter_choose_model">Επιλογή μοντέλου…</string>
+    <string name="stt_openrouter_custom_model">Άλλο μοντέλο…</string>
+    <string name="stt_openrouter_model_hint">Χρησιμοποιήστε το πλήρες αναγνωριστικό μοντέλου από το OpenRouter, μαζί με το πρόθεμα του παρόχου.</string>
+    <string name="stt_openrouter_models_link">Μοντέλα αναγνώρισης ομιλίας → OpenRouter</string>
+    <string name="stt_openrouter_key_link">Κλειδί API OpenRouter → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">Το OpenRouter αγνοεί την υπόδειξη μορφοποίησης και το προσαρμοσμένο λεξιλόγιο κατά την αναγνώριση ομιλίας.</string>
+</resources>

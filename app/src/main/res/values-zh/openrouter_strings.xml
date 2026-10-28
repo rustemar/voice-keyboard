@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">模型：%1$s</string>
+    <string name="stt_openrouter_choose_model">选择模型…</string>
+    <string name="stt_openrouter_custom_model">其他模型…</string>
+    <string name="stt_openrouter_model_hint">请输入 OpenRouter 上的完整模型 ID，包括提供商前缀。</string>
+    <string name="stt_openrouter_models_link">语音识别模型 → OpenRouter</string>
+    <string name="stt_openrouter_key_link">OpenRouter API 密钥 → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">OpenRouter 在语音识别时会忽略格式提示和自定义词汇。</string>
+</resources>

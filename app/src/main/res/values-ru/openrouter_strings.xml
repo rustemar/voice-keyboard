@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">Модель: %1$s</string>
+    <string name="stt_openrouter_choose_model">Выбрать модель…</string>
+    <string name="stt_openrouter_custom_model">Другая модель…</string>
+    <string name="stt_openrouter_model_hint">Укажите полный идентификатор модели из OpenRouter, включая префикс провайдера.</string>
+    <string name="stt_openrouter_models_link">Модели распознавания речи → OpenRouter</string>
+    <string name="stt_openrouter_key_link">API-ключ OpenRouter → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">При распознавании речи OpenRouter игнорирует подсказку форматирования и пользовательский словарь.</string>
+</resources>

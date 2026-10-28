@@ -1,5 +1,7 @@
 package com.tyraen.voicekeyboard.core.network
 
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+
 /**
  * Makes a pasted API address usable as-is.
  *
@@ -21,6 +23,13 @@ object ApiEndpoint {
     /** A complete chat URL opts into audio-in-chat; base URLs still use Whisper by default. */
     fun usesChatCompletions(url: String): Boolean =
         pathOf(url).trimEnd('/').endsWith("/chat/completions")
+
+    /** OpenRouter's public API hosts, including a scheme-less address while editing settings. */
+    fun isOpenRouter(url: String): Boolean =
+        when (complete(url, "").toHttpUrlOrNull()?.host) {
+            "openrouter.ai", "eu.openrouter.ai" -> true
+            else -> false
+        }
 
     fun complete(raw: String, defaultPath: String): String {
         var url = raw.trim().trimEnd('/')

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">मॉडल: %1$s</string>
+    <string name="stt_openrouter_choose_model">मॉडल चुनें…</string>
+    <string name="stt_openrouter_custom_model">अन्य मॉडल…</string>
+    <string name="stt_openrouter_model_hint">OpenRouter का पूरा मॉडल आईडी दर्ज करें, जिसमें प्रदाता का प्रीफ़िक्स भी शामिल हो।</string>
+    <string name="stt_openrouter_models_link">वाक् पहचान मॉडल → OpenRouter</string>
+    <string name="stt_openrouter_key_link">OpenRouter API कुंजी → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">वाक् पहचान के दौरान OpenRouter फ़ॉर्मैटिंग संकेत और कस्टम शब्दावली को अनदेखा करता है।</string>
+</resources>

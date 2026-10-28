@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">모델: %1$s</string>
+    <string name="stt_openrouter_choose_model">모델 선택…</string>
+    <string name="stt_openrouter_custom_model">다른 모델…</string>
+    <string name="stt_openrouter_model_hint">제공업체 접두사를 포함한 OpenRouter의 전체 모델 ID를 입력하세요.</string>
+    <string name="stt_openrouter_models_link">음성 인식 모델 → OpenRouter</string>
+    <string name="stt_openrouter_key_link">OpenRouter API 키 → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">OpenRouter는 음성 인식 시 서식 힌트와 사용자 지정 어휘를 무시합니다.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">Modelo: %1$s</string>
+    <string name="stt_openrouter_choose_model">Escolher modelo…</string>
+    <string name="stt_openrouter_custom_model">Outro modelo…</string>
+    <string name="stt_openrouter_model_hint">Use o identificador completo do modelo no OpenRouter, incluindo o prefixo do provedor.</string>
+    <string name="stt_openrouter_models_link">Modelos de reconhecimento de fala → OpenRouter</string>
+    <string name="stt_openrouter_key_link">Chave de API do OpenRouter → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">O OpenRouter ignora a dica de formatação e o vocabulário personalizado no reconhecimento de fala.</string>
+</resources>

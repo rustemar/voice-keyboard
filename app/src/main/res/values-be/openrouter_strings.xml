@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">Мадэль: %1$s</string>
+    <string name="stt_openrouter_choose_model">Выбраць мадэль…</string>
+    <string name="stt_openrouter_custom_model">Іншая мадэль…</string>
+    <string name="stt_openrouter_model_hint">Укажыце поўны ідэнтыфікатар мадэлі з OpenRouter, уключаючы прэфікс пастаўшчыка.</string>
+    <string name="stt_openrouter_models_link">Мадэлі распазнавання маўлення → OpenRouter</string>
+    <string name="stt_openrouter_key_link">API-ключ OpenRouter → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">Пры распазнаванні маўлення OpenRouter ігнаруе падказку па фарматаванні і карыстальніцкі слоўнік.</string>
+</resources>

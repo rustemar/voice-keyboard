@@ -1,7 +1,8 @@
 package com.tyraen.voicekeyboard.feature.transcription
 
-import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingResponseParser
+import com.tyraen.voicekeyboard.core.network.ApiEndpoint
 import com.tyraen.voicekeyboard.core.network.awaitResponse
+import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingResponseParser
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,18 +31,7 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
             tempFile.writeBytes(silentWav)
 
             try {
-                val body = MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("file", "test.wav", tempFile.asRequestBody("audio/wav".toMediaType()))
-                    .addFormDataPart("model", model)
-                    .addFormDataPart("response_format", "text")
-                    .build()
-
-                val request = Request.Builder()
-                    .url(endpoint)
-                    .header("Authorization", "Bearer $apiKey")
-                    .post(body)
-                    .build()
+                val request = transcriptionRequest(tempFile, apiKey, endpoint, model, fileName = "test.wav")
 
                 http.newCall(request).awaitResponse { response ->
                     val responseBody = response.body?.string()?.trim() ?: ""
@@ -82,28 +72,10 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
         config: TranscriptionConfig
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
-            val mimeType = when (audioFile.extension.lowercase()) {
-                "ogg" -> "audio/ogg"
-                "m4a", "mp4" -> "audio/mp4"
-                "wav" -> "audio/wav"
-                else -> "audio/mp4"
-            }
-            val body = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", audioFile.name, audioFile.asRequestBody(mimeType.toMediaType()))
-                .addFormDataPart("model", config.model)
-                .addFormDataPart("response_format", "text")
-                .apply {
-                    if (config.language.isNotBlank()) addFormDataPart("language", config.language)
-                    if (config.prompt.isNotBlank()) addFormDataPart("prompt", config.prompt)
-                }
-                .build()
-
-            val request = Request.Builder()
-                .url(config.endpoint)
-                .header("Authorization", "Bearer ${config.apiKey}")
-                .post(body)
-                .build()
+            val request = transcriptionRequest(
+                audioFile, config.apiKey, config.endpoint, config.model,
+                language = config.language, prompt = config.prompt
+            )
 
             http.newCall(request).awaitResponse { response ->
                 val responseBody = response.body?.string()?.trim() ?: ""
@@ -126,6 +98,42 @@ class WhisperApiClient(private val http: OkHttpClient) : SpeechToTextClient {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    private fun transcriptionRequest(
+        audioFile: File,
+        apiKey: String,
+        endpoint: String,
+        model: String,
+        fileName: String = audioFile.name,
+        language: String = "",
+        prompt: String = ""
+    ): Request {
+        val mimeType = when (audioFile.extension.lowercase()) {
+            "ogg" -> "audio/ogg"
+            "m4a", "mp4" -> "audio/mp4"
+            "wav" -> "audio/wav"
+            else -> "audio/mp4"
+        }
+        // OpenRouter rejects text responses; keep the existing format for custom servers.
+        // Apply and dictation share this builder so their format negotiation stays identical.
+        val responseFormat = if (ApiEndpoint.isOpenRouter(endpoint)) "json" else "text"
+        val body = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("file", fileName, audioFile.asRequestBody(mimeType.toMediaType()))
+            .addFormDataPart("model", model)
+            .addFormDataPart("response_format", responseFormat)
+            .apply {
+                if (language.isNotBlank()) addFormDataPart("language", language)
+                if (prompt.isNotBlank()) addFormDataPart("prompt", prompt)
+            }
+            .build()
+
+        return Request.Builder()
+            .url(endpoint)
+            .header("Authorization", "Bearer $apiKey")
+            .post(body)
+            .build()
     }
 }
 

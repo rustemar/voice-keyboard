@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">Model: %1$s</string>
+    <string name="stt_openrouter_choose_model">Model seç…</string>
+    <string name="stt_openrouter_custom_model">Diğer model…</string>
+    <string name="stt_openrouter_model_hint">Sağlayıcı öneki dahil olmak üzere OpenRouter’daki tam model kimliğini girin.</string>
+    <string name="stt_openrouter_models_link">Konuşma tanıma modelleri → OpenRouter</string>
+    <string name="stt_openrouter_key_link">OpenRouter API anahtarı → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">OpenRouter, konuşma tanıma sırasında biçimlendirme ipucunu ve özel sözlüğü yok sayar.</string>
+</resources>

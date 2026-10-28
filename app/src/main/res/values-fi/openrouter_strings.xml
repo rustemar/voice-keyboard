@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stt_openrouter_model_summary">Malli: %1$s</string>
+    <string name="stt_openrouter_choose_model">Valitse malli…</string>
+    <string name="stt_openrouter_custom_model">Muu malli…</string>
+    <string name="stt_openrouter_model_hint">Anna OpenRouterin mallin koko tunniste palveluntarjoajan etuliitteineen.</string>
+    <string name="stt_openrouter_models_link">Puheentunnistusmallit → OpenRouter</string>
+    <string name="stt_openrouter_key_link">OpenRouterin API-avain → openrouter.ai</string>
+    <string name="stt_openrouter_prompt_notice">OpenRouter ei huomioi muotoiluvihjettä eikä omaa sanastoa puheentunnistuksessa.</string>
+</resources>

@@ -104,6 +104,53 @@
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
 
+        <LinearLayout
+            android:id="@+id/openRouterSpeechOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:id="@+id/txtOpenRouterModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp" />
+            <Button
+                android:id="@+id/btnOpenRouterModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/stt_openrouter_choose_model"
+                android:textAllCaps="false"
+                android:textColor="@color/text_primary"
+                android:backgroundTint="@color/key_bg" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stt_openrouter_model_hint"
+                android:textColor="@color/status_text"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/txtOpenRouterModels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:gravity="center_vertical"
+                android:text="@string/stt_openrouter_models_link"
+                android:textColor="@color/mic_idle"
+                android:textSize="13sp"
+                android:clickable="true"
+                android:focusable="true" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stt_openrouter_prompt_notice"
+                android:textColor="@color/status_text"
+                android:textSize="12sp" />
+        </LinearLayout>
+
         <!-- API Key -->
         <TextView
             android:layout_width="wrap_content"
@@ -132,6 +179,19 @@
             android:clickable="true"
             android:focusable="true" />
         <TextView
+            android:id="@+id/txtGetApiKeyOpenRouter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"
+            android:text="@string/stt_openrouter_key_link"
+            android:textColor="@color/mic_idle"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true" />
+        <TextView
+            android:id="@+id/txtProviderHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/settings_provider_hint"
