@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">音声認識</string>
+    <string name="settings_section_manual">接続と認識の詳細設定</string>
+    <string name="settings_section_keyboard">キーボードと表示</string>
+    <string name="settings_section_diagnostics">テストと診断</string>
+    <string name="settings_section_about">更新とアプリ情報</string>
+    <string name="settings_section_experiments">試験的な機能</string>
+    <string name="settings_experiments_hint">評価中の任意の機能です。それぞれ個別に有効にできます。</string>
+    <string name="settings_section_expand">%1$sを表示</string>
+    <string name="settings_section_collapse">%1$sを非表示</string>
+    <string name="settings_active_keyboard_hint">設定に文字を入力するには、キーボード切り替えボタンで普段のキーボードを選んでください。</string>
+    <string name="settings_manage_keyboards">キーボードを管理</string>
+</resources>

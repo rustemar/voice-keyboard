@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Дзеянні з тэкстам</string>
+    <string name="text_actions_beta_title">Дзеянні з вылучаным тэкстам · Бэта</string>
+    <string name="text_actions_beta_hint">Перакладайце, выпраўляйце ці перапісвайце вылучаны тэкст праз сэрвіс пасляапрацоўкі. Правярайце вынік перад ужываннем.</string>
+    <string name="text_actions_close">Закрыць дзеянні з тэкстам</string>
+    <string name="text_actions_instruction">Інструкцыя для апрацоўкі</string>
+    <string name="text_actions_instruction_hint">Напрыклад: зрабі гэтае паведамленне больш афіцыйным.</string>
+    <string name="text_actions_select_first">Спачатку вылучыце тэкст у праграме.</string>
+    <string name="text_actions_too_long">Вылучыце карацейшы фрагмент: да 16 000 сімвалаў.</string>
+    <string name="text_actions_unavailable">Дзеянні з тэкстам недаступныя ў гэтым полі.</string>
+    <string name="text_actions_selection">Вылучаны тэкст</string>
+    <string name="text_actions_configure">Для дзеянняў з тэкстам уключыце і наладзьце пасляапрацоўку.</string>
+    <string name="text_actions_provider_notice">Пасля выбару дзеяння сэрвісу пасляапрацоўкі адпраўляецца толькі вылучаны тэкст.</string>
+    <string name="text_actions_fix">Выправіць правапіс і граматыку</string>
+    <string name="text_actions_translate">Перакласці: %1$s</string>
+    <string name="text_actions_custom">Свая інструкцыя</string>
+    <string name="text_actions_type_instruction">Набраць інструкцыю</string>
+    <string name="text_actions_preview">Паглядзець вынік</string>
+    <string name="text_actions_processing">Апрацоўка вылучэння…</string>
+    <string name="text_actions_result">Вынік</string>
+    <string name="text_actions_preview_hint">Праверце вынік. Пры закрыцці неўжыты вынік трапіць у захаваныя тэксты.</string>
+    <string name="text_actions_selection_changed">Поле, тэкст ці вылучэнне змяніліся. Вылучыце зыходны фрагмент нанова і пачніце новае дзеянне.</string>
+    <string name="text_actions_apply">Ужыць да вылучэння</string>
+    <string name="text_actions_copy">Капіяваць вынік</string>
+    <string name="text_actions_save">Захаваць на потым</string>
+    <string name="text_actions_applied">Вылучэнне заменена. Адмена даступная, пакуль устаўлены фрагмент вылучаны і не зменены.</string>
+    <string name="text_actions_undo">Адмяніць замену</string>
+    <string name="text_actions_copied">Вынік скапіяваны.</string>
+    <string name="text_actions_saved">Вынік пакінуты ў захаваных тэкстах.</string>
+    <string name="text_actions_save_failed">Не ўдалося захаваць вынік.</string>
+    <string name="text_actions_failed">Не ўдалося апрацаваць вылучэнне. Праверце налады пасляапрацоўкі і злучэнне.</string>
+    <string name="text_actions_open_settings">Налады пасляапрацоўкі</string>
+</resources>

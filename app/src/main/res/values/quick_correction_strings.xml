@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Keyboard for quick corrections · Beta</string>
+    <string name="qc_beta_hint">Optional basic layouts in 14 languages, including French, German and Hindi. No predictions, swipe typing or Chinese, Japanese and Korean conversion.</string>
+    <string name="qc_open">Open correction keyboard</string>
+    <string name="qc_return_to_voice">Return to voice panel</string>
+    <string name="qc_choose_layout">Choose layout. Current: %1$s</string>
+    <string name="qc_layouts">Keyboard layout</string>
+    <string name="qc_layout_limits">Basic direct typing only. Chinese, Japanese and Korean input conversion is not available.</string>
+    <string name="qc_more_characters">More characters</string>
+    <string name="qc_letters">Letters</string>
+    <string name="qc_symbols">Numbers and symbols</string>
+    <string name="qc_shift">Uppercase; hold for Caps Lock</string>
+    <string name="qc_backspace">Backspace</string>
+    <string name="qc_space">Space</string>
+    <string name="qc_enter">Enter</string>
+    <string name="qc_done">Done</string>
+    <string name="qc_editor_unavailable">The text field is unavailable. Open it again and retry.</string>
+</resources>

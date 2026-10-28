@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">후처리에서 터미널 모드가 켜져 있을 때 작은 패널을 사용합니다. 확장 버튼으로 모든 키를 표시할 수 있습니다.</string>
     <string name="terminal_compact_expand">전체 키보드 표시</string>
     <string name="recognition_setup">설정 안내</string>
+    <string name="saved_texts_title">저장된 텍스트</string>
+    <string name="saved_texts_count">저장된 텍스트: %1$d</string>
+    <string name="saved_texts_empty">저장된 텍스트 없음</string>
+    <string name="saved_texts_insert">삽입</string>
+    <string name="saved_texts_copy">복사</string>
+    <string name="saved_texts_delete">삭제</string>
+    <string name="saved_texts_delete_confirm">이 저장된 텍스트를 삭제할까요?</string>
+    <string name="saved_texts_close">저장된 텍스트 닫기</string>
+    <string name="saved_texts_copied">텍스트 복사됨</string>
+    <string name="saved_texts_insert_failed">텍스트 입력란을 선택하고 다시 시도하세요.</string>
+    <string name="saved_texts_action_failed">작업을 완료하지 못했습니다. 다시 시도하세요.</string>
 </resources>

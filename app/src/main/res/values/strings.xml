@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Voice Keyboard</string>
+    <string name="app_name" translatable="false">Voice Keyboard</string>
     <string name="status_idle">Tap mic to record</string>
     <string name="status_recording">Recording\u2026</string>
     <string name="status_transcribing">Transcribing\u2026</string>
@@ -36,10 +36,10 @@
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="settings_interface_language">Interface Language</string>
-    <string name="default_endpoint">https://api.groq.com/openai/v1/audio/transcriptions</string>
-    <string name="default_model">whisper-large-v3-turbo</string>
-    <string name="default_language">en</string>
-    <string name="default_prompt">Hello, how are you? I\'m doing well. This is a properly formatted sentence, with punctuation and capitalization.</string>
+    <string name="default_endpoint" translatable="false">https://api.groq.com/openai/v1/audio/transcriptions</string>
+    <string name="default_model" translatable="false">whisper-large-v3-turbo</string>
+    <string name="default_language" translatable="false">en</string>
+    <string name="default_prompt" translatable="false">Hello, how are you? I\'m doing well. This is a properly formatted sentence, with punctuation and capitalization.</string>
     <string name="update_available">Update Available</string>
     <string name="update_new_version">New version %s is available.</string>
     <string name="update_button">Update</string>
@@ -192,4 +192,15 @@
     <string name="terminal_compact_hint">Use a smaller panel while Terminal mode is enabled in post-processing. The expand button shows all keyboard controls.</string>
     <string name="terminal_compact_expand">Show full keyboard</string>
     <string name="recognition_setup">Setup instructions</string>
+    <string name="saved_texts_title">Saved texts</string>
+    <string name="saved_texts_count">Saved texts: %1$d</string>
+    <string name="saved_texts_empty">No saved texts</string>
+    <string name="saved_texts_insert">Insert</string>
+    <string name="saved_texts_copy">Copy</string>
+    <string name="saved_texts_delete">Delete</string>
+    <string name="saved_texts_delete_confirm">Delete this saved text?</string>
+    <string name="saved_texts_close">Close saved texts</string>
+    <string name="saved_texts_copied">Text copied</string>
+    <string name="saved_texts_insert_failed">Choose a text field and try again.</string>
+    <string name="saved_texts_action_failed">Could not complete this action. Try again.</string>
 </resources>

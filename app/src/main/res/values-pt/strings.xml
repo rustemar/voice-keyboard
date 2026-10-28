@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Usar um painel menor quando o modo Terminal estiver ativo no pós-processamento. O botão de expandir mostra todas as teclas.</string>
     <string name="terminal_compact_expand">Mostrar teclado completo</string>
     <string name="recognition_setup">Instruções de configuração</string>
+    <string name="saved_texts_title">Textos guardados</string>
+    <string name="saved_texts_count">Textos guardados: %1$d</string>
+    <string name="saved_texts_empty">Sem textos guardados</string>
+    <string name="saved_texts_insert">Inserir</string>
+    <string name="saved_texts_copy">Copiar</string>
+    <string name="saved_texts_delete">Eliminar</string>
+    <string name="saved_texts_delete_confirm">Eliminar este texto guardado?</string>
+    <string name="saved_texts_close">Fechar textos guardados</string>
+    <string name="saved_texts_copied">Texto copiado</string>
+    <string name="saved_texts_insert_failed">Selecione um campo de texto e tente novamente.</string>
+    <string name="saved_texts_action_failed">Não foi possível concluir esta ação. Tente novamente.</string>
 </resources>

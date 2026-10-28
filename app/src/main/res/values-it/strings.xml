@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Usa un pannello ridotto quando la modalità Terminale è attiva nella post-elaborazione. Il pulsante di espansione mostra tutti i tasti.</string>
     <string name="terminal_compact_expand">Mostra tastiera completa</string>
     <string name="recognition_setup">Istruzioni di configurazione</string>
+    <string name="saved_texts_title">Testi salvati</string>
+    <string name="saved_texts_count">Testi salvati: %1$d</string>
+    <string name="saved_texts_empty">Nessun testo salvato</string>
+    <string name="saved_texts_insert">Inserisci</string>
+    <string name="saved_texts_copy">Copia</string>
+    <string name="saved_texts_delete">Elimina</string>
+    <string name="saved_texts_delete_confirm">Eliminare questo testo salvato?</string>
+    <string name="saved_texts_close">Chiudi testi salvati</string>
+    <string name="saved_texts_copied">Testo copiato</string>
+    <string name="saved_texts_insert_failed">Seleziona un campo di testo e riprova.</string>
+    <string name="saved_texts_action_failed">Impossibile completare l\'azione. Riprova.</string>
 </resources>

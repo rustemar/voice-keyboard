@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Azioni sul testo</string>
+    <string name="text_actions_beta_title">Azioni sul testo selezionato · Beta</string>
+    <string name="text_actions_beta_hint">Traduci, correggi o riscrivi il testo selezionato con il servizio di post-elaborazione. Controlla il risultato prima di applicarlo.</string>
+    <string name="text_actions_close">Chiudi azioni sul testo</string>
+    <string name="text_actions_instruction">Istruzione di modifica</string>
+    <string name="text_actions_instruction_hint">Ad esempio: rendi questo messaggio più formale.</string>
+    <string name="text_actions_select_first">Seleziona prima del testo nell’app.</string>
+    <string name="text_actions_too_long">Seleziona un brano più breve, fino a 16.000 caratteri.</string>
+    <string name="text_actions_unavailable">Le azioni sul testo non sono disponibili in questo campo.</string>
+    <string name="text_actions_selection">Testo selezionato</string>
+    <string name="text_actions_configure">Abilita e configura la post-elaborazione per usare queste azioni.</string>
+    <string name="text_actions_provider_notice">Solo il testo selezionato viene inviato al servizio di post-elaborazione configurato quando scegli un’azione.</string>
+    <string name="text_actions_fix">Correggi ortografia e grammatica</string>
+    <string name="text_actions_translate">Traduci in %1$s</string>
+    <string name="text_actions_custom">Istruzione personalizzata</string>
+    <string name="text_actions_type_instruction">Scrivi istruzione</string>
+    <string name="text_actions_preview">Anteprima del risultato</string>
+    <string name="text_actions_processing">Elaborazione della selezione…</string>
+    <string name="text_actions_result">Risultato</string>
+    <string name="text_actions_preview_hint">Controlla il risultato. Chiudendo l’anteprima, il risultato non applicato viene conservato nei testi salvati.</string>
+    <string name="text_actions_selection_changed">Il campo, il testo o la selezione è cambiato. Seleziona di nuovo il brano originale e avvia una nuova azione.</string>
+    <string name="text_actions_apply">Applica alla selezione</string>
+    <string name="text_actions_copy">Copia risultato</string>
+    <string name="text_actions_save">Salva per dopo</string>
+    <string name="text_actions_applied">La selezione è stata sostituita. Puoi annullare finché il brano inserito resta selezionato e invariato.</string>
+    <string name="text_actions_undo">Annulla sostituzione</string>
+    <string name="text_actions_copied">Risultato copiato.</string>
+    <string name="text_actions_saved">Risultato conservato nei testi salvati.</string>
+    <string name="text_actions_save_failed">Impossibile salvare il risultato.</string>
+    <string name="text_actions_failed">Impossibile elaborare la selezione. Controlla post-elaborazione e connessione.</string>
+    <string name="text_actions_open_settings">Impostazioni di post-elaborazione</string>
+</resources>

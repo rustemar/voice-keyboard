@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Πληκτρολόγιο γρήγορων διορθώσεων · Beta</string>
+    <string name="qc_beta_hint">Προαιρετικές βασικές διατάξεις σε 14 γλώσσες, όπως γαλλικά, γερμανικά και χίντι. Χωρίς προτάσεις, πληκτρολόγηση με σάρωση ή μετατροπή για κινεζικά, ιαπωνικά και κορεατικά.</string>
+    <string name="qc_open">Άνοιγμα πληκτρολογίου διορθώσεων</string>
+    <string name="qc_return_to_voice">Επιστροφή στο πλαίσιο φωνής</string>
+    <string name="qc_choose_layout">Επιλογή διάταξης. Τρέχουσα: %1$s</string>
+    <string name="qc_layouts">Διάταξη πληκτρολογίου</string>
+    <string name="qc_layout_limits">Μόνο βασική άμεση εισαγωγή χαρακτήρων. Δεν διατίθεται μετατροπή για κινεζικά, ιαπωνικά και κορεατικά.</string>
+    <string name="qc_more_characters">Περισσότεροι χαρακτήρες</string>
+    <string name="qc_letters">Γράμματα</string>
+    <string name="qc_symbols">Αριθμοί και σύμβολα</string>
+    <string name="qc_shift">Κεφαλαία· παρατεταμένο πάτημα για κλείδωμα</string>
+    <string name="qc_backspace">Διαγραφή προηγούμενου χαρακτήρα</string>
+    <string name="qc_space">Διάστημα</string>
+    <string name="qc_enter">Enter</string>
+    <string name="qc_done">Τέλος</string>
+    <string name="qc_editor_unavailable">Το πεδίο κειμένου δεν είναι διαθέσιμο. Ανοίξτε το ξανά και δοκιμάστε πάλι.</string>
+</resources>

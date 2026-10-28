@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">वाक् पहचान</string>
+    <string name="settings_section_manual">कनेक्शन और पहचान का विवरण</string>
+    <string name="settings_section_keyboard">कीबोर्ड और स्वरूप</string>
+    <string name="settings_section_diagnostics">परीक्षण और निदान</string>
+    <string name="settings_section_about">अपडेट और जानकारी</string>
+    <string name="settings_section_experiments">प्रयोगात्मक सुविधाएँ</string>
+    <string name="settings_experiments_hint">मूल्यांकन के अंतर्गत वैकल्पिक सुविधाएँ। प्रत्येक को अलग से चालू करें।</string>
+    <string name="settings_section_expand">दिखाएँ: %1$s</string>
+    <string name="settings_section_collapse">छिपाएँ: %1$s</string>
+    <string name="settings_active_keyboard_hint">इन सेटिंग में लिखने के लिए कीबोर्ड बदलने वाले बटन से अपना सामान्य कीबोर्ड चुनें।</string>
+    <string name="settings_manage_keyboards">कीबोर्ड प्रबंधित करें</string>
+</resources>

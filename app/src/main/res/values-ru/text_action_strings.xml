@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Действия с текстом</string>
+    <string name="text_actions_beta_title">Действия с выделенным текстом · Бета</string>
+    <string name="text_actions_beta_hint">Переводите, исправляйте или переписывайте выделенный текст через сервис постобработки. Проверяйте результат перед применением.</string>
+    <string name="text_actions_close">Закрыть действия с текстом</string>
+    <string name="text_actions_instruction">Инструкция для обработки</string>
+    <string name="text_actions_instruction_hint">Например: сделай это сообщение более официальным.</string>
+    <string name="text_actions_select_first">Сначала выделите текст в приложении.</string>
+    <string name="text_actions_too_long">Выделите фрагмент покороче: до 16 000 символов.</string>
+    <string name="text_actions_unavailable">Действия с текстом недоступны в этом поле.</string>
+    <string name="text_actions_selection">Выделенный текст</string>
+    <string name="text_actions_configure">Для действий с текстом включите и настройте постобработку.</string>
+    <string name="text_actions_provider_notice">После выбора действия сервису постобработки отправляется только выделенный текст.</string>
+    <string name="text_actions_fix">Исправить орфографию и грамматику</string>
+    <string name="text_actions_translate">Перевести: %1$s</string>
+    <string name="text_actions_custom">Своя инструкция</string>
+    <string name="text_actions_type_instruction">Набрать инструкцию</string>
+    <string name="text_actions_preview">Посмотреть результат</string>
+    <string name="text_actions_processing">Обработка выделения…</string>
+    <string name="text_actions_result">Результат</string>
+    <string name="text_actions_preview_hint">Проверьте результат. При закрытии неприменённый результат попадёт в «Сохранённые тексты».</string>
+    <string name="text_actions_selection_changed">Поле, текст или выделение изменились. Выделите исходный фрагмент заново и начните новое действие.</string>
+    <string name="text_actions_apply">Применить к выделению</string>
+    <string name="text_actions_copy">Копировать результат</string>
+    <string name="text_actions_save">Сохранить на потом</string>
+    <string name="text_actions_applied">Выделение заменено. Отмена доступна, пока вставленный фрагмент выделен и не изменён.</string>
+    <string name="text_actions_undo">Отменить замену</string>
+    <string name="text_actions_copied">Результат скопирован.</string>
+    <string name="text_actions_saved">Результат оставлен в «Сохранённых текстах».</string>
+    <string name="text_actions_save_failed">Не удалось сохранить результат.</string>
+    <string name="text_actions_failed">Не удалось обработать выделение. Проверьте настройки постобработки и подключение.</string>
+    <string name="text_actions_open_settings">Настройки постобработки</string>
+</resources>

@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Käytä pienempää paneelia, kun jälkikäsittelyn päätetila on käytössä. Laajennuspainike näyttää kaikki näppäimet.</string>
     <string name="terminal_compact_expand">Näytä koko näppäimistö</string>
     <string name="recognition_setup">Määritysohjeet</string>
+    <string name="saved_texts_title">Tallennetut tekstit</string>
+    <string name="saved_texts_count">Tallennetut tekstit: %1$d</string>
+    <string name="saved_texts_empty">Ei tallennettuja tekstejä</string>
+    <string name="saved_texts_insert">Lisää</string>
+    <string name="saved_texts_copy">Kopioi</string>
+    <string name="saved_texts_delete">Poista</string>
+    <string name="saved_texts_delete_confirm">Poistetaanko tämä tallennettu teksti?</string>
+    <string name="saved_texts_close">Sulje tallennetut tekstit</string>
+    <string name="saved_texts_copied">Teksti kopioitu</string>
+    <string name="saved_texts_insert_failed">Valitse tekstikenttä ja yritä uudelleen.</string>
+    <string name="saved_texts_action_failed">Toiminto epäonnistui. Yritä uudelleen.</string>
 </resources>

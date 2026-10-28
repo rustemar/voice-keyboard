@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Text actions</string>
+    <string name="text_actions_beta_title">Actions on selected text · Beta</string>
+    <string name="text_actions_beta_hint">Translate, correct or rewrite selected text with your post-processing provider. Review the result before applying it.</string>
+    <string name="text_actions_close">Close text actions</string>
+    <string name="text_actions_instruction">Editing instruction</string>
+    <string name="text_actions_instruction_hint">For example: make this message more formal.</string>
+    <string name="text_actions_select_first">Select some text in the app first.</string>
+    <string name="text_actions_too_long">Select a shorter passage (up to 16,000 characters).</string>
+    <string name="text_actions_unavailable">Text actions are unavailable in this field.</string>
+    <string name="text_actions_selection">Selected text</string>
+    <string name="text_actions_configure">Enable and configure post-processing to use text actions.</string>
+    <string name="text_actions_provider_notice">Only the selected text is sent to your configured post-processing provider when you choose an action.</string>
+    <string name="text_actions_fix">Correct spelling and grammar</string>
+    <string name="text_actions_translate">Translate into %1$s</string>
+    <string name="text_actions_custom">Custom instruction</string>
+    <string name="text_actions_type_instruction">Type instruction</string>
+    <string name="text_actions_preview">Preview result</string>
+    <string name="text_actions_processing">Processing selection…</string>
+    <string name="text_actions_result">Result</string>
+    <string name="text_actions_preview_hint">Review the result. Closing this preview saves an unapplied result in Saved texts.</string>
+    <string name="text_actions_selection_changed">The editor, text or selection changed. Select the original passage again and start a new action.</string>
+    <string name="text_actions_apply">Apply to selection</string>
+    <string name="text_actions_copy">Copy result</string>
+    <string name="text_actions_save">Save for later</string>
+    <string name="text_actions_applied">The selection was replaced. Undo is available while the inserted passage remains selected and unchanged.</string>
+    <string name="text_actions_undo">Undo replacement</string>
+    <string name="text_actions_copied">Result copied.</string>
+    <string name="text_actions_saved">Result kept in Saved texts.</string>
+    <string name="text_actions_save_failed">Could not save the result.</string>
+    <string name="text_actions_failed">Could not process the selection. Check your post-processing settings and connection.</string>
+    <string name="text_actions_open_settings">Post-processing settings</string>
+</resources>

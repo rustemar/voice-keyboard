@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Распознавание речи</string>
+    <string name="settings_section_manual">Подключение и параметры распознавания</string>
+    <string name="settings_section_keyboard">Клавиатура и оформление</string>
+    <string name="settings_section_diagnostics">Проверка и диагностика</string>
+    <string name="settings_section_about">Обновления и приложение</string>
+    <string name="settings_section_experiments">Экспериментальные функции</string>
+    <string name="settings_experiments_hint">Необязательные функции на этапе проверки. Каждая включается отдельно.</string>
+    <string name="settings_section_expand">Показать: %1$s</string>
+    <string name="settings_section_collapse">Скрыть: %1$s</string>
+    <string name="settings_active_keyboard_hint">Для ввода в настройках выберите привычную клавиатуру кнопкой переключения клавиатур.</string>
+    <string name="settings_manage_keyboards">Системные клавиатуры</string>
+</resources>

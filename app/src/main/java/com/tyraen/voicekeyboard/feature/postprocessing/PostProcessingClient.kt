@@ -65,12 +65,14 @@ class PostProcessingClient(private val httpClient: OkHttpClient) {
                     maxTokens = null
                 )
             }
-            DiagnosticLog.record(TAG, "Success: ${result.take(50)}")
+            DiagnosticLog.record(TAG, "Success: ${result.length} characters")
             Result.success(result)
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            DiagnosticLog.recordFailure(TAG, "Failed", e)
+            // Provider error bodies can echo the selected passage. Keep editor text out of logs.
+            val failure = if (e is ApiException) "HTTP ${e.statusCode}" else e.javaClass.simpleName
+            DiagnosticLog.recordFailure(TAG, "Failed: $failure")
             Result.failure(e)
         }
     }

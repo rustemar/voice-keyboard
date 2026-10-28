@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="quickCorrectionOverlay" />
+    <item type="id" name="btnQuickCorrectionLayout" />
+    <item type="id" name="btnQuickCorrectionClose" />
+    <item type="id" name="btnQuickCorrectionPaste" />
+    <item type="id" name="btnQuickCorrectionShift" />
+    <item type="id" name="btnQuickCorrectionSymbols" />
+    <item type="id" name="btnQuickCorrectionCharacters" />
+    <item type="id" name="btnQuickCorrectionBackspace" />
+    <item type="id" name="btnQuickCorrectionSpace" />
+    <item type="id" name="btnQuickCorrectionEnter" />
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">त्वरित सुधार के लिए कीबोर्ड · बीटा</string>
+    <string name="qc_beta_hint">हिंदी, फ़्रेंच और जर्मन सहित 14 भाषाओं में वैकल्पिक बुनियादी लेआउट। सुझाव, स्वाइप टाइपिंग या चीनी, जापानी और कोरियाई इनपुट रूपांतरण उपलब्ध नहीं है।</string>
+    <string name="qc_open">सुधार कीबोर्ड खोलें</string>
+    <string name="qc_return_to_voice">वॉइस पैनल पर लौटें</string>
+    <string name="qc_choose_layout">लेआउट चुनें। वर्तमान: %1$s</string>
+    <string name="qc_layouts">कीबोर्ड लेआउट</string>
+    <string name="qc_layout_limits">केवल बुनियादी प्रत्यक्ष अक्षर इनपुट। चीनी, जापानी और कोरियाई इनपुट रूपांतरण उपलब्ध नहीं है।</string>
+    <string name="qc_more_characters">अन्य अक्षर और चिह्न</string>
+    <string name="qc_letters">अक्षर</string>
+    <string name="qc_symbols">अंक और चिह्न</string>
+    <string name="qc_shift">बड़े अक्षर; लॉक करने के लिए दबाकर रखें</string>
+    <string name="qc_backspace">पिछला अक्षर मिटाएँ</string>
+    <string name="qc_space">स्पेस</string>
+    <string name="qc_enter">एंटर</string>
+    <string name="qc_done">हो गया</string>
+    <string name="qc_editor_unavailable">टेक्स्ट फ़ील्ड उपलब्ध नहीं है। उसे फिर से खोलकर दोबारा कोशिश करें।</string>
+</resources>

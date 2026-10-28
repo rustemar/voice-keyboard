@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Puheentunnistus</string>
+    <string name="settings_section_manual">Yhteys ja tunnistuksen lisäasetukset</string>
+    <string name="settings_section_keyboard">Näppäimistö ja ulkoasu</string>
+    <string name="settings_section_diagnostics">Testit ja diagnostiikka</string>
+    <string name="settings_section_about">Päivitykset ja tiedot</string>
+    <string name="settings_section_experiments">Kokeelliset toiminnot</string>
+    <string name="settings_experiments_hint">Valinnaisia kokeiltavia toimintoja. Jokainen otetaan käyttöön erikseen.</string>
+    <string name="settings_section_expand">Näytä: %1$s</string>
+    <string name="settings_section_collapse">Piilota: %1$s</string>
+    <string name="settings_active_keyboard_hint">Voit kirjoittaa asetuksiin valitsemalla tavallisen näppäimistösi näppäimistön vaihtopainikkeella.</string>
+    <string name="settings_manage_keyboards">Hallitse näppäimistöjä</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">簡単な修正用キーボード · ベータ</string>
+    <string name="qc_beta_hint">フランス語、ドイツ語、ヒンディー語など14言語の基本配列を任意で使えます。予測、スワイプ入力、中国語・日本語・韓国語の変換には対応していません。</string>
+    <string name="qc_open">修正用キーボードを開く</string>
+    <string name="qc_return_to_voice">音声パネルに戻る</string>
+    <string name="qc_choose_layout">配列を選択。現在：%1$s</string>
+    <string name="qc_layouts">キーボード配列</string>
+    <string name="qc_layout_limits">基本的な直接入力のみです。中国語・日本語・韓国語の入力変換には対応していません。</string>
+    <string name="qc_more_characters">その他の文字</string>
+    <string name="qc_letters">文字</string>
+    <string name="qc_symbols">数字と記号</string>
+    <string name="qc_shift">大文字。長押しで固定</string>
+    <string name="qc_backspace">前の文字を削除</string>
+    <string name="qc_space">スペース</string>
+    <string name="qc_enter">改行・実行</string>
+    <string name="qc_done">完了</string>
+    <string name="qc_editor_unavailable">テキスト欄を使用できません。開き直して再試行してください。</string>
+</resources>

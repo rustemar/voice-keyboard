@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">पोस्ट-प्रोसेसिंग में टर्मिनल मोड चालू होने पर छोटा पैनल दिखाएँ। सभी कुंजियों के लिए पैनल को बड़ा करें।</string>
     <string name="terminal_compact_expand">पूरा कीबोर्ड दिखाएँ</string>
     <string name="recognition_setup">सेटअप के निर्देश</string>
+    <string name="saved_texts_title">सहेजे गए टेक्स्ट</string>
+    <string name="saved_texts_count">सहेजे गए टेक्स्ट: %1$d</string>
+    <string name="saved_texts_empty">कोई सहेजा गया टेक्स्ट नहीं</string>
+    <string name="saved_texts_insert">डालें</string>
+    <string name="saved_texts_copy">कॉपी करें</string>
+    <string name="saved_texts_delete">हटाएँ</string>
+    <string name="saved_texts_delete_confirm">यह सहेजा गया टेक्स्ट हटाएँ?</string>
+    <string name="saved_texts_close">सहेजे गए टेक्स्ट बंद करें</string>
+    <string name="saved_texts_copied">टेक्स्ट कॉपी किया गया</string>
+    <string name="saved_texts_insert_failed">टेक्स्ट फ़ील्ड चुनें और फिर कोशिश करें।</string>
+    <string name="saved_texts_action_failed">यह कार्रवाई पूरी नहीं हुई। फिर कोशिश करें।</string>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Speech recognition</string>
+    <string name="settings_section_manual">Connection and recognition details</string>
+    <string name="settings_section_keyboard">Keyboard and appearance</string>
+    <string name="settings_section_diagnostics">Tests and diagnostics</string>
+    <string name="settings_section_about">Updates and about</string>
+    <string name="settings_section_experiments">Experimental features</string>
+    <string name="settings_experiments_hint">Optional features under evaluation. Each is off until you enable it.</string>
+    <string name="settings_section_expand">Show %1$s</string>
+    <string name="settings_section_collapse">Hide %1$s</string>
+    <string name="settings_active_keyboard_hint">To type in these settings, use the keyboard-switch button to choose your usual keyboard.</string>
+    <string name="settings_manage_keyboards">Manage keyboards</string>
+</resources>

@@ -17,6 +17,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - **Processing queue** — start a new recording immediately, previous ones transcribe in the background
 - **Cancel the latest dictation** — the × button stays available during recognition and post-processing. It cancels only the newest unfinished recording, including one waiting to be resent; earlier recordings continue.
 - **Offline-proof recovery** — recordings that can't be transcribed are saved on the device and resent automatically as soon as a validated internet connection returns; they survive closing the keyboard, app rebuilds, and reboots, and are kept until successfully sent (a "resend" button is also available to force a retry)
+- **Saved texts** — if you leave the original text field or switch keyboards before recognition finishes, the result stays in the app instead of replacing your clipboard. A button with a count appears on the keyboard: open it to insert, copy or delete individual results. Saved texts survive app restarts; copying happens only when you choose it.
 - Works with OpenAI-compatible `/audio/transcriptions` and `/chat/completions` audio APIs; ships with Groq as the default (whisper-large-v3-turbo). Free keys are available from both Groq and Mistral
 - **Your own server** — a speech server on your home network works too, over plain `http://` if need be; the settings warn that such an address is not encrypted
 - Configurable API endpoint, model, and language
@@ -41,7 +42,9 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - **Recent dictation context** (off by default) — optionally send up to 5 of your own recent dictations to the post-processing provider to help correct names and terms misheard by speech recognition. Kept only in memory and cleared when you change apps or turn it off. It does not read your chats; context is shared between chats within the same app.
 
 ### Keyboard
-- **Back to your keyboard** — the key in the top corner takes you straight back to the keyboard you came from (Gboard, HeliBoard, …); to just hide the panel, use the system back gesture or button
+- **Quick corrections · Beta** (off by default) — enable the optional letter layout in Advanced settings → Experimental features. Its keyboard icon opens 14 basic layouts: English, French (AZERTY), German (QWERTZ), Spanish, Italian, Portuguese, Polish, Finnish, Turkish, Greek, Belarusian, Russian, Hindi and Arabic. Includes Shift, accents/additional characters and numbers/symbols; the selected layout is independent of the interface and dictation languages. No predictions, swipe typing or Chinese/Japanese/Korean input conversion.
+- **Selected-text actions · Beta** (off by default) — select text in another app, then open Text actions to proofread, translate or enter a one-time instruction. Uses your existing post-processing provider; only the selected passage is sent after you choose an action. Review a preview before applying it. Apply and Undo check that the original editor, selection and surrounding text still match. Closing an unapplied preview keeps it in Saved texts. Custom instructions use local correction keys or explicit paste, without switching Android keyboards.
+- **Back to your keyboard** — the key in the top corner takes you straight back to the keyboard you came from (Gboard, HeliBoard, …). If Android has no usable keyboard history, it offers the keyboard picker; to just hide the panel, use the system back gesture or button
 - **Send button** (paper plane) — sends Ctrl+Enter for quick message sending in messengers
 - **Enter follows the field** — in a search box, address bar or form it runs Search, Go, Send, Next or Done and shows that icon; in chat boxes it still starts a new line, and where a chat box sends on Enter, long-press it for a new line
 - **No voice in password fields** — the microphone is off there and auto-record doesn't start
@@ -50,10 +53,11 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - **Smart spacing** — dictated text gets a space in front when the cursor sits after a word, and never a doubled one before an existing space or full stop
 - **Clipboard bar** stays visible after paste for repeated pasting
 - **Compact terminal panel** (off by default) — enable it in Advanced settings to use a smaller panel while Terminal mode is active. Keeps microphone, cancel, backspace, Enter and keyboard switching accessible; expand it during recording without interrupting the dictation. Narrow windows keep the full panel.
-- **Graceful shutdown** — if keyboard hides during recording, audio is finalized and transcribed to clipboard
+- **Graceful shutdown** — if the keyboard hides during recording, audio is finalized; results that cannot be inserted into the original editor are kept in Saved texts
 
 ### General
-- 17 interface and transcription languages
+- 17 interface languages; dictation-language support depends on the selected speech provider and model
+- Main settings keep provider, API key and dictation languages visible; connection details, keyboard preferences, diagnostics and updates expand when needed. Changing the interface language preserves dictation languages and custom prompts.
 - Light, Dark, and Auto themes
 - Long-press spacebar to switch keyboard
 - Built-in test recording in settings
@@ -79,7 +83,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 
 ### Using it with another keyboard
 
-Voice Keyboard has no letter keys. To type by hand as well, keep your usual keyboard and let its mic key open Voice Keyboard:
+The default voice panel has no letter keys. For full typing features, keep your usual keyboard and let its mic key open Voice Keyboard. An optional basic correction layout is available separately as a beta:
 
 1. Enable Voice Keyboard in the system keyboard list (step 3 above); you don't have to switch to it.
 2. In your keyboard, turn on the voice input key (in HeliBoard it sits in the toolbar).

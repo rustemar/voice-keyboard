@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Używaj mniejszego panelu, gdy tryb terminala jest włączony w przetwarzaniu końcowym. Przycisk rozwijania pokazuje wszystkie klawisze.</string>
     <string name="terminal_compact_expand">Pokaż pełną klawiaturę</string>
     <string name="recognition_setup">Instrukcja konfiguracji</string>
+    <string name="saved_texts_title">Zapisane teksty</string>
+    <string name="saved_texts_count">Zapisane teksty: %1$d</string>
+    <string name="saved_texts_empty">Brak zapisanych tekstów</string>
+    <string name="saved_texts_insert">Wstaw</string>
+    <string name="saved_texts_copy">Kopiuj</string>
+    <string name="saved_texts_delete">Usuń</string>
+    <string name="saved_texts_delete_confirm">Usunąć ten zapisany tekst?</string>
+    <string name="saved_texts_close">Zamknij zapisane teksty</string>
+    <string name="saved_texts_copied">Tekst skopiowany</string>
+    <string name="saved_texts_insert_failed">Wybierz pole tekstowe i spróbuj ponownie.</string>
+    <string name="saved_texts_action_failed">Nie udało się wykonać działania. Spróbuj ponownie.</string>
 </resources>

@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Utiliser un panneau réduit lorsque le mode Terminal est actif dans le post-traitement. Le bouton d’agrandissement affiche toutes les touches.</string>
     <string name="terminal_compact_expand">Afficher le clavier complet</string>
     <string name="recognition_setup">Instructions de configuration</string>
+    <string name="saved_texts_title">Textes enregistrés</string>
+    <string name="saved_texts_count">Textes enregistrés : %1$d</string>
+    <string name="saved_texts_empty">Aucun texte enregistré</string>
+    <string name="saved_texts_insert">Insérer</string>
+    <string name="saved_texts_copy">Copier</string>
+    <string name="saved_texts_delete">Supprimer</string>
+    <string name="saved_texts_delete_confirm">Supprimer ce texte enregistré ?</string>
+    <string name="saved_texts_close">Fermer les textes enregistrés</string>
+    <string name="saved_texts_copied">Texte copié</string>
+    <string name="saved_texts_insert_failed">Sélectionnez un champ de texte et réessayez.</string>
+    <string name="saved_texts_action_failed">Impossible de terminer cette action. Réessayez.</string>
 </resources>

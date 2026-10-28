@@ -8,49 +8,66 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 /**
- * Checks the translations against `values/strings.xml`. Lint only warns about a missing
- * translation, and a wrong format specifier is not caught at build time at all: it crashes
+ * Checks every string-resource file against the default English resources. Lint only warns
+ * about a missing translation, and a wrong format specifier is not caught at build time: it crashes
  * `getString(id, args)` on the device, inside the keyboard for panel strings.
  */
 class StringResourcesTest {
 
     private val resDir = File("src/main/res")
 
-    /** Left in English on purpose: the app name and the default endpoint, model and prompt. */
-    private val untranslated = setOf(
-        "app_name", "default_endpoint", "default_model", "default_language", "default_prompt"
-    )
+    private data class StringResource(val text: String, val translatable: Boolean, val file: File)
 
     // Tokenised like java.util.Formatter, so the escaped "%%" is one token and not the start of "% f".
     private val specifier = Regex("""%(\d+\$)?[-#+ 0,(<]*\d*(\.\d+)?([tT]?[a-zA-Z]|%)""")
 
-    private fun load(file: File): Map<String, String> {
-        val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file)
-        val nodes = doc.getElementsByTagName("string")
-        return (0 until nodes.length).associate { i ->
-            val e = nodes.item(i) as Element
-            e.getAttribute("name") to e.textContent
-        }
+    private fun load(directory: File): Map<String, StringResource> {
+        val strings = linkedMapOf<String, StringResource>()
+        directory.listFiles { file -> file.isFile && file.extension == "xml" }!!
+            .sortedBy { it.name }
+            .forEach { file ->
+                val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file)
+                val nodes = doc.getElementsByTagName("string")
+                for (index in 0 until nodes.length) {
+                    val element = nodes.item(index) as Element
+                    val name = element.getAttribute("name")
+                    val previous = strings[name]
+                    assertTrue(
+                        "$directory/$name is defined in both ${previous?.file?.name} and ${file.name}",
+                        previous == null
+                    )
+                    strings[name] = StringResource(
+                        element.textContent,
+                        element.getAttribute("translatable") != "false",
+                        file
+                    )
+                }
+            }
+        return strings
     }
 
     private fun specifiers(text: String) = specifier.findAll(text).map { it.value }
         .filter { it != "%%" && it != "%n" }.sorted().toList()
 
-    private val base by lazy { load(File(resDir, "values/strings.xml")) }
+    private val base by lazy { load(File(resDir, "values")) }
 
     private val locales by lazy {
-        resDir.listFiles { f -> f.name.startsWith("values-") && File(f, "strings.xml").exists() }!!
+        resDir.listFiles { file -> file.isDirectory && file.name.matches(Regex("values-[a-z]{2,3}")) }!!
             .sortedBy { it.name }
-            .associate { it.name to load(File(it, "strings.xml")) }
+            .associate { it.name to load(it) }
     }
 
-    @Test fun `all 16 translations are found`() {
-        assertEquals(16, locales.size)
+    @Test fun `every interface language has translated resources`() {
+        val expected = TranscriptionLocale.entries.filter { it.code != "en" }
+            .map { "values-${it.code}" }.toSet()
+        assertEquals(expected, locales.keys)
+        assertTrue("English resources are missing", base.isNotEmpty())
     }
 
     @Test fun `every translation defines every translatable string`() {
         for ((dir, strings) in locales) {
-            val missing = base.keys - untranslated - strings.keys
+            val translatable = base.filterValues { it.translatable }.keys
+            val missing = translatable - strings.keys
             assertTrue("$dir is missing $missing", missing.isEmpty())
         }
     }
@@ -59,7 +76,7 @@ class StringResourcesTest {
         for ((dir, strings) in locales) {
             for ((name, text) in strings) {
                 val english = base[name] ?: continue
-                assertEquals("$dir/$name", specifiers(english), specifiers(text))
+                assertEquals("$dir/$name", specifiers(english.text), specifiers(text.text))
             }
         }
     }

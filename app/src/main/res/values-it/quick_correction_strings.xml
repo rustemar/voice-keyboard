@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Tastiera per correzioni rapide · Beta</string>
+    <string name="qc_beta_hint">Layout di base facoltativi in 14 lingue, tra cui francese, tedesco e hindi. Senza suggerimenti, digitazione a scorrimento o conversione per cinese, giapponese e coreano.</string>
+    <string name="qc_open">Apri la tastiera di correzione</string>
+    <string name="qc_return_to_voice">Torna al pannello vocale</string>
+    <string name="qc_choose_layout">Scegli layout. Attuale: %1$s</string>
+    <string name="qc_layouts">Layout della tastiera</string>
+    <string name="qc_layout_limits">Solo digitazione diretta di base. La conversione per cinese, giapponese e coreano non è disponibile.</string>
+    <string name="qc_more_characters">Altri caratteri</string>
+    <string name="qc_letters">Lettere</string>
+    <string name="qc_symbols">Numeri e simboli</string>
+    <string name="qc_shift">Maiuscole; tieni premuto per bloccare</string>
+    <string name="qc_backspace">Elimina il carattere precedente</string>
+    <string name="qc_space">Spazio</string>
+    <string name="qc_enter">Invio</string>
+    <string name="qc_done">Fine</string>
+    <string name="qc_editor_unavailable">Il campo di testo non è disponibile. Riaprilo e riprova.</string>
+</resources>

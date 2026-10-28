@@ -30,6 +30,14 @@ class AdvancedSettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_advanced_settings)
         options = AdvancedPreferences(this)
+        findViewById<Switch>(R.id.switchQuickCorrection).apply {
+            isChecked = options.quickCorrectionEnabled
+            setOnCheckedChangeListener { _, enabled -> options.quickCorrectionEnabled = enabled }
+        }
+        findViewById<Switch>(R.id.switchTextActions).apply {
+            isChecked = options.textActionsEnabled
+            setOnCheckedChangeListener { _, enabled -> options.textActionsEnabled = enabled }
+        }
         findViewById<Switch>(R.id.switchCompactTerminal).apply {
             isChecked = options.compactTerminal
             setOnCheckedChangeListener { _, enabled -> options.compactTerminal = enabled }

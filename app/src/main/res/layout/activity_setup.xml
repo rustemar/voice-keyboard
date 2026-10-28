@@ -20,6 +20,7 @@
             android:layout_marginBottom="8dp" />
 
         <TextView
+            android:id="@+id/txtEnableInstructions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_enable_instructions"
@@ -80,29 +81,24 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Theme -->
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_theme"
-            android:textColor="@color/key_text"
-            android:textSize="14sp" />
-        <Spinner
-            android:id="@+id/spinnerTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/mic_idle"
-            android:layout_marginBottom="16dp" />
+            android:text="@string/settings_section_recognition"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
-        <!-- Interface Language -->
+        <!-- Provider preset: fills endpoint + model -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settings_interface_language"
+            android:text="@string/preset_label"
             android:textColor="@color/key_text"
             android:textSize="14sp" />
         <Spinner
-            android:id="@+id/spinnerLanguage"
+            android:id="@+id/spinnerSttPreset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/mic_idle"
@@ -151,20 +147,52 @@
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
 
-        <!-- Provider preset: fills endpoint + model -->
+        <!-- Language -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/preset_label"
+            android:text="@string/settings_language"
             android:textColor="@color/key_text"
             android:textSize="14sp" />
-        <Spinner
-            android:id="@+id/spinnerSttPreset"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_language_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginBottom="4dp" />
+        <EditText
+            android:id="@+id/editLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text|textNoSuggestions"
+            android:importantForAutofill="no"
+            android:textColor="@color/text_primary"
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
 
+        <Button
+            android:id="@+id/btnRecognitionDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_section_manual"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg"
+            android:drawableEnd="@drawable/ic_section_expand"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp" />
+        <LinearLayout
+            android:id="@+id/recognitionDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
         <!-- Endpoint -->
         <TextView
             android:layout_width="wrap_content"
@@ -208,30 +236,6 @@
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
 
-        <!-- Language -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_language"
-            android:textColor="@color/key_text"
-            android:textSize="14sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_language_hint"
-            android:textColor="@color/status_text"
-            android:textSize="11sp"
-            android:layout_marginBottom="4dp" />
-        <EditText
-            android:id="@+id/editLanguage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text|textNoSuggestions"
-            android:importantForAutofill="no"
-            android:textColor="@color/text_primary"
-            android:backgroundTint="@color/mic_idle"
-            android:layout_marginBottom="16dp" />
-
         <!-- Prompt -->
         <TextView
             android:layout_width="wrap_content"
@@ -253,6 +257,83 @@
             android:inputType="textMultiLine"
             android:minLines="2"
             android:textColor="@color/text_primary"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_apply"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/mic_idle" />
+
+        <!-- API validation status -->
+        <TextView
+            android:id="@+id/txtApiStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnKeyboardOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_section_keyboard"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg"
+            android:drawableEnd="@drawable/ic_section_expand"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp" />
+        <LinearLayout
+            android:id="@+id/keyboardOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+        <!-- Theme -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_theme"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <Spinner
+            android:id="@+id/spinnerTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Interface Language -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_interface_language"
+            android:textColor="@color/key_text"
+            android:textSize="14sp" />
+        <Spinner
+            android:id="@+id/spinnerLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
 
@@ -316,30 +397,7 @@
             android:textSize="11sp"
             android:layout_marginBottom="24dp" />
 
-        <Button
-            android:id="@+id/btnApply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_apply"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/mic_idle" />
-
-        <!-- API validation status -->
-        <TextView
-            android:id="@+id/txtApiStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="13sp"
-            android:visibility="gone" />
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp" />
+        </LinearLayout>
 
         <!-- Post-processing settings -->
         <Button
@@ -378,6 +436,28 @@
             android:backgroundTint="@color/key_bg"
             android:layout_marginBottom="24dp" />
 
+        <Button
+            android:id="@+id/btnDiagnostics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_section_diagnostics"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg"
+            android:drawableEnd="@drawable/ic_section_expand"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp" />
+        <LinearLayout
+            android:id="@+id/diagnosticsOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
         <!-- Test section -->
         <TextView
             android:layout_width="wrap_content"
@@ -513,6 +593,30 @@
             android:background="@color/divider"
             android:layout_marginBottom="16dp" />
 
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnAboutOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_section_about"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg"
+            android:drawableEnd="@drawable/ic_section_expand"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp" />
+        <LinearLayout
+            android:id="@+id/aboutOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
         <!-- Update section -->
         <Switch
             android:id="@+id/switchUpdateCheck"
@@ -561,6 +665,8 @@
             android:clickable="true"
             android:focusable="true"
             android:layout_marginBottom="24dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

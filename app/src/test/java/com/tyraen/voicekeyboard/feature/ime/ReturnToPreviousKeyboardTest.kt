@@ -31,7 +31,7 @@ class ReturnToPreviousKeyboardTest {
         assertFalse(decide(visible = false))
     }
 
-    @Test fun `stays when the text went to the clipboard instead of the field`() {
+    @Test fun `stays when the text was saved for later instead of inserted into the field`() {
         assertFalse(decide(inserted = false))
     }
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textActionsOverlay" type="id" />
+    <item name="textActionInstruction" type="id" />
+    <item name="textActionResult" type="id" />
+    <item name="btnTextActionsClose" type="id" />
+    <item name="btnTextActionFix" type="id" />
+    <item name="btnTextActionTranslate" type="id" />
+    <item name="btnTextActionCustom" type="id" />
+    <item name="btnTextActionTypeInstruction" type="id" />
+    <item name="btnTextActionPreview" type="id" />
+    <item name="btnTextActionCancel" type="id" />
+    <item name="btnTextActionApply" type="id" />
+    <item name="btnTextActionCopy" type="id" />
+    <item name="btnTextActionSave" type="id" />
+    <item name="btnTextActionUndo" type="id" />
+</resources>

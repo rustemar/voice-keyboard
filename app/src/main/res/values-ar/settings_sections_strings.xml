@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">التعرّف على الكلام</string>
+    <string name="settings_section_manual">الاتصال وتفاصيل التعرّف</string>
+    <string name="settings_section_keyboard">لوحة المفاتيح والمظهر</string>
+    <string name="settings_section_diagnostics">الاختبارات والتشخيص</string>
+    <string name="settings_section_about">التحديثات وحول التطبيق</string>
+    <string name="settings_section_experiments">ميزات تجريبية</string>
+    <string name="settings_experiments_hint">ميزات اختيارية قيد التقييم. تُفعّل كل ميزة على حدة.</string>
+    <string name="settings_section_expand">إظهار %1$s</string>
+    <string name="settings_section_collapse">إخفاء %1$s</string>
+    <string name="settings_active_keyboard_hint">للكتابة في هذه الإعدادات، اختر لوحة مفاتيحك المعتادة باستخدام زر تبديل لوحات المفاتيح.</string>
+    <string name="settings_manage_keyboards">إدارة لوحات المفاتيح</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Metin işlemleri</string>
+    <string name="text_actions_beta_title">Seçili metin işlemleri · Beta</string>
+    <string name="text_actions_beta_hint">Seçili metni son işleme sağlayıcınızla çevirin, düzeltin veya yeniden yazın. Uygulamadan önce sonucu inceleyin.</string>
+    <string name="text_actions_close">Metin işlemlerini kapat</string>
+    <string name="text_actions_instruction">Düzenleme talimatı</string>
+    <string name="text_actions_instruction_hint">Örneğin: bu mesajı daha resmî hâle getir.</string>
+    <string name="text_actions_select_first">Önce uygulamada bir metin seçin.</string>
+    <string name="text_actions_too_long">En fazla 16.000 karakterlik daha kısa bir bölüm seçin.</string>
+    <string name="text_actions_unavailable">Bu alanda metin işlemleri kullanılamıyor.</string>
+    <string name="text_actions_selection">Seçili metin</string>
+    <string name="text_actions_configure">Metin işlemleri için son işlemeyi etkinleştirip yapılandırın.</string>
+    <string name="text_actions_provider_notice">Bir işlem seçtiğinizde yalnızca seçili metin yapılandırılmış son işleme sağlayıcınıza gönderilir.</string>
+    <string name="text_actions_fix">Yazım ve dil bilgisini düzelt</string>
+    <string name="text_actions_translate">%1$s diline çevir</string>
+    <string name="text_actions_custom">Özel talimat</string>
+    <string name="text_actions_type_instruction">Talimat yaz</string>
+    <string name="text_actions_preview">Sonucu önizle</string>
+    <string name="text_actions_processing">Seçim işleniyor…</string>
+    <string name="text_actions_result">Sonuç</string>
+    <string name="text_actions_preview_hint">Sonucu inceleyin. Önizlemeyi kapatmak uygulanmamış sonucu kaydedilen metinlerde saklar.</string>
+    <string name="text_actions_selection_changed">Alan, metin veya seçim değişti. Özgün bölümü yeniden seçip yeni bir işlem başlatın.</string>
+    <string name="text_actions_apply">Seçime uygula</string>
+    <string name="text_actions_copy">Sonucu kopyala</string>
+    <string name="text_actions_save">Sonrası için kaydet</string>
+    <string name="text_actions_applied">Seçim değiştirildi. Eklenen bölüm seçili ve değişmemiş kaldığı sürece geri alabilirsiniz.</string>
+    <string name="text_actions_undo">Değiştirmeyi geri al</string>
+    <string name="text_actions_copied">Sonuç kopyalandı.</string>
+    <string name="text_actions_saved">Sonuç kaydedilen metinlerde tutuldu.</string>
+    <string name="text_actions_save_failed">Sonuç kaydedilemedi.</string>
+    <string name="text_actions_failed">Seçim işlenemedi. Son işleme ayarlarını ve bağlantıyı kontrol edin.</string>
+    <string name="text_actions_open_settings">Son işleme ayarları</string>
+</resources>

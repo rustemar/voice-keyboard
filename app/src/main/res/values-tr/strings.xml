@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Son işlemede Terminal modu açıkken daha küçük bir panel kullanın. Genişletme düğmesi tüm tuşları gösterir.</string>
     <string name="terminal_compact_expand">Tam klavyeyi göster</string>
     <string name="recognition_setup">Kurulum talimatları</string>
+    <string name="saved_texts_title">Kaydedilen metinler</string>
+    <string name="saved_texts_count">Kaydedilen metinler: %1$d</string>
+    <string name="saved_texts_empty">Kaydedilen metin yok</string>
+    <string name="saved_texts_insert">Ekle</string>
+    <string name="saved_texts_copy">Kopyala</string>
+    <string name="saved_texts_delete">Sil</string>
+    <string name="saved_texts_delete_confirm">Bu kayıtlı metin silinsin mi?</string>
+    <string name="saved_texts_close">Kaydedilen metinleri kapat</string>
+    <string name="saved_texts_copied">Metin kopyalandı</string>
+    <string name="saved_texts_insert_failed">Bir metin alanı seçip tekrar deneyin.</string>
+    <string name="saved_texts_action_failed">İşlem tamamlanamadı. Tekrar deneyin.</string>
 </resources>

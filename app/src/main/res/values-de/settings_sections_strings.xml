@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Spracherkennung</string>
+    <string name="settings_section_manual">Verbindung und Erkennungsdetails</string>
+    <string name="settings_section_keyboard">Tastatur und Darstellung</string>
+    <string name="settings_section_diagnostics">Tests und Diagnose</string>
+    <string name="settings_section_about">Updates und Info</string>
+    <string name="settings_section_experiments">Experimentelle Funktionen</string>
+    <string name="settings_experiments_hint">Optionale Funktionen in Erprobung. Jede wird einzeln aktiviert.</string>
+    <string name="settings_section_expand">%1$s anzeigen</string>
+    <string name="settings_section_collapse">%1$s ausblenden</string>
+    <string name="settings_active_keyboard_hint">Wählen Sie zum Tippen in diesen Einstellungen Ihre gewohnte Tastatur über die Tastaturwechseltaste.</string>
+    <string name="settings_manage_keyboards">Tastaturen verwalten</string>
+</resources>

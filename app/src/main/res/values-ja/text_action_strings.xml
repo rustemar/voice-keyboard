@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">テキスト操作</string>
+    <string name="text_actions_beta_title">選択したテキストの操作 · ベータ</string>
+    <string name="text_actions_beta_hint">設定した後処理サービスで選択したテキストを翻訳・修正・書き換えます。適用前に結果を確認できます。</string>
+    <string name="text_actions_close">テキスト操作を閉じる</string>
+    <string name="text_actions_instruction">編集の指示</string>
+    <string name="text_actions_instruction_hint">例：このメッセージをより丁寧にしてください。</string>
+    <string name="text_actions_select_first">先にアプリ内のテキストを選択してください。</string>
+    <string name="text_actions_too_long">16,000文字以内の短い範囲を選択してください。</string>
+    <string name="text_actions_unavailable">この入力欄ではテキスト操作を使えません。</string>
+    <string name="text_actions_selection">選択したテキスト</string>
+    <string name="text_actions_configure">テキスト操作を使うには後処理を有効にして設定してください。</string>
+    <string name="text_actions_provider_notice">操作を選ぶと、選択したテキストだけが設定済みの後処理サービスに送信されます。</string>
+    <string name="text_actions_fix">誤字と文法を修正</string>
+    <string name="text_actions_translate">%1$sに翻訳</string>
+    <string name="text_actions_custom">カスタム指示</string>
+    <string name="text_actions_type_instruction">指示を入力</string>
+    <string name="text_actions_preview">結果をプレビュー</string>
+    <string name="text_actions_processing">選択範囲を処理中…</string>
+    <string name="text_actions_result">結果</string>
+    <string name="text_actions_preview_hint">結果を確認してください。プレビューを閉じると未適用の結果は保存済みテキストに残ります。</string>
+    <string name="text_actions_selection_changed">入力欄、テキスト、または選択範囲が変わりました。元の範囲を選び直して操作をやり直してください。</string>
+    <string name="text_actions_apply">選択範囲に適用</string>
+    <string name="text_actions_copy">結果をコピー</string>
+    <string name="text_actions_save">後で使うために保存</string>
+    <string name="text_actions_applied">選択範囲を置き換えました。挿入した範囲が選択されたままで変更されていなければ元に戻せます。</string>
+    <string name="text_actions_undo">置き換えを元に戻す</string>
+    <string name="text_actions_copied">結果をコピーしました。</string>
+    <string name="text_actions_saved">結果を保存済みテキストに残しました。</string>
+    <string name="text_actions_save_failed">結果を保存できませんでした。</string>
+    <string name="text_actions_failed">選択範囲を処理できませんでした。後処理の設定と接続を確認してください。</string>
+    <string name="text_actions_open_settings">後処理の設定</string>
+</resources>

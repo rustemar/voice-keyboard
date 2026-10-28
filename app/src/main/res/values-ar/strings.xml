@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">استخدام لوحة أصغر عند تفعيل وضع الطرفية في المعالجة اللاحقة. يعرض زر التوسيع جميع المفاتيح.</string>
     <string name="terminal_compact_expand">إظهار لوحة المفاتيح الكاملة</string>
     <string name="recognition_setup">تعليمات الإعداد</string>
+    <string name="saved_texts_title">النصوص المحفوظة</string>
+    <string name="saved_texts_count">النصوص المحفوظة: %1$d</string>
+    <string name="saved_texts_empty">لا توجد نصوص محفوظة</string>
+    <string name="saved_texts_insert">إدراج</string>
+    <string name="saved_texts_copy">نسخ</string>
+    <string name="saved_texts_delete">حذف</string>
+    <string name="saved_texts_delete_confirm">هل تريد حذف هذا النص المحفوظ؟</string>
+    <string name="saved_texts_close">إغلاق النصوص المحفوظة</string>
+    <string name="saved_texts_copied">تم نسخ النص</string>
+    <string name="saved_texts_insert_failed">اختر حقلًا نصيًا وحاول مرة أخرى.</string>
+    <string name="saved_texts_action_failed">تعذر إكمال هذا الإجراء. حاول مرة أخرى.</string>
 </resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Tekstitoiminnot</string>
+    <string name="text_actions_beta_title">Valitun tekstin toiminnot · Beeta</string>
+    <string name="text_actions_beta_hint">Käännä, korjaa tai muokkaa valittua tekstiä jälkikäsittelypalvelullasi. Tarkista tulos ennen käyttämistä.</string>
+    <string name="text_actions_close">Sulje tekstitoiminnot</string>
+    <string name="text_actions_instruction">Muokkausohje</string>
+    <string name="text_actions_instruction_hint">Esimerkiksi: tee tästä viestistä muodollisempi.</string>
+    <string name="text_actions_select_first">Valitse ensin tekstiä sovelluksessa.</string>
+    <string name="text_actions_too_long">Valitse lyhyempi katkelma, enintään 16 000 merkkiä.</string>
+    <string name="text_actions_unavailable">Tekstitoiminnot eivät ole käytettävissä tässä kentässä.</string>
+    <string name="text_actions_selection">Valittu teksti</string>
+    <string name="text_actions_configure">Ota jälkikäsittely käyttöön ja määritä sen asetukset.</string>
+    <string name="text_actions_provider_notice">Vain valittu teksti lähetetään määritettyyn jälkikäsittelypalveluun, kun valitset toiminnon.</string>
+    <string name="text_actions_fix">Korjaa oikeinkirjoitus ja kielioppi</string>
+    <string name="text_actions_translate">Käännä kielelle %1$s</string>
+    <string name="text_actions_custom">Oma ohje</string>
+    <string name="text_actions_type_instruction">Kirjoita ohje</string>
+    <string name="text_actions_preview">Esikatsele tulos</string>
+    <string name="text_actions_processing">Valintaa käsitellään…</string>
+    <string name="text_actions_result">Tulos</string>
+    <string name="text_actions_preview_hint">Tarkista tulos. Esikatselun sulkeminen säilyttää käyttämättömän tuloksen tallennetuissa teksteissä.</string>
+    <string name="text_actions_selection_changed">Kenttä, teksti tai valinta muuttui. Valitse alkuperäinen katkelma uudelleen ja aloita uusi toiminto.</string>
+    <string name="text_actions_apply">Käytä valintaan</string>
+    <string name="text_actions_copy">Kopioi tulos</string>
+    <string name="text_actions_save">Tallenna myöhemmäksi</string>
+    <string name="text_actions_applied">Valinta korvattiin. Voit kumota korvauksen, kun lisätty katkelma on yhä valittuna ja muuttumaton.</string>
+    <string name="text_actions_undo">Kumoa korvaus</string>
+    <string name="text_actions_copied">Tulos kopioitu.</string>
+    <string name="text_actions_saved">Tulos säilytetty tallennetuissa teksteissä.</string>
+    <string name="text_actions_save_failed">Tulosta ei voitu tallentaa.</string>
+    <string name="text_actions_failed">Valintaa ei voitu käsitellä. Tarkista jälkikäsittelyn asetukset ja yhteys.</string>
+    <string name="text_actions_open_settings">Jälkikäsittelyn asetukset</string>
+</resources>

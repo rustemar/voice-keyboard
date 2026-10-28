@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Ações de texto</string>
+    <string name="text_actions_beta_title">Ações no texto selecionado · Beta</string>
+    <string name="text_actions_beta_hint">Traduza, corrija ou reformule o texto selecionado com o serviço de pós-processamento. Reveja o resultado antes de o aplicar.</string>
+    <string name="text_actions_close">Fechar ações de texto</string>
+    <string name="text_actions_instruction">Instrução de edição</string>
+    <string name="text_actions_instruction_hint">Por exemplo: torne esta mensagem mais formal.</string>
+    <string name="text_actions_select_first">Primeiro selecione texto na aplicação.</string>
+    <string name="text_actions_too_long">Selecione um trecho mais curto, com até 16 000 caracteres.</string>
+    <string name="text_actions_unavailable">As ações de texto não estão disponíveis neste campo.</string>
+    <string name="text_actions_selection">Texto selecionado</string>
+    <string name="text_actions_configure">Ative e configure o pós-processamento para usar estas ações.</string>
+    <string name="text_actions_provider_notice">Apenas o texto selecionado é enviado ao serviço de pós-processamento configurado quando escolhe uma ação.</string>
+    <string name="text_actions_fix">Corrigir ortografia e gramática</string>
+    <string name="text_actions_translate">Traduzir para %1$s</string>
+    <string name="text_actions_custom">Instrução personalizada</string>
+    <string name="text_actions_type_instruction">Escrever instrução</string>
+    <string name="text_actions_preview">Pré-visualizar resultado</string>
+    <string name="text_actions_processing">A processar seleção…</string>
+    <string name="text_actions_result">Resultado</string>
+    <string name="text_actions_preview_hint">Reveja o resultado. Ao fechar, o resultado não aplicado fica nos textos guardados.</string>
+    <string name="text_actions_selection_changed">O campo, o texto ou a seleção mudou. Selecione novamente o trecho original e inicie uma nova ação.</string>
+    <string name="text_actions_apply">Aplicar à seleção</string>
+    <string name="text_actions_copy">Copiar resultado</string>
+    <string name="text_actions_save">Guardar para depois</string>
+    <string name="text_actions_applied">A seleção foi substituída. Pode anular enquanto o trecho inserido continuar selecionado e inalterado.</string>
+    <string name="text_actions_undo">Anular substituição</string>
+    <string name="text_actions_copied">Resultado copiado.</string>
+    <string name="text_actions_saved">Resultado mantido nos textos guardados.</string>
+    <string name="text_actions_save_failed">Não foi possível guardar o resultado.</string>
+    <string name="text_actions_failed">Não foi possível processar a seleção. Verifique o pós-processamento e a ligação.</string>
+    <string name="text_actions_open_settings">Definições de pós-processamento</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="pendingTextsOverlay" type="id" />
+    <item name="pendingTranscriptText" type="id" />
+    <item name="btnPendingClose" type="id" />
+    <item name="btnPendingInsert" type="id" />
+    <item name="btnPendingCopy" type="id" />
+    <item name="btnPendingDelete" type="id" />
+    <item name="pendingDeletePrompt" type="id" />
+</resources>

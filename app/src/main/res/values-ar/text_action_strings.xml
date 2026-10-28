@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">إجراءات النص</string>
+    <string name="text_actions_beta_title">إجراءات النص المحدد · تجريبي</string>
+    <string name="text_actions_beta_hint">ترجم النص المحدد أو صححه أو أعد صياغته باستخدام مزوّد المعالجة اللاحقة. راجع النتيجة قبل تطبيقها.</string>
+    <string name="text_actions_close">إغلاق إجراءات النص</string>
+    <string name="text_actions_instruction">تعليمات التحرير</string>
+    <string name="text_actions_instruction_hint">مثال: اجعل هذه الرسالة أكثر رسمية.</string>
+    <string name="text_actions_select_first">حدد نصًا في التطبيق أولًا.</string>
+    <string name="text_actions_too_long">حدد مقطعًا أقصر لا يتجاوز 16000 محرف.</string>
+    <string name="text_actions_unavailable">إجراءات النص غير متاحة في هذا الحقل.</string>
+    <string name="text_actions_selection">النص المحدد</string>
+    <string name="text_actions_configure">فعّل المعالجة اللاحقة واضبطها لاستخدام هذه الإجراءات.</string>
+    <string name="text_actions_provider_notice">عند اختيار إجراء، يُرسل النص المحدد فقط إلى مزوّد المعالجة اللاحقة الذي أعددته.</string>
+    <string name="text_actions_fix">تصحيح الإملاء والقواعد</string>
+    <string name="text_actions_translate">الترجمة إلى %1$s</string>
+    <string name="text_actions_custom">تعليمات مخصصة</string>
+    <string name="text_actions_type_instruction">كتابة التعليمات</string>
+    <string name="text_actions_preview">معاينة النتيجة</string>
+    <string name="text_actions_processing">جارٍ معالجة التحديد…</string>
+    <string name="text_actions_result">النتيجة</string>
+    <string name="text_actions_preview_hint">راجع النتيجة. يؤدي إغلاق المعاينة إلى الاحتفاظ بالنتيجة غير المطبقة في النصوص المحفوظة.</string>
+    <string name="text_actions_selection_changed">تغير الحقل أو النص أو التحديد. حدد المقطع الأصلي مجددًا وابدأ إجراءً جديدًا.</string>
+    <string name="text_actions_apply">تطبيق على التحديد</string>
+    <string name="text_actions_copy">نسخ النتيجة</string>
+    <string name="text_actions_save">حفظ لوقت لاحق</string>
+    <string name="text_actions_applied">تم استبدال التحديد. يمكنك التراجع ما دام المقطع المدرج محددًا ولم يتغير.</string>
+    <string name="text_actions_undo">التراجع عن الاستبدال</string>
+    <string name="text_actions_copied">تم نسخ النتيجة.</string>
+    <string name="text_actions_saved">تم الاحتفاظ بالنتيجة في النصوص المحفوظة.</string>
+    <string name="text_actions_save_failed">تعذر حفظ النتيجة.</string>
+    <string name="text_actions_failed">تعذرت معالجة التحديد. تحقق من إعدادات المعالجة اللاحقة والاتصال.</string>
+    <string name="text_actions_open_settings">إعدادات المعالجة اللاحقة</string>
+</resources>

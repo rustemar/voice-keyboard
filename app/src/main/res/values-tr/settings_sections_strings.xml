@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Konuşma tanıma</string>
+    <string name="settings_section_manual">Bağlantı ve tanıma ayrıntıları</string>
+    <string name="settings_section_keyboard">Klavye ve görünüm</string>
+    <string name="settings_section_diagnostics">Testler ve tanılama</string>
+    <string name="settings_section_about">Güncellemeler ve hakkında</string>
+    <string name="settings_section_experiments">Deneysel özellikler</string>
+    <string name="settings_experiments_hint">Değerlendirme aşamasındaki isteğe bağlı özellikler. Her biri ayrı açılır.</string>
+    <string name="settings_section_expand">Göster: %1$s</string>
+    <string name="settings_section_collapse">Gizle: %1$s</string>
+    <string name="settings_active_keyboard_hint">Bu ayarlarda yazmak için klavye değiştirme düğmesinden alıştığınız klavyeyi seçin.</string>
+    <string name="settings_manage_keyboards">Klavyeleri yönet</string>
+</resources>

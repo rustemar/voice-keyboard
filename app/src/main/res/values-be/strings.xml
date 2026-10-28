@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Паменшаная панэль, калі ў постапрацоўцы ўключаны рэжым тэрмінала. Кнопка разгортвання вяртае ўсе клавішы.</string>
     <string name="terminal_compact_expand">Паказаць поўную клавіятуру</string>
     <string name="recognition_setup">Інструкцыя па наладзе</string>
+    <string name="saved_texts_title">Захаваныя тэксты</string>
+    <string name="saved_texts_count">Захаваныя тэксты: %1$d</string>
+    <string name="saved_texts_empty">Няма захаваных тэкстаў</string>
+    <string name="saved_texts_insert">Уставіць</string>
+    <string name="saved_texts_copy">Капіяваць</string>
+    <string name="saved_texts_delete">Выдаліць</string>
+    <string name="saved_texts_delete_confirm">Выдаліць гэты захаваны тэкст?</string>
+    <string name="saved_texts_close">Закрыць захаваныя тэксты</string>
+    <string name="saved_texts_copied">Тэкст скапіяваны</string>
+    <string name="saved_texts_insert_failed">Выберыце тэкставае поле і паспрабуйце зноў.</string>
+    <string name="saved_texts_action_failed">Не ўдалося выканаць дзеянне. Паспрабуйце зноў.</string>
 </resources>

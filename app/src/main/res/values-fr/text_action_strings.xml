@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Actions sur le texte</string>
+    <string name="text_actions_beta_title">Actions sur la sélection · Bêta</string>
+    <string name="text_actions_beta_hint">Traduisez, corrigez ou reformulez le texte sélectionné avec votre service de post-traitement. Vérifiez le résultat avant de l’appliquer.</string>
+    <string name="text_actions_close">Fermer les actions sur le texte</string>
+    <string name="text_actions_instruction">Consigne de modification</string>
+    <string name="text_actions_instruction_hint">Par exemple : rends ce message plus formel.</string>
+    <string name="text_actions_select_first">Sélectionnez d’abord du texte dans l’application.</string>
+    <string name="text_actions_too_long">Sélectionnez un passage plus court : 16 000 caractères maximum.</string>
+    <string name="text_actions_unavailable">Les actions sur le texte ne sont pas disponibles dans ce champ.</string>
+    <string name="text_actions_selection">Texte sélectionné</string>
+    <string name="text_actions_configure">Activez et configurez le post-traitement pour utiliser ces actions.</string>
+    <string name="text_actions_provider_notice">Seul le texte sélectionné est envoyé au service de post-traitement configuré lorsque vous choisissez une action.</string>
+    <string name="text_actions_fix">Corriger l’orthographe et la grammaire</string>
+    <string name="text_actions_translate">Traduire en %1$s</string>
+    <string name="text_actions_custom">Consigne personnalisée</string>
+    <string name="text_actions_type_instruction">Saisir la consigne</string>
+    <string name="text_actions_preview">Aperçu du résultat</string>
+    <string name="text_actions_processing">Traitement de la sélection…</string>
+    <string name="text_actions_result">Résultat</string>
+    <string name="text_actions_preview_hint">Vérifiez le résultat. Fermer cet aperçu conserve le résultat non appliqué dans les textes enregistrés.</string>
+    <string name="text_actions_selection_changed">Le champ, le texte ou la sélection a changé. Sélectionnez à nouveau le passage d’origine et lancez une nouvelle action.</string>
+    <string name="text_actions_apply">Appliquer à la sélection</string>
+    <string name="text_actions_copy">Copier le résultat</string>
+    <string name="text_actions_save">Enregistrer pour plus tard</string>
+    <string name="text_actions_applied">La sélection a été remplacée. L’annulation reste disponible tant que le passage inséré est sélectionné et inchangé.</string>
+    <string name="text_actions_undo">Annuler le remplacement</string>
+    <string name="text_actions_copied">Résultat copié.</string>
+    <string name="text_actions_saved">Résultat conservé dans les textes enregistrés.</string>
+    <string name="text_actions_save_failed">Impossible d’enregistrer le résultat.</string>
+    <string name="text_actions_failed">Impossible de traiter la sélection. Vérifiez le post-traitement et la connexion.</string>
+    <string name="text_actions_open_settings">Paramètres de post-traitement</string>
+</resources>

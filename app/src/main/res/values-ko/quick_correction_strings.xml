@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">빠른 수정용 키보드 · 베타</string>
+    <string name="qc_beta_hint">프랑스어, 독일어, 힌디어 등 14개 언어의 기본 배열을 선택해 사용할 수 있습니다. 추천, 스와이프 입력, 중국어·일본어·한국어 입력 변환은 지원하지 않습니다.</string>
+    <string name="qc_open">수정 키보드 열기</string>
+    <string name="qc_return_to_voice">음성 패널로 돌아가기</string>
+    <string name="qc_choose_layout">배열 선택. 현재: %1$s</string>
+    <string name="qc_layouts">키보드 배열</string>
+    <string name="qc_layout_limits">기본 직접 문자 입력만 지원합니다. 중국어, 일본어, 한국어 입력 변환은 사용할 수 없습니다.</string>
+    <string name="qc_more_characters">다른 문자</string>
+    <string name="qc_letters">문자</string>
+    <string name="qc_symbols">숫자 및 기호</string>
+    <string name="qc_shift">대문자; 길게 누르면 잠금</string>
+    <string name="qc_backspace">이전 문자 삭제</string>
+    <string name="qc_space">스페이스</string>
+    <string name="qc_enter">입력</string>
+    <string name="qc_done">완료</string>
+    <string name="qc_editor_unavailable">텍스트 필드를 사용할 수 없습니다. 다시 열고 시도하세요.</string>
+</resources>

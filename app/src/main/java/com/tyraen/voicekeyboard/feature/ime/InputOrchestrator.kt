@@ -21,7 +21,7 @@ class InputOrchestrator(
     private val preferenceStore: PreferenceStore,
     private val processingQueue: ProcessingQueue,
     private val capture: MicrophoneCaptureSession,
-    private val onTextReady: (text: String, addTrailingSpace: Boolean) -> Unit,
+    private val onTextReady: (text: String, addTrailingSpace: Boolean, editorSessionToken: Long) -> Boolean,
     private val onPhaseChanged: (InputPhase) -> Unit,
     private val onAmplitude: (Int) -> Unit,
     private val onQueueCountChanged: (Int) -> Unit,
@@ -36,7 +36,9 @@ class InputOrchestrator(
     private val onVoiceBlocked: () -> Unit = {},
     /** The user tapped the mic or resend with no API key saved; the host opens the settings. */
     private val onApiKeyNeeded: () -> Unit = {},
-    private val onCancellableWorkChanged: (Boolean) -> Unit = {}
+    private val onCancellableWorkChanged: (Boolean) -> Unit = {},
+    /** The live editor's RAM-only identity, captured when recording starts, not when it finishes. */
+    private val editorSessionToken: () -> Long? = { null }
 ) {
 
     companion object {
@@ -62,6 +64,7 @@ class InputOrchestrator(
     private var ppPreferences: PostProcessingPreferences? = null
     private var vocabulary: String = ""
     private var captureContextToken: Long? = null
+    private var captureEditorSessionToken: Long? = null
     private var captureIdentity: ProcessingQueue.WorkIdentity? = null
 
     /** Whether the input view is currently shown. Set by the host from its window callbacks. */
@@ -70,8 +73,8 @@ class InputOrchestrator(
     // Forwards the shared queue's callbacks to this view's UI. Bound on creation, unbound on
     // destroy so a torn-down panel stops receiving updates (the next panel rebinds instantly).
     private val queueListener = object : ProcessingQueue.Listener {
-        override fun onTextReady(text: String, addTrailingSpace: Boolean) =
-            this@InputOrchestrator.onTextReady(text, addTrailingSpace)
+        override fun onTextReady(text: String, addTrailingSpace: Boolean, editorSessionToken: Long): Boolean =
+            viewVisible && this@InputOrchestrator.onTextReady(text, addTrailingSpace, editorSessionToken)
         override fun onQueueCountChanged(count: Int) = this@InputOrchestrator.onQueueCountChanged(count)
         override fun onProcessingPhaseChanged(phase: ProcessingQueue.ProcessingPhase) =
             this@InputOrchestrator.onProcessingPhaseChanged(phase)
@@ -284,6 +287,7 @@ class InputOrchestrator(
         }
         captureIdentity = identity
         captureContextToken = processingQueue.capturePostProcessingContextToken()
+        captureEditorSessionToken = editorSessionToken()
         moveTo(InputPhase.Capturing())
     }
 
@@ -292,6 +296,8 @@ class InputOrchestrator(
         captureIdentity = null
         val contextToken = captureContextToken
         captureContextToken = null
+        val editorToken = captureEditorSessionToken
+        captureEditorSessionToken = null
         val file = capture.finalize()
         val durationMs = capture.lastDurationMs
         if (file == null) {
@@ -322,15 +328,15 @@ class InputOrchestrator(
             handoverJob = handoverScope.launch {
                 loadPreferencesInternal()
                 ensureActive()
-                enqueue(file, durationMs, preferences ?: return@launch, contextToken, identity)
+                enqueue(file, durationMs, preferences ?: return@launch, contextToken, editorToken, identity)
             }
             return
         }
-        enqueue(file, durationMs, prefs, contextToken, identity)
+        enqueue(file, durationMs, prefs, contextToken, editorToken, identity)
     }
 
     private fun enqueue(
-        file: File, durationMs: Long, prefs: UserPreferences, contextToken: Long?,
+        file: File, durationMs: Long, prefs: UserPreferences, contextToken: Long?, editorToken: Long?,
         identity: ProcessingQueue.WorkIdentity
     ) {
         if (prefs.apiKey.isBlank()) {
@@ -369,6 +375,7 @@ class InputOrchestrator(
             ppTranslate = ppEnabled && s.translateActive,
             ppTerminal = ppEnabled && s.terminalActive,
             contextToken = contextToken,
+            editorSessionToken = editorToken,
             workId = identity.workId,
             createdAt = identity.createdAt
         )
@@ -379,6 +386,7 @@ class InputOrchestrator(
     private fun cancelCapture() {
         captureIdentity = null
         captureContextToken = null
+        captureEditorSessionToken = null
         if (capture.isActive) {
             capture.abort()
         }
@@ -390,6 +398,7 @@ class InputOrchestrator(
         captureIdentity?.let { processingQueue.releaseReservation(it) }
         captureIdentity = null
         captureContextToken = null
+        captureEditorSessionToken = null
         if (capture.isActive) {
             capture.abort()
         }
@@ -399,7 +408,7 @@ class InputOrchestrator(
 
     /**
      * Graceful shutdown: if recording is active, finalize and enqueue it.
-     * The queue keeps processing in background (caller should redirect onTextReady to clipboard).
+     * The queue keeps processing in background and saves results if the original editor is gone.
      */
     fun gracefulShutdown() {
         if (currentPhase is InputPhase.Capturing) {
@@ -413,6 +422,7 @@ class InputOrchestrator(
         captureIdentity?.let { processingQueue.releaseReservation(it) }
         captureIdentity = null
         captureContextToken = null
+        captureEditorSessionToken = null
         capture.release()
         // The queue is a process-wide singleton — never destroy it here, just stop receiving its
         // callbacks. Parked recordings and in-flight work survive this input view.

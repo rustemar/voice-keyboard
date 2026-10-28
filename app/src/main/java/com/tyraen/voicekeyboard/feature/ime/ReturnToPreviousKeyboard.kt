@@ -19,7 +19,7 @@ object ReturnToPreviousKeyboard {
     const val VERIFY_DELAY_MS = 500L
 
     /**
-     * [inserted] is false when a dictation went to the clipboard instead of the field.
+     * [inserted] is false when a dictation was saved for later instead of inserted into the field.
      * [idle] means no recording in progress and no error on the status line.
      * [parkedLoaded] is false until the parked-recording store has published its initial load;
      * before that, [failedCount] can't be trusted to be zero.

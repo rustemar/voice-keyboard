@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Αναγνώριση ομιλίας</string>
+    <string name="settings_section_manual">Σύνδεση και λεπτομέρειες αναγνώρισης</string>
+    <string name="settings_section_keyboard">Πληκτρολόγιο και εμφάνιση</string>
+    <string name="settings_section_diagnostics">Δοκιμές και διάγνωση</string>
+    <string name="settings_section_about">Ενημερώσεις και πληροφορίες</string>
+    <string name="settings_section_experiments">Πειραματικές λειτουργίες</string>
+    <string name="settings_experiments_hint">Προαιρετικές λειτουργίες υπό αξιολόγηση. Καθεμία ενεργοποιείται ξεχωριστά.</string>
+    <string name="settings_section_expand">Εμφάνιση: %1$s</string>
+    <string name="settings_section_collapse">Απόκρυψη: %1$s</string>
+    <string name="settings_active_keyboard_hint">Για να γράψετε στις ρυθμίσεις, επιλέξτε το συνηθισμένο σας πληκτρολόγιο με το κουμπί αλλαγής πληκτρολογίου.</string>
+    <string name="settings_manage_keyboards">Διαχείριση πληκτρολογίων</string>
+</resources>

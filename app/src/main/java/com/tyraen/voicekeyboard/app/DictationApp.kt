@@ -39,6 +39,11 @@ class DictationApp : Application() {
         ServiceLocator.transcriptionQueue.bootstrap()
 
         CoroutineScope(Dispatchers.IO).launch {
+            try {
+                ServiceLocator.pendingTranscriptStore.ensureLoaded()
+            } catch (e: Exception) {
+                DiagnosticLog.recordFailure("App", "Could not load saved dictations", e)
+            }
             ServiceLocator.preferenceStore.normalizeStoredPrompts()
             MicrophoneCaptureSession.deleteLegacyRecordings(this@DictationApp)
         }

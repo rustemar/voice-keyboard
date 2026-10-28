@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">टेक्स्ट कार्रवाइयाँ</string>
+    <string name="text_actions_beta_title">चुने हुए टेक्स्ट पर कार्रवाइयाँ · बीटा</string>
+    <string name="text_actions_beta_hint">अपने पोस्ट-प्रोसेसिंग प्रदाता से चुने हुए टेक्स्ट का अनुवाद, सुधार या पुनर्लेखन करें। लागू करने से पहले परिणाम जाँचें।</string>
+    <string name="text_actions_close">टेक्स्ट कार्रवाइयाँ बंद करें</string>
+    <string name="text_actions_instruction">संपादन निर्देश</string>
+    <string name="text_actions_instruction_hint">उदाहरण: इस संदेश को अधिक औपचारिक बनाएँ।</string>
+    <string name="text_actions_select_first">पहले ऐप में कुछ टेक्स्ट चुनें।</string>
+    <string name="text_actions_too_long">16,000 वर्णों तक का छोटा अंश चुनें।</string>
+    <string name="text_actions_unavailable">इस फ़ील्ड में टेक्स्ट कार्रवाइयाँ उपलब्ध नहीं हैं।</string>
+    <string name="text_actions_selection">चुना हुआ टेक्स्ट</string>
+    <string name="text_actions_configure">इन कार्रवाइयों के लिए पोस्ट-प्रोसेसिंग चालू करके सेट अप करें।</string>
+    <string name="text_actions_provider_notice">कार्रवाई चुनने पर केवल चुना हुआ टेक्स्ट आपके सेट किए गए पोस्ट-प्रोसेसिंग प्रदाता को भेजा जाता है।</string>
+    <string name="text_actions_fix">वर्तनी और व्याकरण सुधारें</string>
+    <string name="text_actions_translate">%1$s में अनुवाद करें</string>
+    <string name="text_actions_custom">अपना निर्देश</string>
+    <string name="text_actions_type_instruction">निर्देश टाइप करें</string>
+    <string name="text_actions_preview">परिणाम का पूर्वावलोकन</string>
+    <string name="text_actions_processing">चुने हुए टेक्स्ट पर काम हो रहा है…</string>
+    <string name="text_actions_result">परिणाम</string>
+    <string name="text_actions_preview_hint">परिणाम जाँचें। पूर्वावलोकन बंद करने पर लागू न किया गया परिणाम सहेजे गए टेक्स्ट में रहेगा।</string>
+    <string name="text_actions_selection_changed">फ़ील्ड, टेक्स्ट या चयन बदल गया है। मूल अंश फिर चुनकर नई कार्रवाई शुरू करें।</string>
+    <string name="text_actions_apply">चयन पर लागू करें</string>
+    <string name="text_actions_copy">परिणाम कॉपी करें</string>
+    <string name="text_actions_save">बाद के लिए सहेजें</string>
+    <string name="text_actions_applied">चुना हुआ टेक्स्ट बदल दिया गया। डाला गया अंश चुना हुआ और अपरिवर्तित रहने तक बदलाव वापस ले सकते हैं।</string>
+    <string name="text_actions_undo">बदलाव वापस लें</string>
+    <string name="text_actions_copied">परिणाम कॉपी किया गया।</string>
+    <string name="text_actions_saved">परिणाम सहेजे गए टेक्स्ट में रखा गया।</string>
+    <string name="text_actions_save_failed">परिणाम सहेजा नहीं जा सका।</string>
+    <string name="text_actions_failed">चुने हुए टेक्स्ट पर काम नहीं हो सका। पोस्ट-प्रोसेसिंग सेटिंग और कनेक्शन जाँचें।</string>
+    <string name="text_actions_open_settings">पोस्ट-प्रोसेसिंग सेटिंग</string>
+</resources>

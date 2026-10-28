@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Näppäimistö pikakorjauksiin · Beeta</string>
+    <string name="qc_beta_hint">Valinnaiset perusasettelut 14 kielelle, kuten ranskalle, saksalle ja hindille. Ei ehdotuksia, pyyhkäisykirjoitusta eikä kiinan, japanin tai korean muunnosta.</string>
+    <string name="qc_open">Avaa korjausnäppäimistö</string>
+    <string name="qc_return_to_voice">Palaa puhepaneeliin</string>
+    <string name="qc_choose_layout">Valitse asettelu. Nykyinen: %1$s</string>
+    <string name="qc_layouts">Näppäimistöasettelu</string>
+    <string name="qc_layout_limits">Vain yksinkertainen merkkien suora syöttö. Kiinan, japanin ja korean syötteen muunnosta ei ole.</string>
+    <string name="qc_more_characters">Lisää merkkejä</string>
+    <string name="qc_letters">Kirjaimet</string>
+    <string name="qc_symbols">Numerot ja symbolit</string>
+    <string name="qc_shift">Isot kirjaimet; lukitse pitämällä painettuna</string>
+    <string name="qc_backspace">Poista edellinen merkki</string>
+    <string name="qc_space">Välilyönti</string>
+    <string name="qc_enter">Enter</string>
+    <string name="qc_done">Valmis</string>
+    <string name="qc_editor_unavailable">Tekstikenttä ei ole käytettävissä. Avaa se uudelleen ja yritä uudestaan.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">文本操作</string>
+    <string name="text_actions_beta_title">所选文本操作 · 测试版</string>
+    <string name="text_actions_beta_hint">使用已配置的后处理服务翻译、纠正或改写所选文本。应用前可检查结果。</string>
+    <string name="text_actions_close">关闭文本操作</string>
+    <string name="text_actions_instruction">编辑指令</string>
+    <string name="text_actions_instruction_hint">例如：让这条消息更正式。</string>
+    <string name="text_actions_select_first">请先在应用中选择文本。</string>
+    <string name="text_actions_too_long">请选择不超过16,000个字符的较短片段。</string>
+    <string name="text_actions_unavailable">此输入框不支持文本操作。</string>
+    <string name="text_actions_selection">所选文本</string>
+    <string name="text_actions_configure">请先启用并配置后处理，再使用文本操作。</string>
+    <string name="text_actions_provider_notice">选择操作后，仅将所选文本发送给已配置的后处理服务。</string>
+    <string name="text_actions_fix">纠正拼写和语法</string>
+    <string name="text_actions_translate">翻译为%1$s</string>
+    <string name="text_actions_custom">自定义指令</string>
+    <string name="text_actions_type_instruction">输入指令</string>
+    <string name="text_actions_preview">预览结果</string>
+    <string name="text_actions_processing">正在处理所选文本…</string>
+    <string name="text_actions_result">结果</string>
+    <string name="text_actions_preview_hint">请检查结果。关闭预览后，未应用的结果会保留在已保存的文本中。</string>
+    <string name="text_actions_selection_changed">输入框、文本或选区已改变。请重新选择原来的片段并开始新操作。</string>
+    <string name="text_actions_apply">应用到选区</string>
+    <string name="text_actions_copy">复制结果</string>
+    <string name="text_actions_save">保存备用</string>
+    <string name="text_actions_applied">选区已替换。只要插入的片段仍被选中且未被修改，就可以撤销。</string>
+    <string name="text_actions_undo">撤销替换</string>
+    <string name="text_actions_copied">结果已复制。</string>
+    <string name="text_actions_saved">结果已保留在已保存的文本中。</string>
+    <string name="text_actions_save_failed">无法保存结果。</string>
+    <string name="text_actions_failed">无法处理所选文本。请检查后处理设置和网络连接。</string>
+    <string name="text_actions_open_settings">后处理设置</string>
+</resources>

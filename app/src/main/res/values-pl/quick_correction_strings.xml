@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Klawiatura do szybkich poprawek · Beta</string>
+    <string name="qc_beta_hint">Opcjonalne podstawowe układy w 14 językach, w tym francuskim, niemieckim i hindi. Bez podpowiedzi, pisania gestami i konwersji dla chińskiego, japońskiego i koreańskiego.</string>
+    <string name="qc_open">Otwórz klawiaturę poprawek</string>
+    <string name="qc_return_to_voice">Wróć do panelu głosowego</string>
+    <string name="qc_choose_layout">Wybierz układ. Obecny: %1$s</string>
+    <string name="qc_layouts">Układ klawiatury</string>
+    <string name="qc_layout_limits">Tylko podstawowe bezpośrednie wpisywanie znaków. Brak konwersji dla chińskiego, japońskiego i koreańskiego.</string>
+    <string name="qc_more_characters">Więcej znaków</string>
+    <string name="qc_letters">Litery</string>
+    <string name="qc_symbols">Cyfry i symbole</string>
+    <string name="qc_shift">Wielkie litery; przytrzymaj, aby zablokować</string>
+    <string name="qc_backspace">Usuń poprzedni znak</string>
+    <string name="qc_space">Spacja</string>
+    <string name="qc_enter">Enter</string>
+    <string name="qc_done">Gotowe</string>
+    <string name="qc_editor_unavailable">Pole tekstowe jest niedostępne. Otwórz je ponownie i spróbuj jeszcze raz.</string>
+</resources>

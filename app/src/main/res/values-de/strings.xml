@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Kleines Bedienfeld verwenden, wenn der Terminalmodus in der Nachbearbeitung aktiv ist. Die Schaltfläche zum Vergrößern zeigt alle Tasten.</string>
     <string name="terminal_compact_expand">Vollständige Tastatur anzeigen</string>
     <string name="recognition_setup">Anleitung zur Einrichtung</string>
+    <string name="saved_texts_title">Gespeicherte Texte</string>
+    <string name="saved_texts_count">Gespeicherte Texte: %1$d</string>
+    <string name="saved_texts_empty">Keine gespeicherten Texte</string>
+    <string name="saved_texts_insert">Einfügen</string>
+    <string name="saved_texts_copy">Kopieren</string>
+    <string name="saved_texts_delete">Löschen</string>
+    <string name="saved_texts_delete_confirm">Diesen gespeicherten Text löschen?</string>
+    <string name="saved_texts_close">Gespeicherte Texte schließen</string>
+    <string name="saved_texts_copied">Text kopiert</string>
+    <string name="saved_texts_insert_failed">Wähle ein Textfeld und versuche es erneut.</string>
+    <string name="saved_texts_action_failed">Aktion fehlgeschlagen. Versuche es erneut.</string>
 </resources>

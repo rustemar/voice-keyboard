@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Rozpoznawanie mowy</string>
+    <string name="settings_section_manual">Połączenie i szczegóły rozpoznawania</string>
+    <string name="settings_section_keyboard">Klawiatura i wygląd</string>
+    <string name="settings_section_diagnostics">Testy i diagnostyka</string>
+    <string name="settings_section_about">Aktualizacje i informacje</string>
+    <string name="settings_section_experiments">Funkcje eksperymentalne</string>
+    <string name="settings_experiments_hint">Opcjonalne funkcje w trakcie oceny. Każdą włącza się osobno.</string>
+    <string name="settings_section_expand">Pokaż: %1$s</string>
+    <string name="settings_section_collapse">Ukryj: %1$s</string>
+    <string name="settings_active_keyboard_hint">Aby pisać w ustawieniach, wybierz zwykłą klawiaturę przyciskiem zmiany klawiatury.</string>
+    <string name="settings_manage_keyboards">Zarządzaj klawiaturami</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Clavier pour corrections rapides · Bêta</string>
+    <string name="qc_beta_hint">Claviers simples facultatifs en 14 langues, dont le français, l’allemand et l’hindi. Sans suggestions, saisie gestuelle ni conversion pour le chinois, le japonais et le coréen.</string>
+    <string name="qc_open">Ouvrir le clavier de correction</string>
+    <string name="qc_return_to_voice">Revenir au panneau vocal</string>
+    <string name="qc_choose_layout">Choisir une disposition. Actuelle : %1$s</string>
+    <string name="qc_layouts">Disposition du clavier</string>
+    <string name="qc_layout_limits">Saisie directe simple uniquement. La conversion pour le chinois, le japonais et le coréen n’est pas disponible.</string>
+    <string name="qc_more_characters">Autres caractères</string>
+    <string name="qc_letters">Lettres</string>
+    <string name="qc_symbols">Chiffres et symboles</string>
+    <string name="qc_shift">Majuscules ; maintenir pour verrouiller</string>
+    <string name="qc_backspace">Effacer le caractère précédent</string>
+    <string name="qc_space">Espace</string>
+    <string name="qc_enter">Entrée</string>
+    <string name="qc_done">Terminé</string>
+    <string name="qc_editor_unavailable">Le champ de texte est indisponible. Rouvrez-le et réessayez.</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Tastatur für schnelle Korrekturen · Beta</string>
+    <string name="qc_beta_hint">Optionale einfache Tastaturlayouts für 14 Sprachen, darunter Französisch, Deutsch und Hindi. Ohne Vorschläge, Wischeingabe oder Zeichenumwandlung für Chinesisch, Japanisch und Koreanisch.</string>
+    <string name="qc_open">Korrekturtastatur öffnen</string>
+    <string name="qc_return_to_voice">Zur Spracheingabe zurückkehren</string>
+    <string name="qc_choose_layout">Layout wählen. Aktuell: %1$s</string>
+    <string name="qc_layouts">Tastaturlayout</string>
+    <string name="qc_layout_limits">Nur einfache direkte Zeicheneingabe. Keine Eingabeumwandlung für Chinesisch, Japanisch und Koreanisch.</string>
+    <string name="qc_more_characters">Weitere Zeichen</string>
+    <string name="qc_letters">Buchstaben</string>
+    <string name="qc_symbols">Zahlen und Symbole</string>
+    <string name="qc_shift">Großbuchstaben; zum Feststellen gedrückt halten</string>
+    <string name="qc_backspace">Vorheriges Zeichen löschen</string>
+    <string name="qc_space">Leerzeichen</string>
+    <string name="qc_enter">Eingabe</string>
+    <string name="qc_done">Fertig</string>
+    <string name="qc_editor_unavailable">Das Textfeld ist nicht verfügbar. Öffnen Sie es erneut und versuchen Sie es noch einmal.</string>
+</resources>

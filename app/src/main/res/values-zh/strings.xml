@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">在后处理的终端模式开启时使用较小面板。点击展开按钮可显示全部按键。</string>
     <string name="terminal_compact_expand">显示完整键盘</string>
     <string name="recognition_setup">设置说明</string>
+    <string name="saved_texts_title">已保存的文本</string>
+    <string name="saved_texts_count">已保存的文本：%1$d</string>
+    <string name="saved_texts_empty">没有已保存的文本</string>
+    <string name="saved_texts_insert">插入</string>
+    <string name="saved_texts_copy">复制</string>
+    <string name="saved_texts_delete">删除</string>
+    <string name="saved_texts_delete_confirm">删除这段已保存的文本？</string>
+    <string name="saved_texts_close">关闭已保存的文本</string>
+    <string name="saved_texts_copied">文本已复制</string>
+    <string name="saved_texts_insert_failed">请选择文本输入框后重试。</string>
+    <string name="saved_texts_action_failed">无法完成此操作，请重试。</string>
 </resources>

@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Μικρότερο πλαίσιο όταν η λειτουργία τερματικού είναι ενεργή στη μετεπεξεργασία. Το κουμπί επέκτασης εμφανίζει όλα τα πλήκτρα.</string>
     <string name="terminal_compact_expand">Εμφάνιση πλήρους πληκτρολογίου</string>
     <string name="recognition_setup">Οδηγίες ρύθμισης</string>
+    <string name="saved_texts_title">Αποθηκευμένα κείμενα</string>
+    <string name="saved_texts_count">Αποθηκευμένα κείμενα: %1$d</string>
+    <string name="saved_texts_empty">Δεν υπάρχουν αποθηκευμένα κείμενα</string>
+    <string name="saved_texts_insert">Εισαγωγή</string>
+    <string name="saved_texts_copy">Αντιγραφή</string>
+    <string name="saved_texts_delete">Διαγραφή</string>
+    <string name="saved_texts_delete_confirm">Να διαγραφεί αυτό το αποθηκευμένο κείμενο;</string>
+    <string name="saved_texts_close">Κλείσιμο αποθηκευμένων κειμένων</string>
+    <string name="saved_texts_copied">Το κείμενο αντιγράφηκε</string>
+    <string name="saved_texts_insert_failed">Επιλέξτε ένα πεδίο κειμένου και δοκιμάστε ξανά.</string>
+    <string name="saved_texts_action_failed">Η ενέργεια δεν ολοκληρώθηκε. Δοκιμάστε ξανά.</string>
 </resources>

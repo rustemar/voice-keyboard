@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">语音识别</string>
+    <string name="settings_section_manual">连接与识别详细设置</string>
+    <string name="settings_section_keyboard">键盘与外观</string>
+    <string name="settings_section_diagnostics">测试与诊断</string>
+    <string name="settings_section_about">更新与关于</string>
+    <string name="settings_section_experiments">实验性功能</string>
+    <string name="settings_experiments_hint">正在评估的可选功能，每项均需单独启用。</string>
+    <string name="settings_section_expand">显示%1$s</string>
+    <string name="settings_section_collapse">隐藏%1$s</string>
+    <string name="settings_active_keyboard_hint">要在设置中输入文字，请通过键盘切换按钮选择常用键盘。</string>
+    <string name="settings_manage_keyboards">管理键盘</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Hızlı düzeltme klavyesi · Beta</string>
+    <string name="qc_beta_hint">Fransızca, Almanca ve Hintçe dahil 14 dilde isteğe bağlı temel düzenler. Öneri, kaydırarak yazma veya Çince, Japonca ve Korece girdi dönüştürme yoktur.</string>
+    <string name="qc_open">Düzeltme klavyesini aç</string>
+    <string name="qc_return_to_voice">Ses paneline dön</string>
+    <string name="qc_choose_layout">Düzen seç. Geçerli: %1$s</string>
+    <string name="qc_layouts">Klavye düzeni</string>
+    <string name="qc_layout_limits">Yalnızca temel doğrudan karakter girişi. Çince, Japonca ve Korece girdi dönüştürme kullanılamaz.</string>
+    <string name="qc_more_characters">Diğer karakterler</string>
+    <string name="qc_letters">Harfler</string>
+    <string name="qc_symbols">Sayılar ve simgeler</string>
+    <string name="qc_shift">Büyük harf; kilitlemek için basılı tutun</string>
+    <string name="qc_backspace">Önceki karakteri sil</string>
+    <string name="qc_space">Boşluk</string>
+    <string name="qc_enter">Enter</string>
+    <string name="qc_done">Bitti</string>
+    <string name="qc_editor_unavailable">Metin alanı kullanılamıyor. Alanı yeniden açıp tekrar deneyin.</string>
+</resources>

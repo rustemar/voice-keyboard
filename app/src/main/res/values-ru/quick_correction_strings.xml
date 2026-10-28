@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Раскладка для быстрых правок · Бета</string>
+    <string name="qc_beta_hint">Необязательные базовые раскладки на 14 языках, включая французский, немецкий и хинди. Без подсказок, свайп-ввода и преобразования ввода для китайского, японского и корейского.</string>
+    <string name="qc_open">Открыть раскладку для правок</string>
+    <string name="qc_return_to_voice">Вернуться к голосовой панели</string>
+    <string name="qc_choose_layout">Выбрать раскладку. Сейчас: %1$s</string>
+    <string name="qc_layouts">Раскладка клавиатуры</string>
+    <string name="qc_layout_limits">Только базовый ввод символов. Преобразование ввода для китайского, японского и корейского недоступно.</string>
+    <string name="qc_more_characters">Другие символы</string>
+    <string name="qc_letters">Буквы</string>
+    <string name="qc_symbols">Цифры и символы</string>
+    <string name="qc_shift">Заглавные буквы; удерживайте для фиксации регистра</string>
+    <string name="qc_backspace">Удалить предыдущий символ</string>
+    <string name="qc_space">Пробел</string>
+    <string name="qc_enter">Ввод</string>
+    <string name="qc_done">Готово</string>
+    <string name="qc_editor_unavailable">Поле ввода недоступно. Откройте его снова и повторите.</string>
+</resources>

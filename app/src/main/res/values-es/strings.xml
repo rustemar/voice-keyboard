@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Usar un panel más pequeño cuando el modo Terminal esté activo en el posprocesamiento. El botón de ampliar muestra todas las teclas.</string>
     <string name="terminal_compact_expand">Mostrar teclado completo</string>
     <string name="recognition_setup">Instrucciones de configuración</string>
+    <string name="saved_texts_title">Textos guardados</string>
+    <string name="saved_texts_count">Textos guardados: %1$d</string>
+    <string name="saved_texts_empty">No hay textos guardados</string>
+    <string name="saved_texts_insert">Insertar</string>
+    <string name="saved_texts_copy">Copiar</string>
+    <string name="saved_texts_delete">Eliminar</string>
+    <string name="saved_texts_delete_confirm">¿Eliminar este texto guardado?</string>
+    <string name="saved_texts_close">Cerrar textos guardados</string>
+    <string name="saved_texts_copied">Texto copiado</string>
+    <string name="saved_texts_insert_failed">Selecciona un campo de texto e inténtalo de nuevo.</string>
+    <string name="saved_texts_action_failed">No se pudo completar la acción. Inténtalo de nuevo.</string>
 </resources>

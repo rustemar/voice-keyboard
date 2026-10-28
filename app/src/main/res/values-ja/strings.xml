@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">後処理でターミナルモードが有効な場合に、小さいパネルを使用します。展開ボタンですべてのキーを表示できます。</string>
     <string name="terminal_compact_expand">フルキーボードを表示</string>
     <string name="recognition_setup">設定手順</string>
+    <string name="saved_texts_title">保存したテキスト</string>
+    <string name="saved_texts_count">保存したテキスト: %1$d</string>
+    <string name="saved_texts_empty">保存したテキストはありません</string>
+    <string name="saved_texts_insert">挿入</string>
+    <string name="saved_texts_copy">コピー</string>
+    <string name="saved_texts_delete">削除</string>
+    <string name="saved_texts_delete_confirm">この保存済みテキストを削除しますか？</string>
+    <string name="saved_texts_close">保存したテキストを閉じる</string>
+    <string name="saved_texts_copied">テキストをコピーしました</string>
+    <string name="saved_texts_insert_failed">テキスト欄を選んで、もう一度お試しください。</string>
+    <string name="saved_texts_action_failed">操作を完了できませんでした。もう一度お試しください。</string>
 </resources>

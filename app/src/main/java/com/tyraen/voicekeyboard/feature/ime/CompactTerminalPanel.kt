@@ -28,10 +28,12 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
     private val sizeToggle: ImageButton = find(R.id.btnPanelSize)
     private val status: TextView = find(R.id.statusText)
     private val retry: FrameLayout = find(R.id.retryFrame)
+    private val saved: FrameLayout = find(R.id.pendingTextsFrame)
+    private val experiments: LinearLayout = find(R.id.experimentalActionsBar)
     private val queueBadge: TextView = find(R.id.queueBadge)
     private val badgeTranslationX = queueBadge.translationX
     private val badgeTranslationY = queueBadge.translationY
-    private val moved = listOf(previous, mic, cancel, backspace, enter, sizeToggle, status, retry)
+    private val moved = listOf(previous, mic, cancel, backspace, enter, sizeToggle, status, retry, saved, experiments)
     private data class Slot(val view: View, val parent: ViewGroup, val index: Int, val params: ViewGroup.LayoutParams)
     private data class Style(
         val view: View, val params: ViewGroup.LayoutParams,
@@ -121,6 +123,8 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
         moved.forEach(::detach)
         status.setPadding(0, 0, 0, 0)
         status.gravity = Gravity.CENTER
+        statusRow.addView(saved, LinearLayout.LayoutParams(dp(48), dp(48)))
+        statusRow.addView(experiments, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dp(48)))
         statusRow.addView(status, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         statusRow.addView(retry, LinearLayout.LayoutParams(dp(48), dp(48)))
         // Reserve its place even when the controller hides cancel: recording and stop must

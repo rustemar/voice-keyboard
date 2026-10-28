@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Acciones de texto</string>
+    <string name="text_actions_beta_title">Acciones sobre la selección · Beta</string>
+    <string name="text_actions_beta_hint">Traduce, corrige o reformula el texto seleccionado con tu servicio de posprocesamiento. Revisa el resultado antes de aplicarlo.</string>
+    <string name="text_actions_close">Cerrar acciones de texto</string>
+    <string name="text_actions_instruction">Instrucción de edición</string>
+    <string name="text_actions_instruction_hint">Por ejemplo: haz este mensaje más formal.</string>
+    <string name="text_actions_select_first">Primero selecciona texto en la aplicación.</string>
+    <string name="text_actions_too_long">Selecciona un fragmento más corto, de hasta 16 000 caracteres.</string>
+    <string name="text_actions_unavailable">Las acciones de texto no están disponibles en este campo.</string>
+    <string name="text_actions_selection">Texto seleccionado</string>
+    <string name="text_actions_configure">Activa y configura el posprocesamiento para usar estas acciones.</string>
+    <string name="text_actions_provider_notice">Solo se envía el texto seleccionado al servicio de posprocesamiento configurado al elegir una acción.</string>
+    <string name="text_actions_fix">Corregir ortografía y gramática</string>
+    <string name="text_actions_translate">Traducir a %1$s</string>
+    <string name="text_actions_custom">Instrucción personalizada</string>
+    <string name="text_actions_type_instruction">Escribir instrucción</string>
+    <string name="text_actions_preview">Vista previa del resultado</string>
+    <string name="text_actions_processing">Procesando selección…</string>
+    <string name="text_actions_result">Resultado</string>
+    <string name="text_actions_preview_hint">Revisa el resultado. Al cerrar la vista previa, el resultado sin aplicar se guarda en los textos guardados.</string>
+    <string name="text_actions_selection_changed">El campo, el texto o la selección ha cambiado. Vuelve a seleccionar el fragmento original e inicia otra acción.</string>
+    <string name="text_actions_apply">Aplicar a la selección</string>
+    <string name="text_actions_copy">Copiar resultado</string>
+    <string name="text_actions_save">Guardar para después</string>
+    <string name="text_actions_applied">La selección se ha reemplazado. Puedes deshacer mientras el fragmento insertado siga seleccionado y sin cambios.</string>
+    <string name="text_actions_undo">Deshacer reemplazo</string>
+    <string name="text_actions_copied">Resultado copiado.</string>
+    <string name="text_actions_saved">Resultado conservado en los textos guardados.</string>
+    <string name="text_actions_save_failed">No se pudo guardar el resultado.</string>
+    <string name="text_actions_failed">No se pudo procesar la selección. Revisa el posprocesamiento y la conexión.</string>
+    <string name="text_actions_open_settings">Ajustes de posprocesamiento</string>
+</resources>

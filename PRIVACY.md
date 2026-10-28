@@ -2,21 +2,22 @@
 
 **Voice Keyboard** is an Android keyboard (input method) that converts speech to text using third‑party transcription APIs. This document describes what data the app handles, where it goes, and what stays on your device.
 
-_Last updated: 2026‑10‑23_
+_Last updated: 2026‑10‑28_
 
 ## TL;DR
 
 - The app does **not** collect, sell, or transmit any analytics, telemetry, advertising IDs, or device identifiers.
 - Audio you record is sent **only** to the speech‑to‑text provider you configure (Groq, OpenAI, Mistral or any OpenAI‑compatible endpoint, including a server of your own), using **your own API key**.
 - Optional post‑processing sends the transcribed text to the language‑model provider you configure (OpenAI, Anthropic, or an OpenAI‑compatible one such as OpenRouter, Groq, Mistral or DeepSeek), again using **your own API key**. Recent dictations are included as context only if you enable that separate option, which is off by default.
-- All settings, API keys, diagnostic logs, and crash reports stay on your device. They are explicitly excluded from Google Drive backup and device‑transfer.
+- Optional **selected-text actions** send the passage you explicitly select, together with the chosen editing instruction, to your configured post-processing provider. This beta is off by default; requests start only after you choose an action, and results require review before replacement.
+- All settings, API keys, saved dictations, diagnostic logs, and crash reports stay on your device. They are explicitly excluded from Google Drive backup and device‑transfer.
 - The app is open source: <https://github.com/rustemar/voice-keyboard>.
 
 ## Data the app handles
 
 ### Audio
 
-For keyboard dictation, when you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). The app does **not** keep audio after a successful transcription: recordings live briefly in the app's private cache directory and are deleted as soon as the text comes back. A recording that could **not** be transcribed is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after a successful send; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
+For keyboard dictation, when you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). Recordings live briefly in the app's private cache directory and are deleted after the text is inserted or safely saved for later insertion. A recording that could **not** be transcribed or whose result could not be saved is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after successful delivery; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
 
 The app does **not** receive a copy of the audio after sending — handling and retention of submitted audio is governed by the policy of the provider you choose:
 
@@ -33,6 +34,16 @@ For keyboard dictation, the text returned by the transcription provider is inser
 - DeepSeek: <https://platform.deepseek.com/downloads/DeepSeek%20Privacy%20Policy.html>
 
 If post‑processing is disabled (the default for most modes), no third‑party request is made for text — the Whisper response is inserted directly.
+
+### Saved dictations
+
+If the original editor is no longer available when a keyboard dictation finishes, the completed text is saved in the app's private storage. Each result remains available through **Saved texts** on the keyboard until you insert it or explicitly delete it. There is no automatic expiry. These saved results survive app restarts, are excluded from cloud backup and device transfer, and are deleted if you uninstall the app. They are not automatically copied to the system clipboard; **Copy** does that only when you press it and leaves the saved result available. Other apps may read text you explicitly copy according to Android's clipboard rules.
+
+### Optional correction tools
+
+The basic letter layout types directly into the focused editor. It does not send typed keys to a server or collect a typing history. Its selected layout is stored privately on the device and is independent of interface and dictation languages.
+
+Selected-text actions read the selected passage and a small amount of adjacent text to verify the destination before replacement. Only the selected passage and your editing instruction are sent to the post-processing provider; neighbouring text stays in memory on the device. These actions do not add the passage to recent-dictation context. Password fields are excluded. A preview is shown before applying a replacement; the app checks the editor session, selection and text again before Apply or Undo. An unapplied completed preview is kept in Saved texts when closed, using the same private storage and deletion controls described above. Explicit Copy writes to the system clipboard; explicit Paste reads it for a custom instruction. Neither happens automatically.
 
 ### Recent dictation context
 
@@ -68,7 +79,7 @@ Your preferences (selected language, theme, post‑processing mode, prompt text,
 
 ### Diagnostic log
 
-The app keeps a small ring‑buffered log file (`app_log.txt`, capped at 500 lines) in its private storage to help you debug issues. The log records technical events such as "recording started", "transcription succeeded", HTTP error codes, and similar. It does **not** record API keys, and only the first 50 characters of any transcribed text are written, solely to verify that the right text came back during local debugging.
+The app keeps a small ring‑buffered log file (`app_log.txt`, capped at 500 lines) in its private storage to help you debug issues. The log records technical events such as "recording started", "transcription succeeded", HTTP error codes, and similar. It does **not** record API keys. Post-processing logs record result length or error type, without selected passages, editing results or provider error bodies that could echo the text.
 
 The log can be saved to a file, shared through any app you choose, or cleared from the **Logs** section of the settings screen. It is never uploaded on its own.
 
@@ -84,7 +95,7 @@ The pending crash file is deleted whether you choose to save it or not.
 |---|---|
 | `RECORD_AUDIO` | To capture speech for keyboard dictation, a settings test, or an explicitly enabled Android speech-recognition request. Recording ends when you finish or cancel; recognition sessions also stop after a pause or a bounded timeout. |
 | `QUERY_ALL_PACKAGES` | To let Android’s speech-service permission checks verify microphone grants for any requesting app. The app does not enumerate, store or transmit your installed-app list. |
-| `INTERNET` | To send the recorded audio to the transcription provider you configured, and to send transcribed text to the post‑processing provider when you use that feature. |
+| `INTERNET` | To send recorded audio to your transcription provider, and transcribed or explicitly selected text to your post-processing provider when you choose those features. |
 | `REQUEST_INSTALL_PACKAGES` | To let you install a newer version directly from inside the app. The app looks for one only if you switch the GitHub update check on (it is off by default) or press “Check for updates” yourself; it then offers to download and install a newer APK signed with the same key. You can also obtain updates entirely outside the app (e.g. via Obtainium, F‑Droid, or by downloading the APK from GitHub manually). |
 
 The app does **not** request access to contacts, SMS, location, photos, files outside its own sandbox, or any system identifier.

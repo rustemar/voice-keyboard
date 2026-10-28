@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Reconhecimento de voz</string>
+    <string name="settings_section_manual">Ligação e detalhes do reconhecimento</string>
+    <string name="settings_section_keyboard">Teclado e aparência</string>
+    <string name="settings_section_diagnostics">Testes e diagnóstico</string>
+    <string name="settings_section_about">Atualizações e informações</string>
+    <string name="settings_section_experiments">Funcionalidades experimentais</string>
+    <string name="settings_experiments_hint">Funcionalidades opcionais em avaliação. Cada uma é ativada separadamente.</string>
+    <string name="settings_section_expand">Mostrar: %1$s</string>
+    <string name="settings_section_collapse">Ocultar: %1$s</string>
+    <string name="settings_active_keyboard_hint">Para escrever nestas definições, escolha o teclado habitual com o botão de mudança de teclado.</string>
+    <string name="settings_manage_keyboards">Gerir teclados</string>
+</resources>

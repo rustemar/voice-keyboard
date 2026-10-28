@@ -182,4 +182,15 @@
     <string name="terminal_compact_hint">Уменьшать панель, когда в постобработке включён режим терминала. Кнопка раскрытия возвращает все клавиши.</string>
     <string name="terminal_compact_expand">Показать полную клавиатуру</string>
     <string name="recognition_setup">Инструкция по настройке</string>
+    <string name="saved_texts_title">Сохранённые тексты</string>
+    <string name="saved_texts_count">Сохранённые тексты: %1$d</string>
+    <string name="saved_texts_empty">Нет сохранённых текстов</string>
+    <string name="saved_texts_insert">Вставить</string>
+    <string name="saved_texts_copy">Копировать</string>
+    <string name="saved_texts_delete">Удалить</string>
+    <string name="saved_texts_delete_confirm">Удалить этот сохранённый текст?</string>
+    <string name="saved_texts_close">Закрыть сохранённые тексты</string>
+    <string name="saved_texts_copied">Текст скопирован</string>
+    <string name="saved_texts_insert_failed">Выберите текстовое поле и попробуйте ещё раз.</string>
+    <string name="saved_texts_action_failed">Не удалось выполнить действие. Попробуйте ещё раз.</string>
 </resources>

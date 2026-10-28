@@ -6,6 +6,7 @@ import com.tyraen.voicekeyboard.core.network.ApiEndpoint
 import com.tyraen.voicekeyboard.core.network.ConnectivityMonitor
 import com.tyraen.voicekeyboard.core.network.HttpClientProvider
 import com.tyraen.voicekeyboard.feature.ime.ParkedRecordingStore
+import com.tyraen.voicekeyboard.feature.ime.PendingTranscriptStore
 import com.tyraen.voicekeyboard.feature.ime.ProcessingQueue
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingClient
 import com.tyraen.voicekeyboard.feature.transcription.ChatCompletionsSpeechClient
@@ -51,6 +52,8 @@ object ServiceLocator {
 
     val parkedRecordingStore: ParkedRecordingStore by lazy { ParkedRecordingStore(appContext) }
 
+    val pendingTranscriptStore: PendingTranscriptStore by lazy { PendingTranscriptStore(appContext) }
+
     /** Process-wide transcription engine. Survives IME view rebuilds so work is never orphaned. */
     val transcriptionQueue: ProcessingQueue by lazy {
         ProcessingQueue(
@@ -59,7 +62,7 @@ object ServiceLocator {
             store = parkedRecordingStore,
             connectivity = connectivityMonitor,
             preferenceStore = preferenceStore,
-            appContext = appContext
+            pendingTranscriptStore = pendingTranscriptStore
         )
     }
 }

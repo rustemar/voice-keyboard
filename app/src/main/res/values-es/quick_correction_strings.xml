@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">Teclado para correcciones rápidas · Beta</string>
+    <string name="qc_beta_hint">Distribuciones básicas opcionales en 14 idiomas, incluidos francés, alemán e hindi. Sin sugerencias, escritura por deslizamiento ni conversión para chino, japonés y coreano.</string>
+    <string name="qc_open">Abrir el teclado de corrección</string>
+    <string name="qc_return_to_voice">Volver al panel de voz</string>
+    <string name="qc_choose_layout">Elegir distribución. Actual: %1$s</string>
+    <string name="qc_layouts">Distribución del teclado</string>
+    <string name="qc_layout_limits">Solo escritura directa básica. No hay conversión de entrada para chino, japonés ni coreano.</string>
+    <string name="qc_more_characters">Más caracteres</string>
+    <string name="qc_letters">Letras</string>
+    <string name="qc_symbols">Números y símbolos</string>
+    <string name="qc_shift">Mayúsculas; mantener para bloquear</string>
+    <string name="qc_backspace">Borrar el carácter anterior</string>
+    <string name="qc_space">Espacio</string>
+    <string name="qc_enter">Intro</string>
+    <string name="qc_done">Listo</string>
+    <string name="qc_editor_unavailable">El campo de texto no está disponible. Ábralo de nuevo y vuelva a intentarlo.</string>
+</resources>

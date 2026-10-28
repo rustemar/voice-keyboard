@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
+import com.tyraen.voicekeyboard.core.config.AdvancedPreferences
 import com.tyraen.voicekeyboard.core.config.ProviderPresets
 import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.config.UserPreferences
@@ -94,6 +95,8 @@ class SetupActivity : AppCompatActivity() {
     /** True while the code sets the update switch, so its listener ignores that echo. */
     private var bindingUpdateSwitch = false
     private var bindingReturnSwitch = false
+    private lateinit var sections: SettingsSections
+    private var preferencesLoaded = false
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(InterfaceLanguageManager.applyTo(newBase))
@@ -102,6 +105,7 @@ class SetupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setup)
+        sections = SettingsSections(this, savedInstanceState)
 
         bindViews()
         setupThemeSpinner()
@@ -117,6 +121,11 @@ class SetupActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         refreshKeyboardStatus()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        sections.saveState(outState)
+        super.onSaveInstanceState(outState)
     }
 
     /** singleTop: the cog re-enters this instance, so pick up what the keyboard changed meanwhile. */
@@ -275,7 +284,16 @@ class SetupActivity : AppCompatActivity() {
 
         txtKeyboardStatus.setText(if (enabled) R.string.keyboard_status_enabled else R.string.keyboard_status_disabled)
         txtKeyboardStatus.setTextColor(Color.parseColor(if (enabled) COLOR_OK else COLOR_WARN))
-        txtActiveKeyboardHint.visibility = if (active) View.VISIBLE else View.GONE
+        findViewById<View>(R.id.txtEnableInstructions).isVisible = !enabled
+        findViewById<Button>(R.id.btnEnableKeyboard).apply {
+            setText(if (enabled) R.string.settings_manage_keyboards else R.string.keyboard_open_settings)
+            if (enabled) {
+                backgroundTintList = ContextCompat.getColorStateList(this@SetupActivity, R.color.key_bg)
+                setTextColor(ContextCompat.getColor(this@SetupActivity, R.color.text_primary))
+            }
+        }
+        txtActiveKeyboardHint.setText(R.string.settings_active_keyboard_hint)
+        txtActiveKeyboardHint.isVisible = active && !AdvancedPreferences(this).quickCorrectionEnabled
     }
 
     private val themeValues = listOf(ThemeManager.THEME_AUTO, ThemeManager.THEME_LIGHT, ThemeManager.THEME_DARK)
@@ -322,15 +340,8 @@ class SetupActivity : AppCompatActivity() {
                 if (locale.code == currentCode) return
 
                 InterfaceLanguageManager.persist(this@SetupActivity, locale.code)
-                // Promote the newly picked language to the front of the dictation list instead of
-                // replacing it — a user dictating in several languages shouldn't lose the others
-                // just because they changed the UI language.
-                val codes = TranscriptionLocale.parseCodes(editLanguage.text.toString())
-                val reordered = listOf(locale.code) + codes.filter { it != locale.code }
-                editLanguage.setText(TranscriptionLocale.formatCodes(reordered))
-                activeLanguage = locale.code
-                editPrompt.setText(locale.defaultPrompt)
-
+                // Interface language is independent of dictation languages and custom prompts.
+                // Preserve pending form edits across recreation without rewriting either.
                 val prefs = buildPreferences()
                 scope.launch {
                     preferenceStore.save(prefs)
@@ -359,7 +370,11 @@ class SetupActivity : AppCompatActivity() {
                     return
                 }
                 presetPosSetByCode = -1
-                val preset = ProviderPresets.speechToText.getOrNull(position - 1) ?: return
+                val preset = ProviderPresets.speechToText.getOrNull(position - 1)
+                if (preset == null) {
+                    if (preferencesLoaded) sections.setExpanded(R.id.btnRecognitionDetails, true)
+                    return
+                }
                 editEndpoint.setText(preset.endpoint)
                 editModel.setText(preset.model)
             }
@@ -371,6 +386,7 @@ class SetupActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 txtEndpointWarning.isVisible = ApiEndpoint.isUnencrypted(s?.toString() ?: "")
+                if (txtEndpointWarning.isVisible) sections.setExpanded(R.id.btnRecognitionDetails, true)
                 val pos = ProviderPresets.indexOf(ProviderPresets.speechToText, s?.toString() ?: "") + 1
                 if (spinnerSttPreset.selectedItemPosition != pos) {
                     presetPosSetByCode = pos
@@ -394,6 +410,10 @@ class SetupActivity : AppCompatActivity() {
             switchAddSpace.isChecked = p.addTrailingSpace
             switchSingleWordStripPunct.isChecked = p.singleWordStripPunctuation
             setUpdateSwitch(preferenceStore.isUpdateCheckEnabled())
+            preferencesLoaded = true
+            if (ProviderPresets.indexOf(ProviderPresets.speechToText, p.endpoint) < 0) {
+                sections.setExpanded(R.id.btnRecognitionDetails, true)
+            }
         }
     }
 

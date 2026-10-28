@@ -40,7 +40,7 @@ class ProcessingQueueCancellationTest {
         var online = true
         var prefs = PostProcessingPreferences(enabled = true, apiKey = "pp-test", contextEnabled = true)
         val delivered = ArrayList<String>()
-        val clipboard = ArrayList<String>()
+        val saved = ArrayList<String>()
         val requested = ArrayList<String>()
         val phases = ArrayList<ProcessingQueue.ProcessingPhase>()
         val ppRequests = ArrayList<PromptParts>()
@@ -58,10 +58,13 @@ class ProcessingQueueCancellationTest {
             },
             { prompt, _, _ -> ppRequests += prompt; postProcess(prompt) },
             store, { online }, { apiKey() }, { prefs },
-            { text, _ -> clipboard += text }, test.backgroundScope, { 0L }
+            { _, text, _ -> saved += text }, test.backgroundScope, { 0L }
         )
         val listener = object : ProcessingQueue.Listener {
-            override fun onTextReady(text: String, addTrailingSpace: Boolean) { delivered += text }
+            override fun onTextReady(text: String, addTrailingSpace: Boolean, editorSessionToken: Long): Boolean {
+                delivered += text
+                return true
+            }
             override fun onQueueCountChanged(count: Int) {}
             override fun onProcessingPhaseChanged(phase: ProcessingQueue.ProcessingPhase) { phases += phase }
             override fun onFailedCountChanged(count: Int) {}
@@ -76,7 +79,7 @@ class ProcessingQueueCancellationTest {
             ppPreferences = if (mode.isEmpty()) null else prefs,
             ppFix = mode == "fix" || mode == "all", ppShorten = mode == "shorten", ppEmoji = mode == "emoji",
             ppRhyme = mode == "rhyme" || mode == "all", ppTranslate = mode == "translate" || mode == "all", ppTerminal = mode == "terminal",
-            contextToken = queue.capturePostProcessingContextToken(), workId = name, createdAt = order
+            contextToken = queue.capturePostProcessingContextToken(), editorSessionToken = 1L, workId = name, createdAt = order
         )
     }
 
@@ -112,7 +115,7 @@ class ProcessingQueueCancellationTest {
         assertEquals(0, f.queue.pendingCount)
     }
 
-    @Test fun `STT cancellation suppresses even a noncooperative late success and clipboard`() = runTest {
+    @Test fun `STT cancellation suppresses even a noncooperative late success and private saving`() = runTest {
         val f = Fixture(this)
         val late = CompletableDeferred<Unit>()
         f.transcribe = { withContext(NonCancellable) { late.await() }; Result.success("late C") }
@@ -121,7 +124,7 @@ class ProcessingQueueCancellationTest {
         f.queue.unbindListener(f.listener)
         assertTrue(f.queue.cancelLatest())
         late.complete(Unit); runCurrent()
-        assertTrue(f.delivered.isEmpty()); assertTrue(f.clipboard.isEmpty())
+        assertTrue(f.delivered.isEmpty()); assertTrue(f.saved.isEmpty())
         assertFalse(c.audioFile.exists())
         assertEquals(0, f.store.count.value)
     }
@@ -261,9 +264,10 @@ class ProcessingQueueCancellationTest {
         val f = Fixture(this)
         val b = f.item("B", 2)
         val deliveryCanceller = object : ProcessingQueue.Listener by f.listener {
-            override fun onTextReady(text: String, addTrailingSpace: Boolean) {
+            override fun onTextReady(text: String, addTrailingSpace: Boolean, editorSessionToken: Long): Boolean {
                 f.delivered += text
                 assertTrue(f.queue.cancelLatest())
+                return true
             }
         }
         f.queue.bindListener(deliveryCanceller)
@@ -327,7 +331,7 @@ class ProcessingQueueCancellationTest {
         val c = f.item("C", 3)
         f.queue.enqueue(c); runCurrent()
         assertEquals(listOf("C"), f.requested)
-        assertTrue(f.delivered.isEmpty()); assertTrue(f.clipboard.isEmpty())
+        assertTrue(f.delivered.isEmpty()); assertTrue(f.saved.isEmpty())
         assertEquals(0, f.store.count.value)
         assertFalse(c.audioFile.exists())
     }

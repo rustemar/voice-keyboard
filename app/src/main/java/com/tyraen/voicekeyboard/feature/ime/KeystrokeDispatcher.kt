@@ -30,6 +30,7 @@ class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?
     }
 
     fun startBackspaceRepeat() {
+        stopBackspaceRepeat()
         deleteBack()
         backspaceInterval = BACKSPACE_INITIAL_INTERVAL
         repeatRunnable = object : Runnable {

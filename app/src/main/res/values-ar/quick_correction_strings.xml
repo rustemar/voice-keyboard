@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">لوحة مفاتيح للتصحيحات السريعة · تجريبية</string>
+    <string name="qc_beta_hint">تخطيطات أساسية اختيارية بـ14 لغة، منها الفرنسية والألمانية والهندية. دون اقتراحات أو كتابة بالسحب أو تحويل إدخال للصينية واليابانية والكورية.</string>
+    <string name="qc_open">فتح لوحة التصحيح</string>
+    <string name="qc_return_to_voice">العودة إلى لوحة الصوت</string>
+    <string name="qc_choose_layout">اختيار التخطيط. الحالي: %1$s</string>
+    <string name="qc_layouts">تخطيط لوحة المفاتيح</string>
+    <string name="qc_layout_limits">إدخال مباشر أساسي للأحرف فقط. تحويل الإدخال للصينية واليابانية والكورية غير متاح.</string>
+    <string name="qc_more_characters">أحرف إضافية</string>
+    <string name="qc_letters">أحرف</string>
+    <string name="qc_symbols">أرقام ورموز</string>
+    <string name="qc_shift">أحرف كبيرة؛ اضغط مطولاً للتثبيت</string>
+    <string name="qc_backspace">حذف الحرف السابق</string>
+    <string name="qc_space">مسافة</string>
+    <string name="qc_enter">إدخال</string>
+    <string name="qc_done">تم</string>
+    <string name="qc_editor_unavailable">حقل النص غير متاح. افتحه مجددًا وحاول مرة أخرى.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_actions_open">Textaktionen</string>
+    <string name="text_actions_beta_title">Aktionen für markierten Text · Beta</string>
+    <string name="text_actions_beta_hint">Markierten Text mit Ihrem Nachbearbeitungsdienst übersetzen, korrigieren oder umformulieren. Prüfen Sie das Ergebnis vor dem Anwenden.</string>
+    <string name="text_actions_close">Textaktionen schließen</string>
+    <string name="text_actions_instruction">Bearbeitungsanweisung</string>
+    <string name="text_actions_instruction_hint">Zum Beispiel: Formuliere diese Nachricht förmlicher.</string>
+    <string name="text_actions_select_first">Markieren Sie zuerst Text in der App.</string>
+    <string name="text_actions_too_long">Markieren Sie einen kürzeren Abschnitt mit höchstens 16.000 Zeichen.</string>
+    <string name="text_actions_unavailable">Textaktionen sind in diesem Feld nicht verfügbar.</string>
+    <string name="text_actions_selection">Markierter Text</string>
+    <string name="text_actions_configure">Aktivieren und konfigurieren Sie die Nachbearbeitung für Textaktionen.</string>
+    <string name="text_actions_provider_notice">Nur der markierte Text wird beim Auswählen einer Aktion an Ihren Nachbearbeitungsdienst gesendet.</string>
+    <string name="text_actions_fix">Rechtschreibung und Grammatik korrigieren</string>
+    <string name="text_actions_translate">In %1$s übersetzen</string>
+    <string name="text_actions_custom">Eigene Anweisung</string>
+    <string name="text_actions_type_instruction">Anweisung eingeben</string>
+    <string name="text_actions_preview">Ergebnisvorschau</string>
+    <string name="text_actions_processing">Markierung wird verarbeitet…</string>
+    <string name="text_actions_result">Ergebnis</string>
+    <string name="text_actions_preview_hint">Prüfen Sie das Ergebnis. Beim Schließen wird ein nicht angewendetes Ergebnis in den gespeicherten Texten abgelegt.</string>
+    <string name="text_actions_selection_changed">Feld, Text oder Markierung wurde geändert. Markieren Sie den ursprünglichen Abschnitt erneut und starten Sie eine neue Aktion.</string>
+    <string name="text_actions_apply">Auf Markierung anwenden</string>
+    <string name="text_actions_copy">Ergebnis kopieren</string>
+    <string name="text_actions_save">Für später speichern</string>
+    <string name="text_actions_applied">Die Markierung wurde ersetzt. Rückgängig ist möglich, solange der eingefügte Abschnitt markiert und unverändert bleibt.</string>
+    <string name="text_actions_undo">Ersetzen rückgängig machen</string>
+    <string name="text_actions_copied">Ergebnis kopiert.</string>
+    <string name="text_actions_saved">Ergebnis in den gespeicherten Texten abgelegt.</string>
+    <string name="text_actions_save_failed">Ergebnis konnte nicht gespeichert werden.</string>
+    <string name="text_actions_failed">Markierung konnte nicht verarbeitet werden. Prüfen Sie die Nachbearbeitung und die Verbindung.</string>
+    <string name="text_actions_open_settings">Nachbearbeitungseinstellungen</string>
+</resources>

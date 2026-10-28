@@ -1,8 +1,5 @@
 package com.tyraen.voicekeyboard.feature.ime
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.os.SystemClock
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
@@ -19,6 +16,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.io.File
+import java.io.IOException
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
@@ -49,9 +47,11 @@ class ProcessingQueue internal constructor(
     private val isOnline: () -> Boolean,
     private val loadApiKey: suspend () -> String,
     private val loadPostProcessing: suspend () -> PostProcessingPreferences,
-    private val clipboardDelivery: (String, Boolean) -> Unit,
+    private val savedTranscriptDelivery: suspend (WorkIdentity, String, Boolean) -> Unit,
     private val scope: CoroutineScope,
-    elapsedRealtime: () -> Long
+    elapsedRealtime: () -> Long,
+    private val isTranscriptCompleted: suspend (String) -> Boolean = { false },
+    private val acknowledgeTranscriptCleanup: suspend (String) -> Unit = {}
 ) {
     constructor(
         speechClient: SpeechToTextClient,
@@ -59,7 +59,7 @@ class ProcessingQueue internal constructor(
         store: ParkedRecordingStore,
         connectivity: ConnectivityMonitor,
         preferenceStore: PreferenceStore,
-        appContext: Context
+        pendingTranscriptStore: PendingTranscriptStore
     ) : this(
         speechClient,
         { prompt, prefs, model -> postProcessingClient.process(prompt, prefs, model) },
@@ -67,22 +67,22 @@ class ProcessingQueue internal constructor(
         connectivity::isOnline,
         { preferenceStore.load().apiKey },
         preferenceStore::loadPostProcessing,
-        { text, trailingSpace ->
-            val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = if (trailingSpace) "$text " else text
-            clipboard.setPrimaryClip(ClipData.newPlainText("Voice transcription", clip))
+        { identity, text, trailingSpace ->
+            pendingTranscriptStore.save(identity.workId, text, trailingSpace, identity.createdAt)
         },
         CoroutineScope(Dispatchers.Main + SupervisorJob()),
-        SystemClock::elapsedRealtime
+        SystemClock::elapsedRealtime,
+        pendingTranscriptStore::isCompleted,
+        pendingTranscriptStore::acknowledgeAudioCleanup
     )
 
     enum class ProcessingPhase { TRANSCRIBING, POST_PROCESSING }
 
-    /** The IME input view binds one of these so results land in the focused field; rebound on every
-     *  view recreation. When nothing is bound (keyboard closed/torn down) results go to clipboard. */
+    /** The input view may accept a result only in its original editor session. Results that
+     * cannot be inserted are saved privately for the user to insert or copy later. */
     interface Listener {
-        /** [addTrailingSpace] is the user's setting; the view decides whether a space fits there. */
-        fun onTextReady(text: String, addTrailingSpace: Boolean)
+        /** Return true only after the original editor accepted the text. This call cannot suspend. */
+        fun onTextReady(text: String, addTrailingSpace: Boolean, editorSessionToken: Long): Boolean
         fun onQueueCountChanged(count: Int)
         fun onProcessingPhaseChanged(phase: ProcessingPhase)
         fun onFailedCountChanged(count: Int)
@@ -158,6 +158,8 @@ class ProcessingQueue internal constructor(
         val parkedId: String? = null,
         /** RAM-only capture generation. Restored parked recordings deliberately have none. */
         val contextToken: Long? = null,
+        /** Original editor session; never serialized into parked recordings. */
+        val editorSessionToken: Long? = null,
         val workId: String = UUID.randomUUID().toString(),
         val createdAt: Long = nextCreatedAt()
     )
@@ -169,6 +171,10 @@ class ProcessingQueue internal constructor(
     private var activePhase: ProcessingPhase? = null
     private val cancelledWork = HashSet<String>()
     private val deliveredWork = HashSet<String>()
+    /** A short, non-cancellable insertion/save transaction; a failed save is still retryable. */
+    private val committingWork = HashSet<String>()
+    /** Keep the original editor through same-process retries, never across process death. */
+    private val editorSessionTokens = HashMap<String, Long>()
     private data class Reservation(val identity: WorkIdentity, val onCancel: () -> Unit, val finalized: Boolean = false)
     private val reservations = LinkedHashMap<String, Reservation>()
     // Includes device sleep, so returning to the phone does not revive hours-old references.
@@ -195,6 +201,10 @@ class ProcessingQueue internal constructor(
             records.maxOfOrNull { it.createdAt }?.let { latest ->
                 creationOrder.updateAndGet { maxOf(it, latest) }
             }
+            val liveWork = records.mapTo(HashSet()) { it.workId }
+            queue.forEach { liveWork.add(it.workId) }
+            activeItem?.let { liveWork.add(it.workId) }
+            editorSessionTokens.keys.retainAll(liveWork)
             pushCancellableWork()
         }.launchIn(scope)
     }
@@ -213,6 +223,7 @@ class ProcessingQueue internal constructor(
     fun bootstrap() {
         scope.launch {
             store.ensureLoaded()
+            reconcileCompletedRecordings()
             if (store.waitingCount() > 0) ensureRetryLoop()
         }
     }
@@ -257,6 +268,7 @@ class ProcessingQueue internal constructor(
             pushCancellableWork()
             return
         }
+        item.editorSessionToken?.let { editorSessionTokens[item.workId] = it }
         queue.add(item)
         DiagnosticLog.record(TAG, "Enqueued item, pending=$pendingCount")
         pushQueueCount()
@@ -328,6 +340,7 @@ class ProcessingQueue internal constructor(
                     withContext(NonCancellable) {
                         store.cancel(item.workId)
                         item.audioFile.delete()
+                        editorSessionTokens.remove(item.workId)
                     }
                 }
                 deliveredWork.remove(item.workId)
@@ -350,6 +363,19 @@ class ProcessingQueue internal constructor(
         if (!item.audioFile.exists()) {
             DiagnosticLog.record(TAG, "Audio file missing, dropping ${item.audioFile.name}")
             if (item.parkedId != null) store.markDone(item.parkedId)
+            editorSessionTokens.remove(item.workId)
+            return
+        }
+
+        // The process may have died after saving a finished result but before deleting its
+        // parked audio. A durable result already owns this work: do not bill/retranscribe it
+        // again, or allow an old recording to insert a second copy into the current editor.
+        if (isTranscriptCompleted(item.workId)) {
+            checkActive(item)
+            deliveredWork.add(item.workId)
+            pushCancellableWork()
+            withContext(NonCancellable) { complete(item) }
+            DiagnosticLog.record(TAG, "Finished transcript already saved — released leftover audio")
             return
         }
 
@@ -402,11 +428,11 @@ class ProcessingQueue internal constructor(
 
         if (rawText.isBlank()) {
             DiagnosticLog.record(TAG, "Transcription returned empty text, discarding")
-            if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
+            complete(item)
             return
         }
 
-        DiagnosticLog.record(TAG, "Transcription success: ${rawText.take(50)}")
+        DiagnosticLog.record(TAG, "Transcription success: ${rawText.length} characters")
 
         val cleanedText = if (item.singleWordStripPunctuation) stripSingleWordPunctuation(rawText) else rawText
 
@@ -418,43 +444,57 @@ class ProcessingQueue internal constructor(
         val processed = maybePostProcess(cleanedText, item)
 
         // The prompts say "output nothing" for filler-only input; honour that instead of typing a
-        // lone space into the field or wiping the clipboard with one. A model that blanks a real
+        // lone space into the field or saving an empty result. A model that blanks a real
         // sentence must not lose it, though: anything longer than a few filler sounds falls back
         // to the transcript, like an LLM error does.
         val output = if (processed.isBlank()) {
             if (cleanedText.trim().length <= FILLER_MAX_CHARS) {
                 DiagnosticLog.record(TAG, "Post-processing produced empty text, nothing inserted")
-                if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
+                complete(item)
                 return
             }
             DiagnosticLog.record(TAG, "Post-processing produced empty text for a real sentence, using raw text")
             cleanedText
         } else processed
 
-        // Consent can suspend. Resolve it before the non-suspending delivery boundary so cancel
-        // either wins completely, or the already-delivered result is no longer cancellable.
+        // Resolve live consent before the delivery transaction. Cancellation wins before this
+        // fence; once insertion/save starts it applies only to other unfinished dictations.
         val remember = canUseContext(item)
         checkActive(item)
-        deliveredWork.add(item.workId)
+        committingWork.add(item.workId)
         pushCancellableWork()
-        deliver(output, item.addTrailingSpace)
-        if (remember) recentContext.remember(item.contextToken, output)
-        if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
+        try {
+            deliver(item, output)
+            deliveredWork.add(item.workId)
+            if (remember) recentContext.remember(item.contextToken, output)
+            // Insertion or durable save has succeeded. Finish releasing owned audio even if the
+            // UI/process-wide scope is torn down while the parked store switches dispatchers.
+            withContext(NonCancellable) { complete(item) }
+        } finally {
+            committingWork.remove(item.workId)
+            pushCancellableWork()
+        }
     }
 
-    /** Deliver finished text to the bound input view, or fall back to the clipboard if none. */
-    private fun deliver(text: String, addTrailingSpace: Boolean) {
+    private suspend fun complete(item: QueueItem) {
+        if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
+        // Never clear the durable completion marker while replayable source audio remains.
+        if (item.audioFile.exists()) throw IOException("Could not release the completed dictation audio")
+        acknowledgeTranscriptCleanup(item.workId)
+        editorSessionTokens.remove(item.workId)
+    }
+
+    /** Inserting cannot suspend; an unavailable/changed editor instead gets a durable result. */
+    private suspend fun deliver(item: QueueItem, text: String) {
         val l = listener
-        if (l != null) {
-            l.onTextReady(text, addTrailingSpace)
-        } else {
-            try {
-                clipboardDelivery(text, addTrailingSpace)
-                DiagnosticLog.record(TAG, "No input view bound — delivered to clipboard")
-            } catch (e: Exception) {
-                DiagnosticLog.recordFailure(TAG, "Clipboard delivery failed", e)
-            }
+        val editorToken = item.editorSessionToken
+        if (editorToken != null && l?.onTextReady(text, item.addTrailingSpace, editorToken) == true) return
+        // A save failure must propagate: processNext parks the original audio and retries instead
+        // of deleting the only copy of a dictation. No system clipboard is changed automatically.
+        withContext(NonCancellable) {
+            savedTranscriptDelivery(WorkIdentity(item.workId, item.createdAt), text, item.addTrailingSpace)
         }
+        DiagnosticLog.record(TAG, "Original editor unavailable — saved transcript for later")
     }
 
     /**
@@ -476,6 +516,10 @@ class ProcessingQueue internal constructor(
 
     /** Move every claimable parked recording into the live queue, re-reading API keys from prefs. */
     private suspend fun drainParked() {
+        // Completed results need no network, even if their text was already consumed after a
+        // restart. Release crash leftovers before applying the connectivity gate to real retries.
+        store.ensureLoaded()
+        reconcileCompletedRecordings()
         if (!isOnline()) {
             DiagnosticLog.record(TAG, "drainParked skipped — still offline")
             return
@@ -493,13 +537,32 @@ class ProcessingQueue internal constructor(
                 store.update(rec.id, ParkedRecording.State.NEEDS_ATTENTION)
                 continue
             }
-            queue.add(rec.toQueueItem(apiKey, ppApiKey))
+            queue.add(rec.toQueueItem(apiKey, ppApiKey).copy(editorSessionToken = editorSessionTokens[rec.workId]))
             enqueued++
         }
         if (enqueued > 0) {
             DiagnosticLog.record(TAG, "Re-queued $enqueued parked recording(s)")
             pushQueueCount()
             if (!isProcessing) processNext()
+        }
+    }
+
+    private suspend fun reconcileCompletedRecordings() {
+        for (rec in store.recordings.value) {
+            // Live items own their source until their processing coroutine finishes. Their own
+            // completion check performs the same reconciliation before any provider request.
+            if (activeItem?.workId == rec.workId || queue.any { it.workId == rec.workId }) continue
+            try {
+                if (isTranscriptCompleted(rec.workId)) {
+                    withContext(NonCancellable) { complete(rec.toQueueItem("", "")) }
+                }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                // Storage lookup/cleanup failures cannot justify deleting or retranscribing
+                // source audio. Normal retry processing will retain it and report the failure.
+                DiagnosticLog.recordFailure(TAG, "Could not reconcile a completed dictation", error)
+            }
         }
     }
 
@@ -640,7 +703,9 @@ class ProcessingQueue internal constructor(
             activeItem?.let { yield(WorkIdentity(it.workId, it.createdAt)) }
             store.recordings.value.forEach { yield(WorkIdentity(it.workId, it.createdAt)) }
         }
-        return candidates.filter { it.workId !in cancelledWork && it.workId !in deliveredWork }
+        return candidates.filter {
+            it.workId !in cancelledWork && it.workId !in deliveredWork && it.workId !in committingWork
+        }
             .maxWithOrNull(compareBy<WorkIdentity> { it.createdAt }.thenBy { it.workId })
     }
 
@@ -654,6 +719,7 @@ class ProcessingQueue internal constructor(
     fun cancelLatest(): Boolean {
         val identity = latestWork() ?: return false
         cancelledWork.add(identity.workId) // synchronous fence before callbacks or any suspension
+        editorSessionTokens.remove(identity.workId)
         val reservation = reservations.remove(identity.workId)
         val removed = queue.filter { it.workId == identity.workId }
         removed.forEach(queue::remove)
@@ -676,9 +742,15 @@ class ProcessingQueue internal constructor(
     /** Legacy teardown action. Parked recordings remain durable; the cancel button uses cancelLatest. */
     fun cancelPending() {
         val fresh = queue.filter { it.parkedId == null }
-        fresh.forEach { cancelledWork.add(it.workId); queue.remove(it); it.audioFile.delete() }
-        activeItem?.takeIf { it.parkedId == null }?.let {
+        fresh.forEach {
+            cancelledWork.add(it.workId); queue.remove(it); it.audioFile.delete()
+            editorSessionTokens.remove(it.workId)
+        }
+        activeItem?.takeIf {
+            it.parkedId == null && it.workId !in committingWork && it.workId !in deliveredWork
+        }?.let {
             cancelledWork.add(it.workId)
+            editorSessionTokens.remove(it.workId)
             processingJob?.cancel()
         }
         pushQueueCount()

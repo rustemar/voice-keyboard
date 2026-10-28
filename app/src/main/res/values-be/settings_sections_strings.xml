@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_section_recognition">Распазнаванне маўлення</string>
+    <string name="settings_section_manual">Падключэнне і параметры распазнавання</string>
+    <string name="settings_section_keyboard">Клавіятура і выгляд</string>
+    <string name="settings_section_diagnostics">Праверка і дыягностыка</string>
+    <string name="settings_section_about">Абнаўленні і праграма</string>
+    <string name="settings_section_experiments">Эксперыментальныя функцыі</string>
+    <string name="settings_experiments_hint">Неабавязковыя функцыі на этапе праверкі. Кожная ўключаецца асобна.</string>
+    <string name="settings_section_expand">Паказаць: %1$s</string>
+    <string name="settings_section_collapse">Схаваць: %1$s</string>
+    <string name="settings_active_keyboard_hint">Для ўводу ў наладах выберыце звыклую клавіятуру кнопкай пераключэння клавіятур.</string>
+    <string name="settings_manage_keyboards">Сістэмныя клавіятуры</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qc_beta_title">快速修改键盘 · 测试版</string>
+    <string name="qc_beta_hint">可选的14种语言基础布局，包括法语、德语和印地语。不支持联想、滑行输入及中文、日文和韩文输入转换。</string>
+    <string name="qc_open">打开修改键盘</string>
+    <string name="qc_return_to_voice">返回语音面板</string>
+    <string name="qc_choose_layout">选择布局。当前：%1$s</string>
+    <string name="qc_layouts">键盘布局</string>
+    <string name="qc_layout_limits">仅支持基础字符直接输入。不提供中文、日文和韩文输入转换。</string>
+    <string name="qc_more_characters">更多字符</string>
+    <string name="qc_letters">字母</string>
+    <string name="qc_symbols">数字和符号</string>
+    <string name="qc_shift">大写；长按锁定</string>
+    <string name="qc_backspace">删除前一个字符</string>
+    <string name="qc_space">空格</string>
+    <string name="qc_enter">回车</string>
+    <string name="qc_done">完成</string>
+    <string name="qc_editor_unavailable">文本框不可用。请重新打开后重试。</string>
+</resources>

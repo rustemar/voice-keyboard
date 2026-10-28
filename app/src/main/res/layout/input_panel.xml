@@ -109,6 +109,39 @@
         android:layout_marginTop="4dp"
         app:tint="@color/status_text" />
 
+    <FrameLayout
+        android:id="@+id/pendingTextsFrame"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnSettings"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnPendingTexts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/borderless_ripple"
+            android:src="@drawable/ic_saved_texts"
+            android:contentDescription="@string/saved_texts_title"
+            android:scaleType="centerInside"
+            android:padding="10dp"
+            app:tint="@color/status_text" />
+
+        <TextView
+            android:id="@+id/pendingTextsBadge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/queue_badge_bg"
+            android:gravity="center"
+            android:importantForAccessibility="no"
+            android:textColor="@color/key_text"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
     <!-- Cut all text button (left of backspace) -->
     <ImageButton
         android:id="@+id/btnCutAll"
@@ -269,6 +302,39 @@
         app:layout_constraintEnd_toStartOf="@id/micFrame"
         app:tint="@color/status_text" />
 
+    <!-- Optional experiments have one entry point each; absent for existing installations. -->
+    <LinearLayout
+        android:id="@+id/experimentalActionsBar"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/micFrame"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnQuickCorrection"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/borderless_ripple"
+            android:src="@drawable/ic_quick_correction"
+            android:contentDescription="@string/qc_open"
+            android:padding="12dp"
+            android:visibility="gone"
+            app:tint="@color/key_text" />
+
+        <ImageButton
+            android:id="@+id/btnTextActions"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/borderless_ripple"
+            android:src="@drawable/ic_text_actions"
+            android:contentDescription="@string/text_actions_open"
+            android:padding="12dp"
+            android:visibility="gone"
+            app:tint="@color/key_text" />
+    </LinearLayout>
+
     <!-- Post-processing toggle row (above bottom row, left-aligned) -->
     <LinearLayout
         android:id="@+id/ppToggleRow"
@@ -278,7 +344,7 @@
         android:gravity="center_vertical"
         android:visibility="gone"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/micFrame"
+        app:layout_constraintTop_toBottomOf="@id/experimentalActionsBar"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
