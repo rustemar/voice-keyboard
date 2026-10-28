@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- A short window uses a horizontal pair to preserve the processing and bottom rows. -->
+    <dimen name="voice_shortcut_rail_width">102dp</dimen>
+    <integer name="voice_shortcut_orientation">0</integer>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="voice_shortcut_rail_width">48dp</dimen>
+    <integer name="voice_shortcut_orientation">1</integer>
+</resources>

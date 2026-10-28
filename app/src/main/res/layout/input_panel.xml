@@ -120,7 +120,7 @@
     <!-- Optional shortcuts form a start-side rail below settings. -->
     <LinearLayout
         android:id="@+id/keyboardSideRail"
-        android:layout_width="48dp"
+        android:layout_width="@dimen/voice_shortcut_rail_width"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:divider="@drawable/keyboard_rail_gap"
@@ -131,9 +131,9 @@
 
         <LinearLayout
             android:id="@+id/experimentalActionsBar"
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="@integer/voice_shortcut_orientation"
             android:visibility="gone"
             android:divider="@drawable/keyboard_rail_gap"
             android:showDividers="middle">
