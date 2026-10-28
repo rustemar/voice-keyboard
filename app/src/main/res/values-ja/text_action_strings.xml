@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">設定した後処理サービスで選択したテキストを翻訳・修正・書き換えます。適用前に結果を確認できます。</string>
     <string name="text_actions_close">テキスト操作を閉じる</string>
     <string name="text_actions_instruction">編集の指示</string>
-    <string name="text_actions_instruction_hint">例：このメッセージをより丁寧にしてください。</string>
+    <string name="text_actions_instruction_hint">この文章を丁寧にして。</string>
     <string name="text_actions_select_first">先にアプリ内のテキストを選択してください。</string>
     <string name="text_actions_too_long">16,000文字以内の短い範囲を選択してください。</string>
     <string name="text_actions_unavailable">この入力欄ではテキスト操作を使えません。</string>

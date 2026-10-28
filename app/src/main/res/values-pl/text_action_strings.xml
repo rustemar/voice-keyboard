@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Tłumacz, poprawiaj lub przeredagowuj zaznaczony tekst przez usługę przetwarzania. Sprawdź wynik przed zastosowaniem.</string>
     <string name="text_actions_close">Zamknij działania na tekście</string>
     <string name="text_actions_instruction">Polecenie edycji</string>
-    <string name="text_actions_instruction_hint">Na przykład: nadaj tej wiadomości bardziej formalny ton.</string>
+    <string name="text_actions_instruction_hint">Nadaj wiadomości formalny ton.</string>
     <string name="text_actions_select_first">Najpierw zaznacz tekst w aplikacji.</string>
     <string name="text_actions_too_long">Zaznacz krótszy fragment, do 16 000 znaków.</string>
     <string name="text_actions_unavailable">Działania na tekście są niedostępne w tym polu.</string>

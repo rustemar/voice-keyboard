@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -68,11 +69,14 @@ class PendingTranscriptsPanel(
         val header = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(12), 0, 0, 0)
+            setPaddingRelative(dp(12), 0, 0, 0)
         }
         title.apply {
             textSize = 17f
             setTextColor(ContextCompat.getColor(context, R.color.key_text))
+            minHeight = dp(48)
+            maxLines = 2
+            ellipsize = android.text.TextUtils.TruncateAt.END
             ViewCompat.setAccessibilityHeading(this, true)
         }
         val close = ImageButton(context).apply {
@@ -84,12 +88,12 @@ class PendingTranscriptsPanel(
             setPadding(dp(14), dp(14), dp(14), dp(14))
             setOnClickListener { hide() }
         }
-        header.addView(title, LinearLayout.LayoutParams(0, dp(48), 1f).apply {
+        header.addView(title, LinearLayout.LayoutParams(0, -2, 1f).apply {
             gravity = Gravity.CENTER_VERTICAL
         })
         title.gravity = Gravity.CENTER_VERTICAL
         header.addView(close, LinearLayout.LayoutParams(dp(48), dp(48)))
-        overlay.addView(header, LinearLayout.LayoutParams(-1, dp(48)))
+        overlay.addView(header, LinearLayout.LayoutParams(-1, -2))
         overlay.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
         root.addView(overlay, FrameLayout.LayoutParams(-1, -1))
         button.setOnClickListener { show() }
@@ -201,25 +205,30 @@ class PendingTranscriptsPanel(
                 actions.addView(action(android.R.string.cancel, View.NO_ID, transcript) {
                     confirmingDelete = null
                     render()
-                }, LinearLayout.LayoutParams(0, -2, 1f))
+                }, actionParams())
                 actions.addView(action(R.string.saved_texts_delete, R.id.btnPendingDelete, transcript) {
                     remove(transcript)
-                }, LinearLayout.LayoutParams(0, -2, 1f))
+                }, actionParams())
             } else {
                 actions.addView(action(R.string.saved_texts_insert, R.id.btnPendingInsert, transcript) {
                     insert(transcript)
-                }, LinearLayout.LayoutParams(0, -2, 1f))
+                }, actionParams())
                 actions.addView(action(R.string.saved_texts_copy, R.id.btnPendingCopy, transcript) {
                     copy(transcript)
-                }, LinearLayout.LayoutParams(0, -2, 1f))
+                }, actionParams())
                 actions.addView(action(R.string.saved_texts_delete, R.id.btnPendingDelete, transcript) {
                     confirmingDelete = transcript.id
                     render()
-                }, LinearLayout.LayoutParams(0, -2, 1f))
+                }, actionParams())
             }
             card.addView(actions, LinearLayout.LayoutParams(-1, -2))
             list.addView(card, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
         }
+    }
+
+    private fun actionParams() = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f).apply {
+        marginStart = dp(3)
+        marginEnd = dp(3)
     }
 
     private fun action(label: Int, viewId: Int, transcript: PendingTranscript, click: () -> Unit) =
@@ -229,8 +238,13 @@ class PendingTranscriptsPanel(
             isAllCaps = false
             textSize = 14f
             minHeight = dp(48)
+            minimumHeight = dp(48)
+            minWidth = 0
             minimumWidth = 0
-            setPadding(dp(4), 0, dp(4), 0)
+            backgroundTintList = null
+            setBackgroundResource(R.drawable.control_key_bg)
+            setTextColor(ContextCompat.getColorStateList(context, R.color.control_key_text))
+            setPadding(dp(8), dp(8), dp(8), dp(8))
             isEnabled = transcript.id !in claimedIds.value
             setOnClickListener { click() }
         }

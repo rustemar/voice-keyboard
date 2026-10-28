@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="correction_letter_surface">#FF3B3D45</color>
+    <color name="correction_control_surface">#FF2D2F37</color>
+    <color name="correction_key_border">#FF4A4C56</color>
+    <color name="correction_key_ripple">#667C4DFF</color>
+</resources>

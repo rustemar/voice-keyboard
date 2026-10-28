@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Traduisez, corrigez ou reformulez le texte sélectionné avec votre service de post-traitement. Vérifiez le résultat avant de l’appliquer.</string>
     <string name="text_actions_close">Fermer les actions sur le texte</string>
     <string name="text_actions_instruction">Consigne de modification</string>
-    <string name="text_actions_instruction_hint">Par exemple : rends ce message plus formel.</string>
+    <string name="text_actions_instruction_hint">Rends ce message plus formel.</string>
     <string name="text_actions_select_first">Sélectionnez d’abord du texte dans l’application.</string>
     <string name="text_actions_too_long">Sélectionnez un passage plus court : 16 000 caractères maximum.</string>
     <string name="text_actions_unavailable">Les actions sur le texte ne sont pas disponibles dans ce champ.</string>

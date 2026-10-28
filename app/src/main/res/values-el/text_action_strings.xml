@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Μεταφράστε, διορθώστε ή αναδιατυπώστε το επιλεγμένο κείμενο με τον πάροχο μετεπεξεργασίας σας. Ελέγξτε το αποτέλεσμα πριν το εφαρμόσετε.</string>
     <string name="text_actions_close">Κλείσιμο ενεργειών κειμένου</string>
     <string name="text_actions_instruction">Οδηγία επεξεργασίας</string>
-    <string name="text_actions_instruction_hint">Για παράδειγμα: κάνε αυτό το μήνυμα πιο επίσημο.</string>
+    <string name="text_actions_instruction_hint">Κάνε το μήνυμα πιο επίσημο.</string>
     <string name="text_actions_select_first">Επιλέξτε πρώτα κείμενο στην εφαρμογή.</string>
     <string name="text_actions_too_long">Επιλέξτε μικρότερο απόσπασμα, έως 16.000 χαρακτήρες.</string>
     <string name="text_actions_unavailable">Οι ενέργειες κειμένου δεν είναι διαθέσιμες σε αυτό το πεδίο.</string>

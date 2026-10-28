@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Seçili metni son işleme sağlayıcınızla çevirin, düzeltin veya yeniden yazın. Uygulamadan önce sonucu inceleyin.</string>
     <string name="text_actions_close">Metin işlemlerini kapat</string>
     <string name="text_actions_instruction">Düzenleme talimatı</string>
-    <string name="text_actions_instruction_hint">Örneğin: bu mesajı daha resmî hâle getir.</string>
+    <string name="text_actions_instruction_hint">Bu mesajı daha resmî yaz.</string>
     <string name="text_actions_select_first">Önce uygulamada bir metin seçin.</string>
     <string name="text_actions_too_long">En fazla 16.000 karakterlik daha kısa bir bölüm seçin.</string>
     <string name="text_actions_unavailable">Bu alanda metin işlemleri kullanılamıyor.</string>

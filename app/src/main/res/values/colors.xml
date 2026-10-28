@@ -9,6 +9,8 @@
     <color name="divider">#FFD1D5DB</color>
     <color name="test_result_bg">#FFE5E7EB</color>
     <color name="warning_text">#FFB45309</color>
+    <color name="control_key_stroke">#FFD9D9E3</color>
+    <color name="control_key_ripple">#337C4DFF</color>
 
     <!-- Accent colors (same in both themes) -->
     <color name="mic_idle">#FF7C4DFF</color>

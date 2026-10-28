@@ -75,7 +75,32 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
     val root: FrameLayout = object : FrameLayout(fullPanel.context) {
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
             applyForWidth(View.MeasureSpec.getSize(widthMeasureSpec))
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+            val sheetIds = setOf(R.id.quickCorrectionOverlay, R.id.textActionsOverlay, R.id.pendingTextsOverlay)
+            val sheet = (childCount - 1 downTo 0).map(::getChildAt).firstOrNull {
+                it.id in sheetIds && it.visibility == View.VISIBLE && it.layoutParams.height > 0
+            }
+            val requestedHeight = sheet?.layoutParams?.height ?: 0
+            if (sheet != null) {
+                // The visible foreground sheet determines the IME height. Background panels must
+                // neither leave unused space nor make a localized sheet exceed its window.
+                val limit = if (View.MeasureSpec.getMode(heightMeasureSpec) == View.MeasureSpec.UNSPECIFIED) {
+                    requestedHeight
+                } else View.MeasureSpec.getSize(heightMeasureSpec)
+                val fittedHeight = minOf(requestedHeight, limit)
+                val sheetParams = sheet.layoutParams
+                // A fixed child height otherwise wins over an EXACT parent bound and clips its
+                // bottom controls. Bound this measure only; retain the natural height for a
+                // later, larger window. FrameLayout.onLayout uses the child's measured size.
+                sheetParams.height = fittedHeight
+                try {
+                    super.onMeasure(widthMeasureSpec,
+                        View.MeasureSpec.makeMeasureSpec(fittedHeight, View.MeasureSpec.EXACTLY))
+                } finally {
+                    sheetParams.height = requestedHeight
+                }
+            } else {
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+            }
         }
     }.apply {
         setBackgroundColor(ContextCompat.getColor(context, R.color.keyboard_bg))

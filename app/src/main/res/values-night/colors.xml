@@ -9,4 +9,6 @@
     <color name="divider">#FF3D3D42</color>
     <color name="test_result_bg">#FF2D2D32</color>
     <color name="warning_text">#FFFBBF24</color>
+    <color name="control_key_stroke">#FF484852</color>
+    <color name="control_key_ripple">#557C4DFF</color>
 </resources>

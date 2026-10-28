@@ -192,6 +192,7 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
         super.onStartInput(info, restarting)
+        quickCorrectionPanel?.stopRepeatingKeys()
         // Even restartInput can represent another DOM field in a browser. Treat replacement
         // editor connections conservatively; recreating just our panel keeps the token intact.
         if (!restarting && editorSessionToken != null && ::orchestrator.isInitialized) {
@@ -212,6 +213,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     override fun onFinishInput() {
+        quickCorrectionPanel?.stopRepeatingKeys()
         editorSessionToken = null
         if (quickCorrectionPanel?.isInstructionMode == true) quickCorrectionPanel?.hide()
         textActionsPanel?.onEditorChanged()

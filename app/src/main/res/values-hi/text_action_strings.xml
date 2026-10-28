@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">अपने पोस्ट-प्रोसेसिंग प्रदाता से चुने हुए टेक्स्ट का अनुवाद, सुधार या पुनर्लेखन करें। लागू करने से पहले परिणाम जाँचें।</string>
     <string name="text_actions_close">टेक्स्ट कार्रवाइयाँ बंद करें</string>
     <string name="text_actions_instruction">संपादन निर्देश</string>
-    <string name="text_actions_instruction_hint">उदाहरण: इस संदेश को अधिक औपचारिक बनाएँ।</string>
+    <string name="text_actions_instruction_hint">इस संदेश को औपचारिक बनाओ।</string>
     <string name="text_actions_select_first">पहले ऐप में कुछ टेक्स्ट चुनें।</string>
     <string name="text_actions_too_long">16,000 वर्णों तक का छोटा अंश चुनें।</string>
     <string name="text_actions_unavailable">इस फ़ील्ड में टेक्स्ट कार्रवाइयाँ उपलब्ध नहीं हैं।</string>

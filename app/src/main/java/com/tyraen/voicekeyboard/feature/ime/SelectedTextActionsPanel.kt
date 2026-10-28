@@ -69,6 +69,7 @@ class SelectedTextActionsPanel(
     private var resultId = ""
     private var preserved = false
     private var savingId: String? = null
+    private var sheetHeight = 0
     private var selectionChanged = false
     private var destroyed = false
     private var preferences: PostProcessingPreferences? = null
@@ -129,13 +130,16 @@ class SelectedTextActionsPanel(
         val header = LinearLayout(context).apply {
             gravity = Gravity.CENTER_VERTICAL
             orientation = LinearLayout.HORIZONTAL
-            setPadding(dp(12), 0, 0, 0)
+            setPaddingRelative(dp(12), 0, 0, 0)
         }
         val heading = text(context.getString(R.string.text_actions_open), 18f).apply {
             gravity = Gravity.CENTER_VERTICAL
+            minHeight = dp(48)
+            maxLines = 2
+            ellipsize = android.text.TextUtils.TruncateAt.END
             ViewCompat.setAccessibilityHeading(this, true)
         }
-        header.addView(heading, LinearLayout.LayoutParams(0, dp(48), 1f))
+        header.addView(heading, LinearLayout.LayoutParams(0, -2, 1f))
         header.addView(ImageButton(context).apply {
             id = R.id.btnTextActionsClose
             setImageResource(R.drawable.ic_close)
@@ -145,7 +149,7 @@ class SelectedTextActionsPanel(
             setPadding(dp(14), dp(14), dp(14), dp(14))
             setOnClickListener { hide() }
         }, LinearLayout.LayoutParams(dp(48), dp(48)))
-        overlay.addView(header, LinearLayout.LayoutParams(-1, dp(48)))
+        overlay.addView(header, LinearLayout.LayoutParams(-1, -2))
         overlay.addView(ScrollView(context).apply { addView(body) }, LinearLayout.LayoutParams(-1, 0, 1f))
         root.addView(overlay, FrameLayout.LayoutParams(-1, -1))
     }
@@ -197,7 +201,8 @@ class SelectedTextActionsPanel(
             }
         }
         val available = context.resources.displayMetrics.heightPixels
-        overlay.layoutParams = FrameLayout.LayoutParams(-1, maxOf(root.height, dp(280)).coerceAtMost(available))
+        if (sheetHeight == 0) sheetHeight = maxOf(root.height, dp(280)).coerceAtMost(available)
+        overlay.layoutParams = FrameLayout.LayoutParams(-1, sheetHeight)
         overlay.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
         overlay.visibility = View.VISIBLE
         overlay.bringToFront()
@@ -219,6 +224,7 @@ class SelectedTextActionsPanel(
         appliedSelection = null
         preferences = null
         screen = Screen.CHOOSE
+        sheetHeight = 0
         applyButton = null
         undoButton = null
         customPreviewButton = null
@@ -332,6 +338,26 @@ class SelectedTextActionsPanel(
                     .also { it.isEnabled = canUndo(); body.addView(it) }
                 addAction(R.string.text_actions_copy, R.id.btnTextActionCopy) { copyResult() }
             }
+        }
+        if (screen == Screen.CHOOSE || screen == Screen.CUSTOM) fitChooserHeight()
+    }
+
+    /** A short chooser should expose all three actions instead of half a final button. */
+    private fun fitChooserHeight() {
+        if (!isVisible || root.width <= 0) return
+        val width = View.MeasureSpec.makeMeasureSpec(root.width, View.MeasureSpec.EXACTLY)
+        val unspecified = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        val header = overlay.getChildAt(0)
+        header.measure(width, unspecified)
+        body.measure(width, unspecified)
+        val screenHeight = context.resources.displayMetrics.heightPixels
+        val available = (screenHeight - dp(80)).coerceAtLeast(dp(120)).coerceAtMost(screenHeight)
+        val contentHeight = header.measuredHeight + body.measuredHeight
+        val desired = maxOf(overlay.layoutParams.height, contentHeight).coerceAtMost(available)
+        sheetHeight = desired
+        if (overlay.layoutParams.height != desired) {
+            overlay.layoutParams = FrameLayout.LayoutParams(-1, desired)
+            root.requestLayout()
         }
     }
 
@@ -557,9 +583,17 @@ class SelectedTextActionsPanel(
         isAllCaps = false
         textSize = 15f
         minHeight = dp(48)
-        setTextColor(ContextCompat.getColor(context, R.color.key_text))
+        minimumHeight = dp(48)
+        minWidth = 0
+        minimumWidth = 0
+        backgroundTintList = null
+        val primary = viewId == R.id.btnTextActionApply || viewId == R.id.btnTextActionPreview
+        setBackgroundResource(if (primary) R.drawable.control_primary_bg else R.drawable.control_key_bg)
+        setTextColor(ContextCompat.getColorStateList(context,
+            if (primary) R.color.control_primary_text else R.color.control_key_text))
+        setPadding(dp(12), dp(10), dp(12), dp(10))
         setOnClickListener { action() }
-        layoutParams = LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) }
+        layoutParams = LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) }
     }
 
     private fun text(value: String, size: Float = 16f) = TextView(context).apply {

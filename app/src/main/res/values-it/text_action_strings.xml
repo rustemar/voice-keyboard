@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Traduci, correggi o riscrivi il testo selezionato con il servizio di post-elaborazione. Controlla il risultato prima di applicarlo.</string>
     <string name="text_actions_close">Chiudi azioni sul testo</string>
     <string name="text_actions_instruction">Istruzione di modifica</string>
-    <string name="text_actions_instruction_hint">Ad esempio: rendi questo messaggio più formale.</string>
+    <string name="text_actions_instruction_hint">Rendi il messaggio più formale.</string>
     <string name="text_actions_select_first">Seleziona prima del testo nell’app.</string>
     <string name="text_actions_too_long">Seleziona un brano più breve, fino a 16.000 caratteri.</string>
     <string name="text_actions_unavailable">Le azioni sul testo non sono disponibili in questo campo.</string>

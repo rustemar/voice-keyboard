@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="quickCorrectionNumberRow" />
+    <item type="id" name="quickCorrectionLetterRow" />
+    <item type="id" name="quickCorrectionBottomRow" />
+    <item type="id" name="quickCorrectionKeys" />
+    <item type="id" name="btnQuickCorrectionInlineBackspace" />
+</resources>

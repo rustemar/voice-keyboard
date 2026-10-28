@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">使用已配置的后处理服务翻译、纠正或改写所选文本。应用前可检查结果。</string>
     <string name="text_actions_close">关闭文本操作</string>
     <string name="text_actions_instruction">编辑指令</string>
-    <string name="text_actions_instruction_hint">例如：让这条消息更正式。</string>
+    <string name="text_actions_instruction_hint">把这段话写得更正式。</string>
     <string name="text_actions_select_first">请先在应用中选择文本。</string>
     <string name="text_actions_too_long">请选择不超过16,000个字符的较短片段。</string>
     <string name="text_actions_unavailable">此输入框不支持文本操作。</string>

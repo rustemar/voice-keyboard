@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">ترجم النص المحدد أو صححه أو أعد صياغته باستخدام مزوّد المعالجة اللاحقة. راجع النتيجة قبل تطبيقها.</string>
     <string name="text_actions_close">إغلاق إجراءات النص</string>
     <string name="text_actions_instruction">تعليمات التحرير</string>
-    <string name="text_actions_instruction_hint">مثال: اجعل هذه الرسالة أكثر رسمية.</string>
+    <string name="text_actions_instruction_hint">اجعل الرسالة أكثر رسمية.</string>
     <string name="text_actions_select_first">حدد نصًا في التطبيق أولًا.</string>
     <string name="text_actions_too_long">حدد مقطعًا أقصر لا يتجاوز 16000 محرف.</string>
     <string name="text_actions_unavailable">إجراءات النص غير متاحة في هذا الحقل.</string>

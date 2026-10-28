@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Переводите, исправляйте или переписывайте выделенный текст через сервис постобработки. Проверяйте результат перед применением.</string>
     <string name="text_actions_close">Закрыть действия с текстом</string>
     <string name="text_actions_instruction">Инструкция для обработки</string>
-    <string name="text_actions_instruction_hint">Например: сделай это сообщение более официальным.</string>
+    <string name="text_actions_instruction_hint">Сделай сообщение официальнее.</string>
     <string name="text_actions_select_first">Сначала выделите текст в приложении.</string>
     <string name="text_actions_too_long">Выделите фрагмент покороче: до 16 000 символов.</string>
     <string name="text_actions_unavailable">Действия с текстом недоступны в этом поле.</string>

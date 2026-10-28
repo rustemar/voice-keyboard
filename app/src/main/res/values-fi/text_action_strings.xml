@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Käännä, korjaa tai muokkaa valittua tekstiä jälkikäsittelypalvelullasi. Tarkista tulos ennen käyttämistä.</string>
     <string name="text_actions_close">Sulje tekstitoiminnot</string>
     <string name="text_actions_instruction">Muokkausohje</string>
-    <string name="text_actions_instruction_hint">Esimerkiksi: tee tästä viestistä muodollisempi.</string>
+    <string name="text_actions_instruction_hint">Tee viestistä muodollisempi.</string>
     <string name="text_actions_select_first">Valitse ensin tekstiä sovelluksessa.</string>
     <string name="text_actions_too_long">Valitse lyhyempi katkelma, enintään 16 000 merkkiä.</string>
     <string name="text_actions_unavailable">Tekstitoiminnot eivät ole käytettävissä tässä kentässä.</string>

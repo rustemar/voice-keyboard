@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Translate, correct or rewrite selected text with your post-processing provider. Review the result before applying it.</string>
     <string name="text_actions_close">Close text actions</string>
     <string name="text_actions_instruction">Editing instruction</string>
-    <string name="text_actions_instruction_hint">For example: make this message more formal.</string>
+    <string name="text_actions_instruction_hint">Make this message more formal.</string>
     <string name="text_actions_select_first">Select some text in the app first.</string>
     <string name="text_actions_too_long">Select a shorter passage (up to 16,000 characters).</string>
     <string name="text_actions_unavailable">Text actions are unavailable in this field.</string>

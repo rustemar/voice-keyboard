@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Перакладайце, выпраўляйце ці перапісвайце вылучаны тэкст праз сэрвіс пасляапрацоўкі. Правярайце вынік перад ужываннем.</string>
     <string name="text_actions_close">Закрыць дзеянні з тэкстам</string>
     <string name="text_actions_instruction">Інструкцыя для апрацоўкі</string>
-    <string name="text_actions_instruction_hint">Напрыклад: зрабі гэтае паведамленне больш афіцыйным.</string>
+    <string name="text_actions_instruction_hint">Зрабі паведамленне больш афіцыйным.</string>
     <string name="text_actions_select_first">Спачатку вылучыце тэкст у праграме.</string>
     <string name="text_actions_too_long">Вылучыце карацейшы фрагмент: да 16 000 сімвалаў.</string>
     <string name="text_actions_unavailable">Дзеянні з тэкстам недаступныя ў гэтым полі.</string>

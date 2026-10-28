@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Markierten Text mit Ihrem Nachbearbeitungsdienst übersetzen, korrigieren oder umformulieren. Prüfen Sie das Ergebnis vor dem Anwenden.</string>
     <string name="text_actions_close">Textaktionen schließen</string>
     <string name="text_actions_instruction">Bearbeitungsanweisung</string>
-    <string name="text_actions_instruction_hint">Zum Beispiel: Formuliere diese Nachricht förmlicher.</string>
+    <string name="text_actions_instruction_hint">Formuliere die Nachricht förmlicher.</string>
     <string name="text_actions_select_first">Markieren Sie zuerst Text in der App.</string>
     <string name="text_actions_too_long">Markieren Sie einen kürzeren Abschnitt mit höchstens 16.000 Zeichen.</string>
     <string name="text_actions_unavailable">Textaktionen sind in diesem Feld nicht verfügbar.</string>

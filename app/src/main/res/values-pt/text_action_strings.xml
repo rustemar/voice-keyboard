@@ -5,7 +5,7 @@
     <string name="text_actions_beta_hint">Traduza, corrija ou reformule o texto selecionado com o serviço de pós-processamento. Reveja o resultado antes de o aplicar.</string>
     <string name="text_actions_close">Fechar ações de texto</string>
     <string name="text_actions_instruction">Instrução de edição</string>
-    <string name="text_actions_instruction_hint">Por exemplo: torne esta mensagem mais formal.</string>
+    <string name="text_actions_instruction_hint">Torna a mensagem mais formal.</string>
     <string name="text_actions_select_first">Primeiro selecione texto na aplicação.</string>
     <string name="text_actions_too_long">Selecione um trecho mais curto, com até 16 000 caracteres.</string>
     <string name="text_actions_unavailable">As ações de texto não estão disponíveis neste campo.</string>
