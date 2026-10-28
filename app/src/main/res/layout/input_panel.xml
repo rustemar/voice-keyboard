@@ -117,39 +117,53 @@
         android:layout_marginTop="4dp"
         android:tint="@color/status_text" />
 
-    <FrameLayout
-        android:id="@+id/pendingTextsFrame"
+    <!-- Optional shortcuts form a start-side rail below settings. -->
+    <LinearLayout
+        android:id="@+id/keyboardSideRail"
         android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:divider="@drawable/keyboard_rail_gap"
+        android:showDividers="middle"
         android:layout_marginTop="4dp"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/btnSettings"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageButton
-            android:backgroundTint="@null"
-            android:id="@+id/btnPendingTexts"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/borderless_ripple"
-            android:src="@drawable/ic_saved_texts"
-            android:contentDescription="@string/saved_texts_title"
-            android:scaleType="centerInside"
-            android:padding="10dp"
-            android:tint="@color/status_text" />
+        <LinearLayout
+            android:id="@+id/experimentalActionsBar"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:divider="@drawable/keyboard_rail_gap"
+            android:showDividers="middle">
 
-        <TextView
-            android:id="@+id/pendingTextsBadge"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="top|end"
-            android:background="@drawable/queue_badge_bg"
-            android:gravity="center"
-            android:importantForAccessibility="no"
-            android:textColor="@color/key_text"
-            android:textSize="11sp"
-            android:textStyle="bold" />
-    </FrameLayout>
+            <ImageButton
+                android:backgroundTint="@null"
+                android:id="@+id/btnQuickCorrection"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/control_key_bg"
+                android:src="@drawable/ic_quick_correction"
+                android:contentDescription="@string/qc_open"
+                android:padding="12dp"
+                android:visibility="gone"
+                android:tint="@color/key_text" />
+
+            <ImageButton
+                android:backgroundTint="@null"
+                android:id="@+id/btnTextActions"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/control_key_bg"
+                android:src="@drawable/ic_text_actions"
+                android:contentDescription="@string/text_actions_open"
+                android:padding="12dp"
+                android:visibility="gone"
+                android:tint="@color/key_text" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <!-- Cut all text button (left of backspace) -->
     <ImageButton
@@ -182,51 +196,104 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:tint="@color/key_text" />
 
-    <!-- Resend failed recordings (appears under backspace only when something failed) -->
-    <FrameLayout
-        android:id="@+id/retryFrame"
+    <!-- Recovery actions share the end-side column below backspace. -->
+    <LinearLayout
+        android:id="@+id/keyboardRecoveryRail"
         android:layout_width="56dp"
-        android:layout_height="42dp"
-        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:divider="@drawable/keyboard_rail_gap"
+        android:showDividers="middle"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/btnBackspace"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageButton
-            android:backgroundTint="@null"
-            android:id="@+id/btnRetryFailed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/key_bg"
-            android:src="@drawable/ic_retry"
-            android:contentDescription="@string/cd_retry_failed"
-            android:scaleType="centerInside"
-            android:padding="8dp"
-            android:tint="@color/mic_recording" />
+        <FrameLayout
+            android:id="@+id/retryFrame"
+            android:layout_width="56dp"
+            android:layout_height="42dp"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/retryBadge"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="top|end"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
-            android:background="@drawable/retry_badge_bg"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-    </FrameLayout>
+            <ImageButton
+                android:backgroundTint="@null"
+                android:id="@+id/btnRetryFailed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/key_bg"
+                android:src="@drawable/ic_retry"
+                android:contentDescription="@string/cd_retry_failed"
+                android:scaleType="centerInside"
+                android:padding="8dp"
+                android:tint="@color/mic_recording" />
 
-    <!-- Mic button -->
+            <TextView
+                android:id="@+id/retryBadge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/retry_badge_bg"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/pendingTextsFrame"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:visibility="gone">
+
+            <ImageButton
+                android:backgroundTint="@null"
+                android:id="@+id/btnPendingTexts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/borderless_ripple"
+                android:src="@drawable/ic_saved_texts"
+                android:contentDescription="@string/saved_texts_title"
+                android:scaleType="centerInside"
+                android:padding="10dp"
+                android:tint="@color/status_text" />
+
+            <TextView
+                android:id="@+id/pendingTextsBadge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/queue_badge_bg"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:textColor="@color/key_text"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Keep a minimum microphone area independent of the variable-height side rail. -->
+    <View
+        android:id="@+id/micAreaFootprint"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:visibility="invisible"
+        android:importantForAccessibility="no"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/statusText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Bottom anchoring keeps the microphone steady as the side rails change. -->
     <FrameLayout
         android:id="@+id/micFrame"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        app:layout_constraintTop_toBottomOf="@id/statusText"
+        app:layout_constraintBottom_toBottomOf="@id/voiceControlsBottom"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Ripple layers for recording animation -->
         <View
@@ -317,7 +384,16 @@
         app:layout_constraintEnd_toStartOf="@id/micFrame"
         android:tint="@color/status_text" />
 
-    <!-- Typing shortcuts and processing modes share one compact, horizontally scrollable strip. -->
+    <!-- Rails grow only for visible controls; processing keys always stay below them. -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/voiceControlsBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:barrierAllowsGoneWidgets="false"
+        app:constraint_referenced_ids="micAreaFootprint,keyboardSideRail,keyboardRecoveryRail" />
+
+    <!-- Processing modes keep their full row; narrow windows can still scroll horizontally. -->
     <com.tyraen.voicekeyboard.feature.ime.LogicalStartHorizontalScrollView
         android:id="@+id/keyboardControlsStrip"
         android:layout_width="0dp"
@@ -328,7 +404,7 @@
         android:fadingEdgeLength="12dp"
         android:requiresFadingEdge="horizontal"
         android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@id/micFrame"
+        app:layout_constraintTop_toBottomOf="@id/voiceControlsBottom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -337,41 +413,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
-
-            <LinearLayout
-                android:id="@+id/experimentalActionsBar"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                android:layout_marginEnd="0dp">
-
-                <ImageButton
-                    android:backgroundTint="@null"
-                    android:id="@+id/btnQuickCorrection"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/control_key_bg"
-                    android:src="@drawable/ic_quick_correction"
-                    android:contentDescription="@string/qc_open"
-                    android:padding="12dp"
-                    android:layout_marginEnd="6dp"
-                    android:visibility="gone"
-                    android:tint="@color/key_text" />
-
-                <ImageButton
-                    android:backgroundTint="@null"
-                    android:id="@+id/btnTextActions"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/control_key_bg"
-                    android:src="@drawable/ic_text_actions"
-                    android:contentDescription="@string/text_actions_open"
-                    android:padding="12dp"
-                    android:layout_marginEnd="6dp"
-                    android:visibility="gone"
-                    android:tint="@color/key_text" />
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ppToggleRow"

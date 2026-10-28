@@ -1,5 +1,6 @@
 package com.tyraen.voicekeyboard.feature.ime
 
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
@@ -22,8 +23,11 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
 
     private val previous: ImageButton = find(R.id.btnPreviousKeyboard)
     private val mic: FrameLayout = find(R.id.micFrame)
+    private val microphoneButton: ImageButton = find(R.id.btnMic)
     private val cancel: ImageButton = find(R.id.btnCancel)
+    private val send: ImageButton = find(R.id.btnSend)
     private val backspace: ImageButton = find(R.id.btnBackspace)
+    private val sideRail: LinearLayout = find(R.id.keyboardSideRail)
     private val enter: ImageButton = find(R.id.btnEnter)
     private val sizeToggle: ImageButton = find(R.id.btnPanelSize)
     private val status: TextView = find(R.id.statusText)
@@ -51,6 +55,7 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
             view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom, view.background)
     }
     private val originalStatusGravity = status.gravity
+    private val originalExperimentOrientation = experiments.orientation
     private val compactPanel = LinearLayout(fullPanel.context).apply {
         orientation = LinearLayout.VERTICAL
         setPadding(dp(4), dp(4), dp(4), dp(4))
@@ -102,6 +107,11 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec)
             }
         }
+
+        override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+            super.onLayout(changed, left, top, right, bottom)
+            fitNarrowVoiceControls()
+        }
     }.apply {
         setBackgroundColor(ContextCompat.getColor(context, R.color.keyboard_bg))
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -144,10 +154,48 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
 
     private fun detach(view: View) { (view.parent as? ViewGroup)?.removeView(view) }
 
+    private fun fitNarrowVoiceControls() {
+        cancel.translationX = 0f
+        send.translationX = 0f
+        if (isCompact || fullPanel.visibility != View.VISIBLE) return
+
+        fun bounds(view: View) = Rect().also {
+            view.getDrawingRect(it)
+            fullPanel.offsetDescendantRectToMyCoords(view, it)
+        }
+
+        val microphoneBounds = bounds(microphoneButton)
+        val railBounds = bounds(sideRail)
+        val backspaceBounds = bounds(backspace)
+        val cancelBounds = bounds(cancel)
+        val sendBounds = bounds(send)
+        val rtl = fullPanel.layoutDirection == View.LAYOUT_DIRECTION_RTL
+        val gap = dp(4)
+
+        // Reserve both side columns even when saved text or retry is hidden. Queue changes
+        // must not move recording controls horizontally beneath the user's finger.
+        if (cancel.width > 0) {
+            val required = if (rtl) cancelBounds.right - railBounds.left + gap
+                else railBounds.right + gap - cancelBounds.left
+            val available = if (rtl) cancelBounds.left - microphoneBounds.right - gap
+                else microphoneBounds.left - gap - cancelBounds.right
+            val shift = minOf(required.coerceAtLeast(0), available.coerceAtLeast(0))
+            cancel.translationX = if (rtl) -shift.toFloat() else shift.toFloat()
+        }
+        val required = if (rtl) backspaceBounds.right - sendBounds.left
+            else sendBounds.right - backspaceBounds.left
+        val available = if (rtl) microphoneBounds.left - sendBounds.right
+            else sendBounds.left - microphoneBounds.right
+        val shift = minOf(required.coerceAtLeast(0), available.coerceAtLeast(0))
+        send.translationX = if (rtl) shift.toFloat() else -shift.toFloat()
+    }
+
     private fun enterCompact() {
         moved.forEach(::detach)
         status.setPadding(0, 0, 0, 0)
         status.gravity = Gravity.CENTER
+        // The full panel's shortcuts form a vertical rail; compact mode shares one status row.
+        experiments.orientation = LinearLayout.HORIZONTAL
         statusRow.addView(saved, LinearLayout.LayoutParams(dp(48), dp(48)))
         statusRow.addView(experiments, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dp(48)))
         statusRow.addView(status, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
@@ -193,6 +241,7 @@ class CompactTerminalPanel(private val fullPanel: ConstraintLayout) {
     private fun leaveCompact() {
         moved.forEach(::detach)
         controls.removeAllViews()
+        experiments.orientation = originalExperimentOrientation
         styled.forEach { style ->
             style.view.layoutParams = style.params
             style.view.minimumWidth = style.minimumWidth

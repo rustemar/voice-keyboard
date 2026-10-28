@@ -1,9 +1,7 @@
-v1.11.1 — Clearer keyboard controls and balanced correction layouts
+v1.11.2 — Keep voice-panel controls in view
 
-- Add a permanent number row to the correction keyboard. Keep letter keys the same width across rows, center shorter rows, and place Shift and Backspace beside the last row of letters.
-- Fit the correction panel to its contents instead of leaving unused space underneath. Keep the bottom controls accessible in constrained windows and improve Hindi spacing without removing characters.
-- Fix dark-theme icons that appeared black. Correction and text-action buttons now have visible adaptive surfaces and share a consistently spaced, scrollable strip with post-processing modes. Keep these primary controls visible at the start in right-to-left interfaces.
-- Make selected-text and Saved texts buttons readable in both themes. Allow localized headings and action labels to wrap at larger font sizes, with matching action-button heights.
-- Use consistent font measurement on Android 7 and newer. Stop held Backspace when the editor changes or closes.
+- Move the optional correction keyboard and selected-text action buttons into a vertical column below Settings. Keep their visible, theme-aware button surfaces.
+- Give processing modes their own full-width row again, so the extra entry points no longer push translation off screen. Retain horizontal scrolling for unusually narrow windows and larger text.
+- Group Saved texts and retry below Backspace without making history expand the panel. Keep recording controls in place, preserve the compact terminal layout and mirror the side controls in right-to-left interfaces.
 
 The correction keyboard and selected-text actions remain optional beta features, off by default under Advanced settings → Experimental features.
