@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">音声認識のヒント</string>
+    <string name="dictionary_section_postprocessing">後処理用の語彙</string>
+    <string name="dictionary_section_replacements">端末内での置換</string>
+    <string name="dictionary_recognition_hint">音声認識プロバイダーに送信する短い名前や用語の一覧です。この一覧は後処理にも使われます。音声認識の制限は引き続き適用されます。</string>
+    <string name="dictionary_postprocessing_hint">追加の名前や用語は、処理モードを使用するときだけテキスト処理プロバイダーに送信されます。音声認識のプロンプトの上限は消費しません。一覧が大きいほどリクエストも大きくなり、モデルのコンテキストウィンドウに収まる必要があります。</string>
+    <string name="dictionary_postprocessing_input_hint">名前や用語を1行に1つ入力</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d 文字</string>
+    <string name="dictionary_save">保存</string>
+    <string name="dictionary_replacements_hint">認識された音声入力の単語やフレーズ全体を、大文字と小文字を区別せずに置換します。任意の後処理の前に、端末内で1回適用されます。ルールの一覧は音声認識プロバイダーには送信されません。</string>
+    <string name="dictionary_replacement_from">認識されたテキスト</string>
+    <string name="dictionary_replacement_to">置換後のテキスト</string>
+    <string name="dictionary_replacement_add">置換を追加</string>
+    <string name="dictionary_replacements_counter">%1$d 件のルール · %2$d / %3$d 文字</string>
+    <string name="dictionary_remove_replacement">置換を削除</string>
+    <string name="dictionary_replacement_invalid">改行を含まない、空欄ではない異なる2つのテキストを入力してください。</string>
+    <string name="dictionary_replacement_limit">ルールまたは文字が多すぎます。先にいくつかのルールを削除してください。</string>
+    <string name="dictionary_replacements_empty">置換はまだありません。自動適用する修正だけを追加してください。</string>
+    <string name="dictionary_unsaved_title">語彙の変更を保存しますか？</string>
+    <string name="dictionary_unsaved_message">後処理用の語彙に未保存の変更があります。</string>
+    <string name="dictionary_discard">破棄</string>
+</resources>

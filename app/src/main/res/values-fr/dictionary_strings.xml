@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Indications de reconnaissance</string>
+    <string name="dictionary_section_postprocessing">Vocabulaire de post-traitement</string>
+    <string name="dictionary_section_replacements">Remplacements locaux</string>
+    <string name="dictionary_recognition_hint">Une courte liste de noms et de termes envoyée au fournisseur de reconnaissance vocale. Cette liste aide aussi le post-traitement. La limite de reconnaissance reste applicable.</string>
+    <string name="dictionary_postprocessing_hint">Les noms et termes supplémentaires sont envoyés uniquement à votre fournisseur de traitement de texte lorsqu’un mode de traitement est utilisé. Ils n’utilisent pas le budget du prompt de reconnaissance vocale. Les grandes listes augmentent la taille des requêtes et doivent tenir dans la fenêtre de contexte du modèle.</string>
+    <string name="dictionary_postprocessing_input_hint">Un nom ou terme par ligne</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d caractères</string>
+    <string name="dictionary_save">Enregistrer</string>
+    <string name="dictionary_replacements_hint">Vos règles corrigent des mots ou expressions entiers dans la dictée reconnue, sans tenir compte de la casse. Elles sont appliquées une fois sur l’appareil, avant le post-traitement facultatif. La liste des règles n’est pas envoyée au fournisseur de reconnaissance vocale.</string>
+    <string name="dictionary_replacement_from">Texte reconnu</string>
+    <string name="dictionary_replacement_to">Remplacer par</string>
+    <string name="dictionary_replacement_add">Ajouter un remplacement</string>
+    <string name="dictionary_replacements_counter">%1$d règles · %2$d / %3$d caractères</string>
+    <string name="dictionary_remove_replacement">Supprimer le remplacement</string>
+    <string name="dictionary_replacement_invalid">Saisissez deux textes différents et non vides, sans saut de ligne.</string>
+    <string name="dictionary_replacement_limit">Trop de règles ou de caractères. Supprimez d’abord quelques règles.</string>
+    <string name="dictionary_replacements_empty">Aucun remplacement pour le moment. Ajoutez uniquement les corrections à appliquer automatiquement.</string>
+    <string name="dictionary_unsaved_title">Enregistrer les modifications du vocabulaire ?</string>
+    <string name="dictionary_unsaved_message">Votre vocabulaire de post-traitement contient des modifications non enregistrées.</string>
+    <string name="dictionary_discard">Ignorer</string>
+</resources>

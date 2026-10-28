@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">음성 인식 힌트</string>
+    <string name="dictionary_section_postprocessing">후처리 어휘</string>
+    <string name="dictionary_section_replacements">기기 내 텍스트 치환</string>
+    <string name="dictionary_recognition_hint">음성 인식 제공자에게 전송하는 짧은 이름과 용어 목록입니다. 이 목록은 후처리에도 도움이 됩니다. 음성 인식 제한은 그대로 적용됩니다.</string>
+    <string name="dictionary_postprocessing_hint">추가 이름과 용어는 처리 모드를 사용할 때만 텍스트 처리 제공자에게 전송됩니다. 음성 인식 프롬프트 한도를 사용하지 않습니다. 목록이 커지면 요청 크기도 커지며 모델의 컨텍스트 창에 들어가야 합니다.</string>
+    <string name="dictionary_postprocessing_input_hint">한 줄에 이름 또는 용어 하나</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d자</string>
+    <string name="dictionary_save">저장</string>
+    <string name="dictionary_replacements_hint">규칙은 인식된 받아쓰기의 단어나 구문 전체를 대소문자 구분 없이 수정합니다. 선택적 후처리 전에 기기에서 한 번 적용됩니다. 규칙 목록은 음성 인식 제공자에게 전송되지 않습니다.</string>
+    <string name="dictionary_replacement_from">인식된 텍스트</string>
+    <string name="dictionary_replacement_to">다음으로 바꾸기</string>
+    <string name="dictionary_replacement_add">치환 추가</string>
+    <string name="dictionary_replacements_counter">규칙 %1$d개 · %2$d / %3$d자</string>
+    <string name="dictionary_remove_replacement">치환 삭제</string>
+    <string name="dictionary_replacement_invalid">줄바꿈이 없는 서로 다른 두 텍스트를 입력하세요. 빈 텍스트는 사용할 수 없습니다.</string>
+    <string name="dictionary_replacement_limit">규칙이나 문자가 너무 많습니다. 먼저 일부 규칙을 삭제하세요.</string>
+    <string name="dictionary_replacements_empty">아직 치환이 없습니다. 자동으로 적용할 수정 사항만 추가하세요.</string>
+    <string name="dictionary_unsaved_title">어휘 변경 사항을 저장할까요?</string>
+    <string name="dictionary_unsaved_message">후처리 어휘에 저장되지 않은 변경 사항이 있습니다.</string>
+    <string name="dictionary_discard">저장 안 함</string>
+</resources>

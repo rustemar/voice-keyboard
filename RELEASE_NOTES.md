@@ -1,7 +1,8 @@
-v1.11.2 — Keep voice-panel controls in view
+v1.12.0 — Personal dictionaries and OpenRouter speech input
 
-- Move the optional correction keyboard and selected-text action buttons below Settings: vertically in portrait, side by side in landscape to preserve height. Keep their visible, theme-aware button surfaces.
-- Give processing modes their own full-width row again, so the extra entry points no longer push translation off screen. Retain horizontal scrolling for unusually narrow windows and larger text.
-- Group Saved texts and retry below Backspace without making history expand the panel. Keep recording controls in place, preserve the compact terminal layout and mirror the side controls in right-to-left interfaces.
+- Add three sections to the existing Custom vocabulary screen: recognition hints, a separate post-processing vocabulary (up to 20,000 characters), and local word/phrase replacements. Local rules work without an LLM, match whole words or phrases without case sensitivity, and run once before post-processing. All 17 interface languages are included.
+- Keep dictionary settings with queued recordings so retries use their original rules. Existing queued recordings retain their original behavior without acquiring new dictionary settings. Post-processing prompts treat spelling references as data and instruct the model not to introduce unrelated names. Selected-text actions can use the reference vocabulary without applying local replacements; local replacements do not rewrite translations or generated commands.
+- Allow attempts to loopback and private LAN/VPN speech-server addresses when Android has no validated internet connection; private addresses still need an available network link and a working route. Keep unavailable public providers queued, retry the original endpoint, and retain recognized text when an optional text provider is unavailable.
+- Add an OpenRouter speech-recognition preset, suggested Whisper/Mistral models and an editable model ID. Use JSON transcription responses and show that OpenRouter ignores speech formatting/vocabulary hints. Existing post-processing vocabulary and local replacements still work.
 
-The correction keyboard and selected-text actions remain optional beta features, off by default under Advanced settings → Experimental features.
+Privacy: the new post-processing word list is sent to your configured text provider when you use a supported text-processing action. Local replacement lists stay on your device; corrected text and replacement terms used in it can be sent for optional post-processing. See PRIVACY.md for details.

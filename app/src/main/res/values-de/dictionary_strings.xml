@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Erkennungshinweise</string>
+    <string name="dictionary_section_postprocessing">Vokabular für die Nachbearbeitung</string>
+    <string name="dictionary_section_replacements">Lokale Ersetzungen</string>
+    <string name="dictionary_recognition_hint">Eine kurze Liste mit Namen und Begriffen für den Spracherkennungsanbieter. Diese bestehende Liste hilft auch bei der Nachbearbeitung. Die Erkennungsbegrenzung gilt weiterhin.</string>
+    <string name="dictionary_postprocessing_hint">Zusätzliche Namen und Begriffe werden nur bei Verwendung eines Verarbeitungsmodus an Ihren Textverarbeitungsanbieter gesendet. Sie belegen kein Prompt-Budget der Spracherkennung. Größere Listen erhöhen die Anfragegröße und müssen in das Kontextfenster Ihres Modells passen.</string>
+    <string name="dictionary_postprocessing_input_hint">Ein Name oder Begriff pro Zeile</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d Zeichen</string>
+    <string name="dictionary_save">Speichern</string>
+    <string name="dictionary_replacements_hint">Ihre Regeln korrigieren ganze Wörter oder Ausdrücke im erkannten Diktat, unabhängig von Groß- und Kleinschreibung. Sie werden einmal lokal vor der optionalen Nachbearbeitung angewendet. Die Regeln werden nicht als Liste an den Spracherkennungsanbieter gesendet.</string>
+    <string name="dictionary_replacement_from">Erkannter Text</string>
+    <string name="dictionary_replacement_to">Ersetzen durch</string>
+    <string name="dictionary_replacement_add">Ersetzung hinzufügen</string>
+    <string name="dictionary_replacements_counter">%1$d Regeln · %2$d / %3$d Zeichen</string>
+    <string name="dictionary_remove_replacement">Ersetzung entfernen</string>
+    <string name="dictionary_replacement_invalid">Geben Sie zwei unterschiedliche, nicht leere Texte ohne Zeilenumbrüche ein.</string>
+    <string name="dictionary_replacement_limit">Zu viele Regeln oder Zeichen. Entfernen Sie zunächst einige Regeln.</string>
+    <string name="dictionary_replacements_empty">Noch keine Ersetzungen. Fügen Sie nur Korrekturen hinzu, die automatisch angewendet werden sollen.</string>
+    <string name="dictionary_unsaved_title">Änderungen am Vokabular speichern?</string>
+    <string name="dictionary_unsaved_message">Ihr Nachbearbeitungsvokabular enthält ungespeicherte Änderungen.</string>
+    <string name="dictionary_discard">Verwerfen</string>
+</resources>

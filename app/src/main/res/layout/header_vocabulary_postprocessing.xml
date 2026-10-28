@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/txtDictionaryHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vocabulary_title"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:text="@string/dictionary_postprocessing_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/status_text"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/editPostProcessingVocabulary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/dictionary_postprocessing_input_hint"
+        android:minHeight="120dp"
+        android:minLines="4"
+        android:maxLines="12"
+        android:gravity="top|start"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:imeOptions="flagNoExtractUi"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/status_text"
+        android:backgroundTint="@color/mic_idle" />
+
+    <TextView
+        android:id="@+id/txtPostProcessingVocabularyCounter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/status_text"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnSavePostProcessingVocabulary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/dictionary_save"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/mic_idle" />
+</LinearLayout>

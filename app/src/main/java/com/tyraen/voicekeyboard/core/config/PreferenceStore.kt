@@ -10,6 +10,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
+import com.tyraen.voicekeyboard.feature.vocabulary.TextDictionary
+import com.tyraen.voicekeyboard.feature.vocabulary.TextReplacementRules
 import kotlinx.coroutines.flow.first
 import java.util.Locale
 
@@ -29,6 +31,8 @@ class PreferenceStore(private val context: Context) {
         val SINGLE_WORD_STRIP_PUNCT = booleanPreferencesKey("single_word_strip_punct")
         val RETURN_TO_PREVIOUS_KEYBOARD = booleanPreferencesKey("return_to_previous_keyboard")
         val VOCABULARY = stringPreferencesKey("vocabulary")
+        val POSTPROCESSING_VOCABULARY = stringPreferencesKey("postprocessing_vocabulary")
+        val TEXT_REPLACEMENTS = stringPreferencesKey("text_replacements")
 
         // Post-processing config
         val PP_ENABLED = booleanPreferencesKey("pp_enabled")
@@ -123,6 +127,28 @@ class PreferenceStore(private val context: Context) {
         context.store.edit { data ->
             data[Keys.VOCABULARY] = value
         }
+    }
+
+    suspend fun loadTextDictionary(): TextDictionaryPreferences {
+        val prefs = context.store.data.first()
+        return TextDictionaryPreferences(prefs[Keys.POSTPROCESSING_VOCABULARY] ?: "",
+            prefs[Keys.TEXT_REPLACEMENTS] ?: "")
+    }
+
+    suspend fun loadPostProcessingVocabulary(): String = loadTextDictionary().postProcessingVocabulary
+
+    suspend fun savePostProcessingVocabulary(value: String) {
+        val normalized = TextDictionary.normalizeVocabulary(value)
+        require(normalized.length <= TextDictionaryPreferences.MAX_POSTPROCESSING_CHARS)
+        context.store.edit { it[Keys.POSTPROCESSING_VOCABULARY] = normalized }
+    }
+
+    suspend fun loadTextReplacements(): List<TextReplacementRules.Rule> =
+        TextDictionary.decodeRules(loadTextDictionary().replacementRules)
+
+    suspend fun saveTextReplacements(rules: List<TextReplacementRules.Rule>) {
+        val encoded = TextDictionary.encodeRules(rules)
+        context.store.edit { it[Keys.TEXT_REPLACEMENTS] = encoded }
     }
 
     suspend fun loadPostProcessing(): PostProcessingPreferences {

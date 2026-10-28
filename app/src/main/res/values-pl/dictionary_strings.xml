@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Podpowiedzi rozpoznawania</string>
+    <string name="dictionary_section_postprocessing">Słownik przetwarzania tekstu</string>
+    <string name="dictionary_section_replacements">Lokalne zamiany</string>
+    <string name="dictionary_recognition_hint">Krótka lista nazw i terminów wysyłana do dostawcy rozpoznawania mowy. Ta lista pomaga także w przetwarzaniu tekstu. Limit rozpoznawania nadal obowiązuje.</string>
+    <string name="dictionary_postprocessing_hint">Dodatkowe nazwy i terminy są wysyłane wyłącznie do dostawcy przetwarzania tekstu, gdy używany jest tryb przetwarzania. Nie zużywają limitu promptu rozpoznawania mowy. Większe listy zwiększają rozmiar żądania i muszą mieścić się w oknie kontekstu modelu.</string>
+    <string name="dictionary_postprocessing_input_hint">Jedna nazwa lub termin w wierszu</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d znaków</string>
+    <string name="dictionary_save">Zapisz</string>
+    <string name="dictionary_replacements_hint">Reguły poprawiają całe słowa lub frazy w rozpoznanym dyktowaniu, bez rozróżniania wielkości liter. Są stosowane lokalnie jeden raz, przed opcjonalnym przetwarzaniem tekstu. Lista reguł nie jest wysyłana do dostawcy rozpoznawania mowy.</string>
+    <string name="dictionary_replacement_from">Rozpoznany tekst</string>
+    <string name="dictionary_replacement_to">Zamień na</string>
+    <string name="dictionary_replacement_add">Dodaj zamianę</string>
+    <string name="dictionary_replacements_counter">%1$d reguł · %2$d / %3$d znaków</string>
+    <string name="dictionary_remove_replacement">Usuń zamianę</string>
+    <string name="dictionary_replacement_invalid">Wpisz dwa różne, niepuste teksty bez podziałów wiersza.</string>
+    <string name="dictionary_replacement_limit">Zbyt wiele reguł lub znaków. Najpierw usuń część reguł.</string>
+    <string name="dictionary_replacements_empty">Brak zamian. Dodaj tylko poprawki, które mają być stosowane automatycznie.</string>
+    <string name="dictionary_unsaved_title">Zapisać zmiany słownika?</string>
+    <string name="dictionary_unsaved_message">Słownik przetwarzania tekstu zawiera niezapisane zmiany.</string>
+    <string name="dictionary_discard">Odrzuć</string>
+</resources>

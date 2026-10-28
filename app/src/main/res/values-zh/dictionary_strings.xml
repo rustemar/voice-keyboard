@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">识别提示</string>
+    <string name="dictionary_section_postprocessing">后处理词汇</string>
+    <string name="dictionary_section_replacements">本地替换</string>
+    <string name="dictionary_recognition_hint">发送给语音识别服务商的简短姓名和术语列表。此列表也有助于后处理。语音识别的限制仍然适用。</string>
+    <string name="dictionary_postprocessing_hint">仅在使用处理模式时，才会将额外的姓名和术语发送给文本处理服务商。它们不占用语音识别的提示词额度。较大的列表会增加请求大小，且必须适合模型的上下文窗口。</string>
+    <string name="dictionary_postprocessing_input_hint">每行输入一个姓名或术语</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d 个字符</string>
+    <string name="dictionary_save">保存</string>
+    <string name="dictionary_replacements_hint">规则会替换识别文本中的完整单词或短语，不区分大小写。在可选的后处理之前，于设备上应用一次。规则列表不会发送给语音识别服务商。</string>
+    <string name="dictionary_replacement_from">识别出的文本</string>
+    <string name="dictionary_replacement_to">替换为</string>
+    <string name="dictionary_replacement_add">添加替换</string>
+    <string name="dictionary_replacements_counter">%1$d 条规则 · %2$d / %3$d 个字符</string>
+    <string name="dictionary_remove_replacement">移除替换</string>
+    <string name="dictionary_replacement_invalid">请输入两个不同且非空的文本，不要包含换行。</string>
+    <string name="dictionary_replacement_limit">规则或字符过多。请先移除部分规则。</string>
+    <string name="dictionary_replacements_empty">尚无替换规则。请仅添加您希望自动应用的更正。</string>
+    <string name="dictionary_unsaved_title">保存词汇更改？</string>
+    <string name="dictionary_unsaved_message">后处理词汇有未保存的更改。</string>
+    <string name="dictionary_discard">放弃</string>
+</resources>

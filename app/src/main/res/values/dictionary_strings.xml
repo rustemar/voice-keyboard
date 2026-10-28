@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Recognition hints</string>
+    <string name="dictionary_section_postprocessing">Post-processing vocabulary</string>
+    <string name="dictionary_section_replacements">Local replacements</string>
+    <string name="dictionary_recognition_hint">Short names and terms sent to the speech provider. This existing list also helps post-processing. The recognition limit still applies.</string>
+    <string name="dictionary_postprocessing_hint">Additional names and terms sent only to your text-processing provider when a processing mode is used. They do not use the speech recognizer’s prompt budget. Larger lists increase request size and must fit your model’s context window.</string>
+    <string name="dictionary_postprocessing_input_hint">One name or term per line</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d characters</string>
+    <string name="dictionary_save">Save</string>
+    <string name="dictionary_replacements_hint">Your rules correct complete words or phrases in recognized dictation, ignoring letter case. Applied locally once, before optional post-processing. These rules are not sent as a list to the speech provider.</string>
+    <string name="dictionary_replacement_from">Recognized text</string>
+    <string name="dictionary_replacement_to">Replace with</string>
+    <string name="dictionary_replacement_add">Add replacement</string>
+    <string name="dictionary_replacements_counter">%1$d rules · %2$d / %3$d characters</string>
+    <string name="dictionary_remove_replacement">Remove replacement</string>
+    <string name="dictionary_replacement_invalid">Enter two different non-empty texts without line breaks.</string>
+    <string name="dictionary_replacement_limit">Too many rules or characters. Remove some rules first.</string>
+    <string name="dictionary_replacements_empty">No replacements yet. Add only the corrections you want to apply automatically.</string>
+    <string name="dictionary_unsaved_title">Save vocabulary changes?</string>
+    <string name="dictionary_unsaved_message">Your post-processing vocabulary has unsaved changes.</string>
+    <string name="dictionary_discard">Discard</string>
+</resources>

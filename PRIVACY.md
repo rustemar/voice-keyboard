@@ -7,9 +7,9 @@ _Last updated: 2026‑10‑28_
 ## TL;DR
 
 - The app does **not** collect, sell, or transmit any analytics, telemetry, advertising IDs, or device identifiers.
-- Audio you record is sent **only** to the speech‑to‑text provider you configure (Groq, OpenAI, Mistral or any OpenAI‑compatible endpoint, including a server of your own), using **your own API key**.
+- Audio you record is sent **only** to the speech‑to‑text provider you configure (Groq, OpenAI, Mistral, OpenRouter or any OpenAI‑compatible endpoint, including a server of your own), using **your own API key**.
 - Optional post‑processing sends the transcribed text to the language‑model provider you configure (OpenAI, Anthropic, or an OpenAI‑compatible one such as OpenRouter, Groq, Mistral or DeepSeek), again using **your own API key**. Recent dictations are included as context only if you enable that separate option, which is off by default.
-- Optional **selected-text actions** send the passage you explicitly select, together with the chosen editing instruction, to your configured post-processing provider. This beta is off by default; requests start only after you choose an action, and results require review before replacement.
+- Optional **selected-text actions** send the passage you explicitly select, together with the chosen editing instruction and your reference vocabulary, to your configured post-processing provider. This beta is off by default; requests start only after you choose an action, and results require review before replacement.
 - All settings, API keys, saved dictations, diagnostic logs, and crash reports stay on your device. They are explicitly excluded from Google Drive backup and device‑transfer.
 - The app is open source: <https://github.com/rustemar/voice-keyboard>.
 
@@ -17,7 +17,7 @@ _Last updated: 2026‑10‑28_
 
 ### Audio
 
-For keyboard dictation, when you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). Recordings live briefly in the app's private cache directory and are deleted after the text is inserted or safely saved for later insertion. A recording that could **not** be transcribed or whose result could not be saved is kept in the app's private storage. If the cause was no internet, it is resent automatically once the connection returns and deleted after successful delivery; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
+For keyboard dictation, when you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). Recordings live briefly in the app's private cache directory and are deleted after the text is inserted or safely saved for later insertion. A recording that could **not** be transcribed or whose result could not be saved is kept in the app's private storage. If the cause was an unavailable provider connection, it is resent automatically once that connection returns and deleted after successful delivery; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
 
 The app does **not** receive a copy of the audio after sending — handling and retention of submitted audio is governed by the policy of the provider you choose:
 
@@ -33,7 +33,15 @@ For keyboard dictation, the text returned by the transcription provider is inser
 - OpenRouter: <https://openrouter.ai/privacy>
 - DeepSeek: <https://platform.deepseek.com/downloads/DeepSeek%20Privacy%20Policy.html>
 
-If post‑processing is disabled (the default for most modes), no third‑party request is made for text — the Whisper response is inserted directly.
+If post‑processing is disabled, no third‑party request is made for text. Local replacement rules can still correct the recognized words before insertion.
+
+### Personal dictionary
+
+Recognition hints are stored locally and sent with keyboard audio when supported by the speech provider. They also supply spelling references to supported post-processing modes and selected-text actions. The separate post-processing vocabulary is sent only to your text provider when you use a supported keyboard processing mode or selected-text action; Terminal mode omits these spelling references.
+
+Local replacement rules are stored privately and applied on the device once after keyboard recognition, before optional post-processing. The rule list is not sent to either provider. When a post-processing mode is used, the corrected transcript is sent as text; replacement terms actually used in it also serve as spelling references, except in Terminal mode. Local rules do not run on selected-text actions or the separate Android speech-recognition service.
+
+Unsent keyboard recordings retain a private snapshot of these settings for consistent retries. Recordings queued before the new dictionary features were added retain their original recognition hints; the new post-processing vocabulary and local rules are not added retroactively. Dictionary settings and snapshots are excluded from cloud backup and device transfer and are removed when you uninstall the app. Clearing the dictionary does not change snapshots attached to recordings already waiting to be retried; deleting those recordings removes their snapshots.
 
 ### Saved dictations
 
@@ -43,7 +51,7 @@ If the original editor is no longer available when a keyboard dictation finishes
 
 The basic letter layout types directly into the focused editor. It does not send typed keys to a server or collect a typing history. Its selected layout is stored privately on the device and is independent of interface and dictation languages.
 
-Selected-text actions read the selected passage and a small amount of adjacent text to verify the destination before replacement. Only the selected passage and your editing instruction are sent to the post-processing provider; neighbouring text stays in memory on the device. These actions do not add the passage to recent-dictation context. Password fields are excluded. A preview is shown before applying a replacement; the app checks the editor session, selection and text again before Apply or Undo. An unapplied completed preview is kept in Saved texts when closed, using the same private storage and deletion controls described above. Explicit Copy writes to the system clipboard; explicit Paste reads it for a custom instruction. Neither happens automatically.
+Selected-text actions read the selected passage and a small amount of adjacent text to verify the destination before replacement. Only the selected passage, your editing instruction and reference vocabulary are sent to the post-processing provider; neighbouring text stays in memory on the device. These actions do not add the passage to recent-dictation context. Password fields are excluded. A preview is shown before applying a replacement; the app checks the editor session, selection and text again before Apply or Undo. An unapplied completed preview is kept in Saved texts when closed, using the same private storage and deletion controls described above. Explicit Copy writes to the system clipboard; explicit Paste reads it for a custom instruction. Neither happens automatically.
 
 ### Recent dictation context
 

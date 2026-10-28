@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">पहचान के संकेत</string>
+    <string name="dictionary_section_postprocessing">पोस्ट-प्रोसेसिंग की शब्दावली</string>
+    <string name="dictionary_section_replacements">स्थानीय प्रतिस्थापन</string>
+    <string name="dictionary_recognition_hint">नामों और शब्दों की छोटी सूची, जो वाक् पहचान प्रदाता को भेजी जाती है। यह सूची पोस्ट-प्रोसेसिंग में भी मदद करती है। पहचान की सीमा अभी भी लागू है।</string>
+    <string name="dictionary_postprocessing_hint">अतिरिक्त नाम और शब्द केवल प्रोसेसिंग मोड इस्तेमाल होने पर आपके टेक्स्ट प्रोसेसिंग प्रदाता को भेजे जाते हैं। ये वाक् पहचान के प्रॉम्प्ट की सीमा का उपयोग नहीं करते। बड़ी सूचियाँ अनुरोध का आकार बढ़ाती हैं और मॉडल की संदर्भ सीमा में समानी चाहिए।</string>
+    <string name="dictionary_postprocessing_input_hint">हर पंक्ति में एक नाम या शब्द</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d वर्ण</string>
+    <string name="dictionary_save">सहेजें</string>
+    <string name="dictionary_replacements_hint">आपके नियम पहचाने गए डिक्टेशन में पूरे शब्दों या वाक्यांशों को बड़े-छोटे अक्षरों का भेद किए बिना सुधारते हैं। वैकल्पिक पोस्ट-प्रोसेसिंग से पहले इन्हें डिवाइस पर एक बार लागू किया जाता है। नियमों की सूची वाक् पहचान प्रदाता को नहीं भेजी जाती।</string>
+    <string name="dictionary_replacement_from">पहचाना गया टेक्स्ट</string>
+    <string name="dictionary_replacement_to">इससे बदलें</string>
+    <string name="dictionary_replacement_add">प्रतिस्थापन जोड़ें</string>
+    <string name="dictionary_replacements_counter">%1$d नियम · %2$d / %3$d वर्ण</string>
+    <string name="dictionary_remove_replacement">प्रतिस्थापन हटाएँ</string>
+    <string name="dictionary_replacement_invalid">पंक्ति विराम के बिना दो अलग और खाली न होने वाले टेक्स्ट दर्ज करें।</string>
+    <string name="dictionary_replacement_limit">नियम या वर्ण बहुत अधिक हैं। पहले कुछ नियम हटाएँ।</string>
+    <string name="dictionary_replacements_empty">अभी कोई प्रतिस्थापन नहीं है। केवल वे सुधार जोड़ें जिन्हें आप अपने-आप लागू करना चाहते हैं।</string>
+    <string name="dictionary_unsaved_title">शब्दावली के बदलाव सहेजें?</string>
+    <string name="dictionary_unsaved_message">आपकी पोस्ट-प्रोसेसिंग शब्दावली में न सहेजे गए बदलाव हैं।</string>
+    <string name="dictionary_discard">छोड़ें</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">تلميحات التعرّف</string>
+    <string name="dictionary_section_postprocessing">مفردات معالجة النص</string>
+    <string name="dictionary_section_replacements">استبدالات محلية</string>
+    <string name="dictionary_recognition_hint">قائمة قصيرة من الأسماء والمصطلحات تُرسل إلى مزوّد التعرّف على الكلام. تساعد هذه القائمة أيضًا في معالجة النص. يظل حدّ التعرّف ساريًا.</string>
+    <string name="dictionary_postprocessing_hint">تُرسل الأسماء والمصطلحات الإضافية إلى مزوّد معالجة النص فقط عند استخدام أحد أوضاع المعالجة. ولا تستهلك حدّ التلميح الخاص بالتعرّف على الكلام. تزيد القوائم الكبيرة حجم الطلب ويجب أن تتّسع لها نافذة سياق النموذج.</string>
+    <string name="dictionary_postprocessing_input_hint">اسم أو مصطلح واحد في كل سطر</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d حرف</string>
+    <string name="dictionary_save">حفظ</string>
+    <string name="dictionary_replacements_hint">تصحّح قواعدك كلمات أو عبارات كاملة في النص المتعرّف عليه دون تمييز حالة الأحرف. تُطبّق محليًا مرة واحدة قبل معالجة النص الاختيارية. لا تُرسل القواعد كقائمة إلى مزوّد التعرّف على الكلام.</string>
+    <string name="dictionary_replacement_from">النص المتعرّف عليه</string>
+    <string name="dictionary_replacement_to">استبدال بـ</string>
+    <string name="dictionary_replacement_add">إضافة استبدال</string>
+    <string name="dictionary_replacements_counter">القواعد: %1$d · %2$d / %3$d حرف</string>
+    <string name="dictionary_remove_replacement">إزالة الاستبدال</string>
+    <string name="dictionary_replacement_invalid">أدخل نصّين مختلفين وغير فارغين دون فواصل أسطر.</string>
+    <string name="dictionary_replacement_limit">عدد القواعد أو الأحرف كبير جدًا. أزل بعض القواعد أولًا.</string>
+    <string name="dictionary_replacements_empty">لا توجد استبدالات بعد. أضف فقط التصحيحات التي تريد تطبيقها تلقائيًا.</string>
+    <string name="dictionary_unsaved_title">حفظ تغييرات المفردات؟</string>
+    <string name="dictionary_unsaved_message">توجد تغييرات غير محفوظة في مفردات معالجة النص.</string>
+    <string name="dictionary_discard">تجاهل</string>
+</resources>

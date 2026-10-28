@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Падказкі распазнаванню</string>
+    <string name="dictionary_section_postprocessing">Слоўнік апрацоўкі тэксту</string>
+    <string name="dictionary_section_replacements">Лакальныя замены</string>
+    <string name="dictionary_recognition_hint">Невялікі спіс імёнаў і тэрмінаў для пастаўшчыка распазнавання. Гэты спіс таксама дапамагае апрацоўцы тэксту. Абмежаванне распазнавання захоўваецца.</string>
+    <string name="dictionary_postprocessing_hint">Дадатковыя імёны і тэрміны адпраўляюцца толькі пастаўшчыку апрацоўкі тэксту, калі выкарыстоўваецца адзін з яе рэжымаў. Яны не расходуюць ліміт падказкі распазнавальніка маўлення. Вялікія спісы павялічваюць памер запыту і павінны змяшчацца ў кантэкстнае акно мадэлі.</string>
+    <string name="dictionary_postprocessing_input_hint">Адно імя ці тэрмін у радку</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d сімвалаў</string>
+    <string name="dictionary_save">Захаваць</string>
+    <string name="dictionary_replacements_hint">Вашы правілы выпраўляюць цэлыя словы ці фразы ў распазнанай дыктоўцы без уліку рэгістра. Прымяняюцца лакальна адзін раз перад неабавязковай апрацоўкай тэксту. Спіс правілаў не адпраўляецца пастаўшчыку распазнавання.</string>
+    <string name="dictionary_replacement_from">Распазнаны тэкст</string>
+    <string name="dictionary_replacement_to">Замяніць на</string>
+    <string name="dictionary_replacement_add">Дадаць замену</string>
+    <string name="dictionary_replacements_counter">Правілаў: %1$d · %2$d / %3$d сімвалаў</string>
+    <string name="dictionary_remove_replacement">Выдаліць замену</string>
+    <string name="dictionary_replacement_invalid">Увядзіце два розныя непустыя тэксты без пераносаў радкоў.</string>
+    <string name="dictionary_replacement_limit">Занадта шмат правілаў ці сімвалаў. Спачатку выдаліце частку правілаў.</string>
+    <string name="dictionary_replacements_empty">Замен пакуль няма. Дадавайце толькі выпраўленні, якія хочаце прымяняць аўтаматычна.</string>
+    <string name="dictionary_unsaved_title">Захаваць змены слоўніка?</string>
+    <string name="dictionary_unsaved_message">У слоўніку апрацоўкі тэксту ёсць незахаваныя змены.</string>
+    <string name="dictionary_discard">Не захоўваць</string>
+</resources>

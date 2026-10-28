@@ -107,10 +107,11 @@ class ParkedRecordingStore internal constructor(
     }
 
     /** Atomically take all retryable items and mark them in-flight so no other drain double-claims. */
-    suspend fun claimWaiting(): List<ParkedRecording> = withContext(dispatcher) {
+    suspend fun claimWaiting(eligibleEndpoints: Set<String>? = null): List<ParkedRecording> = withContext(dispatcher) {
         loadIfNeeded()
         val claimable = items.filter {
-            it.state == ParkedRecording.State.WAITING_NETWORK && it.id !in inFlight
+            it.state == ParkedRecording.State.WAITING_NETWORK && it.id !in inFlight &&
+                (eligibleEndpoints == null || it.endpoint in eligibleEndpoints)
         }
         claimable.forEach { inFlight.add(it.id) }
         claimable

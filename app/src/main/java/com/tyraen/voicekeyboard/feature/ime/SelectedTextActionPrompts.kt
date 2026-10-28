@@ -23,16 +23,21 @@ object SelectedTextActionPrompts {
         action: SelectedTextAction,
         text: String,
         preferences: PostProcessingPreferences,
-        instruction: String = ""
+        instruction: String = "",
+        vocabulary: String = ""
     ): PromptParts = when (action) {
-        SelectedTextAction.TRANSLATE -> PostProcessingPrompts.buildTranslate(text, preferences.translateLang)
+        SelectedTextAction.TRANSLATE -> PostProcessingPrompts.buildTranslate(text, preferences.translateLang, vocabulary)
         SelectedTextAction.FIX -> PromptParts(
-            "$GUARD\n\n${preferences.promptFix.ifBlank { PROOFREAD }}\n\n${preferences.resolvedPromptSuffix()}",
+            listOf(GUARD, PostProcessingPrompts.vocabularyHint(vocabulary),
+                preferences.promptFix.ifBlank { PROOFREAD }, preferences.resolvedPromptSuffix())
+                .filter(String::isNotBlank).joinToString("\n\n"),
             text
         )
         SelectedTextAction.CUSTOM -> {
             require(instruction.isNotBlank()) { "Missing editing instruction" }
-            PromptParts("$GUARD\n\n${instruction.trim()}\n\n${preferences.resolvedPromptSuffix()}", text)
+            PromptParts(listOf(GUARD, PostProcessingPrompts.vocabularyHint(vocabulary),
+                instruction.trim(), preferences.resolvedPromptSuffix())
+                .filter(String::isNotBlank).joinToString("\n\n"), text)
         }
     }
 }

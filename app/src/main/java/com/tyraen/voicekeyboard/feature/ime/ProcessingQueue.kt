@@ -12,6 +12,7 @@ import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingPrompts
 import com.tyraen.voicekeyboard.feature.postprocessing.RecentDictationContext
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
+import com.tyraen.voicekeyboard.feature.vocabulary.TextDictionary
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -28,8 +29,8 @@ import java.util.concurrent.atomic.AtomicLong
  * recordings (the bug behind the lost dictation).
  *
  * Offline resilience:
- * - Before each attempt it checks for validated internet ([ConnectivityMonitor]); if offline it
- *   parks the recording instead of firing a doomed request.
+ * - Before each attempt it checks availability for that provider ([ConnectivityMonitor]). Public
+ *   APIs require validated internet; loopback and private-network servers do not.
  * - On transient failure a recording is parked durably ([ParkedRecordingStore]) and retried
  *   indefinitely with capped exponential backoff, driven both by a timer and by a
  *   network-available callback. It never gives up and never deletes a parked recording on teardown.
@@ -51,7 +52,9 @@ class ProcessingQueue internal constructor(
     private val scope: CoroutineScope,
     elapsedRealtime: () -> Long,
     private val isTranscriptCompleted: suspend (String) -> Boolean = { false },
-    private val acknowledgeTranscriptCleanup: suspend (String) -> Unit = {}
+    private val acknowledgeTranscriptCleanup: suspend (String) -> Unit = {},
+    private val canAccessEndpoint: suspend (String) -> Boolean = { isOnline() },
+    private val dictionaryDispatcher: CoroutineDispatcher = Dispatchers.Unconfined
 ) {
     constructor(
         speechClient: SpeechToTextClient,
@@ -73,7 +76,9 @@ class ProcessingQueue internal constructor(
         CoroutineScope(Dispatchers.Main + SupervisorJob()),
         SystemClock::elapsedRealtime,
         pendingTranscriptStore::isCompleted,
-        pendingTranscriptStore::acknowledgeAudioCleanup
+        pendingTranscriptStore::acknowledgeAudioCleanup,
+        connectivity::canAccessEndpoint,
+        Dispatchers.Default
     )
 
     enum class ProcessingPhase { TRANSCRIBING, POST_PROCESSING }
@@ -161,7 +166,10 @@ class ProcessingQueue internal constructor(
         /** Original editor session; never serialized into parked recordings. */
         val editorSessionToken: Long? = null,
         val workId: String = UUID.randomUUID().toString(),
-        val createdAt: Long = nextCreatedAt()
+        val createdAt: Long = nextCreatedAt(),
+        /** Capture-time text preferences; never sent to the speech provider. */
+        val postProcessingVocabulary: String = "",
+        val replacementRules: String = ""
     )
 
     private val queue = ConcurrentLinkedQueue<QueueItem>()
@@ -222,8 +230,8 @@ class ProcessingQueue internal constructor(
     /** Called once from Application.onCreate: recover persisted recordings and resume retrying. */
     fun bootstrap() {
         scope.launch {
-            store.ensureLoaded()
-            reconcileCompletedRecordings()
+            // Loopback works even when Android has no network and will never emit onAvailable.
+            drainParked()
             if (store.waitingCount() > 0) ensureRetryLoop()
         }
     }
@@ -275,7 +283,7 @@ class ProcessingQueue internal constructor(
         if (!isProcessing) processNext()
     }
 
-    /** Validated internet returned: reset backoff and drain parked recordings right away. */
+    /** A network link changed: reset backoff and check each parked provider right away. */
     fun onNetworkAvailable() {
         scope.launch {
             retryBackoffMs = INITIAL_RETRY_BACKOFF_MS
@@ -387,10 +395,10 @@ class ProcessingQueue internal constructor(
             return
         }
 
-        // Pre-flight: don't fire into a dead network and wait minutes for a timeout — park and let
-        // the connectivity-driven loop pick it up when validated internet returns.
-        if (!isOnline()) {
-            DiagnosticLog.record(TAG, "Offline — parking ${item.audioFile.name} for later")
+        // Internet validation describes a public API, not a loopback/NAS provider. The same
+        // endpoint-specific check is used for fresh captures and restored recordings.
+        if (!canAccessEndpoint(item.transcriptionConfig.endpoint)) {
+            DiagnosticLog.record(TAG, "Provider network unavailable — parking ${item.audioFile.name} for later")
             handleFailure(item, permanent = false)
             return
         }
@@ -434,14 +442,20 @@ class ProcessingQueue internal constructor(
 
         DiagnosticLog.record(TAG, "Transcription success: ${rawText.length} characters")
 
-        val cleanedText = if (item.singleWordStripPunctuation) stripSingleWordPunctuation(rawText) else rawText
+        val punctuatedText = if (item.singleWordStripPunctuation) stripSingleWordPunctuation(rawText) else rawText
+        val prepared = withContext(dictionaryDispatcher) {
+            TextDictionary.prepare(punctuatedText, item.vocabulary,
+                item.postProcessingVocabulary, item.replacementRules)
+        }
+        checkActive(item)
+        val cleanedText = prepared.text
 
         val hasPostProcessing = item.ppPreferences != null && item.ppPreferences.apiKey.isNotBlank() &&
             (item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal)
         if (hasPostProcessing) {
             setPhase(ProcessingPhase.POST_PROCESSING)
         }
-        val processed = maybePostProcess(cleanedText, item)
+        val processed = maybePostProcess(cleanedText, item, prepared.vocabulary)
 
         // The prompts say "output nothing" for filler-only input; honour that instead of typing a
         // lone space into the field or saving an empty result. A model that blanks a real
@@ -520,11 +534,12 @@ class ProcessingQueue internal constructor(
         // restart. Release crash leftovers before applying the connectivity gate to real retries.
         store.ensureLoaded()
         reconcileCompletedRecordings()
-        if (!isOnline()) {
-            DiagnosticLog.record(TAG, "drainParked skipped — still offline")
-            return
-        }
-        val claimed = store.claimWaiting()
+        val endpoints = store.recordings.value.asSequence()
+            .filter { it.state == ParkedRecording.State.WAITING_NETWORK }
+            .map { it.endpoint }.distinct().toList()
+        val eligibleEndpoints = endpoints.filter { canAccessEndpoint(it) }.toSet()
+        if (eligibleEndpoints.isEmpty()) return
+        val claimed = store.claimWaiting(eligibleEndpoints)
         if (claimed.isEmpty()) return
 
         val apiKey = loadApiKey()
@@ -577,9 +592,7 @@ class ProcessingQueue internal constructor(
         retryJob = scope.launch {
             while (isActive && store.waitingCount() > 0) {
                 delay(retryBackoffMs)
-                if (isOnline()) {
-                    drainParked()
-                }
+                drainParked()
                 retryBackoffMs = (retryBackoffMs * 2).coerceAtMost(MAX_RETRY_BACKOFF_MS)
             }
         }
@@ -608,10 +621,15 @@ class ProcessingQueue internal constructor(
         return trimmed.trimEnd('.', '!', '?', '。', '！', '？')
     }
 
-    private suspend fun maybePostProcess(text: String, item: QueueItem): String {
+    private suspend fun maybePostProcess(text: String, item: QueueItem, referenceVocabulary: String): String {
         checkActive(item)
         val pp = item.ppPreferences ?: return text
         if (pp.apiKey.isBlank()) return text
+        if ((item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal) &&
+            !canAccessEndpoint(pp.resolvedEndpoint())) {
+            DiagnosticLog.record(TAG, "Post-processing provider unavailable, using recognized text")
+            return text
+        }
 
         // The option is live consent, even for a recording whose other preferences were
         // snapshotted earlier. Settings also invalidate the generation synchronously on disable.
@@ -643,7 +661,7 @@ class ProcessingQueue internal constructor(
         // First: fix/shorten/emoji
         if (PostProcessingPrompts.hasAnyMode(item.ppFix, item.ppShorten, item.ppEmoji)) {
             DiagnosticLog.record(TAG, "Post-processing: fix=${item.ppFix}, shorten=${item.ppShorten}, emoji=${item.ppEmoji}")
-            val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp, item.vocabulary, context())
+            val promptParts = PostProcessingPrompts.build(item.ppFix, item.ppShorten, item.ppEmoji, processed, pp, referenceVocabulary, context())
             val result = processText(promptParts, pp, null)
             checkActive(item)
             processed = result.getOrElse { error ->
@@ -657,7 +675,7 @@ class ProcessingQueue internal constructor(
         // Then: rhyme
         if (item.ppRhyme) {
             DiagnosticLog.record(TAG, "Rhyming text")
-            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed, item.vocabulary, context())
+            val rhymePrompt = PostProcessingPrompts.buildRhyme(processed, referenceVocabulary, context())
             val result = processText(rhymePrompt, pp, pp.resolvedTranslateModel())
             checkActive(item)
             processed = result.getOrElse { error ->
@@ -671,7 +689,7 @@ class ProcessingQueue internal constructor(
         // Then: translate
         if (item.ppTranslate) {
             DiagnosticLog.record(TAG, "Translating to: ${pp.translateLang}")
-            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang, item.vocabulary, context())
+            val translatePrompt = PostProcessingPrompts.buildTranslate(processed, pp.translateLang, referenceVocabulary, context())
             val result = processText(translatePrompt, pp, pp.resolvedTranslateModel())
             checkActive(item)
             processed = result.getOrElse { error ->

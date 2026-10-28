@@ -30,6 +30,7 @@ import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingActivity
+import com.tyraen.voicekeyboard.feature.vocabulary.TextDictionary
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -376,7 +377,10 @@ class SelectedTextActionsPanel(
         render()
         requestJob = scope.launch {
             try {
-                val prompt = SelectedTextActionPrompts.build(action, captured.text, prefs, instruction)
+                val store = ServiceLocator.preferenceStore
+                val vocabulary = TextDictionary.mergeVocabulary(
+                    store.loadPostProcessingVocabulary(), store.loadVocabulary())
+                val prompt = SelectedTextActionPrompts.build(action, captured.text, prefs, instruction, vocabulary)
                 val model = if (action == SelectedTextAction.TRANSLATE) prefs.resolvedTranslateModel() else null
                 val result = ServiceLocator.postProcessingClient.process(prompt, prefs, model).getOrThrow()
                 if (result.isBlank()) {

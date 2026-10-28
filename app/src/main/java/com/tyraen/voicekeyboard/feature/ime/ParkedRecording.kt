@@ -33,7 +33,9 @@ data class ParkedRecording(
     val flags: Flags,
     /** Stable capture identity/order; retrying is not a new dictation. */
     val workId: String = id,
-    val createdAt: Long = legacyCreatedAt(id)
+    val createdAt: Long = legacyCreatedAt(id),
+    val postProcessingVocabulary: String = "",
+    val replacementRules: String = ""
 ) {
     enum class State {
         /** Transient failure — keep auto-retrying whenever the network is available. */
@@ -83,6 +85,8 @@ data class ParkedRecording(
         o.put("addTrailingSpace", addTrailingSpace)
         o.put("singleWordStripPunctuation", singleWordStripPunctuation)
         o.put("vocabulary", vocabulary)
+        o.put("postProcessingVocabulary", postProcessingVocabulary)
+        o.put("replacementRules", replacementRules)
         o.put("endpoint", endpoint)
         o.put("model", model)
         o.put("language", language)
@@ -157,7 +161,9 @@ data class ParkedRecording(
             ppTerminal = flags.terminal,
             parkedId = id,
             workId = workId,
-            createdAt = createdAt
+            createdAt = createdAt,
+            postProcessingVocabulary = postProcessingVocabulary,
+            replacementRules = replacementRules
         )
     }
 
@@ -194,6 +200,8 @@ data class ParkedRecording(
                 addTrailingSpace = o.optBoolean("addTrailingSpace", true),
                 singleWordStripPunctuation = o.optBoolean("singleWordStripPunctuation", false),
                 vocabulary = o.optString("vocabulary"),
+                postProcessingVocabulary = o.optString("postProcessingVocabulary"),
+                replacementRules = o.optString("replacementRules"),
                 endpoint = o.optString("endpoint"),
                 model = o.optString("model"),
                 language = o.optString("language"),
@@ -247,6 +255,8 @@ data class ParkedRecording(
                 addTrailingSpace = item.addTrailingSpace,
                 singleWordStripPunctuation = item.singleWordStripPunctuation,
                 vocabulary = item.vocabulary,
+                postProcessingVocabulary = item.postProcessingVocabulary,
+                replacementRules = item.replacementRules,
                 endpoint = c.endpoint,
                 model = c.model,
                 language = c.language,

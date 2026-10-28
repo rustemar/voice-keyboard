@@ -1,0 +1,3 @@
+Add local word/phrase replacements and a separate post-processing vocabulary in Custom vocabulary, translated into all 17 interface languages. Local rules work without an LLM; retries retain their dictionary settings.
+Allow loopback/LAN speech servers without validated internet and keep text if optional post-processing is unavailable.
+Add OpenRouter speech input with model presets, custom model IDs and compatible JSON responses.

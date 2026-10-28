@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Pistas de reconocimiento</string>
+    <string name="dictionary_section_postprocessing">Vocabulario de posprocesamiento</string>
+    <string name="dictionary_section_replacements">Sustituciones locales</string>
+    <string name="dictionary_recognition_hint">Una lista breve de nombres y términos enviada al proveedor de reconocimiento de voz. Esta lista también ayuda al posprocesamiento. El límite de reconocimiento sigue vigente.</string>
+    <string name="dictionary_postprocessing_hint">Los nombres y términos adicionales se envían solo a tu proveedor de procesamiento de texto cuando se usa un modo de procesamiento. No consumen el presupuesto del prompt del reconocedor de voz. Las listas grandes aumentan el tamaño de la solicitud y deben caber en la ventana de contexto del modelo.</string>
+    <string name="dictionary_postprocessing_input_hint">Un nombre o término por línea</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d caracteres</string>
+    <string name="dictionary_save">Guardar</string>
+    <string name="dictionary_replacements_hint">Tus reglas corrigen palabras o frases completas del dictado reconocido, sin distinguir mayúsculas de minúsculas. Se aplican una vez en el dispositivo, antes del posprocesamiento opcional. La lista de reglas no se envía al proveedor de reconocimiento de voz.</string>
+    <string name="dictionary_replacement_from">Texto reconocido</string>
+    <string name="dictionary_replacement_to">Sustituir por</string>
+    <string name="dictionary_replacement_add">Añadir sustitución</string>
+    <string name="dictionary_replacements_counter">%1$d reglas · %2$d / %3$d caracteres</string>
+    <string name="dictionary_remove_replacement">Eliminar sustitución</string>
+    <string name="dictionary_replacement_invalid">Introduce dos textos distintos y no vacíos, sin saltos de línea.</string>
+    <string name="dictionary_replacement_limit">Demasiadas reglas o caracteres. Elimina primero algunas reglas.</string>
+    <string name="dictionary_replacements_empty">Aún no hay sustituciones. Añade solo las correcciones que quieras aplicar automáticamente.</string>
+    <string name="dictionary_unsaved_title">¿Guardar los cambios del vocabulario?</string>
+    <string name="dictionary_unsaved_message">Tu vocabulario de posprocesamiento tiene cambios sin guardar.</string>
+    <string name="dictionary_discard">Descartar</string>
+</resources>

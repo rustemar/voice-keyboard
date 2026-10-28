@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Puheentunnistuksen vihjeet</string>
+    <string name="dictionary_section_postprocessing">Jälkikäsittelyn sanasto</string>
+    <string name="dictionary_section_replacements">Paikalliset korvaukset</string>
+    <string name="dictionary_recognition_hint">Lyhyt nimi- ja termiluettelo, joka lähetetään puheentunnistuksen tarjoajalle. Luettelo auttaa myös jälkikäsittelyssä. Puheentunnistuksen rajoitus on edelleen voimassa.</string>
+    <string name="dictionary_postprocessing_hint">Lisänimet ja -termit lähetetään vain tekstinkäsittelypalvelullesi, kun käsittelytilaa käytetään. Ne eivät kuluta puheentunnistuksen kehotteen tilaa. Suuret luettelot kasvattavat pyynnön kokoa, ja niiden on mahduttava mallin konteksti-ikkunaan.</string>
+    <string name="dictionary_postprocessing_input_hint">Yksi nimi tai termi riville</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d merkkiä</string>
+    <string name="dictionary_save">Tallenna</string>
+    <string name="dictionary_replacements_hint">Säännöt korjaavat kokonaisia sanoja tai ilmauksia tunnistetusta sanelusta kirjainkoosta riippumatta. Ne suoritetaan laitteessa kerran ennen valinnaista jälkikäsittelyä. Sääntöluetteloa ei lähetetä puheentunnistuksen tarjoajalle.</string>
+    <string name="dictionary_replacement_from">Tunnistettu teksti</string>
+    <string name="dictionary_replacement_to">Korvaava teksti</string>
+    <string name="dictionary_replacement_add">Lisää korvaus</string>
+    <string name="dictionary_replacements_counter">%1$d sääntöä · %2$d / %3$d merkkiä</string>
+    <string name="dictionary_remove_replacement">Poista korvaus</string>
+    <string name="dictionary_replacement_invalid">Kirjoita kaksi erilaista tekstiä, jotka eivät ole tyhjiä eivätkä sisällä rivinvaihtoja.</string>
+    <string name="dictionary_replacement_limit">Liikaa sääntöjä tai merkkejä. Poista ensin joitakin sääntöjä.</string>
+    <string name="dictionary_replacements_empty">Ei vielä korvauksia. Lisää vain korjaukset, jotka haluat tehdä automaattisesti.</string>
+    <string name="dictionary_unsaved_title">Tallennetaanko sanaston muutokset?</string>
+    <string name="dictionary_unsaved_message">Jälkikäsittelyn sanastossa on tallentamattomia muutoksia.</string>
+    <string name="dictionary_discard">Hylkää</string>
+</resources>

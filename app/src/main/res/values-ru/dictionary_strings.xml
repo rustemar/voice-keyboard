@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Подсказки распознаванию</string>
+    <string name="dictionary_section_postprocessing">Словарь постобработки</string>
+    <string name="dictionary_section_replacements">Локальные замены</string>
+    <string name="dictionary_recognition_hint">Небольшой список имён и терминов для провайдера распознавания. Этот список также помогает постобработке. Ограничение распознавания сохраняется.</string>
+    <string name="dictionary_postprocessing_hint">Дополнительные имена и термины отправляются только провайдеру обработки текста, когда используется один из её режимов. Они не расходуют лимит подсказки распознавателя речи. Большие списки увеличивают размер запроса и должны помещаться в контекстное окно модели.</string>
+    <string name="dictionary_postprocessing_input_hint">Одно имя или термин в строке</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d символов</string>
+    <string name="dictionary_save">Сохранить</string>
+    <string name="dictionary_replacements_hint">Ваши правила исправляют целые слова или фразы в распознанной диктовке без учёта регистра. Применяются локально один раз перед необязательной постобработкой. Список правил не отправляется провайдеру распознавания.</string>
+    <string name="dictionary_replacement_from">Распознанный текст</string>
+    <string name="dictionary_replacement_to">Заменить на</string>
+    <string name="dictionary_replacement_add">Добавить замену</string>
+    <string name="dictionary_replacements_counter">Правил: %1$d · %2$d / %3$d символов</string>
+    <string name="dictionary_remove_replacement">Удалить замену</string>
+    <string name="dictionary_replacement_invalid">Введите два разных непустых текста без переносов строк.</string>
+    <string name="dictionary_replacement_limit">Слишком много правил или символов. Сначала удалите часть правил.</string>
+    <string name="dictionary_replacements_empty">Замен пока нет. Добавляйте только исправления, которые хотите применять автоматически.</string>
+    <string name="dictionary_unsaved_title">Сохранить изменения словаря?</string>
+    <string name="dictionary_unsaved_message">В словаре постобработки есть несохранённые изменения.</string>
+    <string name="dictionary_discard">Не сохранять</string>
+</resources>

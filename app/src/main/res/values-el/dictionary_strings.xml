@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Υποδείξεις αναγνώρισης</string>
+    <string name="dictionary_section_postprocessing">Λεξιλόγιο επεξεργασίας</string>
+    <string name="dictionary_section_replacements">Τοπικές αντικαταστάσεις</string>
+    <string name="dictionary_recognition_hint">Μια σύντομη λίστα ονομάτων και όρων που αποστέλλεται στον πάροχο αναγνώρισης ομιλίας. Η λίστα βοηθά επίσης την επεξεργασία κειμένου. Το όριο αναγνώρισης εξακολουθεί να ισχύει.</string>
+    <string name="dictionary_postprocessing_hint">Πρόσθετα ονόματα και όροι αποστέλλονται μόνο στον πάροχο επεξεργασίας κειμένου όταν χρησιμοποιείται κάποια λειτουργία επεξεργασίας. Δεν καταναλώνουν το όριο της προτροπής αναγνώρισης ομιλίας. Οι μεγάλες λίστες αυξάνουν το μέγεθος του αιτήματος και πρέπει να χωρούν στο παράθυρο συμφραζομένων του μοντέλου.</string>
+    <string name="dictionary_postprocessing_input_hint">Ένα όνομα ή ένας όρος ανά γραμμή</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d χαρακτήρες</string>
+    <string name="dictionary_save">Αποθήκευση</string>
+    <string name="dictionary_replacements_hint">Οι κανόνες διορθώνουν ολόκληρες λέξεις ή φράσεις στην αναγνωρισμένη υπαγόρευση, χωρίς διάκριση πεζών και κεφαλαίων. Εφαρμόζονται τοπικά μία φορά, πριν από την προαιρετική επεξεργασία κειμένου. Η λίστα κανόνων δεν αποστέλλεται στον πάροχο αναγνώρισης ομιλίας.</string>
+    <string name="dictionary_replacement_from">Αναγνωρισμένο κείμενο</string>
+    <string name="dictionary_replacement_to">Αντικατάσταση με</string>
+    <string name="dictionary_replacement_add">Προσθήκη αντικατάστασης</string>
+    <string name="dictionary_replacements_counter">%1$d κανόνες · %2$d / %3$d χαρακτήρες</string>
+    <string name="dictionary_remove_replacement">Κατάργηση αντικατάστασης</string>
+    <string name="dictionary_replacement_invalid">Εισαγάγετε δύο διαφορετικά, μη κενά κείμενα χωρίς αλλαγές γραμμής.</string>
+    <string name="dictionary_replacement_limit">Υπάρχουν πάρα πολλοί κανόνες ή χαρακτήρες. Καταργήστε πρώτα μερικούς κανόνες.</string>
+    <string name="dictionary_replacements_empty">Δεν υπάρχουν αντικαταστάσεις. Προσθέστε μόνο τις διορθώσεις που θέλετε να εφαρμόζονται αυτόματα.</string>
+    <string name="dictionary_unsaved_title">Αποθήκευση αλλαγών λεξιλογίου;</string>
+    <string name="dictionary_unsaved_message">Το λεξιλόγιο επεξεργασίας περιέχει μη αποθηκευμένες αλλαγές.</string>
+    <string name="dictionary_discard">Απόρριψη</string>
+</resources>

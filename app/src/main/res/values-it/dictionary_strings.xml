@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Suggerimenti di riconoscimento</string>
+    <string name="dictionary_section_postprocessing">Vocabolario di post-elaborazione</string>
+    <string name="dictionary_section_replacements">Sostituzioni locali</string>
+    <string name="dictionary_recognition_hint">Un breve elenco di nomi e termini inviato al fornitore del riconoscimento vocale. Questo elenco aiuta anche la post-elaborazione. Il limite del riconoscimento resta valido.</string>
+    <string name="dictionary_postprocessing_hint">I nomi e i termini aggiuntivi vengono inviati solo al fornitore di elaborazione del testo quando si usa una modalità di elaborazione. Non consumano il budget del prompt del riconoscimento vocale. Gli elenchi grandi aumentano le dimensioni della richiesta e devono rientrare nella finestra di contesto del modello.</string>
+    <string name="dictionary_postprocessing_input_hint">Un nome o termine per riga</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d caratteri</string>
+    <string name="dictionary_save">Salva</string>
+    <string name="dictionary_replacements_hint">Le regole correggono parole o frasi intere nel dettato riconosciuto, senza distinguere maiuscole e minuscole. Vengono applicate una volta sul dispositivo, prima della post-elaborazione facoltativa. L’elenco delle regole non viene inviato al fornitore del riconoscimento vocale.</string>
+    <string name="dictionary_replacement_from">Testo riconosciuto</string>
+    <string name="dictionary_replacement_to">Sostituisci con</string>
+    <string name="dictionary_replacement_add">Aggiungi sostituzione</string>
+    <string name="dictionary_replacements_counter">%1$d regole · %2$d / %3$d caratteri</string>
+    <string name="dictionary_remove_replacement">Rimuovi sostituzione</string>
+    <string name="dictionary_replacement_invalid">Inserisci due testi diversi e non vuoti, senza interruzioni di riga.</string>
+    <string name="dictionary_replacement_limit">Troppe regole o caratteri. Rimuovi prima alcune regole.</string>
+    <string name="dictionary_replacements_empty">Nessuna sostituzione. Aggiungi solo le correzioni da applicare automaticamente.</string>
+    <string name="dictionary_unsaved_title">Salvare le modifiche al vocabolario?</string>
+    <string name="dictionary_unsaved_message">Il vocabolario di post-elaborazione contiene modifiche non salvate.</string>
+    <string name="dictionary_discard">Scarta</string>
+</resources>

@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
+import com.tyraen.voicekeyboard.core.config.TextDictionaryPreferences
 import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
@@ -63,6 +64,7 @@ class InputOrchestrator(
     private var reloadsInFlight = 0
     private var ppPreferences: PostProcessingPreferences? = null
     private var vocabulary: String = ""
+    private var textDictionary = TextDictionaryPreferences()
     private var captureContextToken: Long? = null
     private var captureEditorSessionToken: Long? = null
     private var captureIdentity: ProcessingQueue.WorkIdentity? = null
@@ -181,6 +183,7 @@ class InputOrchestrator(
             ppPreferences = preferenceStore.loadPostProcessing()
             toggles = preferenceStore.loadToggleStates()
             vocabulary = preferenceStore.loadVocabulary()
+            textDictionary = preferenceStore.loadTextDictionary()
         } finally {
             reloadsInFlight--
         }
@@ -377,7 +380,9 @@ class InputOrchestrator(
             contextToken = contextToken,
             editorSessionToken = editorToken,
             workId = identity.workId,
-            createdAt = identity.createdAt
+            createdAt = identity.createdAt,
+            postProcessingVocabulary = textDictionary.postProcessingVocabulary,
+            replacementRules = textDictionary.replacementRules
         )
         processingQueue.enqueue(item)
     }

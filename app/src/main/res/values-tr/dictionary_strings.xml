@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary_section_recognition">Tanıma ipuçları</string>
+    <string name="dictionary_section_postprocessing">Son işleme sözlüğü</string>
+    <string name="dictionary_section_replacements">Yerel değiştirmeler</string>
+    <string name="dictionary_recognition_hint">Konuşma tanıma sağlayıcısına gönderilen kısa bir ad ve terim listesi. Bu liste son işlemeye de yardımcı olur. Tanıma sınırı geçerliliğini korur.</string>
+    <string name="dictionary_postprocessing_hint">Ek adlar ve terimler yalnızca bir işleme modu kullanıldığında metin işleme sağlayıcınıza gönderilir. Konuşma tanıyıcısının istem bütçesini kullanmazlar. Büyük listeler istek boyutunu artırır ve modelinizin bağlam penceresine sığmalıdır.</string>
+    <string name="dictionary_postprocessing_input_hint">Her satıra bir ad veya terim</string>
+    <string name="dictionary_postprocessing_counter">%1$d / %2$d karakter</string>
+    <string name="dictionary_save">Kaydet</string>
+    <string name="dictionary_replacements_hint">Kurallarınız, tanınan diktedeki tam sözcükleri veya ifadeleri büyük/küçük harf ayrımı yapmadan düzeltir. İsteğe bağlı son işlemeden önce cihazda bir kez uygulanır. Kurallar liste olarak konuşma tanıma sağlayıcısına gönderilmez.</string>
+    <string name="dictionary_replacement_from">Tanınan metin</string>
+    <string name="dictionary_replacement_to">Şununla değiştir</string>
+    <string name="dictionary_replacement_add">Değiştirme ekle</string>
+    <string name="dictionary_replacements_counter">%1$d kural · %2$d / %3$d karakter</string>
+    <string name="dictionary_remove_replacement">Değiştirmeyi kaldır</string>
+    <string name="dictionary_replacement_invalid">Satır sonu içermeyen, birbirinden farklı ve boş olmayan iki metin girin.</string>
+    <string name="dictionary_replacement_limit">Çok fazla kural veya karakter var. Önce bazı kuralları kaldırın.</string>
+    <string name="dictionary_replacements_empty">Henüz değiştirme yok. Yalnızca otomatik uygulanmasını istediğiniz düzeltmeleri ekleyin.</string>
+    <string name="dictionary_unsaved_title">Sözlük değişiklikleri kaydedilsin mi?</string>
+    <string name="dictionary_unsaved_message">Son işleme sözlüğünüzde kaydedilmemiş değişiklikler var.</string>
+    <string name="dictionary_discard">Vazgeç</string>
+</resources>
