@@ -1,6 +1,6 @@
 # Issue 12 diagnostic test APK
 
-[Download APK directly](https://raw.githubusercontent.com/rustemar/voice-keyboard/codex/issue12-test-apk/VoiceKeyboard-Issue12-Diagnostics.apk)
+[Download APK directly](https://raw.githubusercontent.com/rustemar/voice-keyboard/6a3b2f9bb006e029f39c9c151d849e31ec23ec36/VoiceKeyboard-Issue12-Diagnostics.apk)
 
 This is a diagnostic download for [issue #12](https://github.com/rustemar/voice-keyboard/issues/12), not a confirmed fix or a stable release. No release or version tag is created for this branch.
 
