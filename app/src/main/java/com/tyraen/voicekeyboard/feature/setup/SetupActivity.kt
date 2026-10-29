@@ -28,6 +28,7 @@ import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.network.ApiEndpoint
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.core.logging.CaptureDiagnostics
 import com.tyraen.voicekeyboard.core.logging.FaultCapture
 import com.tyraen.voicekeyboard.core.ui.LinkOpener
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
@@ -145,10 +146,11 @@ class SetupActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        CaptureDiagnostics.event("Settings", "destroy", "capture=${capture?.diagnosticId} active=${capture?.isActive == true}")
         releaseChecker.cancelDownload(owner = this)
         super.onDestroy()
         scope.cancel()
-        capture?.release()
+        capture?.release("settings_activity_destroy")
     }
 
     private fun bindViews() {
@@ -496,23 +498,28 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun startTestRecording() {
+        CaptureDiagnostics.event("Settings", "test_begin_requested", "active=${capture?.isActive == true}")
         if (!MicPermission.isGranted(this)) {
+            CaptureDiagnostics.event("Settings", "test_begin_refused", "reason=permission")
             showTestStatus(getString(R.string.error_mic_permission), Color.parseColor(COLOR_ERROR))
             scope.launch { MicPermission.requestOrOpenSettings(this@SetupActivity, preferenceStore) }
             return
         }
 
         if (editApiKey.text.toString().trim().isBlank()) {
+            CaptureDiagnostics.event("Settings", "test_begin_refused", "reason=missing_key")
             showTestStatus(getString(R.string.test_status_set_key), Color.parseColor(COLOR_ERROR))
             return
         }
 
-        val session = MicrophoneCaptureSession(this)
+        val session = MicrophoneCaptureSession(this, "settings-test")
         if (!session.begin { }) {
+            CaptureDiagnostics.event("Settings", "test_begin_failed", "capture=${session.diagnosticId}")
             showTestStatus(getString(R.string.error_mic_unavailable), Color.parseColor(COLOR_ERROR))
             return
         }
         capture = session
+        CaptureDiagnostics.event("Settings", "test_started", "capture=${session.diagnosticId}")
 
         isTestRecording = true
         btnTestRecord.text = getString(R.string.test_stop)
@@ -521,7 +528,9 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun stopTestAndTranscribe() {
+        CaptureDiagnostics.event("Settings", "test_finish_requested", "capture=${capture?.diagnosticId} active=${capture?.isActive == true}")
         val file = capture?.finalize()
+        CaptureDiagnostics.event("Settings", "test_finished", "capture=${capture?.diagnosticId} usable=${file != null} bytes=${file?.length() ?: 0L}")
         isTestRecording = false
         btnTestRecord.text = getString(R.string.test_record)
         btnTestRecord.backgroundTintList = ContextCompat.getColorStateList(this, R.color.mic_recording)

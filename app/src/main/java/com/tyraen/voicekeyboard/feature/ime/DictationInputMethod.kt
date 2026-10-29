@@ -4,6 +4,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.inputmethodservice.InputMethodService
 import android.os.Build
@@ -31,6 +32,7 @@ import com.tyraen.voicekeyboard.core.config.AdvancedPreferences
 import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
+import com.tyraen.voicekeyboard.core.logging.CaptureDiagnostics
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.setup.MicrophonePermissionActivity
@@ -57,6 +59,8 @@ class DictationInputMethod : InputMethodService() {
     override fun getSystemService(name: String): Any? =
         if (name == LAYOUT_INFLATER_SERVICE) serviceInflater else super.getSystemService(name)
 
+    private val diagnosticId = CaptureDiagnostics.newId("ime")
+    private var diagnosticViewGeneration = 0
     private lateinit var panel: InputPanelController
     private lateinit var compactTerminalPanel: CompactTerminalPanel
     private val advancedPreferences by lazy { AdvancedPreferences(this) }
@@ -82,12 +86,26 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onEvaluateFullscreenMode(): Boolean = false
 
+    override fun onCreate() {
+        super.onCreate()
+        trace("service_created")
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        trace("configuration_changed",
+            "orientation=${newConfig.orientation} fontScale=${newConfig.fontScale} uiMode=${newConfig.uiMode}")
+        super.onConfigurationChanged(newConfig)
+    }
+
     override fun onCreateInputView(): View {
+        trace("create_input_view_requested")
         DiagnosticLog.record(TAG, "onCreateInputView")
         return createInputView()
     }
 
-    private fun createInputView(): View {
+    private fun createInputView(reason: String = "system_create"): View {
+        diagnosticViewGeneration++
+        trace("view_creation_started", "reason=$reason")
         quickCorrectionPanel?.destroy()
         quickCorrectionPanel = null
         textActionsPanel?.destroy()
@@ -101,8 +119,8 @@ class DictationInputMethod : InputMethodService() {
         // onWindowHidden, so a recording in progress is queued first; the new orchestrator binds to
         // the queue at once and types the text as usual.
         if (::orchestrator.isInitialized) {
-            orchestrator.gracefulShutdown()
-            orchestrator.destroy()
+            orchestrator.gracefulShutdown("view_rebuild")
+            orchestrator.destroy("view_rebuild")
         }
 
         currentTheme = ThemeManager.current(this)
@@ -120,7 +138,7 @@ class DictationInputMethod : InputMethodService() {
             context = this,
             preferenceStore = ServiceLocator.preferenceStore,
             processingQueue = ServiceLocator.transcriptionQueue,
-            capture = MicrophoneCaptureSession(this),
+            capture = MicrophoneCaptureSession(this, "ime"),
             editorSessionToken = { editorSessionToken },
             onTextReady = { text, addTrailingSpace, originSessionToken ->
                 // A result belongs to the editor connection that started its recording. A new
@@ -187,18 +205,21 @@ class DictationInputMethod : InputMethodService() {
             }
         }
         refreshExperimentalControls()
+        trace("view_creation_finished", "reason=$reason")
         return view
     }
 
     override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
         super.onStartInput(info, restarting)
+        trace("input_started", "restarting=$restarting inputType=${info?.inputType ?: InputType.TYPE_NULL}")
         quickCorrectionPanel?.stopRepeatingKeys()
         // Even restartInput can represent another DOM field in a browser. Treat replacement
         // editor connections conservatively; recreating just our panel keeps the token intact.
         if (!restarting && editorSessionToken != null && ::orchestrator.isInitialized) {
-            orchestrator.gracefulShutdown()
+            orchestrator.gracefulShutdown("new_editor")
         }
         editorSessionToken = editorSessionSequence.incrementAndGet()
+        trace("editor_session_assigned", "restarting=$restarting")
         if (quickCorrectionPanel?.isInstructionMode == true) quickCorrectionPanel?.hide()
         textActionsPanel?.onEditorChanged()
         lastDictationInserted = false
@@ -213,6 +234,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     override fun onFinishInput() {
+        trace("input_finished")
         quickCorrectionPanel?.stopRepeatingKeys()
         editorSessionToken = null
         if (quickCorrectionPanel?.isInstructionMode == true) quickCorrectionPanel?.hide()
@@ -220,8 +242,13 @@ class DictationInputMethod : InputMethodService() {
         lastDictationInserted = false
         mainHandler.removeCallbacks(returnCheck)
         if (::keystrokes.isInitialized) keystrokes.stopBackspaceRepeat()
-        if (::orchestrator.isInitialized) orchestrator.gracefulShutdown()
+        if (::orchestrator.isInitialized) orchestrator.gracefulShutdown("finish_input")
         super.onFinishInput()
+    }
+
+    override fun onFinishInputView(finishingInput: Boolean) {
+        trace("input_view_finished", "finishingInput=$finishingInput")
+        super.onFinishInputView(finishingInput)
     }
 
     override fun onUpdateSelection(
@@ -235,12 +262,13 @@ class DictationInputMethod : InputMethodService() {
     /** Focus moved to another field (or the keyboard opened on one): follow what it asks for. */
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
+        trace("input_view_started", "restarting=$restarting inputType=${info?.inputType ?: InputType.TYPE_NULL}")
         applyFieldToPanel(info)
         // A recording started in the previous field (a login's user name, say) stops when focus
         // moves into a password field, so the mic is not left open there. What was said is still
         // queued, and its result is saved for later insertion.
         if (::orchestrator.isInitialized && isVoiceBlocked(info)) {
-            orchestrator.gracefulShutdown()
+            orchestrator.gracefulShutdown("password_field")
         }
     }
 
@@ -290,6 +318,7 @@ class DictationInputMethod : InputMethodService() {
         super.onWindowShown()
         DiagnosticLog.record(TAG, "onWindowShown")
         keyboardVisible = true
+        trace("window_shown")
         lastDictationInserted = false
         savedResultSinceShown = false
 
@@ -297,7 +326,7 @@ class DictationInputMethod : InputMethodService() {
         val newTheme = ThemeManager.current(this)
         val newLanguage = InterfaceLanguageManager.resolveActive(this)
         if (newTheme != currentTheme || newLanguage != currentUiLanguage) {
-            setInputView(createInputView())
+            setInputView(createInputView("theme_or_language_changed"))
         }
 
         if (::orchestrator.isInitialized) {
@@ -311,6 +340,7 @@ class DictationInputMethod : InputMethodService() {
     override fun onWindowHidden() {
         super.onWindowHidden()
         keyboardVisible = false
+        trace("window_hidden")
         lastDictationInserted = false
         mainHandler.removeCallbacks(returnCheck)
         mainHandler.removeCallbacks(switchCheck)
@@ -320,7 +350,7 @@ class DictationInputMethod : InputMethodService() {
         textActionsPanel?.hide()
         if (::orchestrator.isInitialized) {
             orchestrator.viewVisible = false
-            orchestrator.gracefulShutdown()
+            orchestrator.gracefulShutdown("window_hidden")
         }
     }
 
@@ -443,6 +473,7 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        trace("service_destroyed")
         mainHandler.removeCallbacks(returnCheck)
         mainHandler.removeCallbacks(switchCheck)
         editorSessionToken = null
@@ -460,8 +491,8 @@ class DictationInputMethod : InputMethodService() {
         if (::orchestrator.isInitialized) {
             // Switching keyboards (the back key, the system picker) destroys this service without
             // onWindowHidden: queue a recording still in progress, or destroy() would discard it.
-            orchestrator.gracefulShutdown()
-            orchestrator.destroy()
+            orchestrator.gracefulShutdown("service_destroy")
+            orchestrator.destroy("service_destroy")
         }
     }
 
@@ -485,7 +516,7 @@ class DictationInputMethod : InputMethodService() {
             setOnClickListener {
                 if (!advancedPreferences.quickCorrectionEnabled) return@setOnClickListener
                 suspendAutomaticReturn()
-                orchestrator.gracefulShutdown()
+                orchestrator.gracefulShutdown("open_quick_corrections")
                 pendingTranscriptsPanel?.hide()
                 textActionsPanel?.hide()
                 quickCorrectionPanel?.toggle()
@@ -496,7 +527,7 @@ class DictationInputMethod : InputMethodService() {
             setOnClickListener {
                 if (!advancedPreferences.textActionsEnabled) return@setOnClickListener
                 suspendAutomaticReturn()
-                orchestrator.gracefulShutdown()
+                orchestrator.gracefulShutdown("open_text_actions")
                 pendingTranscriptsPanel?.hide()
                 quickCorrectionPanel?.hide()
                 textActionsPanel?.toggle()
@@ -583,7 +614,7 @@ class DictationInputMethod : InputMethodService() {
             // input): a second tap would have the platform switch straight back to this keyboard.
             if (!keyboardVisible) return@setOnClickListener
             // The switch skips onWindowHidden, so a recording in progress is queued here first.
-            orchestrator.gracefulShutdown()
+            orchestrator.gracefulShutdown("previous_keyboard")
             if (!switchToPreviousKeyboard(hideIfItFails = true)) showKeyboardPickerOrHide()
         }
         // Long-press names the key, like the mode toggles (see bindToggle).
@@ -722,5 +753,18 @@ class DictationInputMethod : InputMethodService() {
             orchestrator.isTerminalVisible(),
             orchestrator.toggles.terminalActive
         )
+    }
+
+    private fun trace(event: String, details: String = "") {
+        val controller = if (::orchestrator.isInitialized) orchestrator else null
+        val phase = when (controller?.currentPhase) {
+            is InputPhase.Ready -> "ready"
+            is InputPhase.Capturing -> "capturing"
+            is InputPhase.Failed -> "failed"
+            null -> "uninitialized"
+        }
+        CaptureDiagnostics.event(TAG, event,
+            "service=$diagnosticId view=$diagnosticViewGeneration editor=${editorSessionToken ?: "none"} " +
+                "visible=$keyboardVisible orchestrator=${controller?.diagnosticId ?: "none"} phase=$phase $details")
     }
 }

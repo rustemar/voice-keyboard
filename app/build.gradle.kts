@@ -13,6 +13,7 @@ android {
         targetSdk = 34
         versionCode = 66
         versionName = "1.12.0"
+        buildConfigField("boolean", "CAPTURE_DIAGNOSTICS", "false")
     }
 
     signingConfigs {
@@ -50,6 +51,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("boolean", "CAPTURE_DIAGNOSTICS", "true")
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -63,6 +67,13 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildTypes.create("diagnostic") {
+        initWith(buildTypes.getByName("release"))
+        // Same package, version code and certificate: preserve settings and allow rollback.
+        versionNameSuffix = "-issue12-diagnostics.1"
+        matchingFallbacks += listOf("release")
+        buildConfigField("boolean", "CAPTURE_DIAGNOSTICS", "true")
     }
     buildTypes.create("audioTest") {
         initWith(buildTypes.getByName("release"))

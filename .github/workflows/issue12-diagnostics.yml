@@ -1,0 +1,84 @@
+name: Issue 12 diagnostic APK
+
+on:
+  push:
+    branches: ['codex/issue12-diagnostics']
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+      - name: Run tests
+        run: ./gradlew testDebugUnitTest testDiagnosticUnitTest
+      - name: Decode signing keystore
+        env:
+          SIGNING_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          [ -n "$SIGNING_KEYSTORE" ] || exit 1
+          printf '%s' "$SIGNING_KEYSTORE" | base64 -d > release-keystore.jks
+      - name: Build and verify diagnostic APK
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/release-keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          for key_name in KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            [ -n "${!key_name}" ] || exit 1
+          done
+          ./gradlew assembleDiagnostic
+          mkdir diagnostic-artifact
+          cp app/build/outputs/apk/diagnostic/VoiceKeyboard.apk diagnostic-artifact/VoiceKeyboard-Issue12-Diagnostics.apk
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          "$APKSIGNER" verify --print-certs diagnostic-artifact/VoiceKeyboard-Issue12-Diagnostics.apk
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          metadata = json.loads(Path('app/build/outputs/apk/diagnostic/output-metadata.json').read_text())
+          assert metadata['applicationId'] == 'com.tyraen.voicekeyboard'
+          apk = metadata['elements'][0]
+          assert apk['versionCode'] == 66
+          assert apk['versionName'] == '1.12.0-issue12-diagnostics.1'
+          PY
+          (cd diagnostic-artifact && sha256sum VoiceKeyboard-Issue12-Diagnostics.apk > VoiceKeyboard-Issue12-Diagnostics.apk.sha256)
+      - name: Add installation notes
+        run: |
+          cat > diagnostic-artifact/INSTALL.txt <<'EOF'
+          Voice Keyboard 1.12.0-issue12-diagnostics.1 (66)
+
+          Diagnostic test build for issue #12. This is not a confirmed fix or a stable release.
+          It uses the regular app package and the GitHub 1.12.0 signing certificate. Install over 1.12.0;
+          do not uninstall the app or clear its data. Existing settings and API keys are retained.
+          If Android rejects the update because of a signature mismatch, keep the installed app
+          and report the message instead of uninstalling it.
+          Keep your current speech provider and keyboard options unchanged for the reproduction.
+
+          Open Settings > Diagnostics, clear the app log, reproduce a failed first attempt and
+          the following successful retry, then immediately Save logs. Share the log with the
+          approximate time of the failed attempt. If the issue does not reproduce, save that log too.
+          The added trace records technical events, not audio, editor text or API keys.
+          Logs stay on your device until you explicitly export/share them.
+
+          To return to the stable build, install the official 1.12.0 APK over this build without
+          uninstalling or clearing data. This artifact requires a GitHub login and expires after 30 days.
+          EOF
+      - name: Upload test artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: VoiceKeyboard-Issue12-Diagnostics-${{ github.sha }}
+          retention-days: 30
+          path: |
+            diagnostic-artifact/VoiceKeyboard-Issue12-Diagnostics.apk
+            diagnostic-artifact/VoiceKeyboard-Issue12-Diagnostics.apk.sha256
+            diagnostic-artifact/INSTALL.txt

@@ -1,6 +1,7 @@
 package com.tyraen.voicekeyboard.core.logging
 
 import android.content.Context
+import com.tyraen.voicekeyboard.BuildConfig
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -9,7 +10,7 @@ import java.util.Locale
 object DiagnosticLog {
 
     private const val ENTRIES_FILE = "app_log.txt"
-    private const val CAPACITY = 500
+    private val CAPACITY = if (BuildConfig.CAPTURE_DIAGNOSTICS) 2_000 else 500
     private const val TRIM_CHECK_EVERY = 50
 
     @Volatile
@@ -57,6 +58,7 @@ object DiagnosticLog {
         synchronized(lock) {
             File(context.filesDir, ENTRIES_FILE).delete()
         }
+        CaptureDiagnostics.logCleared()
     }
 
     fun exportToFile(context: Context): File? {

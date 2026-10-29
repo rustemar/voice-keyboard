@@ -4,6 +4,7 @@ import android.os.SystemClock
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.core.logging.CaptureDiagnostics
 import com.tyraen.voicekeyboard.core.network.ConnectivityMonitor
 import com.tyraen.voicekeyboard.feature.postprocessing.PromptParts
 import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingArtifactStripper
@@ -253,25 +254,35 @@ class ProcessingQueue internal constructor(
     fun reserveDictation(onCancel: () -> Unit): WorkIdentity {
         val identity = WorkIdentity(UUID.randomUUID().toString(), nextCreatedAt())
         reservations[identity.workId] = Reservation(identity, onCancel)
+        CaptureDiagnostics.event("Queue", "capture_reserved", "work=${identity.workId} reservations=${reservations.size}")
         pushCancellableWork()
         return identity
     }
 
     fun updateReservation(identity: WorkIdentity, onCancel: () -> Unit): Boolean {
-        if (!reservations.containsKey(identity.workId) || identity.workId in cancelledWork) return false
+        if (!reservations.containsKey(identity.workId) || identity.workId in cancelledWork) {
+            CaptureDiagnostics.event("Queue", "reservation_rejected", "work=${identity.workId} " +
+                "present=${reservations.containsKey(identity.workId)} cancelled=${identity.workId in cancelledWork}")
+            return false
+        }
         reservations[identity.workId] = Reservation(identity, onCancel, finalized = true)
+        CaptureDiagnostics.event("Queue", "reservation_finalized", "work=${identity.workId}")
         pushQueueCount()
         return true
     }
 
     fun releaseReservation(identity: WorkIdentity) {
+        CaptureDiagnostics.event("Queue", "reservation_released", "work=${identity.workId} present=${reservations.containsKey(identity.workId)}")
         reservations.remove(identity.workId)
         pushQueueCount()
     }
 
     fun enqueue(item: QueueItem) {
+        CaptureDiagnostics.event("Queue", "enqueue_received", "work=${item.workId} reserved=${reservations.containsKey(item.workId)} " +
+            "cancelled=${item.workId in cancelledWork} bytes=${item.audioFile.length()}")
         reservations.remove(item.workId)
         if (item.workId in cancelledWork) {
+            CaptureDiagnostics.event("Queue", "enqueue_discarded", "work=${item.workId} reason=cancelled")
             item.audioFile.delete()
             pushCancellableWork()
             return
@@ -736,6 +747,7 @@ class ProcessingQueue internal constructor(
     /** Cancel one newest-created undelivered item, regardless of its current processing stage. */
     fun cancelLatest(): Boolean {
         val identity = latestWork() ?: return false
+        CaptureDiagnostics.event("Queue", "cancel_requested", "work=${identity.workId} reserved=${reservations.containsKey(identity.workId)}")
         cancelledWork.add(identity.workId) // synchronous fence before callbacks or any suspension
         editorSessionTokens.remove(identity.workId)
         val reservation = reservations.remove(identity.workId)

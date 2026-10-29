@@ -109,7 +109,7 @@ class DictationRecognitionService : RecognitionService() {
                     fail(request, SpeechRecognizer.ERROR_RECOGNIZER_BUSY)
                     return@launch
                 }
-                val capture = MicrophoneCaptureSession(request.captureContext)
+                val capture = MicrophoneCaptureSession(request.captureContext, "recognition-service")
                 request.capture = capture
                 val session = RecognitionSession(
                     capture = object : RecognitionSession.Capture {

@@ -3,12 +3,21 @@ package com.tyraen.voicekeyboard.feature.audio
 import android.content.Context
 import android.media.MediaRecorder
 import android.os.Build
+import com.tyraen.voicekeyboard.core.logging.CaptureDiagnostics
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import kotlinx.coroutines.*
 import java.io.File
 import java.util.concurrent.atomic.AtomicLong
 
-class MicrophoneCaptureSession(private val context: Context) {
+class MicrophoneCaptureSession @JvmOverloads constructor(
+    private val context: Context,
+    private val owner: String = "unspecified"
+) {
+
+    val diagnosticId = CaptureDiagnostics.newId("capture")
+
+    private fun trace(event: String, details: String = "") =
+        CaptureDiagnostics.event("Capture", event, "session=$diagnosticId owner=$owner $details")
 
     companion object {
         private const val TAG = "Capture"
@@ -55,7 +64,11 @@ class MicrophoneCaptureSession(private val context: Context) {
      * Those used to propagate out of the mic button and take the keyboard process down.
      */
     fun begin(onAmplitude: (Int) -> Unit): Boolean {
-        if (recorder != null) return true
+        trace("begin_requested", "active=$isActive")
+        if (recorder != null) {
+            trace("begin_already_active")
+            return true
+        }
 
         val useOpus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
         val extension = if (useOpus) "ogg" else "m4a"
@@ -65,9 +78,14 @@ class MicrophoneCaptureSession(private val context: Context) {
         // storage permission can read the external one.
         val dir = context.cacheDir
         val file = File(dir, "recording_${fileSeq.getAndIncrement()}.$extension")
-        val lease = MicrophoneGate.shared.acquire() ?: return false
+        val lease = MicrophoneGate.shared.acquire("$owner/$diagnosticId")
+        if (lease == null) {
+            trace("begin_refused", "reason=gate_busy holder=${MicrophoneGate.shared.diagnosticOwner}")
+            return false
+        }
 
         var candidate: MediaRecorder? = null
+        var stage = "construct"
         try {
             val mr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 MediaRecorder(context)
@@ -76,6 +94,7 @@ class MicrophoneCaptureSession(private val context: Context) {
                 MediaRecorder()
             }
             candidate = mr
+            stage = "configure"
             mr.apply {
                 setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION)
                 if (useOpus) {
@@ -91,10 +110,15 @@ class MicrophoneCaptureSession(private val context: Context) {
                 }
                 setAudioChannels(1)
                 setOutputFile(file.absolutePath)
+                stage = "prepare"
+                trace("recorder_prepare")
                 prepare()
+                stage = "start"
+                trace("recorder_start")
                 start()
             }
         } catch (e: Exception) {
+            trace("begin_failed", "stage=$stage error=${e.javaClass.simpleName}")
             DiagnosticLog.recordFailure(TAG, "Microphone unavailable", e)
             runCatching { candidate?.reset() }
             runCatching { candidate?.release() }
@@ -109,12 +133,14 @@ class MicrophoneCaptureSession(private val context: Context) {
         capturedFile = file
         startedAtMs = System.currentTimeMillis()
         lastDurationMs = 0
+        trace("started", "format=$extension file=${file.name}")
 
         levelMonitor = scope.launch {
             while (isActive) {
                 try {
                     onAmplitude(mr.maxAmplitude)
-                } catch (_: Exception) {
+                } catch (error: Exception) {
+                    trace("amplitude_monitor_failed", "error=${error.javaClass.simpleName} active=$isActive")
                     break
                 }
                 delay(150)
@@ -134,9 +160,13 @@ class MicrophoneCaptureSession(private val context: Context) {
      * permanent "needs attention" badge that resend could never clear.
      */
     fun finalize(): File? {
+        trace("finalize_requested", "active=$isActive")
         levelMonitor?.cancel()
         levelMonitor = null
-        val mr = recorder ?: return null
+        val mr = recorder ?: run {
+            trace("finalize_empty", "reason=no_active_recorder")
+            return null
+        }
         recorder = null
         val file = capturedFile
         capturedFile = null
@@ -146,6 +176,7 @@ class MicrophoneCaptureSession(private val context: Context) {
             mr.stop()
             true
         } catch (e: Exception) {
+            trace("finalize_stop_failed", "durationMs=$lastDurationMs error=${e.javaClass.simpleName}")
             DiagnosticLog.record(TAG, "stop failed after ${lastDurationMs}ms: ${e.message}")
             false
         }
@@ -155,22 +186,28 @@ class MicrophoneCaptureSession(private val context: Context) {
 
         val usable = stopped && lastDurationMs >= MIN_CAPTURE_MS &&
             file != null && file.exists() && file.length() > 0L
+        trace("finalized", "stopped=$stopped usable=$usable durationMs=$lastDurationMs bytes=${file?.length() ?: 0L}")
         if (!usable) {
             DiagnosticLog.record(TAG, "Discarding unusable capture (${lastDurationMs}ms)")
             file?.delete()
             return null
         }
+        trace("file_handed_off", "file=${file?.name} bytes=${file?.length() ?: 0L}")
         return file
     }
 
     /** Throw away the capture in progress, if any. Files already handed over by [finalize] are kept. */
-    fun abort() {
+    @JvmOverloads
+    fun abort(reason: String = "unspecified") {
+        trace("abort_requested", "reason=$reason active=$isActive ownsFile=${capturedFile != null}")
         levelMonitor?.cancel()
         levelMonitor = null
         recorder?.let { mr ->
             try {
                 mr.stop()
-            } catch (_: Exception) {}
+            } catch (error: Exception) {
+                trace("abort_stop_failed", "reason=$reason error=${error.javaClass.simpleName}")
+            }
             runCatching { mr.release() }
         }
         recorder = null
@@ -178,10 +215,14 @@ class MicrophoneCaptureSession(private val context: Context) {
         microphoneLease = null
         capturedFile?.delete()
         capturedFile = null
+        trace("aborted", "reason=$reason active=$isActive")
     }
 
-    fun release() {
-        abort()
+    @JvmOverloads
+    fun release(reason: String = "unspecified") {
+        trace("release_requested", "reason=$reason active=$isActive")
+        abort(reason)
         scope.cancel()
+        trace("released", "reason=$reason")
     }
 }

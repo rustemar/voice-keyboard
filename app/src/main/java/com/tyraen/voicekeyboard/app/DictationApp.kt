@@ -7,6 +7,7 @@ import com.tyraen.voicekeyboard.BuildConfig
 import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.core.logging.CaptureDiagnostics
 import com.tyraen.voicekeyboard.core.logging.FaultCapture
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +26,7 @@ class DictationApp : Application() {
         ThemeManager.apply(this)
         FaultCapture.attach(this)
         DiagnosticLog.init(this)
+        CaptureDiagnostics.initialize()
         DiagnosticLog.record(
             "App",
             "Application started, v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}), " +
