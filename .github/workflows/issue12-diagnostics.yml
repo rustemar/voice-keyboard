@@ -2,7 +2,7 @@ name: Issue 12 diagnostic APK
 
 on:
   push:
-    branches: ['codex/issue12-diagnostics']
+    branches: ['diagnostics/issue12']
 
 permissions:
   contents: read
