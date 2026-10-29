@@ -38,7 +38,9 @@ object DiagnosticLog {
     }
 
     fun recordFailure(tag: String, message: String, cause: Throwable? = null) {
-        val detail = if (cause != null) "$message: ${cause.message}" else message
+        // Provider and parser exceptions can echo dictated text, credentials or response bodies.
+        // Keep only the fixed call-site context and exception type in a shareable log.
+        val detail = if (cause != null) "$message: ${cause.javaClass.simpleName}" else message
         record(tag, "ERROR $detail")
     }
 

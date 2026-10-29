@@ -49,13 +49,13 @@ jobs:
           assert metadata['applicationId'] == 'com.tyraen.voicekeyboard'
           apk = metadata['elements'][0]
           assert apk['versionCode'] == 66
-          assert apk['versionName'] == '1.12.0-issue12-diagnostics.1'
+          assert apk['versionName'] == '1.12.0-issue12-diagnostics.2'
           PY
           (cd diagnostic-artifact && sha256sum VoiceKeyboard-Issue12-Diagnostics.apk > VoiceKeyboard-Issue12-Diagnostics.apk.sha256)
       - name: Add installation notes
         run: |
           cat > diagnostic-artifact/INSTALL.txt <<'EOF'
-          Voice Keyboard 1.12.0-issue12-diagnostics.1 (66)
+          Voice Keyboard 1.12.0-issue12-diagnostics.2 (66)
 
           Diagnostic test build for issue #12. This is not a confirmed fix or a stable release.
           It uses the regular app package and the GitHub 1.12.0 signing certificate. Install over 1.12.0;
@@ -67,7 +67,8 @@ jobs:
           Open Settings > Diagnostics, clear the app log, reproduce a failed first attempt and
           the following successful retry, then immediately Save logs. Share the log with the
           approximate time of the failed attempt. If the issue does not reproduce, save that log too.
-          The added trace records technical events, not audio, editor text or API keys.
+          The log records technical events, not audio, editor text or API keys.
+          Provider error responses and exception messages are excluded from diagnostic and crash logs.
           Logs stay on your device until you explicitly export/share them.
 
           To return to the stable build, install the official 1.12.0 APK over this build without

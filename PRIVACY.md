@@ -87,13 +87,13 @@ Your preferences (selected language, theme, post‑processing mode, prompt text,
 
 ### Diagnostic log
 
-The app keeps a small ring‑buffered log file (`app_log.txt`, capped at 500 lines) in its private storage to help you debug issues. The log records technical events such as "recording started", "transcription succeeded", HTTP error codes, and similar. It does **not** record API keys. Post-processing logs record result length or error type, without selected passages, editing results or provider error bodies that could echo the text.
+The app keeps a small ring‑buffered log file (`app_log.txt`, capped at 500 lines in normal builds or 2,000 in diagnostic builds) in its private storage to help you debug issues. The log records technical events such as "recording started", "transcription succeeded", available HTTP error codes, and similar. It does **not** record audio, dictated or selected text, API keys, or provider response bodies. Failures retain the operation and exception type; exception messages are excluded because providers and parsers can echo private content in them.
 
 The log can be saved to a file, shared through any app you choose, or cleared from the **Logs** section of the settings screen. It is never uploaded on its own.
 
 ### Crash reports
 
-If the app crashes, an uncaught‑exception handler writes a single crash report (timestamp, thread, device model, Android version, full stack trace) to the app's private storage. On next launch you are shown a dialog offering to **share** or **save** that report so you can pass it to the developer for debugging. There is no automatic upload — the report only leaves your device if you explicitly share it.
+If the app crashes, an uncaught‑exception handler writes a single crash report (timestamp, thread ID, device model, Android version, exception types and stack frames) to the app's private storage. Exception messages are excluded, including those in nested and suppressed exceptions; the trace is bounded to keep a malformed exception chain from growing the report indefinitely. On next launch you are shown a dialog offering to **share** or **save** that report so you can pass it to the developer for debugging. There is no automatic upload — the report only leaves your device if you explicitly share it.
 
 The pending crash file is deleted whether you choose to save it or not.
 

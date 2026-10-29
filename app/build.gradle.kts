@@ -71,7 +71,7 @@ android {
     buildTypes.create("diagnostic") {
         initWith(buildTypes.getByName("release"))
         // Same package, version code and certificate: preserve settings and allow rollback.
-        versionNameSuffix = "-issue12-diagnostics.1"
+        versionNameSuffix = "-issue12-diagnostics.2"
         matchingFallbacks += listOf("release")
         buildConfigField("boolean", "CAPTURE_DIAGNOSTICS", "true")
     }

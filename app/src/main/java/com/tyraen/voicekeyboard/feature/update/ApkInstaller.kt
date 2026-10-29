@@ -76,7 +76,7 @@ class ApkInstaller(private val http: OkHttpClient) {
             DiagnosticLog.record("ApkInstaller", "Download cancelled")
             throw e
         } catch (e: Exception) {
-            DiagnosticLog.record("ApkInstaller", "Download failed: ${e.message}")
+            DiagnosticLog.recordFailure("ApkInstaller", "Download failed", e)
             null
         } finally {
             partFile.delete()

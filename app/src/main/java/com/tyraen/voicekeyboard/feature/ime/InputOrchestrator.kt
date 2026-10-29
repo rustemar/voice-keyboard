@@ -87,7 +87,8 @@ class InputOrchestrator(
         override fun onCancellableWorkChanged(available: Boolean) =
             this@InputOrchestrator.onCancellableWorkChanged(available)
         override fun onError(message: String) {
-            DiagnosticLog.record(TAG, "Queue error: $message")
+            // Provider errors may echo the dictated text or credentials.
+            DiagnosticLog.record(TAG, "Queue error reported")
         }
     }
 

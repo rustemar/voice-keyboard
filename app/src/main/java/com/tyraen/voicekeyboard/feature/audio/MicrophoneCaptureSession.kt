@@ -177,7 +177,7 @@ class MicrophoneCaptureSession @JvmOverloads constructor(
             true
         } catch (e: Exception) {
             trace("finalize_stop_failed", "durationMs=$lastDurationMs error=${e.javaClass.simpleName}")
-            DiagnosticLog.record(TAG, "stop failed after ${lastDurationMs}ms: ${e.message}")
+            DiagnosticLog.recordFailure(TAG, "stop failed after ${lastDurationMs}ms", e)
             false
         }
         runCatching { mr.release() }
