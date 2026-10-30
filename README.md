@@ -68,7 +68,7 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 
 ## Setup
 
-1. Install the APK from [Releases](https://github.com/rustemar/voice-keyboard/releases)
+1. Install Voice Keyboard from [F-Droid](https://f-droid.org/en/packages/com.tyraen.voicekeyboard/) or [GitHub Releases](https://github.com/rustemar/voice-keyboard/releases). For automatic updates from GitHub, see [Installation and updates](#installation-and-updates).
 2. Open the app and tap **Enable keyboard** (or go to Settings → System → Languages & input → On-screen keyboard)
 3. Enable "Voice Keyboard"; the app shows whether it is enabled and which keyboard is active
 4. Enter a speech-to-text API key. Supported endpoints:
@@ -120,11 +120,13 @@ The service uses the language requested by the calling app and returns the trans
 
 Apps choosing a fixed component or using their own speech/pronunciation engine may ignore Android’s default service. AnkiDroid-style service calls and Tasks-style dictation windows are useful examples of the two interfaces; compatibility with a particular app/version still depends on that app. Duolingo has not yet been verified.
 
-### Installing via Obtainium (recommended)
+### Installation and updates
 
-[Obtainium](https://github.com/ImranR98/Obtainium) is a third-party Android app that auto-updates apps directly from GitHub Releases. Recommended over the in-app update check if you want to avoid the system "install unknown apps" prompt and Play Protect warnings on each manual install.
+**F-Droid:** install [Voice Keyboard](https://f-droid.org/en/packages/com.tyraen.voicekeyboard/) through your F-Droid client to manage updates. New releases may appear there later than on GitHub.
 
-1. Install Obtainium from its [releases page](https://github.com/ImranR98/Obtainium/releases) or via [F-Droid](https://apt.izzysoft.de/fdroid/index/apk/dev.imranr.obtainium.fdroid).
+**Obtainium:** use [Obtainium](https://github.com/ImranR98/Obtainium) to install and track Voice Keyboard releases directly from GitHub.
+
+1. Install **Obtainium itself** from its [releases page](https://github.com/ImranR98/Obtainium/releases).
 2. In Obtainium, tap **Add App** and paste `https://github.com/rustemar/voice-keyboard`.
 3. Obtainium will install Voice Keyboard and notify you when new releases are published.
 
