@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">텍스트 복사됨</string>
     <string name="saved_texts_insert_failed">텍스트 입력란을 선택하고 다시 시도하세요.</string>
     <string name="saved_texts_action_failed">작업을 완료하지 못했습니다. 다시 시도하세요.</string>
+    <string name="settings_silence_auto_stop">무음 시 자동 중지</string>
+    <string name="settings_silence_auto_stop_hint">일정한 배경 소음을 고려하여 말이 멈추면 녹음을 종료합니다. 변하는 소음이나 다른 사람의 목소리가 감지에 영향을 줄 수 있습니다. 기본적으로 꺼져 있습니다.</string>
+    <string name="settings_silence_auto_stop_pause">중지 전 대기 시간</string>
+    <string name="silence_auto_stop_seconds">%1$s초</string>
+    <string name="cd_silence_auto_stop_on">무음 시 자동 중지가 켜져 있습니다. 탭하여 끕니다.</string>
+    <string name="cd_silence_auto_stop_off">무음 시 자동 중지가 꺼져 있습니다. 탭하여 켭니다.</string>
 </resources>

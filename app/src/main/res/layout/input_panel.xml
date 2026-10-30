@@ -196,7 +196,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:tint="@color/key_text" />
 
-    <!-- Recovery actions share the end-side column below backspace. -->
+    <!-- Auto-stop and visible recovery actions share the end-side column below backspace. -->
     <LinearLayout
         android:id="@+id/keyboardRecoveryRail"
         android:layout_width="56dp"
@@ -208,6 +208,18 @@
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/btnBackspace"
         app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:backgroundTint="@null"
+            android:id="@+id/btnSilenceAutoStop"
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:background="@drawable/toggle_key_bg"
+            android:src="@drawable/ic_silence_timer"
+            android:contentDescription="@string/cd_silence_auto_stop_off"
+            android:scaleType="centerInside"
+            android:padding="12dp"
+            android:tint="@color/key_text" />
 
         <FrameLayout
             android:id="@+id/retryFrame"

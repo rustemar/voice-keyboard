@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Text kopiert</string>
     <string name="saved_texts_insert_failed">Wähle ein Textfeld und versuche es erneut.</string>
     <string name="saved_texts_action_failed">Aktion fehlgeschlagen. Versuche es erneut.</string>
+    <string name="settings_silence_auto_stop">Bei Sprechpause automatisch stoppen</string>
+    <string name="settings_silence_auto_stop_hint">Aufnahme nach einer Sprechpause beenden und dabei gleichmäßige Hintergrundgeräusche berücksichtigen. Wechselnde Geräusche oder andere Stimmen können die Erkennung beeinflussen. Standardmäßig aus.</string>
+    <string name="settings_silence_auto_stop_pause">Pause vor dem Stoppen</string>
+    <string name="silence_auto_stop_seconds">%1$s s</string>
+    <string name="cd_silence_auto_stop_on">Automatischer Stopp bei Sprechpause ist an. Zum Ausschalten tippen.</string>
+    <string name="cd_silence_auto_stop_off">Automatischer Stopp bei Sprechpause ist aus. Zum Einschalten tippen.</string>
 </resources>

@@ -193,4 +193,11 @@
     <string name="saved_texts_copied">Текст скопирован</string>
     <string name="saved_texts_insert_failed">Выберите текстовое поле и попробуйте ещё раз.</string>
     <string name="saved_texts_action_failed">Не удалось выполнить действие. Попробуйте ещё раз.</string>
+    <!-- Optional silence endpointing in the keyboard -->
+    <string name="settings_silence_auto_stop">Автостоп по тишине</string>
+    <string name="settings_silence_auto_stop_hint">Завершать запись после паузы в речи с учётом постоянного фонового шума. Меняющийся шум или чужая речь могут мешать определению паузы. По умолчанию выключено.</string>
+    <string name="settings_silence_auto_stop_pause">Пауза перед остановкой</string>
+    <string name="silence_auto_stop_seconds">%1$s с</string>
+    <string name="cd_silence_auto_stop_on">Автостоп по тишине включён. Нажмите, чтобы выключить.</string>
+    <string name="cd_silence_auto_stop_off">Автостоп по тишине выключен. Нажмите, чтобы включить.</string>
 </resources>

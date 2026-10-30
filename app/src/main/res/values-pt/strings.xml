@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Texto copiado</string>
     <string name="saved_texts_insert_failed">Selecione um campo de texto e tente novamente.</string>
     <string name="saved_texts_action_failed">Não foi possível concluir esta ação. Tente novamente.</string>
+    <string name="settings_silence_auto_stop">Parar automaticamente no silêncio</string>
+    <string name="settings_silence_auto_stop_hint">Terminar a gravação após uma pausa na fala, tendo em conta o ruído de fundo constante. Ruídos variáveis ou outras vozes podem afetar a deteção. Desativado por padrão.</string>
+    <string name="settings_silence_auto_stop_pause">Pausa antes de parar</string>
+    <string name="silence_auto_stop_seconds">%1$s s</string>
+    <string name="cd_silence_auto_stop_on">A paragem automática no silêncio está ativada. Toque para desativar.</string>
+    <string name="cd_silence_auto_stop_off">A paragem automática no silêncio está desativada. Toque para ativar.</string>
 </resources>

@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Texte copié</string>
     <string name="saved_texts_insert_failed">Sélectionnez un champ de texte et réessayez.</string>
     <string name="saved_texts_action_failed">Impossible de terminer cette action. Réessayez.</string>
+    <string name="settings_silence_auto_stop">Arrêt automatique en cas de silence</string>
+    <string name="settings_silence_auto_stop_hint">Terminer l’enregistrement après une pause dans la parole, en tenant compte du bruit de fond constant. Les bruits variables ou d’autres voix peuvent perturber la détection. Désactivé par défaut.</string>
+    <string name="settings_silence_auto_stop_pause">Pause avant l’arrêt</string>
+    <string name="silence_auto_stop_seconds">%1$s s</string>
+    <string name="cd_silence_auto_stop_on">L’arrêt automatique en cas de silence est activé. Appuyez pour le désactiver.</string>
+    <string name="cd_silence_auto_stop_off">L’arrêt automatique en cas de silence est désactivé. Appuyez pour l’activer.</string>
 </resources>

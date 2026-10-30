@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Tekst skopiowany</string>
     <string name="saved_texts_insert_failed">Wybierz pole tekstowe i spróbuj ponownie.</string>
     <string name="saved_texts_action_failed">Nie udało się wykonać działania. Spróbuj ponownie.</string>
+    <string name="settings_silence_auto_stop">Automatyczne zatrzymanie po ciszy</string>
+    <string name="settings_silence_auto_stop_hint">Kończ nagrywanie po przerwie w mowie, uwzględniając stały hałas w tle. Zmienny hałas lub inne głosy mogą wpływać na wykrywanie. Domyślnie wyłączone.</string>
+    <string name="settings_silence_auto_stop_pause">Przerwa przed zatrzymaniem</string>
+    <string name="silence_auto_stop_seconds">%1$s s</string>
+    <string name="cd_silence_auto_stop_on">Automatyczne zatrzymanie po ciszy jest włączone. Dotknij, aby wyłączyć.</string>
+    <string name="cd_silence_auto_stop_off">Automatyczne zatrzymanie po ciszy jest wyłączone. Dotknij, aby włączyć.</string>
 </resources>

@@ -17,11 +17,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.ViewCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.config.AdvancedPreferences
 import com.tyraen.voicekeyboard.core.config.ProviderPresets
+import com.tyraen.voicekeyboard.core.config.SilenceAutoStopSettings
 import com.tyraen.voicekeyboard.core.config.ThemeManager
 import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
@@ -36,6 +38,7 @@ import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
 import com.tyraen.voicekeyboard.feature.vocabulary.VocabularyActivity
 import kotlinx.coroutines.*
+import java.text.NumberFormat
 
 class SetupActivity : AppCompatActivity() {
 
@@ -59,6 +62,11 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var editPrompt: EditText
     private lateinit var switchAutoRecord: Switch
     private lateinit var switchReturnToPreviousKeyboard: Switch
+    private lateinit var switchSilenceAutoStop: Switch
+    private lateinit var seekSilenceAutoStopPause: SeekBar
+    private lateinit var txtSilenceAutoStopPause: TextView
+    private lateinit var txtSilenceAutoStopMin: TextView
+    private lateinit var txtSilenceAutoStopMax: TextView
     private lateinit var switchAddSpace: Switch
     private lateinit var switchSingleWordStripPunct: Switch
     private lateinit var switchUpdateCheck: Switch
@@ -98,6 +106,7 @@ class SetupActivity : AppCompatActivity() {
     /** True while the code sets the update switch, so its listener ignores that echo. */
     private var bindingUpdateSwitch = false
     private var bindingReturnSwitch = false
+    private var bindingSilenceControls = false
     private lateinit var sections: SettingsSections
     private var preferencesLoaded = false
 
@@ -165,6 +174,14 @@ class SetupActivity : AppCompatActivity() {
         editPrompt = findViewById(R.id.editPrompt)
         switchAutoRecord = findViewById(R.id.switchAutoRecord)
         switchReturnToPreviousKeyboard = findViewById(R.id.switchReturnToPreviousKeyboard)
+        switchSilenceAutoStop = findViewById(R.id.switchSilenceAutoStop)
+        seekSilenceAutoStopPause = findViewById(R.id.seekSilenceAutoStopPause)
+        txtSilenceAutoStopPause = findViewById(R.id.txtSilenceAutoStopPause)
+        txtSilenceAutoStopMin = findViewById(R.id.txtSilenceAutoStopMin)
+        txtSilenceAutoStopMax = findViewById(R.id.txtSilenceAutoStopMax)
+        seekSilenceAutoStopPause.max = SilenceAutoStopSettings.MAX_PROGRESS
+        txtSilenceAutoStopMin.text = formatSilencePause(SilenceAutoStopSettings.MIN_PAUSE_MS)
+        txtSilenceAutoStopMax.text = formatSilencePause(SilenceAutoStopSettings.MAX_PAUSE_MS)
         switchAddSpace = findViewById(R.id.switchAddSpace)
         switchSingleWordStripPunct = findViewById(R.id.switchSingleWordStripPunct)
         switchUpdateCheck = findViewById(R.id.switchUpdateCheck)
@@ -263,6 +280,23 @@ class SetupActivity : AppCompatActivity() {
             if (bindingReturnSwitch) return@setOnCheckedChangeListener
             scope.launch { preferenceStore.setReturnToPreviousKeyboard(isChecked) }
         }
+
+        switchSilenceAutoStop.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingSilenceControls || !preferencesLoaded) return@setOnCheckedChangeListener
+            scope.launch { preferenceStore.setSilenceAutoStopEnabled(isChecked) }
+        }
+        seekSilenceAutoStopPause.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                val pauseMs = SilenceAutoStopSettings.pauseMsForProgress(progress)
+                updateSilencePauseLabel(pauseMs)
+                if (!fromUser || bindingSilenceControls || !preferencesLoaded) return
+                // Covers dragging, hardware arrow keys and accessibility actions equally.
+                scope.launch { preferenceStore.setSilenceAutoStopPauseMs(pauseMs) }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
+        })
 
         btnPostProcessing.setOnClickListener {
             startActivity(Intent(this, PostProcessingActivity::class.java))
@@ -447,6 +481,8 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun loadCurrentPreferences() {
+        switchSilenceAutoStop.isEnabled = false
+        seekSilenceAutoStopPause.isEnabled = false
         scope.launch {
             val p = preferenceStore.load()
             editApiKey.setText(p.apiKey)
@@ -457,6 +493,13 @@ class SetupActivity : AppCompatActivity() {
             editPrompt.setText(p.prompt)
             switchAutoRecord.isChecked = p.autoRecord
             setReturnSwitch(p.returnToPreviousKeyboard)
+            bindingSilenceControls = true
+            switchSilenceAutoStop.isChecked = p.silenceAutoStopEnabled
+            seekSilenceAutoStopPause.progress = SilenceAutoStopSettings.progressForPauseMs(p.silenceAutoStopPauseMs)
+            updateSilencePauseLabel(p.silenceAutoStopPauseMs)
+            bindingSilenceControls = false
+            switchSilenceAutoStop.isEnabled = true
+            seekSilenceAutoStopPause.isEnabled = true
             switchAddSpace.isChecked = p.addTrailingSpace
             switchSingleWordStripPunct.isChecked = p.singleWordStripPunctuation
             setUpdateSwitch(preferenceStore.isUpdateCheckEnabled())
@@ -582,8 +625,24 @@ class SetupActivity : AppCompatActivity() {
         addTrailingSpace = switchAddSpace.isChecked,
         prompt = editPrompt.text.toString().trim(),
         singleWordStripPunctuation = switchSingleWordStripPunct.isChecked,
-        returnToPreviousKeyboard = switchReturnToPreviousKeyboard.isChecked
+        returnToPreviousKeyboard = switchReturnToPreviousKeyboard.isChecked,
+        silenceAutoStopEnabled = switchSilenceAutoStop.isChecked,
+        silenceAutoStopPauseMs = SilenceAutoStopSettings.pauseMsForProgress(seekSilenceAutoStopPause.progress)
     )
+
+    private fun formatSilencePause(pauseMs: Int): String {
+        val number = NumberFormat.getNumberInstance(resources.configuration.locales[0]).apply {
+            minimumFractionDigits = 1
+            maximumFractionDigits = 1
+        }.format(pauseMs / 1000.0)
+        return getString(R.string.silence_auto_stop_seconds, number)
+    }
+
+    private fun updateSilencePauseLabel(pauseMs: Int) {
+        val value = formatSilencePause(pauseMs)
+        txtSilenceAutoStopPause.text = value
+        ViewCompat.setStateDescription(seekSilenceAutoStopPause, value)
+    }
 
     private fun showApiStatus(message: String, color: Int) {
         txtApiStatus.text = message

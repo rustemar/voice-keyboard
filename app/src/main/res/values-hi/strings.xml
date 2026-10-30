@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">टेक्स्ट कॉपी किया गया</string>
     <string name="saved_texts_insert_failed">टेक्स्ट फ़ील्ड चुनें और फिर कोशिश करें।</string>
     <string name="saved_texts_action_failed">यह कार्रवाई पूरी नहीं हुई। फिर कोशिश करें।</string>
+    <string name="settings_silence_auto_stop">चुप्पी पर अपने आप रोकें</string>
+    <string name="settings_silence_auto_stop_hint">बोलने में विराम आने पर रिकॉर्डिंग रोकें और स्थिर पृष्ठभूमि शोर को ध्यान में रखें। बदलता शोर या दूसरे लोगों की आवाज़ें पहचान को प्रभावित कर सकती हैं। डिफ़ॉल्ट रूप से बंद।</string>
+    <string name="settings_silence_auto_stop_pause">रोकने से पहले का विराम</string>
+    <string name="silence_auto_stop_seconds">%1$s सेकंड</string>
+    <string name="cd_silence_auto_stop_on">चुप्पी पर अपने आप रोकना चालू है। बंद करने के लिए टैप करें।</string>
+    <string name="cd_silence_auto_stop_off">चुप्पी पर अपने आप रोकना बंद है। चालू करने के लिए टैप करें।</string>
 </resources>

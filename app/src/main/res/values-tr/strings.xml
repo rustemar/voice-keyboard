@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Metin kopyalandı</string>
     <string name="saved_texts_insert_failed">Bir metin alanı seçip tekrar deneyin.</string>
     <string name="saved_texts_action_failed">İşlem tamamlanamadı. Tekrar deneyin.</string>
+    <string name="settings_silence_auto_stop">Sessizlikte otomatik durdur</string>
+    <string name="settings_silence_auto_stop_hint">Sabit arka plan gürültüsünü dikkate alarak konuşmadaki bir duraklamadan sonra kaydı bitirir. Değişen gürültüler veya başka sesler algılamayı etkileyebilir. Varsayılan olarak kapalıdır.</string>
+    <string name="settings_silence_auto_stop_pause">Durdurmadan önceki duraklama</string>
+    <string name="silence_auto_stop_seconds">%1$s sn</string>
+    <string name="cd_silence_auto_stop_on">Sessizlikte otomatik durdurma açık. Kapatmak için dokunun.</string>
+    <string name="cd_silence_auto_stop_off">Sessizlikte otomatik durdurma kapalı. Açmak için dokunun.</string>
 </resources>

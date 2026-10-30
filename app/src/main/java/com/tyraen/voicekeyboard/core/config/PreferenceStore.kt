@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.tyraen.voicekeyboard.R
@@ -30,6 +31,8 @@ class PreferenceStore(private val context: Context) {
         val PROMPT = stringPreferencesKey("prompt")
         val SINGLE_WORD_STRIP_PUNCT = booleanPreferencesKey("single_word_strip_punct")
         val RETURN_TO_PREVIOUS_KEYBOARD = booleanPreferencesKey("return_to_previous_keyboard")
+        val SILENCE_AUTO_STOP_ENABLED = booleanPreferencesKey("silence_auto_stop_enabled")
+        val SILENCE_AUTO_STOP_PAUSE_MS = intPreferencesKey("silence_auto_stop_pause_ms")
         val VOCABULARY = stringPreferencesKey("vocabulary")
         val POSTPROCESSING_VOCABULARY = stringPreferencesKey("postprocessing_vocabulary")
         val TEXT_REPLACEMENTS = stringPreferencesKey("text_replacements")
@@ -88,7 +91,11 @@ class PreferenceStore(private val context: Context) {
             addTrailingSpace = prefs[Keys.ADD_TRAILING_SPACE] ?: true,
             prompt = prefs[Keys.PROMPT] ?: defaultPrompt,
             singleWordStripPunctuation = prefs[Keys.SINGLE_WORD_STRIP_PUNCT] ?: false,
-            returnToPreviousKeyboard = prefs[Keys.RETURN_TO_PREVIOUS_KEYBOARD] ?: false
+            returnToPreviousKeyboard = prefs[Keys.RETURN_TO_PREVIOUS_KEYBOARD] ?: false,
+            silenceAutoStopEnabled = prefs[Keys.SILENCE_AUTO_STOP_ENABLED] ?: false,
+            silenceAutoStopPauseMs = SilenceAutoStopSettings.normalizePauseMs(
+                prefs[Keys.SILENCE_AUTO_STOP_PAUSE_MS] ?: SilenceAutoStopSettings.DEFAULT_PAUSE_MS
+            )
         )
     }
 
@@ -104,6 +111,9 @@ class PreferenceStore(private val context: Context) {
             data[Keys.PROMPT] = prefs.prompt
             data[Keys.SINGLE_WORD_STRIP_PUNCT] = prefs.singleWordStripPunctuation
             data[Keys.RETURN_TO_PREVIOUS_KEYBOARD] = prefs.returnToPreviousKeyboard
+            data[Keys.SILENCE_AUTO_STOP_ENABLED] = prefs.silenceAutoStopEnabled
+            data[Keys.SILENCE_AUTO_STOP_PAUSE_MS] =
+                SilenceAutoStopSettings.normalizePauseMs(prefs.silenceAutoStopPauseMs)
         }
     }
 
@@ -240,6 +250,18 @@ class PreferenceStore(private val context: Context) {
     suspend fun setReturnToPreviousKeyboard(value: Boolean) {
         context.store.edit { data ->
             data[Keys.RETURN_TO_PREVIOUS_KEYBOARD] = value
+        }
+    }
+
+    /** Only the keyboard toggle changes, without overwriting settings being edited elsewhere. */
+    suspend fun setSilenceAutoStopEnabled(value: Boolean) {
+        context.store.edit { it[Keys.SILENCE_AUTO_STOP_ENABLED] = value }
+    }
+
+    /** Slider changes persist independently of the provider's network validation on Apply. */
+    suspend fun setSilenceAutoStopPauseMs(value: Int) {
+        context.store.edit {
+            it[Keys.SILENCE_AUTO_STOP_PAUSE_MS] = SilenceAutoStopSettings.normalizePauseMs(value)
         }
     }
 

@@ -3,15 +3,18 @@ package com.tyraen.voicekeyboard.feature.ime
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
+import com.tyraen.voicekeyboard.core.config.SilenceAutoStopSettings
 import com.tyraen.voicekeyboard.core.config.TextDictionaryPreferences
 import com.tyraen.voicekeyboard.core.config.UserPreferences
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
+import com.tyraen.voicekeyboard.feature.audio.AdaptiveSilenceEndpointer
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
 import kotlinx.coroutines.*
@@ -51,6 +54,10 @@ class InputOrchestrator(
          * file in the cache.
          */
         private val handoverScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+
+        // A keyboard toggle must survive closing/rebuilding its view. Loads wait for the last
+        // narrow write, including one initiated by the previous view, before binding the switch.
+        private var silenceToggleSave: Job? = null
     }
 
     private val scope = MainScope()
@@ -68,6 +75,9 @@ class InputOrchestrator(
     private var captureContextToken: Long? = null
     private var captureEditorSessionToken: Long? = null
     private var captureIdentity: ProcessingQueue.WorkIdentity? = null
+    private var silenceEndpointer: AdaptiveSilenceEndpointer? = null
+    private var silenceAutoStopEnabled = false
+    private var silenceToggleRevision = 0L
 
     /** Whether the input view is currently shown. Set by the host from its window callbacks. */
     var viewVisible: Boolean = false
@@ -179,7 +189,16 @@ class InputOrchestrator(
     private suspend fun loadPreferencesInternal() {
         reloadsInFlight++
         try {
-            preferences = preferenceStore.load()
+            val silenceRevision = silenceToggleRevision
+            silenceToggleSave?.join()
+            val loaded = preferenceStore.load()
+            // A tap while the asynchronous load is suspended takes precedence over its snapshot.
+            preferences = if (silenceRevision == silenceToggleRevision) loaded
+                else loaded.copy(silenceAutoStopEnabled = silenceAutoStopEnabled)
+            silenceAutoStopEnabled = preferences!!.silenceAutoStopEnabled
+            val now = SystemClock.elapsedRealtime()
+            silenceEndpointer?.setPauseMs(preferences!!.silenceAutoStopPauseMs.toLong(), now)
+            silenceEndpointer?.setEnabled(silenceAutoStopEnabled, now)
             ppPreferences = preferenceStore.loadPostProcessing()
             toggles = preferenceStore.loadToggleStates()
             vocabulary = preferenceStore.loadVocabulary()
@@ -193,6 +212,27 @@ class InputOrchestrator(
     fun isPostProcessingEnabled(): Boolean = ppPreferences?.enabled == true
 
     fun isReturnToPreviousKeyboardEnabled(): Boolean = preferences?.returnToPreviousKeyboard == true
+
+    fun isSilenceAutoStopEnabled(): Boolean = silenceAutoStopEnabled
+
+    /** Changes only automatic endpointing; toggling never pauses, discards or restarts audio. */
+    fun toggleSilenceAutoStop(): Boolean {
+        val enabled = !silenceAutoStopEnabled
+        silenceAutoStopEnabled = enabled
+        silenceToggleRevision++
+        preferences = preferences?.copy(silenceAutoStopEnabled = enabled)
+        silenceEndpointer?.setEnabled(enabled, SystemClock.elapsedRealtime())
+        val previousSave = silenceToggleSave
+        silenceToggleSave = handoverScope.launch {
+            previousSave?.join()
+            try {
+                preferenceStore.setSilenceAutoStopEnabled(enabled)
+            } catch (error: java.io.IOException) {
+                DiagnosticLog.record(TAG, "Could not save silence auto-stop: ${error.javaClass.simpleName}")
+            }
+        }
+        return enabled
+    }
 
     /** Every dictation language the user configured, in the order they listed them. */
     fun getLanguageCodes(): List<String> = preferences?.languageCodes ?: emptyList()
@@ -264,6 +304,7 @@ class InputOrchestrator(
             PackageManager.PERMISSION_GRANTED
 
     fun beginCapture(userInitiated: Boolean = true) {
+        if (capture.isActive || currentPhase is InputPhase.Capturing) return
         if (!hasMicPermission()) {
             moveTo(InputPhase.Failed(R.string.error_mic_permission))
             if (userInitiated) onPermissionNeeded()
@@ -280,7 +321,28 @@ class InputOrchestrator(
         }
 
         DiagnosticLog.record(TAG, "beginCapture")
-        if (!capture.begin { amplitude -> onAmplitude(amplitude) }) {
+        val endpointer = AdaptiveSilenceEndpointer(
+            pauseMs = (preferences?.silenceAutoStopPauseMs ?: SilenceAutoStopSettings.DEFAULT_PAUSE_MS).toLong(),
+            startedAtMs = SystemClock.elapsedRealtime(),
+            enabled = silenceAutoStopEnabled
+        )
+        silenceEndpointer = endpointer
+        if (!capture.begin { amplitude ->
+                onAmplitude(amplitude)
+                // Observe while off as well: enabling halfway through dictation can finish that
+                // same recording after a fresh full pause. Old callbacks cannot finish a new one.
+                if (silenceEndpointer === endpointer) {
+                    val now = SystemClock.elapsedRealtime()
+                    endpointer.onAmplitude(amplitude, now)
+                    if (captureIdentity != null && currentPhase is InputPhase.Capturing &&
+                        endpointer.shouldStop(now)
+                    ) {
+                        DiagnosticLog.record(TAG, "Auto-stop after speech returned to background level")
+                        finishCaptureAndEnqueue()
+                    }
+                }
+            }) {
+            silenceEndpointer = null
             moveTo(InputPhase.Failed(R.string.error_mic_unavailable))
             return
         }
@@ -295,6 +357,7 @@ class InputOrchestrator(
     }
 
     fun finishCaptureAndEnqueue() {
+        silenceEndpointer = null
         val identity = captureIdentity ?: return
         captureIdentity = null
         val contextToken = captureContextToken
@@ -389,6 +452,7 @@ class InputOrchestrator(
 
     /** Cancel only the current recording; the queue keeps processing. */
     private fun cancelCapture() {
+        silenceEndpointer = null
         captureIdentity = null
         captureContextToken = null
         captureEditorSessionToken = null
@@ -400,6 +464,7 @@ class InputOrchestrator(
 
     /** Cancel everything: current recording + the entire queue. */
     fun cancelAll() {
+        silenceEndpointer = null
         captureIdentity?.let { processingQueue.releaseReservation(it) }
         captureIdentity = null
         captureContextToken = null
@@ -423,6 +488,7 @@ class InputOrchestrator(
     }
 
     fun destroy() {
+        silenceEndpointer = null
         // Releases only a capture still in progress; files already handed to the queue are its own.
         captureIdentity?.let { processingQueue.releaseReservation(it) }
         captureIdentity = null

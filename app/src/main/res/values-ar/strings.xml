@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">تم نسخ النص</string>
     <string name="saved_texts_insert_failed">اختر حقلًا نصيًا وحاول مرة أخرى.</string>
     <string name="saved_texts_action_failed">تعذر إكمال هذا الإجراء. حاول مرة أخرى.</string>
+    <string name="settings_silence_auto_stop">الإيقاف التلقائي عند الصمت</string>
+    <string name="settings_silence_auto_stop_hint">إنهاء التسجيل بعد توقف الكلام، مع مراعاة ضوضاء الخلفية الثابتة. قد تؤثر الضوضاء المتغيرة أو أصوات الآخرين في اكتشاف التوقف. معطّل افتراضيًا.</string>
+    <string name="settings_silence_auto_stop_pause">مدة الصمت قبل الإيقاف</string>
+    <string name="silence_auto_stop_seconds">%1$s ث</string>
+    <string name="cd_silence_auto_stop_on">الإيقاف التلقائي عند الصمت مفعّل. اضغط لتعطيله.</string>
+    <string name="cd_silence_auto_stop_off">الإيقاف التلقائي عند الصمت معطّل. اضغط لتفعيله.</string>
 </resources>

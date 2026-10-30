@@ -203,4 +203,11 @@
     <string name="saved_texts_copied">Text copied</string>
     <string name="saved_texts_insert_failed">Choose a text field and try again.</string>
     <string name="saved_texts_action_failed">Could not complete this action. Try again.</string>
+    <!-- Optional silence endpointing in the keyboard -->
+    <string name="settings_silence_auto_stop">Auto-stop on silence</string>
+    <string name="settings_silence_auto_stop_hint">Stop after a pause in your voice, accounting for steady background noise. Changing noise or other voices can affect detection. Off by default.</string>
+    <string name="settings_silence_auto_stop_pause">Pause before stopping</string>
+    <string name="silence_auto_stop_seconds">%1$s s</string>
+    <string name="cd_silence_auto_stop_on">Auto-stop on silence is on. Tap to turn off.</string>
+    <string name="cd_silence_auto_stop_off">Auto-stop on silence is off. Tap to turn on.</string>
 </resources>

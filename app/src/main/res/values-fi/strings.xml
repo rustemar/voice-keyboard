@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Teksti kopioitu</string>
     <string name="saved_texts_insert_failed">Valitse tekstikenttä ja yritä uudelleen.</string>
     <string name="saved_texts_action_failed">Toiminto epäonnistui. Yritä uudelleen.</string>
+    <string name="settings_silence_auto_stop">Pysäytä automaattisesti puhetauon jälkeen</string>
+    <string name="settings_silence_auto_stop_hint">Lopeta tallennus puhetauon jälkeen ja huomioi tasainen taustamelu. Vaihtelevat äänet tai muiden puhe voivat vaikuttaa tunnistukseen. Oletuksena pois käytöstä.</string>
+    <string name="settings_silence_auto_stop_pause">Tauko ennen pysäytystä</string>
+    <string name="silence_auto_stop_seconds">%1$s s</string>
+    <string name="cd_silence_auto_stop_on">Automaattinen pysäytys puhetauon jälkeen on käytössä. Poista käytöstä napauttamalla.</string>
+    <string name="cd_silence_auto_stop_off">Automaattinen pysäytys puhetauon jälkeen on pois käytöstä. Ota käyttöön napauttamalla.</string>
 </resources>

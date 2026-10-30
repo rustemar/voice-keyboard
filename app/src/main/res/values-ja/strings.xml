@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">テキストをコピーしました</string>
     <string name="saved_texts_insert_failed">テキスト欄を選んで、もう一度お試しください。</string>
     <string name="saved_texts_action_failed">操作を完了できませんでした。もう一度お試しください。</string>
+    <string name="settings_silence_auto_stop">無音時に自動停止</string>
+    <string name="settings_silence_auto_stop_hint">一定の背景ノイズを考慮し、発話が途切れたら録音を終了します。変動するノイズや他の人の声は検出に影響する場合があります。初期設定ではオフです。</string>
+    <string name="settings_silence_auto_stop_pause">停止までの無音時間</string>
+    <string name="silence_auto_stop_seconds">%1$s 秒</string>
+    <string name="cd_silence_auto_stop_on">無音時の自動停止はオンです。タップするとオフになります。</string>
+    <string name="cd_silence_auto_stop_off">無音時の自動停止はオフです。タップするとオンになります。</string>
 </resources>

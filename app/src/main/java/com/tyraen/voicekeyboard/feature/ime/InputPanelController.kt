@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.tyraen.voicekeyboard.R
@@ -28,6 +29,7 @@ class InputPanelController(rootView: View) {
     private val retryBadge: TextView = rootView.findViewById(R.id.retryBadge)
     val clipboardBar: View = rootView.findViewById(R.id.clipboardBar)
     private val clipboardText: TextView = rootView.findViewById(R.id.clipboardText)
+    val btnSilenceAutoStop: ImageButton = rootView.findViewById(R.id.btnSilenceAutoStop)
 
     // Post-processing toggle UI
     val ppToggleRow: View = rootView.findViewById(R.id.ppToggleRow)
@@ -57,6 +59,18 @@ class InputPanelController(rootView: View) {
     private var currentQueueCount: Int = 0
     private var cancellableWork = false
     private var currentProcessingPhase: ProcessingQueue.ProcessingPhase = ProcessingQueue.ProcessingPhase.TRANSCRIBING
+
+    init {
+        ViewCompat.setAccessibilityDelegate(btnSilenceAutoStop, object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+                super.onInitializeAccessibilityNodeInfo(host, info)
+                info.className = ToggleButton::class.java.name
+                info.isCheckable = true
+                info.isChecked = host.isSelected
+            }
+        })
+        renderSilenceAutoStop(false)
+    }
 
     fun transitionTo(phase: InputPhase) {
         currentPhase = phase
@@ -248,6 +262,16 @@ class InputPanelController(rootView: View) {
             button.setBackgroundResource(R.drawable.toggle_key_bg)
             button.imageTintList = ContextCompat.getColorStateList(context, R.color.key_text)
         }
+    }
+
+    /** The timer only toggles endpointing; its pause duration belongs in settings. */
+    fun renderSilenceAutoStop(enabled: Boolean) {
+        btnSilenceAutoStop.isSelected = enabled
+        updateToggleAppearance(btnSilenceAutoStop, enabled)
+        btnSilenceAutoStop.setContentDescription(btnSilenceAutoStop.context.getString(
+            if (enabled) R.string.cd_silence_auto_stop_on else R.string.cd_silence_auto_stop_off
+        ))
+        ViewCompat.setTooltipText(btnSilenceAutoStop, btnSilenceAutoStop.contentDescription)
     }
 
     fun showTerminalButton(show: Boolean) {

@@ -144,6 +144,7 @@ class DictationInputMethod : InputMethodService() {
             onFailedCountChanged = { count -> panel.updateFailedCount(count) },
             onCancellableWorkChanged = { available -> panel.updateCancellableWork(available) },
             onPreferencesLoaded = {
+                panel.renderSilenceAutoStop(orchestrator.isSilenceAutoStopEnabled())
                 refreshPostProcessingUI()
                 refreshLanguageKey()
             },
@@ -503,9 +504,25 @@ class DictationInputMethod : InputMethodService() {
             }
         }
 
-        btnMic.setOnClickListener { orchestrator.handleAction(InputAction.ToggleCapture) }
+        val microphonePress = MicrophonePressGuard()
+        btnMic.setOnTouchListener { _, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> microphonePress.onTouchDown(orchestrator.currentPhase)
+                MotionEvent.ACTION_CANCEL -> microphonePress.cancelTouch()
+            }
+            false // Preserve the platform button's pressed state, click and accessibility behavior.
+        }
+        btnMic.setOnClickListener {
+            if (microphonePress.shouldHandleClick(orchestrator.currentPhase)) {
+                orchestrator.handleAction(InputAction.ToggleCapture)
+            }
+        }
         btnCancel.setOnClickListener { orchestrator.handleAction(InputAction.CancelOperation) }
         btnRetryFailed.setOnClickListener { orchestrator.retryFailed() }
+        panel.btnSilenceAutoStop.setOnClickListener {
+            panel.renderSilenceAutoStop(orchestrator.toggleSilenceAutoStop())
+        }
+        panel.renderSilenceAutoStop(orchestrator.isSilenceAutoStopEnabled())
         // Deleting failed recordings is destructive, so it takes two long-presses: the first one
         // explains what a second one will do, and the offer expires with the notice.
         btnRetryFailed.setOnLongClickListener {

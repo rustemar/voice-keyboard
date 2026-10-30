@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Το κείμενο αντιγράφηκε</string>
     <string name="saved_texts_insert_failed">Επιλέξτε ένα πεδίο κειμένου και δοκιμάστε ξανά.</string>
     <string name="saved_texts_action_failed">Η ενέργεια δεν ολοκληρώθηκε. Δοκιμάστε ξανά.</string>
+    <string name="settings_silence_auto_stop">Αυτόματη διακοπή στη σιωπή</string>
+    <string name="settings_silence_auto_stop_hint">Τερματισμός της εγγραφής μετά από παύση στην ομιλία, λαμβάνοντας υπόψη τον σταθερό θόρυβο περιβάλλοντος. Οι μεταβαλλόμενοι θόρυβοι ή άλλες φωνές μπορεί να επηρεάσουν την ανίχνευση. Απενεργοποιημένο από προεπιλογή.</string>
+    <string name="settings_silence_auto_stop_pause">Παύση πριν από τη διακοπή</string>
+    <string name="silence_auto_stop_seconds">%1$s δευτ.</string>
+    <string name="cd_silence_auto_stop_on">Η αυτόματη διακοπή στη σιωπή είναι ενεργή. Πατήστε για απενεργοποίηση.</string>
+    <string name="cd_silence_auto_stop_off">Η αυτόματη διακοπή στη σιωπή είναι ανενεργή. Πατήστε για ενεργοποίηση.</string>
 </resources>

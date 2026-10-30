@@ -193,4 +193,10 @@
     <string name="saved_texts_copied">Тэкст скапіяваны</string>
     <string name="saved_texts_insert_failed">Выберыце тэкставае поле і паспрабуйце зноў.</string>
     <string name="saved_texts_action_failed">Не ўдалося выканаць дзеянне. Паспрабуйце зноў.</string>
+    <string name="settings_silence_auto_stop">Аўтаспыненне пры цішыні</string>
+    <string name="settings_silence_auto_stop_hint">Завяршаць запіс пасля паўзы ў маўленні з улікам пастаяннага фонавага шуму. Зменлівы шум або чужое маўленне могуць перашкаджаць вызначэнню паўзы. Па змаўчанні выключана.</string>
+    <string name="settings_silence_auto_stop_pause">Паўза перад спыненнем</string>
+    <string name="silence_auto_stop_seconds">%1$s с</string>
+    <string name="cd_silence_auto_stop_on">Аўтаспыненне пры цішыні ўключана. Націсніце, каб выключыць.</string>
+    <string name="cd_silence_auto_stop_off">Аўтаспыненне пры цішыні выключана. Націсніце, каб уключыць.</string>
 </resources>
