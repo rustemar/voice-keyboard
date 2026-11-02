@@ -63,7 +63,17 @@ jobs:
             external/onnxruntime
             build/onnxruntime
             ~/.cache/voice-keyboard/onnxruntime
-          key: speech-runtime-${{ runner.os }}-${{ hashFiles('tools/onnxruntime/**', 'app/src/main/assets/silero_vad.*') }}
+          key: speech-runtime-${{ runner.os }}-${{ hashFiles('tools/onnxruntime/**', '!tools/onnxruntime/**/__pycache__/**', '!tools/onnxruntime/**/*.pyc', 'app/src/main/assets/silero_vad.*') }}
+          restore-keys: speech-runtime-${{ runner.os }}-
+
+      - name: Check restored speech runtime sources
+        run: |
+          if [ -e external/onnxruntime ]; then
+            if ! python3 tools/onnxruntime/build.py verify \
+              --work-dir external/onnxruntime --model app/src/main/assets/silero_vad.ort; then
+              rm -rf -- external/onnxruntime build/onnxruntime
+            fi
+          fi
 
       - name: Set up pinned Android NDK
         run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;28.0.13004108"'
