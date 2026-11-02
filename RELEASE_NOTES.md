@@ -1,8 +1,5 @@
-v1.12.0 — Personal dictionaries and OpenRouter speech input
+v1.13.0 — Auto-stop after a pause
 
-- Add three sections to the existing Custom vocabulary screen: recognition hints, a separate post-processing vocabulary (up to 20,000 characters), and local word/phrase replacements. Local rules work without an LLM, match whole words or phrases without case sensitivity, and run once before post-processing. All 17 interface languages are included.
-- Keep dictionary settings with queued recordings so retries use their original rules. Existing queued recordings retain their original behavior without acquiring new dictionary settings. Post-processing prompts treat spelling references as data and instruct the model not to introduce unrelated names. Selected-text actions can use the reference vocabulary without applying local replacements; local replacements do not rewrite translations or generated commands.
-- Allow attempts to loopback and private LAN/VPN speech-server addresses when Android has no validated internet connection; private addresses still need an available network link and a working route. Keep unavailable public providers queued, retry the original endpoint, and retain recognized text when an optional text provider is unavailable.
-- Add an OpenRouter speech-recognition preset, suggested Whisper/Mistral models and an editable model ID. Use JSON transcription responses and show that OpenRouter ignores speech formatting/vocabulary hints. Existing post-processing vocabulary and local replacements still work.
-
-Privacy: the new post-processing word list is sent to your configured text provider when you use a supported text-processing action. Local replacement lists stay on your device; corrected text and replacement terms used in it can be sent for optional post-processing. See PRIVACY.md for details.
+- Add optional automatic stopping after a pause in keyboard dictation. It is off by default. Set a pause of 0.3–3 seconds in Settings, initially 1.2 seconds, and use the timer below Backspace to turn it on or off even during a recording. The finished recording is transcribed normally; this does not send the message. Music, other voices and changing noise can affect detection.
+- Keep private error content out of diagnostic logs and crash reports. Record technical error types and stack frames without provider error bodies or exception messages that could echo dictated text or credentials.
+- Clarify installation and update options for F-Droid and Obtainium.

@@ -1,0 +1,3 @@
+Optional auto-stop after a pause in dictation, off by default. Set 0.3–3 seconds in Settings (initially 1.2 seconds), or toggle it with the timer during recording. Stopping starts transcription, not message sending. Music and noise can affect detection.
+Keep private error content out of logs and crash reports.
+Clarify F-Droid and Obtainium installation options.
