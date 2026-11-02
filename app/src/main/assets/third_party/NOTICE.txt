@@ -1,0 +1,12 @@
+Silero VAD v6 model
+Source: https://github.com/snakers4/silero-vad
+Revision: 066409f3d9db45a30d21dfcbf9147826ffdd7052
+Model SHA-256: 1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3
+License: MIT; see silero-LICENSE.txt.
+
+ONNX Runtime Android 1.24.3
+Source: https://github.com/microsoft/onnxruntime
+Artifact: com.microsoft.onnxruntime:onnxruntime-android:1.24.3
+License: MIT; see onnxruntime-LICENSE.txt.
+
+Engine recordings used for local evaluation are not included in this app.

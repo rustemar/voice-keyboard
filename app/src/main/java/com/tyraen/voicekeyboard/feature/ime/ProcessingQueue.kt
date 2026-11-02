@@ -201,7 +201,7 @@ class ProcessingQueue internal constructor(
         store.count
             .onEach { count ->
                 failedCountCache = count
-                listener?.onFailedCountChanged(count)
+                notifyListener("failed count") { it.onFailedCountChanged(count) }
                 pushCancellableWork()
             }
             .launchIn(scope)
@@ -239,14 +239,35 @@ class ProcessingQueue internal constructor(
     /** Bind the current input view. Immediately pushes live counts so its badges are correct. */
     fun bindListener(l: Listener) {
         listener = l
-        l.onQueueCountChanged(pendingCount)
-        l.onFailedCountChanged(failedCountCache)
-        activePhase?.let(l::onProcessingPhaseChanged)
-        l.onCancellableWorkChanged(hasCancellableWork)
+        notifyListener("initial queue count", l) { it.onQueueCountChanged(pendingCount) }
+        notifyListener("initial failed count", l) { it.onFailedCountChanged(failedCountCache) }
+        activePhase?.let { phase ->
+            notifyListener("initial processing phase", l) { it.onProcessingPhaseChanged(phase) }
+        }
+        notifyListener("initial cancellable work", l) { it.onCancellableWorkChanged(hasCancellableWork) }
     }
 
     fun unbindListener(l: Listener) {
         if (listener === l) listener = null
+    }
+
+    /** View failures must not interrupt queue ownership or prevent a processing job from starting. */
+    private inline fun <T> notifyListener(
+        event: String,
+        target: Listener? = listener,
+        action: (Listener) -> T
+    ): T? {
+        if (target == null || listener !== target) return null
+        return try {
+            action(target)
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (error: RuntimeException) {
+            // A callback may have rebound a new view before failing; retain that new listener.
+            unbindListener(target)
+            DiagnosticLog.recordFailure(TAG, "Listener $event failed", error)
+            null
+        }
     }
 
     /** Reserve capture order before asynchronous preferences or view handover can delay enqueue. */
@@ -335,7 +356,7 @@ class ProcessingQueue internal constructor(
             } catch (e: Exception) {
                 currentCoroutineContext().ensureActive()
                 DiagnosticLog.recordFailure(TAG, "Processing failed", e)
-                listener?.onError(e.message ?: "Unknown error")
+                notifyListener("processing error") { it.onError(e.message ?: "Unknown error") }
                 handleFailure(item, permanent = false)
             }
         }
@@ -360,7 +381,7 @@ class ProcessingQueue internal constructor(
 
     private fun setPhase(phase: ProcessingPhase) {
         activePhase = phase
-        listener?.onProcessingPhaseChanged(phase)
+        notifyListener("processing phase") { it.onProcessingPhaseChanged(phase) }
     }
 
     private suspend fun processItem(item: QueueItem) {
@@ -429,7 +450,7 @@ class ProcessingQueue internal constructor(
         }
 
         if (rawText == null) {
-            listener?.onError(lastError?.message ?: "Transcription failed")
+            notifyListener("transcription error") { it.onError(lastError?.message ?: "Transcription failed") }
             handleFailure(item, permanent)
             return
         }
@@ -502,7 +523,9 @@ class ProcessingQueue internal constructor(
     private suspend fun deliver(item: QueueItem, text: String) {
         val l = listener
         val editorToken = item.editorSessionToken
-        if (editorToken != null && l?.onTextReady(text, item.addTrailingSpace, editorToken) == true) return
+        if (editorToken != null && notifyListener("text delivery", l) {
+                it.onTextReady(text, item.addTrailingSpace, editorToken)
+            } == true) return
         // A save failure must propagate: processNext parks the original audio and retries instead
         // of deleting the only copy of a dictation. No system clipboard is changed automatically.
         withContext(NonCancellable) {
@@ -609,7 +632,7 @@ class ProcessingQueue internal constructor(
     }
 
     private fun pushQueueCount() {
-        listener?.onQueueCountChanged(pendingCount)
+        notifyListener("queue count") { it.onQueueCountChanged(pendingCount) }
         pushCancellableWork()
     }
 
@@ -730,7 +753,7 @@ class ProcessingQueue internal constructor(
     val hasCancellableWork: Boolean get() = latestWork() != null
 
     private fun pushCancellableWork() {
-        listener?.onCancellableWorkChanged(hasCancellableWork)
+        notifyListener("cancellable work") { it.onCancellableWorkChanged(hasCancellableWork) }
     }
 
     /** Cancel one newest-created undelivered item, regardless of its current processing stage. */

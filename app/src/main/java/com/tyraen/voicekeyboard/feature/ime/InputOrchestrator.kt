@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
+import com.tyraen.voicekeyboard.BuildConfig
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.config.SilenceAutoStopSettings
@@ -15,6 +16,8 @@ import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.audio.AdaptiveSilenceEndpointer
+import com.tyraen.voicekeyboard.feature.audio.SileroVoiceDetector
+import com.tyraen.voicekeyboard.feature.audio.SpeechProbabilityEndpointer
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
 import kotlinx.coroutines.*
@@ -54,6 +57,7 @@ class InputOrchestrator(
          * file in the cache.
          */
         private val handoverScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+        private val captureHandovers = CaptureHandoverSequencer(handoverScope)
 
         // A keyboard toggle must survive closing/rebuilding its view. Loads wait for the last
         // narrow write, including one initiated by the previous view, before binding the switch.
@@ -76,6 +80,7 @@ class InputOrchestrator(
     private var captureEditorSessionToken: Long? = null
     private var captureIdentity: ProcessingQueue.WorkIdentity? = null
     private var silenceEndpointer: AdaptiveSilenceEndpointer? = null
+    private var speechEndpointer: SpeechProbabilityEndpointer? = null
     private var silenceAutoStopEnabled = false
     private var silenceToggleRevision = 0L
 
@@ -200,6 +205,8 @@ class InputOrchestrator(
             val now = SystemClock.elapsedRealtime()
             silenceEndpointer?.setPauseMs(preferences!!.silenceAutoStopPauseMs.toLong(), now)
             silenceEndpointer?.setEnabled(silenceAutoStopEnabled, now)
+            speechEndpointer?.setPauseMs(preferences!!.silenceAutoStopPauseMs.toLong(), now)
+            speechEndpointer?.setEnabled(silenceAutoStopEnabled, now)
             ppPreferences = preferenceStore.loadPostProcessing()
             toggles = preferenceStore.loadToggleStates()
             vocabulary = preferenceStore.loadVocabulary()
@@ -223,6 +230,7 @@ class InputOrchestrator(
         silenceToggleRevision++
         preferences = preferences?.copy(silenceAutoStopEnabled = enabled)
         silenceEndpointer?.setEnabled(enabled, SystemClock.elapsedRealtime())
+        speechEndpointer?.setEnabled(enabled, SystemClock.elapsedRealtime())
         val previousSave = silenceToggleSave
         silenceToggleSave = handoverScope.launch {
             previousSave?.join()
@@ -322,28 +330,66 @@ class InputOrchestrator(
         }
 
         DiagnosticLog.record(TAG, "beginCapture")
-        val endpointer = AdaptiveSilenceEndpointer(
-            pauseMs = (preferences?.silenceAutoStopPauseMs ?: SilenceAutoStopSettings.DEFAULT_PAUSE_MS).toLong(),
-            startedAtMs = SystemClock.elapsedRealtime(),
-            enabled = silenceAutoStopEnabled
-        )
-        silenceEndpointer = endpointer
-        if (!capture.begin { amplitude ->
+        val pauseMs = (preferences?.silenceAutoStopPauseMs ?: SilenceAutoStopSettings.DEFAULT_PAUSE_MS).toLong()
+        val now = SystemClock.elapsedRealtime()
+        val began = if (BuildConfig.NOISE_VAD_TEST) {
+            val endpointer = SpeechProbabilityEndpointer(pauseMs, now, silenceAutoStopEnabled)
+            speechEndpointer = endpointer
+            // Each recording owns its recurrent model state. Creation and inference stay on the
+            // analysis worker; the recorder writes independently even while the model warms up.
+            var detector: SileroVoiceDetector? = null
+            var nextDiagnosticAt = 0L
+            val main = android.os.Handler(android.os.Looper.getMainLooper())
+            capture.beginPcm(
+                onAmplitude = onAmplitude,
+                onPcm = { samples, count, observedAt ->
+                    val current = detector ?: SileroVoiceDetector.create(context).also { detector = it }
+                    current.accept(samples, count, observedAt) { probability, frameAt ->
+                        main.post {
+                            if (speechEndpointer === endpointer) {
+                                endpointer.onProbability(probability, frameAt)
+                                if (frameAt >= nextDiagnosticAt) {
+                                    DiagnosticLog.record("SpeechDetector", "probability=${(probability * 1000).toInt()} " +
+                                        "enabled=$silenceAutoStopEnabled frameMs=$frameAt")
+                                    nextDiagnosticAt = frameAt + 1_000
+                                }
+                                if (captureIdentity != null && currentPhase is InputPhase.Capturing &&
+                                    endpointer.shouldStop(SystemClock.elapsedRealtime())
+                                ) {
+                                    DiagnosticLog.record(TAG, "Auto-stop after speech detector pause")
+                                    finishCaptureAndEnqueue()
+                                }
+                            }
+                        }
+                    }
+                },
+                onClosed = { detector?.close(); detector = null },
+                onUnexpectedStop = {
+                    if (speechEndpointer === endpointer && captureIdentity != null &&
+                        currentPhase is InputPhase.Capturing
+                    ) finishCaptureAndEnqueue()
+                }
+            )
+        } else {
+            val endpointer = AdaptiveSilenceEndpointer(pauseMs, now, silenceAutoStopEnabled)
+            silenceEndpointer = endpointer
+            capture.begin { amplitude ->
                 onAmplitude(amplitude)
-                // Observe while off as well: enabling halfway through dictation can finish that
-                // same recording after a fresh full pause. Old callbacks cannot finish a new one.
                 if (silenceEndpointer === endpointer) {
-                    val now = SystemClock.elapsedRealtime()
-                    endpointer.onAmplitude(amplitude, now)
+                    val observedAt = SystemClock.elapsedRealtime()
+                    endpointer.onAmplitude(amplitude, observedAt)
                     if (captureIdentity != null && currentPhase is InputPhase.Capturing &&
-                        endpointer.shouldStop(now)
+                        endpointer.shouldStop(observedAt)
                     ) {
                         DiagnosticLog.record(TAG, "Auto-stop after speech returned to background level")
                         finishCaptureAndEnqueue()
                     }
                 }
-            }) {
+            }
+        }
+        if (!began) {
             silenceEndpointer = null
+            speechEndpointer = null
             moveTo(InputPhase.Failed(R.string.error_mic_unavailable))
             return
         }
@@ -357,56 +403,97 @@ class InputOrchestrator(
         moveTo(InputPhase.Capturing())
     }
 
+    private data class EnqueueSnapshot(
+        val prefs: UserPreferences,
+        val postProcessing: PostProcessingPreferences?,
+        val toggles: PreferenceStore.ToggleStates,
+        val vocabulary: String,
+        val dictionary: TextDictionaryPreferences
+    )
+
+    private fun enqueueSnapshot(prefs: UserPreferences) = EnqueueSnapshot(
+        prefs, ppPreferences, toggles, vocabulary, textDictionary
+    )
+
     fun finishCaptureAndEnqueue() {
         silenceEndpointer = null
+        speechEndpointer = null
         val identity = captureIdentity ?: return
         captureIdentity = null
         val contextToken = captureContextToken
         captureContextToken = null
         val editorToken = captureEditorSessionToken
         captureEditorSessionToken = null
-        val file = capture.finalize()
-        val durationMs = capture.lastDurationMs
-        if (file == null) {
-            processingQueue.releaseReservation(identity)
-            moveTo(InputPhase.Ready)
-            DiagnosticLog.record(TAG, "finishCapture: nothing usable captured (${durationMs}ms)")
-            return
-        }
-        // Keep the same queue identity while the process-wide handover waits for preferences.
-        // A view rebuild or a second recording must not hide this item from cancellation.
+        val pending = capture.finalizeAsync()
+        val snapshot = preferences?.takeIf { reloadsInFlight == 0 }?.let { enqueueSnapshot(it) }
         var handoverJob: Job? = null
         if (!processingQueue.updateReservation(identity) {
+                pending.cancel()
                 handoverJob?.cancel()
-                file.delete()
             }) {
-            file.delete()
+            pending.cancel()
             moveTo(InputPhase.Ready)
             return
         }
-        // Back to Ready right away: the user can start the next recording while this one uploads.
+        // Stopping relinquishes the microphone immediately. Closing the WAV header and analysis
+        // happens off Main; neither an IME rebuild nor the next capture owns this handed-off file.
         moveTo(InputPhase.Ready)
-        DiagnosticLog.record(TAG, "finishCapture, file=${file.name}, size=${file.length()}, dur=${durationMs}ms")
-
-        val prefs = preferences
-        if (prefs == null) {
-            // Preferences load asynchronously right after the view is created. A recording that
-            // ends before they arrive waits for them instead of being thrown away.
-            handoverJob = handoverScope.launch {
-                loadPreferencesInternal()
-                ensureActive()
-                enqueue(file, durationMs, preferences ?: return@launch, contextToken, editorToken, identity)
+        handoverJob = captureHandovers.reserve {
+            var ownedFile: File? = null
+            try {
+                val file = pending.result.await()
+                if (file == null) {
+                    processingQueue.releaseReservation(identity)
+                    DiagnosticLog.record(TAG, "finishCapture: nothing usable captured (${pending.durationMs}ms)")
+                    return@reserve
+                }
+                ownedFile = file
+                currentCoroutineContext().ensureActive()
+                val readySnapshot = snapshot ?: loadEnqueueSnapshotUntilAvailable()
+                currentCoroutineContext().ensureActive()
+                DiagnosticLog.record(TAG, "finishCapture, file=${file.name}, size=${file.length()}, dur=${pending.durationMs}ms")
+                enqueue(file, pending.durationMs, readySnapshot, contextToken, editorToken, identity)
+                ownedFile = null // The process-wide queue now owns it.
+            } catch (cancelled: CancellationException) {
+                pending.cancel()
+                ownedFile?.delete()
+                processingQueue.releaseReservation(identity)
+                throw cancelled
+            } catch (error: Exception) {
+                // Keep the source file for diagnosis rather than silently deleting usable audio.
+                DiagnosticLog.recordFailure(TAG, "Capture handover failed; source retained", error)
             }
-            return
         }
-        enqueue(file, durationMs, prefs, contextToken, editorToken, identity)
+        checkNotNull(handoverJob).start()
+    }
+
+    /** A detached recording must not mutate a newer view's live settings while waiting for disk. */
+    private suspend fun loadEnqueueSnapshotUntilAvailable(): EnqueueSnapshot {
+        var retryDelayMs = 250L
+        while (true) {
+            currentCoroutineContext().ensureActive()
+            try {
+                return EnqueueSnapshot(
+                    preferenceStore.load(), preferenceStore.loadPostProcessing(),
+                    preferenceStore.loadToggleStates(), preferenceStore.loadVocabulary(),
+                    preferenceStore.loadTextDictionary()
+                )
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                DiagnosticLog.recordFailure(TAG, "Capture waiting for saved settings", error)
+                delay(retryDelayMs)
+                retryDelayMs = (retryDelayMs * 2).coerceAtMost(5_000)
+            }
+        }
     }
 
     private fun enqueue(
-        file: File, durationMs: Long, prefs: UserPreferences, contextToken: Long?, editorToken: Long?,
+        file: File, durationMs: Long, snapshot: EnqueueSnapshot, contextToken: Long?, editorToken: Long?,
         identity: ProcessingQueue.WorkIdentity
     ) {
-        if (prefs.apiKey.isBlank()) {
+        val prefs = snapshot.prefs
+        if (prefs.apiKey.isBlank() && currentPhase !is InputPhase.Capturing) {
             // Still queued: the queue parks it as "needs attention", so the recording survives
             // until a key is entered and resend is tapped.
             moveTo(InputPhase.Failed(R.string.error_api_key_missing))
@@ -419,22 +506,22 @@ class InputOrchestrator(
             model = prefs.model,
             language = language,
             prompt = WhisperPromptBuilder.build(
-                TranscriptionLocale.promptFor(language, prefs.prompt), vocabulary
+                TranscriptionLocale.promptFor(language, prefs.prompt), snapshot.vocabulary
             ),
-            vocabulary = vocabulary,
+            vocabulary = snapshot.vocabulary,
             recordingDurationMs = durationMs
         )
 
         // Snapshot current post-processing state at enqueue time
-        val ppEnabled = ppPreferences?.enabled == true
-        val s = toggles
+        val ppEnabled = snapshot.postProcessing?.enabled == true
+        val s = snapshot.toggles
         val item = ProcessingQueue.QueueItem(
             audioFile = file,
             transcriptionConfig = config,
             addTrailingSpace = prefs.addTrailingSpace,
             singleWordStripPunctuation = prefs.singleWordStripPunctuation,
-            vocabulary = vocabulary,
-            ppPreferences = if (ppEnabled) ppPreferences else null,
+            vocabulary = snapshot.vocabulary,
+            ppPreferences = if (ppEnabled) snapshot.postProcessing else null,
             ppFix = ppEnabled && s.fixActive,
             ppShorten = ppEnabled && s.shortenActive,
             ppEmoji = ppEnabled && s.emojiActive,
@@ -445,8 +532,8 @@ class InputOrchestrator(
             editorSessionToken = editorToken,
             workId = identity.workId,
             createdAt = identity.createdAt,
-            postProcessingVocabulary = textDictionary.postProcessingVocabulary,
-            replacementRules = textDictionary.replacementRules
+            postProcessingVocabulary = snapshot.dictionary.postProcessingVocabulary,
+            replacementRules = snapshot.dictionary.replacementRules
         )
         processingQueue.enqueue(item)
     }
@@ -454,6 +541,7 @@ class InputOrchestrator(
     /** Cancel only the current recording; the queue keeps processing. */
     private fun cancelCapture() {
         silenceEndpointer = null
+        speechEndpointer = null
         captureIdentity = null
         captureContextToken = null
         captureEditorSessionToken = null
@@ -466,6 +554,7 @@ class InputOrchestrator(
     /** Cancel everything: current recording + the entire queue. */
     fun cancelAll() {
         silenceEndpointer = null
+        speechEndpointer = null
         captureIdentity?.let { processingQueue.releaseReservation(it) }
         captureIdentity = null
         captureContextToken = null
@@ -490,6 +579,7 @@ class InputOrchestrator(
 
     fun destroy() {
         silenceEndpointer = null
+        speechEndpointer = null
         // Releases only a capture still in progress; files already handed to the queue are its own.
         captureIdentity?.let { processingQueue.releaseReservation(it) }
         captureIdentity = null

@@ -13,6 +13,10 @@ android {
         targetSdk = 34
         versionCode = 67
         versionName = "1.13.0"
+        buildConfigField("boolean", "NOISE_VAD_TEST", "false")
+        ndk {
+            abiFilters += setOf("arm64-v8a", "x86_64")
+        }
     }
 
     signingConfigs {
@@ -50,6 +54,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("boolean", "NOISE_VAD_TEST", "true")
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -63,6 +70,19 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildTypes.create("noiseTest") {
+        initWith(buildTypes.getByName("release"))
+        versionNameSuffix = "-noise-test.1"
+        matchingFallbacks += listOf("release")
+        buildConfigField("boolean", "NOISE_VAD_TEST", "true")
+    }
+    buildTypes.create("noiseLocal") {
+        initWith(buildTypes.getByName("noiseTest"))
+        applicationIdSuffix = ".noisetest"
+        versionNameSuffix = "-noise-local.1"
+        signingConfig = signingConfigs.getByName("debug")
+        matchingFallbacks += listOf("release")
     }
     buildTypes.create("audioTest") {
         initWith(buildTypes.getByName("release"))
@@ -84,9 +104,14 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    packaging {
+        // Extract native libraries: this test stays compatible with 16 KB pages on older AGP.
+        jniLibs.useLegacyPackaging = true
+    }
 }
 
 dependencies {
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.24.3")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")

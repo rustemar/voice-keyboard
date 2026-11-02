@@ -6,6 +6,7 @@ import android.os.Build
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import kotlinx.coroutines.*
 import java.io.File
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 
 class MicrophoneCaptureSession(private val context: Context) {
@@ -35,6 +36,7 @@ class MicrophoneCaptureSession(private val context: Context) {
     }
 
     private var recorder: MediaRecorder? = null
+    private var pcmCapture: PcmCaptureSession? = null
     private var microphoneLease: MicrophoneGate.Lease? = null
     private var levelMonitor: Job? = null
     private val scope = MainScope()
@@ -47,7 +49,46 @@ class MicrophoneCaptureSession(private val context: Context) {
         private set
 
     val isActive: Boolean
-        get() = recorder != null
+        get() = recorder != null || pcmCapture != null
+
+    /** Private test path: keep raw PCM local while a worker independently analyses speech. */
+    fun beginPcm(
+        onAmplitude: (Int) -> Unit,
+        onPcm: (ShortArray, Int, Long) -> Unit,
+        onClosed: () -> Unit = {},
+        onUnexpectedStop: () -> Unit = {}
+    ): Boolean {
+        if (pcmCapture != null) return true
+        if (recorder != null) return false
+        // A retained recovery source must not be overwritten after process-wide sequence resets.
+        val file = File(context.cacheDir, "recording_${fileSeq.getAndIncrement()}_${UUID.randomUUID()}.wav")
+        val lease = MicrophoneGate.shared.acquire() ?: return false
+        try {
+            pcmCapture = PcmCaptureSession.start(context, file, lease, onAmplitude, onPcm, onClosed, onUnexpectedStop)
+        } catch (error: Exception) {
+            DiagnosticLog.recordFailure(TAG, "PCM microphone unavailable", error)
+            lease.close()
+            file.delete()
+            return false
+        }
+        capturedFile = file
+        lastDurationMs = 0
+        return true
+    }
+
+    /** Detach the pending file from this view before returning; no worker is joined on Main. */
+    fun finalizeAsync(): CaptureFinalization {
+        val pcm = pcmCapture
+        if (pcm == null) {
+            val file = finalize()
+            return CaptureFinalization(lastDurationMs, CompletableDeferred(file)) { file?.delete() }
+        }
+        pcmCapture = null
+        capturedFile = null
+        val finalization = pcm.finish()
+        lastDurationMs = finalization.durationMs
+        return finalization
+    }
 
     /**
      * Start recording. Returns false, leaving the session idle, when the microphone cannot be
@@ -56,6 +97,7 @@ class MicrophoneCaptureSession(private val context: Context) {
      */
     fun begin(onAmplitude: (Int) -> Unit): Boolean {
         if (recorder != null) return true
+        if (pcmCapture != null) return false
 
         val useOpus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
         val extension = if (useOpus) "ogg" else "m4a"
@@ -134,6 +176,7 @@ class MicrophoneCaptureSession(private val context: Context) {
      * permanent "needs attention" badge that resend could never clear.
      */
     fun finalize(): File? {
+        check(pcmCapture == null) { "PCM captures require asynchronous finalization" }
         levelMonitor?.cancel()
         levelMonitor = null
         val mr = recorder ?: return null
@@ -165,6 +208,9 @@ class MicrophoneCaptureSession(private val context: Context) {
 
     /** Throw away the capture in progress, if any. Files already handed over by [finalize] are kept. */
     fun abort() {
+        val pcm = pcmCapture
+        pcmCapture = null
+        pcm?.cancel()
         levelMonitor?.cancel()
         levelMonitor = null
         recorder?.let { mr ->
