@@ -126,9 +126,10 @@ class DictationInputMethod : InputMethodService() {
                 // A result belongs to the editor connection that started its recording. A new
                 // field or connection must not receive a late result intended for the old one.
                 // Returning false makes the queue save it for an explicit insertion instead.
-                val inserted = originSessionToken == editorSessionToken &&
-                    keyboardVisible && !isVoiceBlocked() &&
-                    keystrokes.insertDictation(text, addTrailingSpace)
+                val inserted = keystrokes.insertDictation(text, addTrailingSpace) {
+                    originSessionToken == editorSessionToken &&
+                        keyboardVisible && !isVoiceBlocked()
+                }
                 if (!inserted && keyboardVisible) savedResultSinceShown = true
                 scheduleReturnToPreviousKeyboard(inserted)
                 inserted
@@ -162,8 +163,11 @@ class DictationInputMethod : InputMethodService() {
             view,
             ServiceLocator.pendingTranscriptStore,
             onInsert = { transcript ->
-                keyboardVisible && editorSessionToken != null && !isVoiceBlocked() &&
-                    keystrokes.insertDictation(transcript.text, transcript.addTrailingSpace)
+                val targetSessionToken = editorSessionToken
+                if (targetSessionToken == null) false
+                else keystrokes.insertDictation(transcript.text, transcript.addTrailingSpace) {
+                    editorSessionToken == targetSessionToken && keyboardVisible && !isVoiceBlocked()
+                }
             },
             onNotice = { message -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show() }
         )

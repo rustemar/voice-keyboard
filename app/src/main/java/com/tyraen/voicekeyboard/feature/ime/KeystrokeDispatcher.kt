@@ -60,22 +60,23 @@ class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?
     /**
      * Commit a dictated chunk with context-aware padding: a space in front when the cursor sits
      * right after a word, the configured trailing space only when nothing is already there.
-     * Returns false when there is no connection or the editor's process is gone, so the caller can
-     * fall back; an editor that ignores the text still returns true.
+     * Returns false if context cannot be read, the connection/session changes, or commit fails,
+     * so the caller can retain the text. A remote editor can still ignore an acknowledged commit.
      */
-    fun insertDictation(text: String, addTrailingSpace: Boolean): Boolean {
+    fun insertDictation(
+        text: String,
+        addTrailingSpace: Boolean,
+        canInsert: () -> Boolean = { true }
+    ): Boolean {
         val ic = connectionProvider() ?: return false
-        val pad = DictationSpacing.decide(
-            before = ic.getTextBeforeCursor(1, 0),
-            after = ic.getTextAfterCursor(1, 0),
-            wantTrailing = addTrailingSpace
+        return DictationInsertion.insert(
+            text = text,
+            addTrailingSpace = addTrailingSpace,
+            readBefore = { ic.getTextBeforeCursor(1, 0) },
+            readAfter = { ic.getTextAfterCursor(1, 0) },
+            canCommit = { connectionProvider() === ic && canInsert() },
+            commit = { ic.commitText(it, 1) }
         )
-        val out = buildString {
-            if (pad.leading) append(' ')
-            append(text)
-            if (pad.trailing) append(' ')
-        }
-        return ic.commitText(out, 1)
     }
 
     /**
