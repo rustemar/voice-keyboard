@@ -2,7 +2,7 @@
 
 **Voice Keyboard** is an Android keyboard (input method) that converts speech to text using third‑party transcription APIs. This document describes what data the app handles, where it goes, and what stays on your device.
 
-_Last updated: 2026‑10‑28_
+_Last updated: 2026‑11‑02_
 
 ## TL;DR
 
@@ -17,7 +17,9 @@ _Last updated: 2026‑10‑28_
 
 ### Audio
 
-For keyboard dictation, when you press the microphone button, the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). Recordings live briefly in the app's private cache directory and are deleted after the text is inserted or safely saved for later insertion. A recording that could **not** be transcribed or whose result could not be saved is kept in the app's private storage. If the cause was an unavailable provider connection, it is resent automatically once that connection returns and deleted after successful delivery; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
+For keyboard dictation, when you press the microphone button (or open the keyboard with optional auto-start enabled), the app records audio from the device microphone and sends it to the transcription endpoint you configured in settings (by default, Groq Whisper). In the keyboard, password fields disable the microphone and auto-record. The audio is sent together with your API key, over HTTPS unless you type a plain `http://` address yourself (see below). Recordings live briefly in the app's private cache directory and are deleted after the text is inserted or safely saved for later insertion. A recording that could **not** be transcribed or whose result could not be saved is kept in the app's private storage. If the cause was an unavailable provider connection, it is resent automatically once that connection returns and deleted after successful delivery; if the provider rejected it (wrong key, provider error), it waits until you tap the resend key. Either way you can delete every unsent recording from the keyboard by holding the resend key twice. Nothing leaves the device meanwhile.
+
+Keyboard dictation also uses a bundled, on-device speech detector (Silero VAD with ONNX Runtime) to support optional stopping after a pause. The detector processes microphone samples locally; it does not download a model or send audio to another service. The configured transcription provider still receives the recording. Temporary raw PCM files used during recording and encoding stay in the app’s private cache.
 
 The app does **not** receive a copy of the audio after sending — handling and retention of submitted audio is governed by the policy of the provider you choose:
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Choisissez un service pour modifier le texte reconnu et saisissez sa clé API. La reconnaissance vocale se configure sur l’écran principal des paramètres. Changez de mode de traitement avec les boutons du clavier.</string>
+    <string name="pp_api_format">Format de l’API</string>
+    <string name="pp_api_format_hint">Les préréglages des fournisseurs sélectionnent automatiquement le format. Les services personnalisés peuvent utiliser l’un ou l’autre format.</string>
+    <string name="pp_endpoint_default_hint">Si le champ est vide, la valeur par défaut affichée ci-dessous est utilisée. Vous pouvez aussi coller l’URL de base du fournisseur ; le chemin de la requête est ajouté automatiquement.</string>
+    <string name="pp_model_default_hint">Si le champ est vide, le modèle par défaut affiché ci-dessous est utilisé. Les passerelles comme OpenRouter nécessitent un préfixe de fournisseur, par exemple openai/gpt-4o-mini.</string>
+</resources>

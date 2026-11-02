@@ -1,6 +1,7 @@
-v1.13.0 — Auto-stop after a pause
+v1.14.0 — Better auto-stop in background noise
 
-- Add optional automatic stopping after a pause in keyboard dictation. It is off by default. Set a pause of 0.3–3 seconds in Settings, initially 1.2 seconds, and use the timer below Backspace to turn it on or off even during a recording. The finished recording is transcribed normally; this does not send the message. Music, other voices and changing noise can affect detection.
-- Preserve a recognized dictation in Saved texts when the original text field stops responding while preparing an insertion, including app switches with a queue of recordings.
-- Keep private error content out of diagnostic logs and crash reports. Record technical error types and stack frames without provider error bodies or exception messages that could echo dictated text or credentials.
-- Clarify installation and update options for F-Droid and Obtainium.
+- Auto-stop now detects speech on the device to recognize pauses more reliably around background noise. It remains off by default, with the same timer button and 0.3–3 second pause setting. Other voices, singing or difficult noise can still affect stopping.
+- Auto-start recording, trailing-space and single-word punctuation switches now save immediately. Auto-start recording also has an explanation in settings.
+- Settings more clearly separate voice recognition from optional text post-processing. Provider key links, default presets and the save button are clearer; changing the interface language preserves unfinished form edits without applying them.
+
+Pause detection uses [Silero VAD](https://github.com/snakers4/silero-vad) and [ONNX Runtime](https://github.com/microsoft/onnxruntime), both MIT-licensed. Thanks to their contributors. The detector runs locally; recordings still go only to the speech provider configured in the app. The universal APK is about 46 MB because the local speech detector and its runtime are bundled.

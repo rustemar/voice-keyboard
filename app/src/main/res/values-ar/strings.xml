@@ -11,12 +11,13 @@
     <string name="settings_language_hint">رموز مفصولة بفواصل، مثل: ar, en. عند إضافة أكثر من لغة يظهر مفتاح لغة على لوحة المفاتيح. اتركه فارغًا للاكتشاف التلقائي.</string>
     <string name="settings_endpoint">عنوان API</string>
     <string name="settings_auto_record">تسجيل تلقائي</string>
+    <string name="settings_auto_record_hint">بدء التسجيل تلقائيًا عند فتح Voice Keyboard. معطّل افتراضيًا. يتحكم الإيقاف التلقائي عند الصمت في وقت انتهاء التسجيل بشكل مستقل.</string>
     <string name="subtype_label">الإدخال الصوتي</string>
     <string name="settings_return_to_previous_keyboard">العودة إلى لوحة المفاتيح السابقة بعد الإملاء</string>
     <string name="settings_return_to_previous_keyboard_hint">فعّله إذا كنت تفتح Voice Keyboard للإملاء فقط، بزر الميكروفون في لوحة مفاتيح أخرى أو من قائمة لوحات المفاتيح: بمجرد إدخال النص تعود تلك اللوحة تلقائيًا. اتركه معطّلًا إذا كنت تُملي عدة مرات متتالية أو إذا كانت Voice Keyboard لوحة مفاتيحك الرئيسية. الزر في الزاوية العلوية يعيدك دائمًا إلى لوحة المفاتيح السابقة.</string>
     <string name="cd_previous_keyboard">التبديل إلى لوحة المفاتيح السابقة</string>
     <string name="settings_add_space">إضافة مسافة في النهاية</string>
-    <string name="settings_apply">تطبيق</string>
+    <string name="settings_apply">حفظ المفتاح والتحقق منه</string>
     <string name="settings_enable_instructions">لتفعيل لوحة المفاتيح:\n\n1. اذهب إلى الإعدادات → النظام → اللغات والإدخال → لوحة المفاتيح على الشاشة\n2. فعّل \"Voice Keyboard\"\n3. اختره في أي حقل نصي</string>
     <string name="test_section_title">اختبار التعرف على الصوت</string>
     <string name="test_section_hint">سجّل عبارة قصيرة للتحقق من أن كل شيء يعمل</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">تعذّر التحقق من التحديثات. تحقق من اتصالك بالإنترنت.</string>
     <string name="settings_get_api_key">مفتاح Groq مجاني ← console.groq.com</string>
     <string name="settings_get_api_key_alt">مفتاح Mistral مجاني ← console.mistral.ai</string>
-    <string name="settings_provider_hint">يعمل أي مفتاح Whisper متوافق مع OpenAI. يعمل Groq مباشرةً بالإعدادات الافتراضية؛ أما مع Mistral، فاضبط نقطة النهاية على api.mistral.ai/v1/audio/transcriptions والنموذج على voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">استخدم مفتاح API لمزود التعرف على الكلام المحدد. تملأ الإعدادات المسبقة العنوان والنموذج.</string>
     <string name="about_project">GitHub — حول المشروع</string>
     <string name="link_copied">تم نسخ الرابط</string>
     <string name="no_browser_link_copied">لا يوجد متصفح لفتح الرابط، لذلك تم نسخه</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">طرفية</string>
     <string name="pp_terminal_visible">إظهار زر وضع الطرفية</string>
     <string name="pp_terminal_visible_hint">يحوّل الإدخال الصوتي إلى أوامر طرفية. مفيد للعمل عبر SSH.</string>
-    <string name="pp_open_settings">إعدادات المعالجة اللاحقة</string>
+    <string name="pp_open_settings">المعالجة اللاحقة (اختيارية)</string>
+    <string name="settings_postprocessing_hint">يُضبط مفتاح API لتحسين النص بشكل منفصل. يعمل التعرف على الكلام دون المعالجة اللاحقة.</string>
 
     <string name="mic_disclosure_title">يستخدم Voice Keyboard الميكروفون</string>
     <string name="mic_disclosure_body">عند الضغط على زر الميكروفون، تُسجّل هذه اللوحة الصوت وترسله إلى خدمة تحويل الكلام إلى نص.\n\n• ما الذي يُرسَل: فقط الصوت من تسجيل تبدؤه أنت بنفسك.\n• إلى أين: افتراضيًا، إلى Groq Whisper. يمكنك تغيير ذلك في الإعدادات إلى أي نقطة نهاية متوافقة مع OpenAI Whisper، بما في ذلك OpenAI نفسها.\n• المصادقة: تُرسَل الطلبات بمفتاح API الخاص بك؛ لا يوجد حساب مدمج في التطبيق.\n• ما لا يُجمَع: لا تتبُّع، ولا إعلانات، ولا يُرفَع الصوت إلى أي مكان غير نقطة النهاية التي تختارها.\n\nلا يُرسَل الصوت إلا أثناء التسجيل النشط فقط — أبدًا في الخلفية.</string>

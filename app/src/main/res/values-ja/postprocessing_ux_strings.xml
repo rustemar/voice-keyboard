@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">認識済みテキストを編集するサービスを選び、その API キーを入力してください。音声認識は設定のメイン画面で設定します。キーボードのボタンで処理モードを切り替えます。</string>
+    <string name="pp_api_format">API 形式</string>
+    <string name="pp_api_format_hint">プロバイダーのプリセットを選ぶと、形式が自動設定されます。カスタムサービスはどちらの形式も使用できます。</string>
+    <string name="pp_endpoint_default_hint">空欄の場合は、下に表示された既定値を使用します。プロバイダーのベース URL を貼り付けることもできます。リクエストパスは自動で追加されます。</string>
+    <string name="pp_model_default_hint">空欄の場合は、下に表示された既定のモデルを使用します。OpenRouter などのゲートウェイでは、openai/gpt-4o-mini のようなプロバイダーの接頭辞が必要です。</string>
+</resources>

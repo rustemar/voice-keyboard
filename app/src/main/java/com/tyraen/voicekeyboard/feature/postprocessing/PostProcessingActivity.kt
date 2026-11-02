@@ -14,14 +14,36 @@ import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.ProviderPresets
+import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.core.network.ApiEndpoint
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class PostProcessingActivity : AppCompatActivity() {
+
+    companion object {
+        // Admitted changes survive closing this screen. Full Apply and narrow toggle writes
+        // share an order, so an older form snapshot cannot overwrite a newer toggle tap.
+        private val settingsWriteScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+        private var pendingSettingsWrite: Deferred<Result<Unit>>? = null
+
+        private fun enqueueSettingsWrite(write: suspend () -> Unit): Deferred<Result<Unit>> {
+            val previous = pendingSettingsWrite
+            return settingsWriteScope.async {
+                previous?.join()
+                try {
+                    write()
+                    Result.success(Unit)
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (error: Exception) {
+                    DiagnosticLog.recordFailure("PostProcessingSettings", "Could not save settings", error)
+                    Result.failure(error)
+                }
+            }.also { pendingSettingsWrite = it }
+        }
+    }
 
     private lateinit var scrollView: ScrollView
     private lateinit var switchEnabled: Switch
@@ -86,6 +108,10 @@ class PostProcessingActivity : AppCompatActivity() {
         switchEnabled = findViewById(R.id.switchPpEnabled)
         switchContextEnabled = findViewById(R.id.switchPpContextEnabled)
         checkTerminalVisible = findViewById(R.id.checkTerminalVisible)
+        // These values reload from admitted DataStore writes, not stale view snapshots.
+        switchEnabled.isSaveEnabled = false
+        switchContextEnabled.isSaveEnabled = false
+        checkTerminalVisible.isSaveEnabled = false
         spinnerProvider = findViewById(R.id.spinnerProvider)
         spinnerLlmPreset = findViewById(R.id.spinnerLlmPreset)
         editApiKey = findViewById(R.id.editPpApiKey)
@@ -114,6 +140,7 @@ class PostProcessingActivity : AppCompatActivity() {
                 val provider = providers[position]
                 editEndpoint.hint = PostProcessingPreferences.defaultEndpoint(provider)
                 editModel.hint = PostProcessingPreferences.defaultModel(provider)
+                updatePresetSelection()
                 updateTranslateModelHint()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -138,6 +165,7 @@ class PostProcessingActivity : AppCompatActivity() {
                     return
                 }
                 presetPosSetByCode = -1
+                if (loadingPreferences) return
                 val preset = ProviderPresets.postProcessing.getOrNull(position - 1) ?: return
                 preset.provider?.let { spinnerProvider.setSelection(providers.indexOf(it)) }
                 editEndpoint.setText(preset.endpoint)
@@ -153,14 +181,22 @@ class PostProcessingActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 txtEndpointWarning.isVisible = ApiEndpoint.isUnencrypted(s?.toString() ?: "")
-                val pos = ProviderPresets.indexOf(ProviderPresets.postProcessing, s?.toString() ?: "") + 1
-                if (spinnerLlmPreset.selectedItemPosition != pos) {
-                    presetPosSetByCode = pos
-                    spinnerLlmPreset.setSelection(pos, false)
-                }
+                updatePresetSelection()
                 updateTranslateModelHint()
             }
         })
+    }
+
+    private fun updatePresetSelection() {
+        if (spinnerLlmPreset.adapter == null) return
+        val provider = providers.getOrNull(spinnerProvider.selectedItemPosition) ?: return
+        val pos = ProviderPresets.postProcessingIndexOf(editEndpoint.text.toString().trim(), provider) + 1
+        if (spinnerLlmPreset.selectedItemPosition != pos) {
+            // Recognizing a service must not act like the user selected its preset: model and
+            // translation overrides remain untouched while loading or editing an address.
+            presetPosSetByCode = pos
+            spinnerLlmPreset.setSelection(pos, false)
+        }
     }
 
     private fun updateTranslateModelHint() {
@@ -190,21 +226,39 @@ class PostProcessingActivity : AppCompatActivity() {
         switchEnabled.setOnCheckedChangeListener { _, isChecked ->
             if (loadingPreferences) return@setOnCheckedChangeListener
             if (!isChecked) ServiceLocator.transcriptionQueue.clearPostProcessingContext()
-            scope.launch {
-                preferenceStore.setPostProcessingEnabled(isChecked)
-            }
+            val store = preferenceStore
+            observeSettingsWrite(enqueueSettingsWrite { store.setPostProcessingEnabled(isChecked) })
         }
         switchContextEnabled.setOnCheckedChangeListener { _, isChecked ->
             if (loadingPreferences) return@setOnCheckedChangeListener
             if (!isChecked) ServiceLocator.transcriptionQueue.clearPostProcessingContext()
-            scope.launch {
-                preferenceStore.setPostProcessingContextEnabled(isChecked)
-            }
+            val store = preferenceStore
+            observeSettingsWrite(enqueueSettingsWrite { store.setPostProcessingContextEnabled(isChecked) })
+        }
+        checkTerminalVisible.setOnCheckedChangeListener { _, isChecked ->
+            if (loadingPreferences) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            observeSettingsWrite(enqueueSettingsWrite { store.setPostProcessingTerminalVisible(isChecked) })
         }
     }
 
-    private fun loadPreferences() {
+    private fun observeSettingsWrite(write: Deferred<Result<Unit>>) {
         scope.launch {
+            if (write.await().isFailure) showSaveFailure()
+        }
+    }
+
+    private fun showSaveFailure() {
+        showStatus(getString(R.string.status_error, getString(R.string.settings_save_failed)), Color.parseColor("#EF4444"))
+    }
+
+    private fun loadPreferences() {
+        switchEnabled.isEnabled = false
+        switchContextEnabled.isEnabled = false
+        checkTerminalVisible.isEnabled = false
+        btnApply.isEnabled = false
+        scope.launch {
+            pendingSettingsWrite?.join()
             val pp = preferenceStore.loadPostProcessing()
             switchEnabled.isChecked = pp.enabled
             switchContextEnabled.isChecked = pp.contextEnabled
@@ -230,12 +284,18 @@ class PostProcessingActivity : AppCompatActivity() {
 
             spinnerTranslateLang.setSelection(TranscriptionLocale.positionOf(pp.translateLang))
             editTranslateModel.setText(pp.translateModel)
+            updatePresetSelection()
             updateTranslateModelHint()
             loadingPreferences = false
+            switchEnabled.isEnabled = true
+            switchContextEnabled.isEnabled = true
+            checkTerminalVisible.isEnabled = true
+            btnApply.isEnabled = true
         }
     }
 
     private fun saveAndValidate() {
+        if (loadingPreferences) return
         var provider = providers[spinnerProvider.selectedItemPosition]
         val rawEndpoint = editEndpoint.text.toString().trim()
 
@@ -282,12 +342,21 @@ class PostProcessingActivity : AppCompatActivity() {
         btnApply.isEnabled = false
         showStatus(getString(R.string.pp_validating), Color.GRAY)
 
-        scope.launch {
-            val previous = preferenceStore.loadPostProcessing()
+        val store = preferenceStore
+        val queue = ServiceLocator.transcriptionQueue
+        val save = enqueueSettingsWrite {
+            val previous = store.loadPostProcessing()
             if (previous.provider != prefs.provider || previous.resolvedEndpoint() != prefs.resolvedEndpoint()) {
-                ServiceLocator.transcriptionQueue.clearPostProcessingContext()
+                queue.clearPostProcessingContext()
             }
-            preferenceStore.savePostProcessing(prefs)
+            store.savePostProcessing(prefs)
+        }
+        scope.launch {
+            if (save.await().isFailure) {
+                showSaveFailure()
+                btnApply.isEnabled = true
+                return@launch
+            }
 
             if (prefs.apiKey.isBlank()) {
                 showStatus(saved, Color.parseColor("#4CAF50"))

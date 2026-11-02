@@ -11,12 +11,8 @@ android {
         applicationId = "com.tyraen.voicekeyboard"
         minSdk = 24
         targetSdk = 34
-        versionCode = 67
-        versionName = "1.13.0"
-        buildConfigField("boolean", "NOISE_VAD_TEST", "false")
-        ndk {
-            abiFilters += setOf("arm64-v8a", "x86_64")
-        }
+        versionCode = 68
+        versionName = "1.14.0"
     }
 
     signingConfigs {
@@ -54,9 +50,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField("boolean", "NOISE_VAD_TEST", "true")
-        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -70,19 +63,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    buildTypes.create("noiseTest") {
-        initWith(buildTypes.getByName("release"))
-        versionNameSuffix = "-noise-test.1"
-        matchingFallbacks += listOf("release")
-        buildConfigField("boolean", "NOISE_VAD_TEST", "true")
-    }
-    buildTypes.create("noiseLocal") {
-        initWith(buildTypes.getByName("noiseTest"))
-        applicationIdSuffix = ".noisetest"
-        versionNameSuffix = "-noise-local.1"
-        signingConfig = signingConfigs.getByName("debug")
-        matchingFallbacks += listOf("release")
     }
     buildTypes.create("audioTest") {
         initWith(buildTypes.getByName("release"))
@@ -105,7 +85,7 @@ android {
         buildConfig = true
     }
     packaging {
-        // Extract native libraries: this test stays compatible with 16 KB pages on older AGP.
+        // Extract the aligned ONNX libraries for 16 KB page support on this AGP version.
         jniLibs.useLegacyPackaging = true
     }
 }

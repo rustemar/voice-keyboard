@@ -21,7 +21,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-/** Test capture path: one microphone feeds a private WAV and a separately bounded detector. */
+/** Keyboard capture: one microphone feeds a private WAV and a separately bounded detector. */
 internal class PcmCaptureSession private constructor(
     private val recorder: AudioRecord,
     private val spool: PcmCaptureFile,

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_save_failed">No se pudieron guardar los ajustes. Inténtalo de nuevo.</string>
+</resources>

@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Pilkulla erotetut koodit, esimerkiksi: fi, en. Jos lisäät useamman, näppäimistölle ilmestyy kielinäppäin. Jätä tyhjäksi automaattista tunnistusta varten.</string>
     <string name="settings_endpoint">API-osoite</string>
     <string name="settings_auto_record">Automaattinen nauhoitus</string>
+    <string name="settings_auto_record_hint">Aloita tallennus automaattisesti, kun Voice Keyboard avautuu. Oletuksena pois käytöstä. Automaattinen pysäytys puhetauon jälkeen määrittää erikseen, milloin tallennus päättyy.</string>
     <string name="subtype_label">Puhesyöte</string>
     <string name="settings_return_to_previous_keyboard">Palaa edelliseen näppäimistöön sanelun jälkeen</string>
     <string name="settings_return_to_previous_keyboard_hint">Ota käyttöön, jos avaat Voice Keyboardin vain sanellaksesi, toisen näppäimistön mikrofoninäppäimellä tai näppäimistöluettelosta: kun teksti on kirjoitettu, se näppäimistö palaa itsestään. Jätä pois päältä, jos sanelet useita kertoja peräkkäin tai Voice Keyboard on pääasiallinen näppäimistösi. Yläkulman näppäin vie sinut aina takaisin.</string>
     <string name="cd_previous_keyboard">Vaihda edelliseen näppäimistöön</string>
     <string name="settings_add_space">Lisää välilyönti loppuun</string>
-    <string name="settings_apply">Ota käyttöön</string>
+    <string name="settings_apply">Tallenna ja tarkista avain</string>
     <string name="settings_enable_instructions">Ota tämä näppäimistö käyttöön:\n\n1. Siirry kohtaan Asetukset → Järjestelmä → Kielet ja syöttö → Näyttönäppäimistö\n2. Ota käyttöön \"Voice Keyboard\"\n3. Valitse se missä tahansa tekstikentässä</string>
     <string name="test_section_title">Testaa puheentunnistus</string>
     <string name="test_section_hint">Nauhoita lyhyt lause varmistaaksesi, että kaikki toimii</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Päivityksiä ei voitu tarkistaa. Tarkista internet-yhteytesi.</string>
     <string name="settings_get_api_key">Ilmainen Groq-avain → console.groq.com</string>
     <string name="settings_get_api_key_alt">Ilmainen Mistral-avain → console.mistral.ai</string>
-    <string name="settings_provider_hint">Mikä tahansa OpenAI-yhteensopiva Whisper-avain käy. Groq toimii oletusasetuksilla; Mistralia varten aseta päätepisteeksi api.mistral.ai/v1/audio/transcriptions ja malliksi voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Käytä valitun puhepalvelun API-avainta. Esiasetukset täyttävät osoitteen ja mallin.</string>
     <string name="about_project">GitHub — Tietoa projektista</string>
     <string name="link_copied">Linkki kopioitu</string>
     <string name="no_browser_link_copied">Linkin avaamiseen ei ole selainta, joten se kopioitiin</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Terminaali</string>
     <string name="pp_terminal_visible">Näytä terminaalitilan painike</string>
     <string name="pp_terminal_visible_hint">Muuntaa puhesyötteen komentotulkin komennoiksi. Hyödyllinen SSH-/terminaalityössä.</string>
-    <string name="pp_open_settings">Jälkikäsittelyn asetukset</string>
+    <string name="pp_open_settings">Jälkikäsittely (valinnainen)</string>
+    <string name="settings_postprocessing_hint">Tekstin muokkauksen API-avain määritetään erikseen. Puheentunnistus toimii ilman jälkikäsittelyä.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard käyttää mikrofonia</string>
     <string name="mic_disclosure_body">Kun napautat mikrofoni­painiketta, tämä näppäimistö tallentaa ääntä ja lähettää sen puheentunnistus­palveluun muunnettavaksi tekstiksi.\n\n• Mitä lähetetään: vain itse aloittamasi tallennuksen ääni.\n• Minne menee: oletuksena Groq Whisperiin. Voit vaihtaa asetuksista mihin tahansa OpenAI-yhteensopivaan Whisper-päätepisteeseen, mukaan lukien OpenAI itse.\n• Tunnistautuminen: pyynnöt tehdään omalla API-avaimellasi; sovelluksessa ei ole sisäänrakennettua tiliä.\n• Mitä ei kerätä: ei analytiikkaa, ei mainoksia; ääntäsi ei ladata mihinkään paitsi määrittämääsi päätepisteeseen.\n\nÄänitietoa lähetetään vain aktiivisen tallennuksen aikana — ei koskaan taustalla.</string>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Elige un servicio para editar el texto reconocido e introduce su clave API. El reconocimiento de voz se configura en la pantalla principal de ajustes. Cambia los modos de procesamiento con los botones del teclado.</string>
+    <string name="pp_api_format">Formato de API</string>
+    <string name="pp_api_format_hint">Los ajustes predefinidos del proveedor seleccionan el formato automáticamente. Los servicios personalizados pueden usar cualquiera de los formatos.</string>
+    <string name="pp_endpoint_default_hint">Si se deja vacío, se usa el valor predeterminado que aparece abajo. También puedes pegar la URL base del proveedor; la ruta de la solicitud se añade automáticamente.</string>
+    <string name="pp_model_default_hint">Si se deja vacío, se usa el modelo predeterminado que aparece abajo. Las pasarelas como OpenRouter necesitan un prefijo de proveedor, por ejemplo openai/gpt-4o-mini.</string>
+</resources>

@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Virgülle ayrılmış kodlar, örneğin: tr, en. Birden fazla eklerseniz klavyede bir dil tuşu görünür. Otomatik algılama için boş bırakın.</string>
     <string name="settings_endpoint">API Adresi</string>
     <string name="settings_auto_record">Otomatik kayıt</string>
+    <string name="settings_auto_record_hint">Voice Keyboard açıldığında kaydı otomatik başlatın. Varsayılan olarak kapalıdır. Sessizlikte otomatik durdurma, kaydın ne zaman biteceğini ayrıca kontrol eder.</string>
     <string name="subtype_label">Sesle giriş</string>
     <string name="settings_return_to_previous_keyboard">Dikteden sonra önceki klavyeye dön</string>
     <string name="settings_return_to_previous_keyboard_hint">Voice Keyboard\'u yalnızca dikte etmek için, başka bir klavyenin mikrofon tuşuyla ya da klavye listesinden açıyorsanız etkinleştirin: metin yazılınca o klavye kendiliğinden geri gelir. Art arda birkaç kez dikte ediyorsanız veya Voice Keyboard ana klavyenizse kapalı bırakın. Üst köşedeki tuş sizi her zaman geri götürür.</string>
     <string name="cd_previous_keyboard">Önceki klavyeye geç</string>
     <string name="settings_add_space">Sona boşluk ekle</string>
-    <string name="settings_apply">Uygula</string>
+    <string name="settings_apply">Kaydet ve anahtarı denetle</string>
     <string name="settings_enable_instructions">Bu klavyeyi etkinleştirmek için:\n\n1. Ayarlar → Sistem → Diller ve giriş → Ekran klavyesine gidin\n2. \"Voice Keyboard\" etkinleştirin\n3. Herhangi bir metin alanında seçin</string>
     <string name="test_section_title">Ses tanıma testi</string>
     <string name="test_section_hint">Her şeyin çalıştığını doğrulamak için kısa bir cümle kaydedin</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Güncellemeler kontrol edilemedi. İnternet bağlantınızı kontrol edin.</string>
     <string name="settings_get_api_key">Ücretsiz Groq anahtarı → console.groq.com</string>
     <string name="settings_get_api_key_alt">Ücretsiz Mistral anahtarı → console.mistral.ai</string>
-    <string name="settings_provider_hint">OpenAI uyumlu her Whisper anahtarı çalışır. Groq varsayılan ayarlarla çalışır; Mistral için uç noktayı api.mistral.ai/v1/audio/transcriptions, modeli de voxtral-mini-latest olarak ayarlayın.</string>
+    <string name="settings_provider_hint">Seçili konuşma sağlayıcısının API anahtarını kullanın. Hazır ayarlar adresi ve modeli doldurur.</string>
     <string name="about_project">GitHub — Proje hakkında</string>
     <string name="link_copied">Bağlantı kopyalandı</string>
     <string name="no_browser_link_copied">Bağlantıyı açacak tarayıcı yok, bu yüzden kopyalandı</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Terminal</string>
     <string name="pp_terminal_visible">Terminal modu düğmesini göster</string>
     <string name="pp_terminal_visible_hint">Sesli girdiyi kabuk komutlarına dönüştürür. SSH/terminal çalışması için kullanışlıdır.</string>
-    <string name="pp_open_settings">Son işleme ayarları</string>
+    <string name="pp_open_settings">Son işleme (isteğe bağlı)</string>
+    <string name="settings_postprocessing_hint">Metin düzenleme için API anahtarı ayrıca yapılandırılır. Konuşma tanıma, son işleme olmadan çalışır.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard mikrofonunuzu kullanır</string>
     <string name="mic_disclosure_body">Mikrofon düğmesine dokunduğunuzda, bu klavye sesi kaydeder ve sesinizi metne dönüştürmek için bir konuşma tanıma hizmetine gönderir.\n\n• Ne gönderilir: yalnızca sizin başlattığınız bir kaydın sesi.\n• Nereye gider: varsayılan olarak Groq Whisper\'a. Ayarlardan OpenAI ile uyumlu herhangi bir Whisper uç noktasına (OpenAI dahil) değiştirebilirsiniz.\n• Kimlik doğrulama: istekler kendi API anahtarınızla yapılır; uygulamada yerleşik bir hesap yoktur.\n• Toplanmayanlar: analitik yok, reklam yok; sesiniz, yapılandırdığınız uç nokta dışında hiçbir yere yüklenmez.\n\nSes yalnızca aktif kayıt sırasında gönderilir — asla arka planda gönderilmez.</string>

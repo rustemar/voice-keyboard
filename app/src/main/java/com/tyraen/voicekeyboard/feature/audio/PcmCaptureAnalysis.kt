@@ -49,10 +49,12 @@ internal class PcmCaptureAnalysis(
                 if (closed.get()) break
                 try {
                     onPcm(frame.samples, frame.samples.size, frame.atMs)
+                } catch (error: LinkageError) {
+                    // A missing or incompatible native runtime must leave manual capture usable.
+                    disableAfterFailure(error)
+                    break
                 } catch (error: Exception) {
-                    if (closed.compareAndSet(false, true)) {
-                        DiagnosticLog.recordFailure("Capture", "PCM analysis disabled", error)
-                    }
+                    disableAfterFailure(error)
                     break
                 }
             }
@@ -61,9 +63,17 @@ internal class PcmCaptureAnalysis(
             frames.clear()
             try {
                 onClosed()
+            } catch (error: LinkageError) {
+                DiagnosticLog.recordFailure("Capture", "PCM analysis cleanup failed", error)
             } catch (error: Exception) {
                 DiagnosticLog.recordFailure("Capture", "PCM analysis cleanup failed", error)
             }
+        }
+    }
+
+    private fun disableAfterFailure(error: Throwable) {
+        if (closed.compareAndSet(false, true)) {
+            DiagnosticLog.recordFailure("Capture", "PCM analysis disabled", error)
         }
     }
 }

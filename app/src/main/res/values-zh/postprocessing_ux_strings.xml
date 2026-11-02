@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">选择用于编辑已识别文本的服务并输入其 API 密钥。语音识别在主设置页面中配置。使用键盘上的按钮切换处理模式。</string>
+    <string name="pp_api_format">API 格式</string>
+    <string name="pp_api_format_hint">服务商预设会自动选择格式。自定义服务可以使用其中任一格式。</string>
+    <string name="pp_endpoint_default_hint">留空时使用下方显示的默认值。也可以粘贴服务商的基础 URL；请求路径会自动补全。</string>
+    <string name="pp_model_default_hint">留空时使用下方显示的默认模型。OpenRouter 等网关需要服务商前缀，例如 openai/gpt-4o-mini。</string>
+</resources>

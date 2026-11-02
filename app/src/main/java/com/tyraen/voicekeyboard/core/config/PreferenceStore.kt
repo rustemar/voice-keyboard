@@ -206,6 +206,12 @@ class PreferenceStore(private val context: Context) {
         }
     }
 
+    suspend fun setPostProcessingTerminalVisible(value: Boolean) {
+        context.store.edit { data ->
+            data[Keys.PP_TERMINAL_VISIBLE] = value
+        }
+    }
+
     suspend fun setPostProcessingContextEnabled(value: Boolean) {
         context.store.edit { data ->
             data[Keys.PP_CONTEXT_ENABLED] = value
@@ -244,6 +250,19 @@ class PreferenceStore(private val context: Context) {
             data[Keys.UPDATE_CHECK_ENABLED] = value
             data[Keys.UPDATE_CONSENT_SHOWN] = true
         }
+    }
+
+    /** Keyboard switches save only their own value, without applying unfinished provider edits. */
+    suspend fun setAutoRecord(value: Boolean) {
+        context.store.edit { it[Keys.AUTO_RECORD] = value }
+    }
+
+    suspend fun setAddTrailingSpace(value: Boolean) {
+        context.store.edit { it[Keys.ADD_TRAILING_SPACE] = value }
+    }
+
+    suspend fun setSingleWordStripPunctuation(value: Boolean) {
+        context.store.edit { it[Keys.SINGLE_WORD_STRIP_PUNCT] = value }
     }
 
     /** Saved as soon as the switch is flipped, not only with the rest of the screen on Apply. */

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">पहचाने गए पाठ को संपादित करने के लिए सेवा चुनें और उसकी API कुंजी दर्ज करें। वाक् पहचान मुख्य सेटिंग स्क्रीन पर कॉन्फ़िगर की जाती है। कीबोर्ड के बटनों से प्रोसेसिंग मोड बदलें।</string>
+    <string name="pp_api_format">API प्रारूप</string>
+    <string name="pp_api_format_hint">प्रदाता प्रीसेट अपने आप प्रारूप चुनते हैं। कस्टम सेवाएँ इनमें से किसी भी प्रारूप का उपयोग कर सकती हैं।</string>
+    <string name="pp_endpoint_default_hint">खाली होने पर नीचे दिखाया गया डिफ़ॉल्ट मान उपयोग होता है। आप प्रदाता का बेस URL भी पेस्ट कर सकते हैं; अनुरोध पथ अपने आप जुड़ जाता है।</string>
+    <string name="pp_model_default_hint">खाली होने पर नीचे दिखाया गया डिफ़ॉल्ट मॉडल उपयोग होता है। OpenRouter जैसे गेटवे को प्रदाता प्रीफ़िक्स चाहिए, जैसे openai/gpt-4o-mini।</string>
+</resources>

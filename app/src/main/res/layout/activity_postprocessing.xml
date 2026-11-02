@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pp_settings_description"
+            android:text="@string/pp_setup_description"
             android:textColor="@color/status_text"
             android:textSize="13sp"
             android:layout_marginBottom="24dp" />
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pp_provider"
+            android:text="@string/pp_api_format"
             android:textColor="@color/key_text"
             android:textSize="14sp" />
         <Spinner
@@ -91,6 +91,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/mic_idle"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pp_api_format_hint"
+            android:textColor="@color/status_text"
+            android:textSize="11sp"
+            android:layout_marginTop="-12dp"
             android:layout_marginBottom="16dp" />
 
         <!-- API Key -->
@@ -133,7 +142,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pp_endpoint_hint"
+            android:text="@string/pp_endpoint_default_hint"
             android:textColor="@color/status_text"
             android:textSize="11sp"
             android:layout_marginBottom="4dp" />
@@ -166,7 +175,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pp_model_hint"
+            android:text="@string/pp_model_default_hint"
             android:textColor="@color/status_text"
             android:textSize="11sp"
             android:layout_marginBottom="4dp" />

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Tanınan metni düzenlemek için bir hizmet seçin ve API anahtarını girin. Konuşma tanıma, ana ayarlar ekranında yapılandırılır. İşleme modlarını klavyedeki düğmelerle değiştirin.</string>
+    <string name="pp_api_format">API biçimi</string>
+    <string name="pp_api_format_hint">Sağlayıcı ön ayarları biçimi otomatik seçer. Özel hizmetler iki biçimden birini kullanabilir.</string>
+    <string name="pp_endpoint_default_hint">Boş bırakılırsa aşağıda gösterilen varsayılan değer kullanılır. Sağlayıcının temel URL adresini de yapıştırabilirsiniz; istek yolu otomatik eklenir.</string>
+    <string name="pp_model_default_hint">Boş bırakılırsa aşağıda gösterilen varsayılan model kullanılır. OpenRouter gibi ağ geçitleri sağlayıcı öneki gerektirir; örneğin openai/gpt-4o-mini.</string>
+</resources>

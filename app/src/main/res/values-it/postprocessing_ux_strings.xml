@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Scegli un servizio per modificare il testo riconosciuto e inserisci la sua chiave API. Il riconoscimento vocale si configura nella schermata principale delle impostazioni. Cambia modalità di elaborazione con i pulsanti della tastiera.</string>
+    <string name="pp_api_format">Formato API</string>
+    <string name="pp_api_format_hint">Le preimpostazioni del provider selezionano il formato automaticamente. I servizi personalizzati possono usare entrambi i formati.</string>
+    <string name="pp_endpoint_default_hint">Se vuoto, viene usato il valore predefinito mostrato sotto. Puoi anche incollare l’URL di base del provider; il percorso della richiesta viene aggiunto automaticamente.</string>
+    <string name="pp_model_default_hint">Se vuoto, viene usato il modello predefinito mostrato sotto. I gateway come OpenRouter richiedono un prefisso del provider, ad esempio openai/gpt-4o-mini.</string>
+</resources>

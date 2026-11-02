@@ -12,12 +12,13 @@
     <string name="settings_language_hint">Comma-separated codes, for example: en, ru. Add more than one and a language key appears on the keyboard. Leave empty to detect automatically.</string>
     <string name="settings_endpoint">API Endpoint</string>
     <string name="settings_auto_record">Auto-start recording</string>
+    <string name="settings_auto_record_hint">Start recording automatically when Voice Keyboard opens. Off by default. Auto-stop on silence controls when recording ends.</string>
     <string name="subtype_label">Voice input</string>
     <string name="settings_return_to_previous_keyboard">Return to previous keyboard after dictation</string>
     <string name="settings_return_to_previous_keyboard_hint">Turn on if you open Voice Keyboard only to dictate, from another keyboard\'s mic key or the keyboard list: once your text is typed, that keyboard comes back by itself. Leave off to dictate several times in a row, or if Voice Keyboard is your main keyboard. The key in the top corner always takes you back.</string>
     <string name="cd_previous_keyboard">Switch to previous keyboard</string>
     <string name="settings_add_space">Add trailing space</string>
-    <string name="settings_apply">Apply</string>
+    <string name="settings_apply">Save and check key</string>
     <string name="settings_enable_instructions">To enable this keyboard:\n\n1. Go to Settings → System → Languages &amp; input → On-screen keyboard\n2. Enable \"Voice Keyboard\"\n3. Switch to it in any text field</string>
     <string name="test_section_title">Test Voice Recognition</string>
     <string name="test_section_hint">Record a short phrase to test that everything works correctly</string>
@@ -62,7 +63,7 @@
     <string name="update_source_disclosure">This APK is downloaded from GitHub Releases. It comes straight from the developer and is not reviewed by the app store you installed from.</string>
     <string name="settings_get_api_key">Free Groq key → console.groq.com</string>
     <string name="settings_get_api_key_alt">Free Mistral key → console.mistral.ai</string>
-    <string name="settings_provider_hint">Any OpenAI-compatible Whisper key works. Groq works out of the box; for Mistral, set the endpoint to api.mistral.ai/v1/audio/transcriptions and the model to voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Use an API key from the selected speech provider. Presets fill in the address and model.</string>
     <string name="about_project">GitHub — About the project</string>
     <string name="link_copied">Link copied</string>
     <string name="no_browser_link_copied">No browser to open the link, so it was copied</string>
@@ -106,7 +107,8 @@
     <string name="pp_terminal">Terminal</string>
     <string name="pp_terminal_visible">Show terminal mode button</string>
     <string name="pp_terminal_visible_hint">Converts voice input into shell commands. Useful for SSH/terminal work.</string>
-    <string name="pp_open_settings">Post-processing settings</string>
+    <string name="pp_open_settings">Post-processing (optional)</string>
+    <string name="settings_postprocessing_hint">Text cleanup uses a separately configured API key. Speech recognition works without post-processing.</string>
     <string name="vocabulary_open_settings">Custom vocabulary</string>
     <string name="vocabulary_title">Custom vocabulary</string>
     <string name="vocabulary_description">Add names, technical terms, or any words that get misrecognized. The list is sent as a hint to the recognizer to improve accuracy. For names, write them with the capitalization you want in the output.</string>

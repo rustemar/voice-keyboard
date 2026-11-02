@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Wähle einen Dienst zum Bearbeiten des erkannten Texts und gib seinen API-Schlüssel ein. Die Spracherkennung wird auf der Hauptseite der Einstellungen eingerichtet. Verarbeitungsmodi wechselst du mit den Tasten auf der Tastatur.</string>
+    <string name="pp_api_format">API-Format</string>
+    <string name="pp_api_format_hint">Anbietervorlagen wählen das Format automatisch. Eigene Dienste können eines der beiden Formate verwenden.</string>
+    <string name="pp_endpoint_default_hint">Bleibt das Feld leer, gilt der unten angezeigte Standardwert. Du kannst auch die Basis-URL des Anbieters einfügen; der Anfragepfad wird automatisch ergänzt.</string>
+    <string name="pp_model_default_hint">Bleibt das Feld leer, gilt das unten angezeigte Standardmodell. Gateways wie OpenRouter benötigen ein Anbieterpräfix, z. B. openai/gpt-4o-mini.</string>
+</resources>

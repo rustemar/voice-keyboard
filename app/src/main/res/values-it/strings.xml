@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Codici separati da virgole, ad esempio: it, en. Indicandone più di una, sulla tastiera compare un tasto della lingua. Lascia vuoto per il rilevamento automatico.</string>
     <string name="settings_endpoint">Endpoint API</string>
     <string name="settings_auto_record">Registrazione automatica</string>
+    <string name="settings_auto_record_hint">Avviare automaticamente la registrazione quando si apre Voice Keyboard. Disattivato per impostazione predefinita. L’arresto automatico in caso di silenzio controlla separatamente quando termina la registrazione.</string>
     <string name="subtype_label">Input vocale</string>
     <string name="settings_return_to_previous_keyboard">Torna alla tastiera precedente dopo la dettatura</string>
     <string name="settings_return_to_previous_keyboard_hint">Attivalo se apri Voice Keyboard solo per dettare, con il tasto microfono di un\'altra tastiera o dall\'elenco delle tastiere: appena il testo viene inserito, quella tastiera torna da sola. Lascialo disattivato se detti più volte di seguito o se Voice Keyboard è la tua tastiera principale. Il tasto nell\'angolo in alto ti riporta sempre indietro.</string>
     <string name="cd_previous_keyboard">Passa alla tastiera precedente</string>
     <string name="settings_add_space">Aggiungi spazio alla fine</string>
-    <string name="settings_apply">Applica</string>
+    <string name="settings_apply">Salva e verifica la chiave</string>
     <string name="settings_enable_instructions">Per attivare questa tastiera:\n\n1. Vai in Impostazioni → Sistema → Lingue e immissione → Tastiera su schermo\n2. Attiva \"Voice Keyboard\"\n3. Selezionala in qualsiasi campo di testo</string>
     <string name="test_section_title">Test riconoscimento vocale</string>
     <string name="test_section_hint">Registra una breve frase per verificare che tutto funzioni</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Impossibile verificare gli aggiornamenti. Controlla la connessione internet.</string>
     <string name="settings_get_api_key">Chiave Groq gratuita → console.groq.com</string>
     <string name="settings_get_api_key_alt">Chiave Mistral gratuita → console.mistral.ai</string>
-    <string name="settings_provider_hint">Funziona qualsiasi chiave Whisper compatibile con OpenAI. Groq funziona con le impostazioni predefinite; per Mistral, imposta l\'endpoint su api.mistral.ai/v1/audio/transcriptions e il modello su voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Usa una chiave API del servizio di riconoscimento scelto. I profili compilano indirizzo e modello.</string>
     <string name="about_project">GitHub — Informazioni sul progetto</string>
     <string name="link_copied">Link copiato</string>
     <string name="no_browser_link_copied">Nessun browser per aprire il link, quindi è stato copiato</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Terminale</string>
     <string name="pp_terminal_visible">Mostra pulsante modalità terminale</string>
     <string name="pp_terminal_visible_hint">Converte l\'input vocale in comandi shell. Utile per il lavoro SSH/terminale.</string>
-    <string name="pp_open_settings">Impostazioni post-elaborazione</string>
+    <string name="pp_open_settings">Post-elaborazione (facoltativa)</string>
+    <string name="settings_postprocessing_hint">La chiave API per migliorare il testo va configurata separatamente. Il riconoscimento vocale funziona anche senza post-elaborazione.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard usa il tuo microfono</string>
     <string name="mic_disclosure_body">Quando tocchi il pulsante del microfono, questa tastiera registra l\'audio e lo invia a un servizio di riconoscimento vocale per convertirlo in testo.\n\n• Cosa viene inviato: solo l\'audio di una registrazione che avvii tu stesso.\n• Dove va: per impostazione predefinita, a Groq Whisper. Nelle impostazioni puoi cambiarlo con qualsiasi endpoint Whisper compatibile con OpenAI, incluso OpenAI stesso.\n• Autenticazione: le richieste vengono effettuate con la tua chiave API; l\'app non include alcun account integrato.\n• Cosa non viene raccolto: nessuna analisi, nessuna pubblicità; il tuo audio non viene caricato da nessuna parte tranne sull\'endpoint che configuri.\n\nL\'audio viene inviato solo durante una registrazione attiva — mai in background.</string>

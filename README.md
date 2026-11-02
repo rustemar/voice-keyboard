@@ -22,8 +22,8 @@ Android keyboard (IME) for speech-to-text. Sends audio to OpenAI-compatible tran
 - **Your own server** — a speech server on your home network works too, over plain `http://` if need be; the settings warn that such an address is not encrypted
 - Configurable API endpoint, model, and language
 - **Multiple dictation languages** — list several language codes in settings and a language key appears on the keyboard: tap to cycle, long-press to pick one. The formatting prompt follows the language you switch to
-- Auto-start recording when keyboard opens
-- **Auto-stop on silence** (off by default) — the timer below Backspace turns automatic stopping on or off, including during a recording. Set the pause in Settings → Keyboard and appearance: 0.3–3 seconds in 0.1-second steps, initially 1.2 seconds. Detection adapts to background volume rather than requiring complete silence; music, other voices or changing noise can affect it. Manual stop remains available.
+- **Auto-start recording** (off by default) — start the microphone when Voice Keyboard opens. This is separate from automatic stopping. Keyboard switches save immediately; the speech-provider form uses **Save and check key**.
+- **Auto-stop on silence** (off by default) — the timer below Backspace turns automatic stopping on or off, including during a recording. Set the pause in Settings → Keyboard and appearance: 0.3–3 seconds in 0.1-second steps, initially 1.2 seconds. Speech detection runs on your device to distinguish pauses from background noise. Other voices, singing or difficult noise can still affect stopping; this does not identify individual speakers. Manual stop remains available.
 - **Voice input for your other keyboard** — a keyboard with a mic key, such as HeliBoard, can open Voice Keyboard for dictation; with *Return to previous keyboard after dictation* on, your keyboard comes back as soon as the text is typed
 - **Voice input for other apps** (off by default) — apps using Android speech recognition can use your configured speech provider directly, through the system recognition service or a standard dictation window. Enable it in Advanced settings, then select Voice Keyboard in Android voice input settings. Returns text without post-processing or recent context; requires a connection to your speech provider. Apps using a fixed or private speech engine are unaffected.
 - **Custom vocabulary** — recognition hints, a separate post-processing word list, and local word/phrase replacements share one settings screen
@@ -157,6 +157,10 @@ git clone https://github.com/rustemar/voice-keyboard.git
 cd voice-keyboard
 ./gradlew assembleDebug
 ```
+
+## Third-party components
+
+Keyboard pause detection uses [Silero VAD](https://github.com/snakers4/silero-vad) by the Silero Team and [ONNX Runtime](https://github.com/microsoft/onnxruntime) by its contributors, both under the MIT license. The model runs locally and is included in the app; it does not introduce another audio recipient. Source revision, model checksum and license texts are included in `app/src/main/assets/third_party/`. Speech-to-text still uses your configured provider.
 
 ## License
 

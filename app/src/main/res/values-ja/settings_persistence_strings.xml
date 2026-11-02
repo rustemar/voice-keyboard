@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_save_failed">設定を保存できませんでした。もう一度お試しください。</string>
+</resources>

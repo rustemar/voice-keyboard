@@ -43,6 +43,10 @@ object ProviderPresets {
         Preset("DeepSeek", "https://api.deepseek.com/v1/chat/completions", "deepseek-flash", PostProcessingPreferences.PROVIDER_OPENAI),
     )
 
+    /** The post-processing form shows its built-in service when an override is empty. */
+    fun postProcessingIndexOf(endpoint: String, provider: String): Int =
+        indexOf(postProcessing, endpoint.ifBlank { PostProcessingPreferences.defaultEndpoint(provider) })
+
     /** Index of the preset served by the host of [endpoint]; -1 when the address is custom or blank. */
     fun indexOf(presets: List<Preset>, endpoint: String): Int {
         val host = ApiEndpoint.hostOf(ApiEndpoint.complete(endpoint, ""))

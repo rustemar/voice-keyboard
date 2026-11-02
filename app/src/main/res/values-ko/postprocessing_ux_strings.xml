@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">인식된 텍스트를 편집할 서비스를 선택하고 해당 API 키를 입력하세요. 음성 인식은 기본 설정 화면에서 구성합니다. 키보드의 버튼으로 처리 모드를 전환하세요.</string>
+    <string name="pp_api_format">API 형식</string>
+    <string name="pp_api_format_hint">공급자 사전 설정은 형식을 자동으로 선택합니다. 사용자 지정 서비스는 두 형식 중 하나를 사용할 수 있습니다.</string>
+    <string name="pp_endpoint_default_hint">비워 두면 아래에 표시된 기본값을 사용합니다. 공급자의 기본 URL을 붙여 넣을 수도 있습니다. 요청 경로는 자동으로 추가됩니다.</string>
+    <string name="pp_model_default_hint">비워 두면 아래에 표시된 기본 모델을 사용합니다. OpenRouter 같은 게이트웨이에는 openai/gpt-4o-mini와 같은 공급자 접두사가 필요합니다.</string>
+</resources>

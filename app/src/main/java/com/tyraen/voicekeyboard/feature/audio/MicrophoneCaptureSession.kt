@@ -51,7 +51,7 @@ class MicrophoneCaptureSession(private val context: Context) {
     val isActive: Boolean
         get() = recorder != null || pcmCapture != null
 
-    /** Private test path: keep raw PCM local while a worker independently analyses speech. */
+    /** Capture PCM privately while an independent worker detects speech locally. */
     fun beginPcm(
         onAmplitude: (Int) -> Unit,
         onPcm: (ShortArray, Int, Long) -> Unit,

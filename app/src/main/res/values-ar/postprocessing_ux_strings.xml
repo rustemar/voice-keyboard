@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">اختر خدمة لتحرير النص الذي تم التعرف عليه وأدخل مفتاح API الخاص بها. يُضبط التعرف على الكلام في شاشة الإعدادات الرئيسية. بدّل أوضاع المعالجة بأزرار لوحة المفاتيح.</string>
+    <string name="pp_api_format">صيغة API</string>
+    <string name="pp_api_format_hint">تختار الإعدادات المسبقة للمزوّد الصيغة تلقائيًا. قد تستخدم الخدمات المخصصة أيًا من الصيغتين.</string>
+    <string name="pp_endpoint_default_hint">عند ترك الحقل فارغًا، تُستخدم القيمة الافتراضية الموضّحة أدناه. يمكنك أيضًا لصق عنوان URL الأساسي للمزوّد؛ ويُضاف مسار الطلب تلقائيًا.</string>
+    <string name="pp_model_default_hint">عند ترك الحقل فارغًا، يُستخدم النموذج الافتراضي الموضّح أدناه. تتطلب البوابات مثل OpenRouter بادئة المزوّد، مثل openai/gpt-4o-mini.</string>
+</resources>

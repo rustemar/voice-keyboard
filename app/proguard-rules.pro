@@ -19,7 +19,7 @@
 # Activities referenced from manifest
 -keep class com.tyraen.voicekeyboard.feature.setup.SetupActivity { *; }
 -keep class com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingActivity { *; }
-# ONNX Runtime reaches these classes through JNI in the experimental speech detector.
+# ONNX Runtime reaches these classes through JNI in the local speech detector.
 -keep class ai.onnxruntime.** { *; }
 -keep class com.tyraen.voicekeyboard.feature.audio.SileroVoiceDetector { *; }
 -keep class com.tyraen.voicekeyboard.feature.audio.SileroVoiceDetector$Companion { *; }

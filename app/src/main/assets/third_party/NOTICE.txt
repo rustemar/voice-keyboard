@@ -8,5 +8,3 @@ ONNX Runtime Android 1.24.3
 Source: https://github.com/microsoft/onnxruntime
 Artifact: com.microsoft.onnxruntime:onnxruntime-android:1.24.3
 License: MIT; see onnxruntime-LICENSE.txt.
-
-Engine recordings used for local evaluation are not included in this app.

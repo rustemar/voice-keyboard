@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Коды праз коску, напрыклад: be, en. Калі ўказаць некалькі, на клавіятуры з\'явіцца кнопка пераключэння мовы. Пакіньце пустым для аўтаматычнага вызначэння.</string>
     <string name="settings_endpoint">Адрас API</string>
     <string name="settings_auto_record">Аўтаматычны запіс</string>
+    <string name="settings_auto_record_hint">Пачынаць запіс аўтаматычна пры адкрыцці Voice Keyboard. Па змаўчанні выключана. Аўтаспыненне пры цішыні асобна кіруе завяршэннем запісу.</string>
     <string name="subtype_label">Галасавы ўвод</string>
     <string name="settings_return_to_previous_keyboard">Вяртацца да папярэдняй клавіятуры пасля дыктоўкі</string>
     <string name="settings_return_to_previous_keyboard_hint">Уключыце, калі адкрываеце Voice Keyboard толькі для дыктоўкі — кнопкай мікрафона іншай клавіятуры або са спісу клавіятур: калі тэкст устаўлены, тая клавіятура вяртаецца сама. Пакіньце выключаным, калі дыктуеце некалькі разоў запар або Voice Keyboard — ваша асноўная клавіятура. Кнопка ў верхнім куце заўсёды вяртае назад.</string>
     <string name="cd_previous_keyboard">Пераключыцца на папярэднюю клавіятуру</string>
     <string name="settings_add_space">Дадаваць прабел у канцы</string>
-    <string name="settings_apply">Прымяніць</string>
+    <string name="settings_apply">Захаваць і праверыць ключ</string>
     <string name="settings_enable_instructions">Каб уключыць гэту клавіятуру:\n\n1. Перайдзіце ў Налады → Сістэма → Мовы і ўвод → Экранная клавіятура\n2. Уключыце \"Voice Keyboard\"\n3. Абярыце яе ў любым тэкставым полі</string>
     <string name="test_section_title">Тэст распазнавання маўлення</string>
     <string name="test_section_hint">Запішыце кароткую фразу, каб праверыць працу</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Не ўдалося праверыць абнаўленні. Праверце падключэнне да інтэрнэту.</string>
     <string name="settings_get_api_key">Бясплатны ключ Groq → console.groq.com</string>
     <string name="settings_get_api_key_alt">Бясплатны ключ Mistral → console.mistral.ai</string>
-    <string name="settings_provider_hint">Падыдзе любы Whisper-ключ, сумяшчальны з OpenAI. Groq працуе адразу з прадвызначанымі наладамі; для Mistral пазначце адрас api.mistral.ai/v1/audio/transcriptions і мадэль voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Выкарыстоўвайце API-ключ выбранага сэрвісу распазнавання. Гатовы профіль падстаўляе адрас і мадэль.</string>
     <string name="about_project">GitHub — Пра праект</string>
     <string name="link_copied">Спасылка скапіравана</string>
     <string name="no_browser_link_copied">Няма браўзера, каб адкрыць спасылку, таму яна скапіравана</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Тэрмінал</string>
     <string name="pp_terminal_visible">Паказаць кнопку тэрмінала</string>
     <string name="pp_terminal_visible_hint">Пераўтварае галасавы ўвод у каманды тэрмінала. Карысна для працы з SSH.</string>
-    <string name="pp_open_settings">Налады постапрацоўкі</string>
+    <string name="pp_open_settings">Постапрацоўка (неабавязкова)</string>
+    <string name="settings_postprocessing_hint">Для паляпшэння тэксту ключ наладжваецца асобна. Распазнаванне працуе і без постапрацоўкі.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard выкарыстоўвае мікрафон</string>
     <string name="mic_disclosure_body">Калі вы націскаеце кнопку мікрафона, клавіятура запісвае гук і адпраўляе яго ў сэрвіс распазнання маўлення, каб пераўтварыць голас у тэкст.\n\n• Што адпраўляецца: толькі аўдыя запісу, які вы самі пачынаеце.\n• Куды трапляе: па змаўчанні — у Groq Whisper. У наладах можна выбраць любы сумяшчальны з OpenAI эндпойнт Whisper, у тым ліку сам OpenAI.\n• Аўтарызацыя: запыты адбываюцца з вашым API-ключом; уласнага акаўнта ў дадатку няма.\n• Чаго не збіраем: ніякай аналітыкі, рэкламы; ваша аўдыя не загружаецца нікуды, акрамя наладжанага вамі эндпойнта.\n\nАўдыя адпраўляецца толькі падчас актыўнага запісу — ніколі ў фоне.</string>

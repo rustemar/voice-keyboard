@@ -19,6 +19,29 @@ class ProviderPresetsTest {
         assertEquals(-1, ProviderPresets.indexOf(ProviderPresets.speechToText, "https://openrouter.ai.example.org/api/v1"))
     }
 
+    @Test fun `empty post-processing override shows the built-in service for its API format`() {
+        assertEquals(0, ProviderPresets.postProcessingIndexOf("", PostProcessingPreferences.PROVIDER_CLAUDE))
+        assertEquals(1, ProviderPresets.postProcessingIndexOf("  ", PostProcessingPreferences.PROVIDER_OPENAI))
+    }
+
+    @Test fun `an entered post-processing service takes precedence over the form format`() {
+        assertEquals(2, ProviderPresets.postProcessingIndexOf(
+            "https://openrouter.ai/api/v1", PostProcessingPreferences.PROVIDER_CLAUDE
+        ))
+        assertEquals(0, ProviderPresets.postProcessingIndexOf(
+            PostProcessingPreferences.DEFAULT_CLAUDE_ENDPOINT, PostProcessingPreferences.PROVIDER_OPENAI
+        ))
+    }
+
+    @Test fun `custom post-processing service never displays a built-in preset`() {
+        assertEquals(-1, ProviderPresets.postProcessingIndexOf(
+            "https://my-text-service.example/v1/messages", PostProcessingPreferences.PROVIDER_CLAUDE
+        ))
+        assertEquals(-1, ProviderPresets.postProcessingIndexOf(
+            "https://api.anthropic.com.example/v1/messages", PostProcessingPreferences.PROVIDER_CLAUDE
+        ))
+    }
+
     @Test fun `OpenRouter speech preset uses a namespaced transcription model`() {
         val preset = ProviderPresets.speechToText.single { it.name == "OpenRouter" }
         assertEquals("openai/whisper-large-v3-turbo", preset.model)

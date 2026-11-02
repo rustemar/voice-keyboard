@@ -11,12 +11,13 @@
     <string name="settings_language_hint">以逗号分隔的代码，例如：zh, en。指定多个时，键盘上会出现语言切换键。留空则自动检测。</string>
     <string name="settings_endpoint">API 地址</string>
     <string name="settings_auto_record">自动录音</string>
+    <string name="settings_auto_record_hint">打开 Voice Keyboard 时自动开始录音。默认关闭。录音何时结束由静音时自动停止设置单独控制。</string>
     <string name="subtype_label">语音输入</string>
     <string name="settings_return_to_previous_keyboard">语音输入后返回上一个键盘</string>
     <string name="settings_return_to_previous_keyboard_hint">如果你只是为了语音输入才打开 Voice Keyboard（通过其他键盘的麦克风键或键盘列表），请开启此项：文字输入后会自动切换回那个键盘。如果你要连续多次语音输入，或者 Voice Keyboard 是你的主键盘，请保持关闭。上角的按键随时可以带你回到上一个键盘。</string>
     <string name="cd_previous_keyboard">切换到上一个键盘</string>
     <string name="settings_add_space">末尾添加空格</string>
-    <string name="settings_apply">应用</string>
+    <string name="settings_apply">保存并验证密钥</string>
     <string name="settings_enable_instructions">启用此键盘：\n\n1. 前往设置 → 系统 → 语言和输入法 → 屏幕键盘\n2. 启用 \"Voice Keyboard\"\n3. 在任意文本框中切换到该键盘</string>
     <string name="test_section_title">测试语音识别</string>
     <string name="test_section_hint">录制一段短语来测试功能是否正常</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">无法检查更新，请检查网络连接。</string>
     <string name="settings_get_api_key">免费 Groq 密钥 → console.groq.com</string>
     <string name="settings_get_api_key_alt">免费 Mistral 密钥 → console.mistral.ai</string>
-    <string name="settings_provider_hint">任何兼容 OpenAI 的 Whisper 密钥均可使用。Groq 开箱即用；使用 Mistral 时，请将接口地址设为 api.mistral.ai/v1/audio/transcriptions，模型设为 voxtral-mini-latest。</string>
+    <string name="settings_provider_hint">请使用所选语音服务商的 API 密钥。预设会自动填写地址和模型。</string>
     <string name="about_project">GitHub — 关于项目</string>
     <string name="link_copied">链接已复制</string>
     <string name="no_browser_link_copied">没有可以打开链接的浏览器，已复制链接</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">终端</string>
     <string name="pp_terminal_visible">显示终端模式按钮</string>
     <string name="pp_terminal_visible_hint">将语音输入转换为终端命令。适用于SSH/终端工作。</string>
-    <string name="pp_open_settings">后处理设置</string>
+    <string name="pp_open_settings">后处理（可选）</string>
+    <string name="settings_postprocessing_hint">文本优化的 API 密钥需单独设置。语音识别无需启用后处理。</string>
 
     <string name="mic_disclosure_title">Voice Keyboard 使用您的麦克风</string>
     <string name="mic_disclosure_body">当您点按麦克风按钮时，此键盘会录制音频并将其发送至语音转文字服务，以将您的语音转换为文字。\n\n• 发送内容：仅发送您自己开始的录音音频。\n• 发送至哪里：默认发送至 Groq Whisper。您可以在设置中切换至任何兼容 OpenAI 的 Whisper 端点，包括 OpenAI 自身。\n• 身份验证：请求使用您自己的 API 密钥；应用本身不内置任何帐户。\n• 不收集的内容：不进行任何分析，无广告；您的音频不会上传到您配置的端点以外的任何地方。\n\n仅在您主动录音时发送音频 — 绝不会在后台发送。</string>

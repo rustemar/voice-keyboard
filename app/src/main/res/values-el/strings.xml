@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Κωδικοί χωρισμένοι με κόμμα, για παράδειγμα: el, en. Αν προσθέσετε περισσότερους από έναν, εμφανίζεται πλήκτρο γλώσσας στο πληκτρολόγιο. Αφήστε το κενό για αυτόματη ανίχνευση.</string>
     <string name="settings_endpoint">Διεύθυνση API</string>
     <string name="settings_auto_record">Αυτόματη εγγραφή</string>
+    <string name="settings_auto_record_hint">Έναρξη εγγραφής αυτόματα όταν ανοίγει το Voice Keyboard. Απενεργοποιημένο από προεπιλογή. Η αυτόματη διακοπή στη σιωπή ελέγχει ξεχωριστά πότε τελειώνει η εγγραφή.</string>
     <string name="subtype_label">Φωνητική πληκτρολόγηση</string>
     <string name="settings_return_to_previous_keyboard">Επιστροφή στο προηγούμενο πληκτρολόγιο μετά την υπαγόρευση</string>
     <string name="settings_return_to_previous_keyboard_hint">Ενεργοποιήστε το αν ανοίγετε το Voice Keyboard μόνο για υπαγόρευση, με το πλήκτρο μικροφώνου άλλου πληκτρολογίου ή από τη λίστα πληκτρολογίων: μόλις εισαχθεί το κείμενο, εκείνο το πληκτρολόγιο επιστρέφει αυτόματα. Αφήστε το απενεργοποιημένο αν υπαγορεύετε πολλές φορές στη σειρά ή αν το Voice Keyboard είναι το κύριο πληκτρολόγιό σας. Το πλήκτρο στην επάνω γωνία σάς επιστρέφει πάντα πίσω.</string>
     <string name="cd_previous_keyboard">Εναλλαγή στο προηγούμενο πληκτρολόγιο</string>
     <string name="settings_add_space">Προσθήκη κενού στο τέλος</string>
-    <string name="settings_apply">Εφαρμογή</string>
+    <string name="settings_apply">Αποθήκευση και έλεγχος κλειδιού</string>
     <string name="settings_enable_instructions">Για να ενεργοποιήσετε αυτό το πληκτρολόγιο:\n\n1. Μεταβείτε στις Ρυθμίσεις → Σύστημα → Γλώσσες και εισαγωγή → Πληκτρολόγιο οθόνης\n2. Ενεργοποιήστε το \"Voice Keyboard\"\n3. Επιλέξτε το σε οποιοδήποτε πεδίο κειμένου</string>
     <string name="test_section_title">Δοκιμή αναγνώρισης φωνής</string>
     <string name="test_section_hint">Ηχογραφήστε μια σύντομη φράση για να ελέγξετε ότι όλα λειτουργούν</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Δεν ήταν δυνατός ο έλεγχος ενημερώσεων. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο.</string>
     <string name="settings_get_api_key">Δωρεάν κλειδί Groq → console.groq.com</string>
     <string name="settings_get_api_key_alt">Δωρεάν κλειδί Mistral → console.mistral.ai</string>
-    <string name="settings_provider_hint">Λειτουργεί οποιοδήποτε κλειδί Whisper συμβατό με OpenAI. Το Groq λειτουργεί με τις προεπιλεγμένες ρυθμίσεις· για το Mistral, ορίστε το endpoint σε api.mistral.ai/v1/audio/transcriptions και το μοντέλο σε voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Χρησιμοποιήστε κλειδί API του επιλεγμένου παρόχου ομιλίας. Τα προφίλ συμπληρώνουν τη διεύθυνση και το μοντέλο.</string>
     <string name="about_project">GitHub — Σχετικά με το έργο</string>
     <string name="link_copied">Ο σύνδεσμος αντιγράφηκε</string>
     <string name="no_browser_link_copied">Δεν υπάρχει πρόγραμμα περιήγησης για να ανοίξει ο σύνδεσμος, οπότε αντιγράφηκε</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Τερματικό</string>
     <string name="pp_terminal_visible">Εμφάνιση κουμπιού λειτουργίας τερματικού</string>
     <string name="pp_terminal_visible_hint">Μετατρέπει τη φωνητική εισαγωγή σε εντολές κελύφους. Χρήσιμο για εργασία SSH/τερματικού.</string>
-    <string name="pp_open_settings">Ρυθμίσεις μετεπεξεργασίας</string>
+    <string name="pp_open_settings">Μετεπεξεργασία (προαιρετικά)</string>
+    <string name="settings_postprocessing_hint">Το κλειδί API για τη βελτίωση κειμένου ρυθμίζεται ξεχωριστά. Η αναγνώριση ομιλίας λειτουργεί χωρίς μετεπεξεργασία.</string>
 
     <string name="mic_disclosure_title">Το Voice Keyboard χρησιμοποιεί το μικρόφωνο</string>
     <string name="mic_disclosure_body">Όταν πατάτε το κουμπί του μικροφώνου, αυτό το πληκτρολόγιο καταγράφει ήχο και τον στέλνει σε μια υπηρεσία μετατροπής φωνής σε κείμενο.\n\n• Τι αποστέλλεται: μόνο ο ήχος μιας ηχογράφησης που ξεκινήσατε εσείς.\n• Πού πηγαίνει: από προεπιλογή στο Groq Whisper. Μπορείτε να το αλλάξετε στις ρυθμίσεις σε οποιοδήποτε άλλο σημείο αποστολής Whisper συμβατό με το OpenAI, συμπεριλαμβανομένου του OpenAI.\n• Επαλήθευση: τα αιτήματα γίνονται με το δικό σας κλειδί API· η εφαρμογή δεν έχει ενσωματωμένο λογαριασμό.\n• Τι δεν συλλέγεται: καμία αναλυτική, καμία διαφήμιση· ο ήχος σας δεν αποστέλλεται πουθενά εκτός από το σημείο που έχετε ρυθμίσει.\n\nΟ ήχος αποστέλλεται μόνο κατά την ενεργό ηχογράφηση — ποτέ στο παρασκήνιο.</string>

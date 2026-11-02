@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Choose a provider for editing recognized text and enter its API key. Speech recognition is configured on the main settings screen. Switch processing modes with the buttons on the keyboard.</string>
+    <string name="pp_api_format">API format</string>
+    <string name="pp_api_format_hint">Provider presets select the format automatically. Custom services may use either format.</string>
+    <string name="pp_endpoint_default_hint">When empty, uses the default shown below. You can also paste your provider’s base URL; the request path is added automatically.</string>
+    <string name="pp_model_default_hint">When empty, uses the default shown below. Gateways such as OpenRouter require a vendor prefix, e.g. openai/gpt-4o-mini.</string>
+</resources>

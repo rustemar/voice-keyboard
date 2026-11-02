@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Wybierz usługę do edycji rozpoznanego tekstu i wpisz jej klucz API. Rozpoznawanie mowy konfiguruje się na głównym ekranie ustawień. Tryby przetwarzania zmienia się przyciskami na klawiaturze.</string>
+    <string name="pp_api_format">Format API</string>
+    <string name="pp_api_format_hint">Gotowe ustawienia dostawców wybierają format automatycznie. Własne usługi mogą używać dowolnego z tych formatów.</string>
+    <string name="pp_endpoint_default_hint">Puste pole oznacza użycie wartości domyślnej pokazanej poniżej. Możesz też wkleić bazowy URL dostawcy; ścieżka żądania zostanie dodana automatycznie.</string>
+    <string name="pp_model_default_hint">Puste pole oznacza użycie modelu domyślnego pokazanego poniżej. Bramki takie jak OpenRouter wymagają prefiksu dostawcy, np. openai/gpt-4o-mini.</string>
+</resources>

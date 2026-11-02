@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Kody oddzielone przecinkami, na przykład: pl, en. Po podaniu kilku na klawiaturze pojawi się klawisz języka. Zostaw puste, aby wykrywać automatycznie.</string>
     <string name="settings_endpoint">Punkt końcowy API</string>
     <string name="settings_auto_record">Automatyczne nagrywanie</string>
+    <string name="settings_auto_record_hint">Rozpoczynaj nagrywanie automatycznie po otwarciu Voice Keyboard. Domyślnie wyłączone. Automatyczne zatrzymanie po ciszy osobno określa, kiedy nagrywanie się kończy.</string>
     <string name="subtype_label">Wprowadzanie głosowe</string>
     <string name="settings_return_to_previous_keyboard">Powrót do poprzedniej klawiatury po dyktowaniu</string>
     <string name="settings_return_to_previous_keyboard_hint">Włącz, jeśli otwierasz Voice Keyboard tylko po to, by dyktować — przyciskiem mikrofonu innej klawiatury lub z listy klawiatur: gdy tekst zostanie wpisany, tamta klawiatura wraca sama. Zostaw wyłączone, jeśli dyktujesz kilka razy z rzędu lub Voice Keyboard jest Twoją główną klawiaturą. Przycisk w górnym rogu zawsze przełącza z powrotem.</string>
     <string name="cd_previous_keyboard">Przełącz na poprzednią klawiaturę</string>
     <string name="settings_add_space">Dodaj spację na końcu</string>
-    <string name="settings_apply">Zastosuj</string>
+    <string name="settings_apply">Zapisz i sprawdź klucz</string>
     <string name="settings_enable_instructions">Aby aktywować tę klawiaturę:\n\n1. Przejdź do Ustawienia → System → Języki i wprowadzanie → Klawiatura ekranowa\n2. Włącz \"Voice Keyboard\"\n3. Wybierz ją w dowolnym polu tekstowym</string>
     <string name="test_section_title">Test rozpoznawania mowy</string>
     <string name="test_section_hint">Nagraj krótką frazę, aby sprawdzić, czy wszystko działa</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Nie udało się sprawdzić aktualizacji. Sprawdź połączenie z internetem.</string>
     <string name="settings_get_api_key">Darmowy klucz Groq → console.groq.com</string>
     <string name="settings_get_api_key_alt">Darmowy klucz Mistral → console.mistral.ai</string>
-    <string name="settings_provider_hint">Działa każdy klucz Whisper zgodny z OpenAI. Groq działa od razu; w przypadku Mistral ustaw endpoint na api.mistral.ai/v1/audio/transcriptions, a model na voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Użyj klucza API wybranego dostawcy rozpoznawania mowy. Profile uzupełniają adres i model.</string>
     <string name="about_project">GitHub — O projekcie</string>
     <string name="link_copied">Link skopiowany</string>
     <string name="no_browser_link_copied">Brak przeglądarki do otwarcia linku, więc został skopiowany</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Terminal</string>
     <string name="pp_terminal_visible">Pokaż przycisk trybu terminala</string>
     <string name="pp_terminal_visible_hint">Zamienia mowę na polecenia terminala. Przydatne do pracy z SSH.</string>
-    <string name="pp_open_settings">Ustawienia przetwarzania</string>
+    <string name="pp_open_settings">Przetwarzanie tekstu (opcjonalne)</string>
+    <string name="settings_postprocessing_hint">Klucz API do poprawiania tekstu ustawia się osobno. Rozpoznawanie mowy działa bez przetwarzania tekstu.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard używa mikrofonu</string>
     <string name="mic_disclosure_body">Po naciśnięciu przycisku mikrofonu klawiatura nagrywa dźwięk i wysyła go do usługi rozpoznawania mowy w celu zamiany głosu na tekst.\n\n• Co jest wysyłane: wyłącznie dźwięk nagrania, które sam(a) rozpoczynasz.\n• Dokąd trafia: domyślnie do Groq Whisper. W ustawieniach możesz wybrać dowolny zgodny z OpenAI punkt końcowy Whisper, w tym sam OpenAI.\n• Uwierzytelnianie: żądania są wykonywane z Twoim własnym kluczem API; aplikacja nie ma wbudowanego konta.\n• Czego nie zbieramy: żadnej analityki, żadnych reklam; Twój dźwięk nie jest wysyłany nigdzie poza skonfigurowany przez Ciebie punkt końcowy.\n\nDźwięk jest wysyłany tylko podczas aktywnego nagrywania — nigdy w tle.</string>

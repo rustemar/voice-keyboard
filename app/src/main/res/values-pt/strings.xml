@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Códigos separados por vírgulas, por exemplo: pt, en. Se indicar mais de um, aparece uma tecla de idioma no teclado. Deixe vazio para deteção automática.</string>
     <string name="settings_endpoint">Endpoint da API</string>
     <string name="settings_auto_record">Gravação automática</string>
+    <string name="settings_auto_record_hint">Iniciar a gravação automaticamente ao abrir o Voice Keyboard. Desativado por padrão. A paragem automática no silêncio controla separadamente quando a gravação termina.</string>
     <string name="subtype_label">Entrada por voz</string>
     <string name="settings_return_to_previous_keyboard">Voltar ao teclado anterior após ditar</string>
     <string name="settings_return_to_previous_keyboard_hint">Ative se você abre o Voice Keyboard só para ditar, com a tecla de microfone de outro teclado ou pela lista de teclados: assim que o texto é digitado, esse teclado volta sozinho. Deixe desativado se você dita várias vezes seguidas ou se o Voice Keyboard for seu teclado principal. A tecla no canto superior sempre leva você de volta.</string>
     <string name="cd_previous_keyboard">Mudar para o teclado anterior</string>
     <string name="settings_add_space">Adicionar espaço no final</string>
-    <string name="settings_apply">Aplicar</string>
+    <string name="settings_apply">Guardar e verificar chave</string>
     <string name="settings_enable_instructions">Para ativar este teclado:\n\n1. Vá em Configurações → Sistema → Idiomas e entrada → Teclado na tela\n2. Ative \"Voice Keyboard\"\n3. Selecione-o em qualquer campo de texto</string>
     <string name="test_section_title">Testar reconhecimento de voz</string>
     <string name="test_section_hint">Grave uma frase curta para verificar se tudo funciona</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Não foi possível verificar atualizações. Verifique sua conexão com a internet.</string>
     <string name="settings_get_api_key">Chave Groq gratuita → console.groq.com</string>
     <string name="settings_get_api_key_alt">Chave Mistral gratuita → console.mistral.ai</string>
-    <string name="settings_provider_hint">Qualquer chave Whisper compatível com OpenAI funciona. O Groq funciona sem configuração; para o Mistral, defina o endpoint como api.mistral.ai/v1/audio/transcriptions e o modelo como voxtral-mini-latest.</string>
+    <string name="settings_provider_hint">Use uma chave API do serviço de reconhecimento selecionado. Os perfis preenchem o endereço e o modelo.</string>
     <string name="about_project">GitHub — Sobre o projeto</string>
     <string name="link_copied">Link copiado</string>
     <string name="no_browser_link_copied">Não há navegador para abrir o link, então ele foi copiado</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Terminal</string>
     <string name="pp_terminal_visible">Mostrar botão do modo terminal</string>
     <string name="pp_terminal_visible_hint">Converte entrada de voz em comandos de terminal. Útil para trabalho SSH.</string>
-    <string name="pp_open_settings">Configurações de pós-processamento</string>
+    <string name="pp_open_settings">Pós-processamento (opcional)</string>
+    <string name="settings_postprocessing_hint">A chave API para melhorar o texto é configurada separadamente. O reconhecimento de voz funciona sem pós-processamento.</string>
 
     <string name="mic_disclosure_title">O Voice Keyboard usa o seu microfone</string>
     <string name="mic_disclosure_body">Quando você toca no botão do microfone, este teclado grava áudio e o envia para um serviço de reconhecimento de fala para convertê-lo em texto.\n\n• O que é enviado: apenas o áudio de uma gravação que você mesmo inicia.\n• Para onde vai: por padrão, para o Groq Whisper. Nas configurações, você pode mudar para qualquer endpoint Whisper compatível com OpenAI, incluindo o próprio OpenAI.\n• Autenticação: as requisições são feitas com a sua própria chave de API; o app não inclui conta integrada.\n• O que não é coletado: sem analytics, sem publicidade; seu áudio não é enviado para lugar algum além do endpoint que você configurar.\n\nO áudio só é enviado durante uma gravação ativa — nunca em segundo plano.</string>

@@ -11,12 +11,13 @@
     <string name="settings_language_hint">Codes durch Komma getrennt, zum Beispiel: de, en. Bei mehreren Sprachen erscheint eine Sprachtaste auf der Tastatur. Leer lassen für automatische Erkennung.</string>
     <string name="settings_endpoint">API-Endpunkt</string>
     <string name="settings_auto_record">Automatische Aufnahme</string>
+    <string name="settings_auto_record_hint">Aufnahme beim Öffnen von Voice Keyboard automatisch starten. Standardmäßig aus. Der automatische Stopp bei Sprechpause steuert separat, wann die Aufnahme endet.</string>
     <string name="subtype_label">Spracheingabe</string>
     <string name="settings_return_to_previous_keyboard">Nach dem Diktieren zur vorherigen Tastatur zurückkehren</string>
     <string name="settings_return_to_previous_keyboard_hint">Aktivieren Sie das, wenn Sie Voice Keyboard nur zum Diktieren öffnen, über die Mikrofontaste einer anderen Tastatur oder die Tastaturliste: Sobald der Text eingefügt ist, kehrt diese Tastatur von selbst zurück. Lassen Sie es aus, wenn Sie mehrmals hintereinander diktieren oder Voice Keyboard Ihre Haupttastatur ist. Die Taste in der oberen Ecke bringt Sie immer zurück.</string>
     <string name="cd_previous_keyboard">Zur vorherigen Tastatur wechseln</string>
     <string name="settings_add_space">Leerzeichen am Ende hinzufügen</string>
-    <string name="settings_apply">Übernehmen</string>
+    <string name="settings_apply">Speichern und Schlüssel prüfen</string>
     <string name="settings_enable_instructions">Um diese Tastatur zu aktivieren:\n\n1. Gehen Sie zu Einstellungen → System → Sprachen und Eingabe → Bildschirmtastatur\n2. Aktivieren Sie \"Voice Keyboard\"\n3. Wählen Sie sie in einem beliebigen Textfeld aus</string>
     <string name="test_section_title">Spracherkennung testen</string>
     <string name="test_section_hint">Nehmen Sie einen kurzen Satz auf, um zu prüfen, ob alles funktioniert</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">Updates konnten nicht geprüft werden. Überprüfen Sie Ihre Internetverbindung.</string>
     <string name="settings_get_api_key">Kostenloser Groq-Schlüssel → console.groq.com</string>
     <string name="settings_get_api_key_alt">Kostenloser Mistral-Schlüssel → console.mistral.ai</string>
-    <string name="settings_provider_hint">Jeder OpenAI-kompatible Whisper-Schlüssel funktioniert. Groq funktioniert mit den Standardeinstellungen; für Mistral den Endpunkt auf api.mistral.ai/v1/audio/transcriptions und das Modell auf voxtral-mini-latest setzen.</string>
+    <string name="settings_provider_hint">Verwende einen API-Schlüssel des gewählten Sprachanbieters. Voreinstellungen tragen Adresse und Modell ein.</string>
     <string name="about_project">GitHub — Über das Projekt</string>
     <string name="link_copied">Link kopiert</string>
     <string name="no_browser_link_copied">Kein Browser zum Öffnen des Links vorhanden, daher wurde er kopiert</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">Terminal</string>
     <string name="pp_terminal_visible">Terminal-Modus-Taste anzeigen</string>
     <string name="pp_terminal_visible_hint">Wandelt Spracheingabe in Shell-Befehle um. Nützlich für SSH-/Terminal-Arbeit.</string>
-    <string name="pp_open_settings">Nachbearbeitung-Einstellungen</string>
+    <string name="pp_open_settings">Nachbearbeitung (optional)</string>
+    <string name="settings_postprocessing_hint">Für die Textüberarbeitung wird der API-Schlüssel separat eingerichtet. Spracherkennung funktioniert auch ohne Nachbearbeitung.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard verwendet das Mikrofon</string>
     <string name="mic_disclosure_body">Wenn Sie auf die Mikrofontaste tippen, nimmt diese Tastatur Audio auf und sendet es an einen Spracherkennungsdienst, um Ihre Stimme in Text umzuwandeln.\n\n• Was gesendet wird: nur das Audio einer Aufnahme, die Sie selbst gestartet haben.\n• Wohin: standardmäßig an Groq Whisper. In den Einstellungen können Sie auf jeden mit OpenAI kompatiblen Whisper-Endpunkt wechseln, einschließlich OpenAI selbst.\n• Authentifizierung: Anfragen werden mit Ihrem eigenen API-Schlüssel gestellt; die App hat kein integriertes Konto.\n• Was nicht erfasst wird: keine Analytik, keine Werbung; Ihr Audio wird nirgendwo hochgeladen außer an den von Ihnen konfigurierten Endpunkt.\n\nAudio wird nur während einer aktiven Aufnahme gesendet — niemals im Hintergrund.</string>

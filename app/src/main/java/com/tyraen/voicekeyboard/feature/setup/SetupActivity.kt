@@ -43,10 +43,32 @@ import java.text.NumberFormat
 class SetupActivity : AppCompatActivity() {
 
     companion object {
+        private const val RECOGNITION_FORM_STATE = "recognition_form"
         private const val COLOR_OK = "#4CAF50"
         private const val COLOR_ERROR = "#EF4444"
         private const val COLOR_WARN = "#FBBF24"
         private const val PRIVACY_URL = "https://github.com/rustemar/voice-keyboard/blob/main/PRIVACY.md"
+
+        // A tap already admitted here must survive closing or recreating this activity. Keep all
+        // keyboard-option writes, including Apply, ordered so an older form cannot undo a new tap.
+        private val settingsWriteScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+        private var pendingSettingsWrite: Deferred<Result<Unit>>? = null
+
+        private fun enqueueSettingsWrite(write: suspend () -> Unit): Deferred<Result<Unit>> {
+            val previous = pendingSettingsWrite
+            return settingsWriteScope.async {
+                previous?.join()
+                try {
+                    write()
+                    Result.success(Unit)
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (error: Exception) {
+                    DiagnosticLog.recordFailure("Settings", "Could not save settings", error)
+                    Result.failure(error)
+                }
+            }.also { pendingSettingsWrite = it }
+        }
     }
 
     private lateinit var spinnerTheme: Spinner
@@ -105,10 +127,11 @@ class SetupActivity : AppCompatActivity() {
 
     /** True while the code sets the update switch, so its listener ignores that echo. */
     private var bindingUpdateSwitch = false
-    private var bindingReturnSwitch = false
-    private var bindingSilenceControls = false
+    private var bindingKeyboardOptions = false
     private lateinit var sections: SettingsSections
     private var preferencesLoaded = false
+    private var preferencesLoad: Job? = null
+    private var restoredRecognitionForm: Bundle? = null
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(InterfaceLanguageManager.applyTo(newBase))
@@ -116,6 +139,7 @@ class SetupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        restoredRecognitionForm = savedInstanceState?.getBundle(RECOGNITION_FORM_STATE)
         setContentView(R.layout.activity_setup)
         sections = SettingsSections(this, savedInstanceState)
 
@@ -137,12 +161,15 @@ class SetupActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         sections.saveState(outState)
+        val form = if (preferencesLoaded) captureRecognitionForm() else restoredRecognitionForm
+        if (form != null) outState.putBundle(RECOGNITION_FORM_STATE, form)
         super.onSaveInstanceState(outState)
     }
 
     /** singleTop: the cog re-enters this instance, so pick up what the keyboard changed meanwhile. */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        restoredRecognitionForm = null
         loadCurrentPreferences()
     }
 
@@ -185,6 +212,12 @@ class SetupActivity : AppCompatActivity() {
         switchAddSpace = findViewById(R.id.switchAddSpace)
         switchSingleWordStripPunct = findViewById(R.id.switchSingleWordStripPunct)
         switchUpdateCheck = findViewById(R.id.switchUpdateCheck)
+        // These controls reload from their own preferences. A stale framework view snapshot must
+        // not trigger their listeners after a newer narrow write has already been loaded.
+        listOf<View>(spinnerTheme, spinnerLanguage, spinnerSttPreset, switchAutoRecord,
+            switchReturnToPreviousKeyboard, switchSilenceAutoStop, seekSilenceAutoStopPause,
+            switchAddSpace, switchSingleWordStripPunct, switchUpdateCheck
+        ).forEach { it.isSaveEnabled = false }
         txtApiStatus = findViewById(R.id.txtApiStatus)
         txtTestResult = findViewById(R.id.txtTestResult)
         txtTestStatus = findViewById(R.id.txtTestStatus)
@@ -274,24 +307,42 @@ class SetupActivity : AppCompatActivity() {
             scope.launch { preferenceStore.setUpdateCheckEnabled(isChecked) }
         }
 
-        // Saved at once: the rest of the screen waits for Apply, which also checks the API key over
-        // the network, and a switch that silently didn't stick looks like a feature that doesn't work.
+        switchAutoRecord.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setAutoRecord(isChecked) }
+        }
+        switchAddSpace.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setAddTrailingSpace(isChecked) }
+        }
+        switchSingleWordStripPunct.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setSingleWordStripPunctuation(isChecked) }
+        }
+
+        // Keyboard options save independently of the provider form and its network validation.
         switchReturnToPreviousKeyboard.setOnCheckedChangeListener { _, isChecked ->
-            if (bindingReturnSwitch) return@setOnCheckedChangeListener
-            scope.launch { preferenceStore.setReturnToPreviousKeyboard(isChecked) }
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setReturnToPreviousKeyboard(isChecked) }
         }
 
         switchSilenceAutoStop.setOnCheckedChangeListener { _, isChecked ->
-            if (bindingSilenceControls || !preferencesLoaded) return@setOnCheckedChangeListener
-            scope.launch { preferenceStore.setSilenceAutoStopEnabled(isChecked) }
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setSilenceAutoStopEnabled(isChecked) }
         }
         seekSilenceAutoStopPause.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 val pauseMs = SilenceAutoStopSettings.pauseMsForProgress(progress)
                 updateSilencePauseLabel(pauseMs)
-                if (!fromUser || bindingSilenceControls || !preferencesLoaded) return
+                if (!fromUser || bindingKeyboardOptions || !preferencesLoaded) return
                 // Covers dragging, hardware arrow keys and accessibility actions equally.
-                scope.launch { preferenceStore.setSilenceAutoStopPauseMs(pauseMs) }
+                val store = preferenceStore
+                enqueueSettingsWrite { store.setSilenceAutoStopPauseMs(pauseMs) }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
@@ -382,13 +433,9 @@ class SetupActivity : AppCompatActivity() {
                 if (locale.code == currentCode) return
 
                 InterfaceLanguageManager.persist(this@SetupActivity, locale.code)
-                // Interface language is independent of dictation languages and custom prompts.
-                // Preserve pending form edits across recreation without rewriting either.
-                val prefs = buildPreferences()
-                scope.launch {
-                    preferenceStore.save(prefs)
-                    recreate()
-                }
+                // Only the interface language changes. onSaveInstanceState retains pending API
+                // form edits across recreation without silently applying them to the provider.
+                recreate()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -450,10 +497,11 @@ class SetupActivity : AppCompatActivity() {
         // Chat-audio accepts prompts and uses a different model catalog.
         openRouterSpeechOptions.isVisible = openRouter && !ApiEndpoint.usesChatCompletions(endpoint)
         txtOpenRouterModel.text = getString(R.string.stt_openrouter_model_summary, editModel.text.toString().trim())
+        val host = ApiEndpoint.hostOf(endpoint)
         findViewById<View>(R.id.txtGetApiKeyOpenRouter).isVisible = openRouter
-        findViewById<View>(R.id.txtGetApiKey).isVisible = !openRouter
-        findViewById<View>(R.id.txtGetApiKeyMistral).isVisible = !openRouter
-        findViewById<View>(R.id.txtProviderHint).isVisible = !openRouter
+        findViewById<View>(R.id.txtGetApiKey).isVisible = host == "api.groq.com"
+        findViewById<View>(R.id.txtGetApiKeyMistral).isVisible = host == "api.mistral.ai"
+        findViewById<View>(R.id.txtProviderHint).isVisible = true
     }
 
     private fun chooseOpenRouterModel() {
@@ -481,9 +529,11 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun loadCurrentPreferences() {
-        switchSilenceAutoStop.isEnabled = false
-        seekSilenceAutoStopPause.isEnabled = false
-        scope.launch {
+        preferencesLoad?.cancel()
+        preferencesLoaded = false
+        setKeyboardOptionsEnabled(false)
+        preferencesLoad = scope.launch {
+            pendingSettingsWrite?.join()
             val p = preferenceStore.load()
             editApiKey.setText(p.apiKey)
             editEndpoint.setText(p.endpoint)
@@ -491,34 +541,61 @@ class SetupActivity : AppCompatActivity() {
             editLanguage.setText(p.languages)
             activeLanguage = p.effectiveLanguage
             editPrompt.setText(p.prompt)
+            restoreRecognitionForm()
+            bindingKeyboardOptions = true
             switchAutoRecord.isChecked = p.autoRecord
-            setReturnSwitch(p.returnToPreviousKeyboard)
-            bindingSilenceControls = true
+            switchReturnToPreviousKeyboard.isChecked = p.returnToPreviousKeyboard
             switchSilenceAutoStop.isChecked = p.silenceAutoStopEnabled
             seekSilenceAutoStopPause.progress = SilenceAutoStopSettings.progressForPauseMs(p.silenceAutoStopPauseMs)
             updateSilencePauseLabel(p.silenceAutoStopPauseMs)
-            bindingSilenceControls = false
-            switchSilenceAutoStop.isEnabled = true
-            seekSilenceAutoStopPause.isEnabled = true
             switchAddSpace.isChecked = p.addTrailingSpace
             switchSingleWordStripPunct.isChecked = p.singleWordStripPunctuation
+            bindingKeyboardOptions = false
             setUpdateSwitch(preferenceStore.isUpdateCheckEnabled())
             preferencesLoaded = true
-            if (ProviderPresets.indexOf(ProviderPresets.speechToText, p.endpoint) < 0) {
+            setKeyboardOptionsEnabled(true)
+            if (ProviderPresets.indexOf(ProviderPresets.speechToText, editEndpoint.text.toString()) < 0) {
                 sections.setExpanded(R.id.btnRecognitionDetails, true)
             }
         }
     }
 
+    private fun recognitionFormFields() = listOf(
+        "apiKey" to editApiKey, "endpoint" to editEndpoint, "model" to editModel,
+        "languages" to editLanguage, "prompt" to editPrompt
+    )
+
+    /** Retain exactly what is being edited; normalization belongs to explicit Save. */
+    private fun captureRecognitionForm() = Bundle().apply {
+        recognitionFormFields().forEach { (key, field) -> putString(key, field.text.toString()) }
+        putString("activeLanguage", activeLanguage)
+    }
+
+    private fun restoreRecognitionForm() {
+        val form = restoredRecognitionForm ?: return
+        restoredRecognitionForm = null
+        recognitionFormFields().forEach { (key, field) ->
+            form.getString(key)?.let { field.setText(it) }
+        }
+        activeLanguage = form.getString("activeLanguage", activeLanguage)
+    }
+
     private fun saveAndValidate() {
+        if (!preferencesLoaded) return
         val prefs = buildPreferences()
         if (prefs.endpoint != editEndpoint.text.toString().trim()) editEndpoint.setText(prefs.endpoint)
 
         btnApply.isEnabled = false
         showApiStatus(getString(R.string.pp_validating), Color.GRAY)
 
+        val store = preferenceStore
+        val save = enqueueSettingsWrite { store.save(prefs) }
         activeJob = scope.launch {
-            preferenceStore.save(prefs)
+            if (save.await().isFailure) {
+                showApiStatus(getString(R.string.settings_save_failed), Color.parseColor(COLOR_ERROR))
+                btnApply.isEnabled = true
+                return@launch
+            }
 
             val result = speechClient.validateCredentials(
                 apiKey = prefs.apiKey,
@@ -721,10 +798,13 @@ class SetupActivity : AppCompatActivity() {
         bindingUpdateSwitch = false
     }
 
-    private fun setReturnSwitch(value: Boolean) {
-        bindingReturnSwitch = true
-        switchReturnToPreviousKeyboard.isChecked = value
-        bindingReturnSwitch = false
+    private fun setKeyboardOptionsEnabled(enabled: Boolean) {
+        switchAutoRecord.isEnabled = enabled
+        switchAddSpace.isEnabled = enabled
+        switchSingleWordStripPunct.isEnabled = enabled
+        switchReturnToPreviousKeyboard.isEnabled = enabled
+        switchSilenceAutoStop.isEnabled = enabled
+        seekSilenceAutoStopPause.isEnabled = enabled
     }
 
     private fun showUpdateConsentDialog() {

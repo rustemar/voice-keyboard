@@ -1,0 +1,3 @@
+Auto-stop uses on-device speech detection to recognize pauses more reliably in background noise. It remains optional and off by default.
+Keyboard setting switches now save immediately, and auto-start recording has an explanation.
+Clearer provider presets and key hints distinguish voice recognition from optional post-processing. Changing the interface language preserves unfinished API edits without applying them.

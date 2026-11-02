@@ -11,12 +11,13 @@
     <string name="settings_language_hint">쉼표로 구분된 코드, 예: ko, en. 두 개 이상 지정하면 키보드에 언어 키가 표시됩니다. 자동으로 감지하려면 비워 두세요.</string>
     <string name="settings_endpoint">API 엔드포인트</string>
     <string name="settings_auto_record">자동 녹음</string>
+    <string name="settings_auto_record_hint">Voice Keyboard를 열면 자동으로 녹음을 시작합니다. 기본적으로 꺼져 있습니다. 녹음 종료 시점은 무음 시 자동 중지 설정으로 별도로 제어합니다.</string>
     <string name="subtype_label">음성 입력</string>
     <string name="settings_return_to_previous_keyboard">받아쓰기 후 이전 키보드로 돌아가기</string>
     <string name="settings_return_to_previous_keyboard_hint">받아쓰기만 하려고 Voice Keyboard를 여는 경우(다른 키보드의 마이크 키나 키보드 목록에서) 켜세요. 텍스트가 입력되면 그 키보드로 자동으로 돌아갑니다. 여러 번 연달아 받아쓰거나 Voice Keyboard가 주로 쓰는 키보드라면 꺼 두세요. 위쪽 모서리의 키로 언제든 이전 키보드로 돌아갈 수 있습니다.</string>
     <string name="cd_previous_keyboard">이전 키보드로 전환</string>
     <string name="settings_add_space">끝에 공백 추가</string>
-    <string name="settings_apply">적용</string>
+    <string name="settings_apply">저장하고 키 확인</string>
     <string name="settings_enable_instructions">이 키보드를 활성화하려면:\n\n1. 설정 → 시스템 → 언어 및 입력 → 화면 키보드로 이동\n2. \"Voice Keyboard\" 활성화\n3. 아무 텍스트 필드에서 선택</string>
     <string name="test_section_title">음성 인식 테스트</string>
     <string name="test_section_hint">짧은 문구를 녹음하여 제대로 작동하는지 확인하세요</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">업데이트를 확인할 수 없습니다. 인터넷 연결을 확인하세요.</string>
     <string name="settings_get_api_key">무료 Groq 키 → console.groq.com</string>
     <string name="settings_get_api_key_alt">무료 Mistral 키 → console.mistral.ai</string>
-    <string name="settings_provider_hint">OpenAI 호환 Whisper 키라면 모두 사용할 수 있습니다. Groq는 기본 설정 그대로 작동하며, Mistral의 경우 엔드포인트를 api.mistral.ai/v1/audio/transcriptions로, 모델을 voxtral-mini-latest로 설정하세요.</string>
+    <string name="settings_provider_hint">선택한 음성 서비스의 API 키를 사용하세요. 프리셋은 주소와 모델을 채워 줍니다.</string>
     <string name="about_project">GitHub — 프로젝트 소개</string>
     <string name="link_copied">링크가 복사되었습니다</string>
     <string name="no_browser_link_copied">링크를 열 브라우저가 없어 링크를 복사했습니다</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">터미널</string>
     <string name="pp_terminal_visible">터미널 모드 버튼 표시</string>
     <string name="pp_terminal_visible_hint">음성 입력을 셸 명령어로 변환합니다. SSH/터미널 작업에 유용합니다.</string>
-    <string name="pp_open_settings">후처리 설정</string>
+    <string name="pp_open_settings">후처리 (선택 사항)</string>
+    <string name="settings_postprocessing_hint">텍스트 수정을 위한 API 키는 별도로 설정합니다. 음성 인식은 후처리 없이도 작동합니다.</string>
 
     <string name="mic_disclosure_title">Voice Keyboard에서 마이크를 사용합니다</string>
     <string name="mic_disclosure_body">마이크 버튼을 누르면 이 키보드가 오디오를 녹음하여 음성‑텍스트 변환 서비스로 전송합니다.\n\n• 전송되는 항목: 사용자가 직접 시작한 녹음의 오디오만.\n• 전송 대상: 기본값은 Groq Whisper. 설정에서 OpenAI 호환 Whisper 엔드포인트(OpenAI 자체 포함)로 변경할 수 있습니다.\n• 인증: 요청은 사용자의 API 키로 이루어지며, 앱 자체 계정은 없습니다.\n• 수집하지 않는 것: 분석, 광고 없음. 사용자가 설정한 엔드포인트 외에는 오디오를 어디에도 업로드하지 않습니다.\n\n오디오는 활성 녹음 중에만 전송되며, 백그라운드에서는 절대 전송되지 않습니다.</string>

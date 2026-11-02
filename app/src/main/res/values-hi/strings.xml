@@ -11,12 +11,13 @@
     <string name="settings_language_hint">अल्पविराम से अलग किए गए कोड, उदाहरण: hi, en. एक से अधिक जोड़ने पर कीबोर्ड पर भाषा कुंजी दिखाई देती है। स्वचालित पहचान के लिए खाली छोड़ें।</string>
     <string name="settings_endpoint">API एंडपॉइंट</string>
     <string name="settings_auto_record">स्वतः रिकॉर्डिंग</string>
+    <string name="settings_auto_record_hint">Voice Keyboard खुलने पर रिकॉर्डिंग अपने आप शुरू करें। डिफ़ॉल्ट रूप से बंद। चुप्पी पर अपने आप रोकने की सेटिंग अलग से तय करती है कि रिकॉर्डिंग कब खत्म होगी।</string>
     <string name="subtype_label">वॉइस इनपुट</string>
     <string name="settings_return_to_previous_keyboard">डिक्टेशन के बाद पिछले कीबोर्ड पर लौटें</string>
     <string name="settings_return_to_previous_keyboard_hint">अगर आप Voice Keyboard को सिर्फ़ डिक्टेशन के लिए खोलते हैं — किसी दूसरे कीबोर्ड की माइक कुंजी से या कीबोर्ड सूची से — तो इसे चालू करें: टेक्स्ट डलते ही वही कीबोर्ड अपने-आप वापस आ जाता है। अगर आप लगातार कई बार डिक्टेशन करते हैं या Voice Keyboard आपका मुख्य कीबोर्ड है, तो इसे बंद रखें। ऊपरी कोने की कुंजी हमेशा आपको वापस ले जाती है।</string>
     <string name="cd_previous_keyboard">पिछले कीबोर्ड पर स्विच करें</string>
     <string name="settings_add_space">अंत में स्पेस जोड़ें</string>
-    <string name="settings_apply">लागू करें</string>
+    <string name="settings_apply">सहेजें और कुंजी जाँचें</string>
     <string name="settings_enable_instructions">इस कीबोर्ड को सक्रिय करने के लिए:\n\n1. सेटिंग्स → सिस्टम → भाषाएँ और इनपुट → ऑन-स्क्रीन कीबोर्ड पर जाएँ\n2. \"Voice Keyboard\" सक्षम करें\n3. किसी भी टेक्स्ट फ़ील्ड में इसे चुनें</string>
     <string name="test_section_title">आवाज़ पहचान परीक्षण</string>
     <string name="test_section_hint">जाँचने के लिए एक छोटा वाक्य रिकॉर्ड करें</string>
@@ -50,7 +51,7 @@
     <string name="update_check_failed">अपडेट की जाँच नहीं हो सकी। अपना इंटरनेट कनेक्शन जाँचें।</string>
     <string name="settings_get_api_key">मुफ़्त Groq कुंजी → console.groq.com</string>
     <string name="settings_get_api_key_alt">मुफ़्त Mistral कुंजी → console.mistral.ai</string>
-    <string name="settings_provider_hint">कोई भी OpenAI-संगत Whisper कुंजी काम करती है। Groq डिफ़ॉल्ट सेटिंग्स के साथ काम करता है; Mistral के लिए, एंडपॉइंट को api.mistral.ai/v1/audio/transcriptions और मॉडल को voxtral-mini-latest पर सेट करें।</string>
+    <string name="settings_provider_hint">चुने गए वाक् सेवा प्रदाता की API कुंजी इस्तेमाल करें। प्रीसेट पता और मॉडल भर देते हैं।</string>
     <string name="about_project">GitHub — परियोजना के बारे में</string>
     <string name="link_copied">लिंक कॉपी किया गया</string>
     <string name="no_browser_link_copied">लिंक खोलने के लिए कोई ब्राउज़र नहीं है, इसलिए इसे कॉपी कर लिया गया</string>
@@ -93,7 +94,8 @@
     <string name="pp_terminal">टर्मिनल</string>
     <string name="pp_terminal_visible">टर्मिनल मोड बटन दिखाएं</string>
     <string name="pp_terminal_visible_hint">वॉइस इनपुट को शेल कमांड में बदलता है। SSH/टर्मिनल काम के लिए उपयोगी।</string>
-    <string name="pp_open_settings">पोस्ट-प्रोसेसिंग सेटिंग्स</string>
+    <string name="pp_open_settings">पोस्ट-प्रोसेसिंग (वैकल्पिक)</string>
+    <string name="settings_postprocessing_hint">टेक्स्ट सुधारने की API कुंजी अलग से सेट होती है। वाक् पहचान पोस्ट-प्रोसेसिंग के बिना भी काम करती है।</string>
 
     <string name="mic_disclosure_title">Voice Keyboard आपके माइक्रोफ़ोन का उपयोग करता है</string>
     <string name="mic_disclosure_body">जब आप माइक्रोफ़ोन बटन दबाते हैं, यह कीबोर्ड ऑडियो रिकॉर्ड करता है और उसे टेक्स्ट में बदलने के लिए स्पीच‑टू‑टेक्स्ट सेवा को भेजता है।\n\n• क्या भेजा जाता है: केवल उस रिकॉर्डिंग का ऑडियो जो आप स्वयं शुरू करते हैं।\n• कहाँ जाता है: डिफ़ॉल्ट रूप से, Groq Whisper को। आप इसे सेटिंग्स में किसी भी OpenAI‑कम्पैटिबल Whisper एंडपॉइंट पर बदल सकते हैं, OpenAI सहित।\n• प्रमाणीकरण: अनुरोध आपकी अपनी API कुंजी से किए जाते हैं; ऐप में कोई बिल्ट‑इन अकाउंट नहीं है।\n• क्या एकत्र नहीं किया जाता: कोई एनालिटिक्स नहीं, कोई विज्ञापन नहीं; आपका ऑडियो आपके द्वारा कॉन्फ़िगर किए गए एंडपॉइंट के अलावा कहीं भी अपलोड नहीं होता।\n\nऑडियो केवल सक्रिय रिकॉर्डिंग के दौरान भेजा जाता है — पृष्ठभूमि में कभी नहीं।</string>

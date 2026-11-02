@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_setup_description">Valitse palvelu tunnistetun tekstin muokkaamiseen ja anna sen API-avain. Puheentunnistus määritetään asetusten päänäkymässä. Vaihda käsittelytilaa näppäimistön painikkeilla.</string>
+    <string name="pp_api_format">API-muoto</string>
+    <string name="pp_api_format_hint">Palveluntarjoajan esiasetus valitsee muodon automaattisesti. Mukautetut palvelut voivat käyttää kumpaa tahansa muotoa.</string>
+    <string name="pp_endpoint_default_hint">Tyhjä kenttä käyttää alla näkyvää oletusarvoa. Voit myös liittää palveluntarjoajan perus-URL-osoitteen; pyynnön polku lisätään automaattisesti.</string>
+    <string name="pp_model_default_hint">Tyhjä kenttä käyttää alla näkyvää oletusmallia. OpenRouterin kaltaiset yhdyskäytävät vaativat palveluntarjoajan etuliitteen, esimerkiksi openai/gpt-4o-mini.</string>
+</resources>
