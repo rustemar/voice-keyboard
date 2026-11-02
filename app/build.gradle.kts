@@ -25,7 +25,9 @@ tasks.register<Exec>("prepareSpeechRuntime") {
     description = "Download and verify the pinned speech runtime sources and build tools."
     inputs.files(rootProject.fileTree("tools/onnxruntime") { exclude("**/__pycache__/**", "**/*.pyc") })
     inputs.file(speechRuntimeModel)
-    outputs.dir(speechRuntimeWorkDir.map { file("$it/source") })
+    // Gradle creates declared output directories before Exec. Keep the new work directory
+    // empty so the source preparer's guard can reject unrelated existing content.
+    outputs.dir(speechRuntimeWorkDir)
     outputs.file(speechRuntimeWorkDir.map { file("$it/prepared.json") })
     outputs.file(speechRuntimeWorkDir.map { file("$it/source-manifest.json") })
     commandLine(speechRuntimeArguments("prepare"))
