@@ -122,7 +122,7 @@ class ReleaseChecker(private val http: OkHttpClient) {
                     newer.sortedWith { a, b -> compareVersions(b.version, a.version) }
                 }
             } catch (e: Exception) {
-                DiagnosticLog.record("ReleaseChecker", "Failed to check for updates: ${e.message}")
+                DiagnosticLog.recordFailure("ReleaseChecker", "Failed to check for updates", e)
                 null
             }
         }

@@ -146,7 +146,7 @@ class MicrophoneCaptureSession(private val context: Context) {
             mr.stop()
             true
         } catch (e: Exception) {
-            DiagnosticLog.record(TAG, "stop failed after ${lastDurationMs}ms: ${e.message}")
+            DiagnosticLog.recordFailure(TAG, "stop failed after ${lastDurationMs}ms", e)
             false
         }
         runCatching { mr.release() }
