@@ -160,7 +160,7 @@ cd voice-keyboard
 
 ## Third-party components
 
-Keyboard pause detection uses [Silero VAD](https://github.com/snakers4/silero-vad) by the Silero Team and [ONNX Runtime](https://github.com/microsoft/onnxruntime) by its contributors, both under the MIT license. The model runs locally and is included in the app; it does not introduce another audio recipient. Source revision, model checksum and license texts are included in `app/src/main/assets/third_party/`. Speech-to-text still uses your configured provider.
+Keyboard pause detection uses [Silero VAD](https://github.com/snakers4/silero-vad) by the Silero Team and [ONNX Runtime](https://github.com/microsoft/onnxruntime) by its contributors, both under the MIT license. The model runs locally and is included in the app; it does not introduce another audio recipient. The source revision, original and bundled model checksums, and license texts are included in `app/src/main/assets/third_party/`. Release builds use the compact runtime built from pinned sources; see [the build recipe](tools/onnxruntime/README.md). Speech-to-text still uses your configured provider.
 
 ## License
 

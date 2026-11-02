@@ -5,6 +5,9 @@
 .DS_Store
 /build
 **/build
+/external/onnxruntime
+__pycache__/
+*.pyc
 /captures
 .externalNativeBuild
 .cxx

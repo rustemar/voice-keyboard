@@ -1,0 +1,213 @@
+{
+  "format": 1,
+  "onnxruntime": {
+    "version": "1.24.3",
+    "commit": "3a728b75062256951b6e19ce718907cf1a1d4cf0",
+    "url": "https://codeload.github.com/microsoft/onnxruntime/tar.gz/3a728b75062256951b6e19ce718907cf1a1d4cf0",
+    "sha256": "2afd2ff42ec2381937e095f0ab9929bb535db10e42f4004f5022c136beabbdd2",
+    "deps_file_sha256": "0ef6f9d7d8945b56b759ae29108ecc61d8ee7242e282cfc6ceae4be72ddee15d"
+  },
+  "operators_sha256": "584e42c69b3e003a470e1c92beace9121d37da2e35c5198e1a3508f186a3dfe2",
+  "template": {
+    "coordinate": "com.microsoft.onnxruntime:onnxruntime-android:1.24.3",
+    "sha256": "67397e4a970e75617f765d2015ceaf911917e1d822276cfb5792744e8085cbce"
+  },
+  "ndk_version": "28.0.13004108",
+  "android_api": 24,
+  "source_date_epoch": 1772686090,
+  "abis": [
+    "arm64-v8a",
+    "x86_64",
+    "x86",
+    "armeabi-v7a"
+  ],
+  "sources": [
+    {
+      "name": "abseil_cpp",
+      "upstream_key": "abseil_cpp",
+      "url": "https://github.com/abseil/abseil-cpp/archive/refs/tags/20250814.0.zip",
+      "sha1": "a9eb1d648cbca4d4d788737e971a6a7a63726b07",
+      "sha256": "b2bdcf6682d8cb53df365bcc5d6c318a22e55821d9978a10fdb61404c026daff",
+      "patches": [
+        {
+          "path": "abseil/absl_cuda_warnings.patch",
+          "sha256": "5f8e92a8a0abdeffeb66ef908449624eea53fb384c5be210c6132fed56fe5977"
+        }
+      ]
+    },
+    {
+      "name": "date",
+      "upstream_key": "date",
+      "url": "https://github.com/HowardHinnant/date/archive/refs/tags/v3.0.1.zip",
+      "sha1": "2dac0c81dc54ebdd8f8d073a75c053b04b56e159",
+      "sha256": "f4300b96f7a304d4ef9bf6e0fa3ded72159f7f2d0f605bdde3e030a0dba7cf9f",
+      "patches": []
+    },
+    {
+      "name": "eigen3",
+      "upstream_key": "eigen",
+      "url": "https://github.com/eigen-mirror/eigen/archive/1d8b82b0740839c0de7f1242a3585e3390ff5f33/eigen-1d8b82b0740839c0de7f1242a3585e3390ff5f33.zip",
+      "sha1": "05b19b49e6fbb91246be711d801160528c135e34",
+      "sha256": "6a60d76351f97132669daeeb721d6bf14b008101883ad2d687a3201c5c461eb0",
+      "patches": [
+        {
+          "path": "eigen/s390x-build.patch",
+          "sha256": "6d41f4504f665bc591336c668a1aa16ffc5e0f02fe9c2f9c46c6f5660b54c849"
+        },
+        {
+          "path": "eigen/s390x-build-werror.patch",
+          "sha256": "a1a7b0ca8382cb00542587b6bc725f59abd59ad5bb491825f7876ad6e344ef0b"
+        }
+      ]
+    },
+    {
+      "name": "flatbuffers",
+      "upstream_key": "flatbuffers",
+      "url": "https://github.com/google/flatbuffers/archive/refs/tags/v23.5.26.zip",
+      "sha1": "59422c3b5e573dd192fead2834d25951f1c1670c",
+      "sha256": "57bd580c0772fd1a726c34ab8bf05325293bc5f9c165060a898afa1feeeb95e1",
+      "patches": [
+        {
+          "path": "flatbuffers/flatbuffers.patch",
+          "sha256": "9c597b79b3b35302a19b31a42b4680c4e36f9c3934a5b1b988ddd5a36c68ee33"
+        }
+      ]
+    },
+    {
+      "name": "gsl",
+      "upstream_key": "microsoft_gsl",
+      "url": "https://github.com/microsoft/GSL/archive/refs/tags/v4.0.0.zip",
+      "sha1": "cf368104cd22a87b4dd0c80228919bb2df3e2a14",
+      "sha256": "eb91fcb10a6aa5ccb1d224e07a56c8ecffe9a1bb601fa1848276ec46a2200bfb",
+      "patches": []
+    },
+    {
+      "name": "kleidiai",
+      "upstream_key": "kleidiai",
+      "url": "https://github.com/ARM-software/kleidiai/archive/refs/tags/v1.20.0.tar.gz",
+      "sha1": "6895e72b3d5cf1173358164cb3d64c9d7d33cc84",
+      "sha256": "e4b84c369f0f39af1660ac71c30f74038d4b89e1f20dde070bb96398382a111f",
+      "patches": []
+    },
+    {
+      "name": "mp11",
+      "upstream_key": "mp11",
+      "url": "https://github.com/boostorg/mp11/archive/refs/tags/boost-1.82.0.zip",
+      "sha1": "9bc9e01dffb64d9e0773b2e44d2f22c51aace063",
+      "sha256": "81431bdc44c439a324e02c07ed067f8f556419fd86f2d8b486ff568df6aac899",
+      "patches": []
+    },
+    {
+      "name": "nlohmann_json",
+      "upstream_key": "json",
+      "url": "https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.zip",
+      "sha1": "5e88795165cc8590138d1f47ce94ee567b85b4d6",
+      "sha256": "04022b05d806eb5ff73023c280b68697d12b93e1b7267a0b22a1a39ec7578069",
+      "patches": []
+    },
+    {
+      "name": "onnx",
+      "upstream_key": "onnx",
+      "url": "https://github.com/onnx/onnx/archive/refs/tags/v1.20.1.zip",
+      "sha1": "30b80c81a1a381188896e86abe460c3c3f3091fd",
+      "sha256": "a003e1f628406382c61900db668aa86c27afa8570dde7b9aced159579a443ab7",
+      "patches": [
+        {
+          "path": "onnx/onnx.patch",
+          "sha256": "7f6a73db7bd14c673a09eaa5188effbab3e96870575bc7b53e4fa45a8cb70912"
+        }
+      ]
+    },
+    {
+      "name": "protobuf",
+      "upstream_key": "protobuf",
+      "url": "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.12.zip",
+      "sha1": "7cf2733949036c7d52fda017badcab093fe73bfa",
+      "sha256": "6a31b662deaeb0ac35e6287bda2f3369b19836e6c9f8828d4da444346f420298",
+      "patches": [
+        {
+          "path": "protobuf/protobuf_cmake.patch",
+          "sha256": "15c25dc027cdae5fabe907d1ca9d9372c654277e82c50c3c706d4f5946a6933d"
+        },
+        {
+          "path": "protobuf/protobuf_android_log.patch",
+          "sha256": "89b3fae15ab93a394e5854bd0d1f1d63dedae12e7b638274e667b85debeffb94"
+        },
+        {
+          "path": "protobuf/protobuf_s390x.patch",
+          "sha256": "c648a9222b7dbfd7989c0f392c3f5774d4a95e217e0df193316c54389ad0387a"
+        }
+      ]
+    },
+    {
+      "name": "pytorch_cpuinfo",
+      "upstream_key": "pytorch_cpuinfo",
+      "url": "https://github.com/pytorch/cpuinfo/archive/403d652dca4c1046e8145950b1c0997a9f748b57.zip",
+      "sha1": "30b2a07fe4bae8574f89176e56274cacdd6d135b",
+      "sha256": "357d9824b8d3f4c05f0b2287e45b4e0d982422c27b67b968eb23a643dc52b5e2",
+      "patches": []
+    },
+    {
+      "name": "re2",
+      "upstream_key": "re2",
+      "url": "https://github.com/google/re2/archive/refs/tags/2024-07-02.zip",
+      "sha1": "646e1728269cde7fcef990bf4a8e87b047882e88",
+      "sha256": "a835fe55fbdcd8e80f38584ab22d0840662c67f2feb36bd679402da9641dc71e",
+      "patches": []
+    },
+    {
+      "name": "safeint",
+      "upstream_key": "safeint",
+      "url": "https://github.com/dcleblanc/SafeInt/archive/refs/tags/3.0.28.zip",
+      "sha1": "23f252040ff6cb9f1fd18575b32fa8fb5928daac",
+      "sha256": "3ffbd9a2fdff45da77da3e7269e9aa512ea43bed5c38ce8fd8f3d1068a032c3f",
+      "patches": []
+    }
+  ],
+  "tools": [
+    {
+      "name": "cmake",
+      "version": "3.31.6",
+      "url": "https://files.pythonhosted.org/packages/59/e8/096984b89133681533650b9078c5ed1c5c9b534e869b5487f22d4de1935c/cmake-3.31.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "1c8b05df0602365da91ee6a3336fe57525b137706c4ab5675498f662ae1dbcec"
+    },
+    {
+      "name": "ninja",
+      "version": "1.11.1.4",
+      "url": "https://files.pythonhosted.org/packages/eb/7a/455d2877fe6cf99886849c7f9755d897df32eaf3a0fba47b56e615f880f7/ninja-1.11.1.4-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.whl",
+      "sha256": "096487995473320de7f65d622c3f1d16c3ad174797602218ca8c967f51ec38a0"
+    },
+    {
+      "name": "flatbuffers",
+      "version": "25.12.19",
+      "url": "https://files.pythonhosted.org/packages/e8/2d/d2a548598be01649e2d46231d151a6c56d10b964d94043a335ae56ea2d92/flatbuffers-25.12.19-py2.py3-none-any.whl",
+      "sha256": "7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4"
+    }
+  ],
+  "source_model": {
+    "sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+    "repository": "https://github.com/snakers4/silero-vad",
+    "revision": "066409f3d9db45a30d21dfcbf9147826ffdd7052",
+    "path": "src/silero_vad/data/silero_vad.onnx"
+  },
+  "build_profile": {
+    "minimal": true,
+    "exceptions": true,
+    "contrib_ops": false,
+    "ml_ops": false,
+    "type_reduction": false,
+    "execution_provider": "CPU",
+    "model_format": "ORT",
+    "graph_optimization": "BASIC",
+    "quantization": false
+  },
+  "runtime_asset": {
+    "sha256": "ffb88fd9a5fbe492b37e78068583a1b1a35831e06a58818ba8aa1956252a8c03",
+    "operators_sha256": "584e42c69b3e003a470e1c92beace9121d37da2e35c5198e1a3508f186a3dfe2",
+    "source_model_sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+    "format": "ORT",
+    "optimization": "BASIC",
+    "quantization": false,
+    "selection": "BASIC-optimized ORT serialization of the unchanged upstream ONNX graph and weights"
+  }
+}

@@ -1,10 +1,15 @@
 Silero VAD v6 model
 Source: https://github.com/snakers4/silero-vad
 Revision: 066409f3d9db45a30d21dfcbf9147826ffdd7052
-Model SHA-256: 1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3
+Original ONNX SHA-256: 1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3
+Bundled ORT SHA-256: ffb88fd9a5fbe492b37e78068583a1b1a35831e06a58818ba8aa1956252a8c03
+Format conversion: ONNX Runtime 1.24.3, BASIC optimization, float32 parameters.
 License: MIT; see silero-LICENSE.txt.
 
 ONNX Runtime Android 1.24.3
 Source: https://github.com/microsoft/onnxruntime
-Artifact: com.microsoft.onnxruntime:onnxruntime-android:1.24.3
-License: MIT; see onnxruntime-LICENSE.txt.
+Revision: 3a728b75062256951b6e19ce718907cf1a1d4cf0
+Native runtime: minimal CPU source build with the model's required operators.
+Java API: com.microsoft.onnxruntime:onnxruntime-android:1.24.3
+Build recipe: tools/onnxruntime in the application source repository.
+License: MIT; see onnxruntime-LICENSE.txt and the bundled third-party notices.

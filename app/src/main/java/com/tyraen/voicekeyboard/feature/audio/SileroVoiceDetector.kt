@@ -11,6 +11,7 @@ import java.security.MessageDigest
 /**
  * Offline Silero VAD over mono PCM16 at 16 kHz. Create, feed and close on the recording worker.
  * The recurrent state and the preceding 64 samples belong to one capture and never cross files.
+ * The bundled ORT representation uses BASIC optimization with float32 parameters.
  * Model contract: snakers4/silero-vad, utils_vad.OnnxWrapper (MIT), revision 066409f3d9db.
  */
 internal class SileroVoiceDetector private constructor(
@@ -18,9 +19,9 @@ internal class SileroVoiceDetector private constructor(
     private val session: OrtSession
 ) : AutoCloseable {
     companion object {
-        private const val ASSET = "silero_vad.onnx"
+        private const val ASSET = "silero_vad.ort"
         private const val MODEL_SHA256 =
-            "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3"
+            "ffb88fd9a5fbe492b37e78068583a1b1a35831e06a58818ba8aa1956252a8c03"
         private const val CONTEXT_SAMPLES = 64
         private const val STATE_FLOATS = 2 * 128
 
