@@ -66,7 +66,7 @@ jobs:
           key: speech-runtime-${{ runner.os }}-${{ hashFiles('tools/onnxruntime/**', 'app/src/main/assets/silero_vad.*') }}
 
       - name: Set up pinned Android NDK
-        run: sdkmanager 'ndk;28.0.13004108'
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;28.0.13004108"'
 
       - name: Prepare speech runtime sources
         run: ./gradlew prepareSpeechRuntime
