@@ -10,7 +10,7 @@ import android.view.inputmethod.InputConnection
 
 class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?) {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val handler by lazy { Handler(Looper.getMainLooper()) }
     private var repeatRunnable: Runnable? = null
 
     fun deleteBack() {
@@ -108,17 +108,33 @@ class KeystrokeDispatcher(private val connectionProvider: () -> InputConnection?
         }
     }
 
+    /**
+     * Dispatch an explicit Send action once. A false result must not trigger a fallback: an
+     * editor may already have acted on the request. The result only acknowledges dispatch,
+     * not delivery of a message. Null retains Ctrl+Enter for the manual Send button only;
+     * automatic sending must require a declared action.
+     */
+    fun pressSend(action: EditorField.Enter.Action?): Boolean {
+        val ic = connectionProvider() ?: return false
+        return if (action != null) ic.performEditorAction(action.id) else sendCtrlEnter(ic)
+    }
+
     /** A line break typed as text, for fields where the Enter key runs an action instead. */
     fun insertNewLine() {
         connectionProvider()?.commitText("\n", 1)
     }
 
-    fun sendCtrlEnter() {
-        connectionProvider()?.let { ic ->
-            val now = android.os.SystemClock.uptimeMillis()
-            ic.sendKeyEvent(KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 0, android.view.KeyEvent.META_CTRL_ON))
-            ic.sendKeyEvent(KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER, 0, android.view.KeyEvent.META_CTRL_ON))
-        }
+    fun sendCtrlEnter(): Boolean = connectionProvider()?.let { sendCtrlEnter(it) } ?: false
+
+    private fun sendCtrlEnter(ic: InputConnection): Boolean {
+        val now = android.os.SystemClock.uptimeMillis()
+        val downAccepted = ic.sendKeyEvent(
+            KeyEvent(now, now, KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER, 0, KeyEvent.META_CTRL_ON)
+        )
+        val upAccepted = ic.sendKeyEvent(
+            KeyEvent(now, now, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER, 0, KeyEvent.META_CTRL_ON)
+        )
+        return downAccepted && upAccepted
     }
 
     fun cutAll(): Boolean {

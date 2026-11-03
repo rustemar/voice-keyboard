@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">말이 멈추면 전송</string>
+    <string name="settings_auto_send_after_silence_hint">무음 시 자동 중지를 켜야 합니다. 음성 인식과 텍스트 처리가 끝나면 이미 입력한 텍스트를 포함한 전체 메시지를 전송합니다. 전송 동작을 제공하는 앱에서만 작동합니다. 기본적으로 꺼져 있습니다.</string>
+</resources>

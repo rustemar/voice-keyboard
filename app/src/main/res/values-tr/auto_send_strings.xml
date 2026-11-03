@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">Duraklamadan sonra gönder</string>
+    <string name="settings_auto_send_after_silence_hint">Sessizlikte otomatik durdurmanın açık olması gerekir. Tanıma ve metin işleme tamamlandıktan sonra önceden yazılmış metin dahil mesajın tamamını gönderir. Yalnızca Gönder eylemi sunan uygulamalarda çalışır. Varsayılan olarak kapalıdır.</string>
+</resources>

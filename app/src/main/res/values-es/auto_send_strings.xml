@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">Enviar tras una pausa</string>
+    <string name="settings_auto_send_after_silence_hint">Requiere la detención automática al detectar silencio. Envía el mensaje completo, incluido el texto ya escrito, cuando terminan el reconocimiento y el procesamiento del texto. Solo funciona en aplicaciones que ofrecen una acción de envío. Desactivado de forma predeterminada.</string>
+</resources>

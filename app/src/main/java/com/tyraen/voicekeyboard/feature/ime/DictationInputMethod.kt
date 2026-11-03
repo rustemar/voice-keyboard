@@ -16,6 +16,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageButton
@@ -69,6 +70,13 @@ class DictationInputMethod : InputMethodService() {
     private var quickCorrectionButton: View? = null
     private var textActionsButton: View? = null
     private var editorSessionToken: Long? = null
+    private val autoSendPolicy = AutoSendPolicy()
+    private data class AutoSendCapture(
+        val request: AutoSendPolicy.Request,
+        val connection: InputConnection,
+        val editorToken: Long
+    )
+    private var autoSendCapture: AutoSendCapture? = null
     private var currentTheme: String = ""
     private var currentUiLanguage: String = ""
     private var clipboardListener: ClipboardManager.OnPrimaryClipChangedListener? = null
@@ -88,6 +96,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     private fun createInputView(): View {
+        invalidateAutoSend()
         quickCorrectionPanel?.destroy()
         quickCorrectionPanel = null
         textActionsPanel?.destroy()
@@ -122,17 +131,10 @@ class DictationInputMethod : InputMethodService() {
             processingQueue = ServiceLocator.transcriptionQueue,
             capture = MicrophoneCaptureSession(this),
             editorSessionToken = { editorSessionToken },
-            onTextReady = { text, addTrailingSpace, originSessionToken ->
-                // A result belongs to the editor connection that started its recording. A new
-                // field or connection must not receive a late result intended for the old one.
-                // Returning false makes the queue save it for an explicit insertion instead.
-                val inserted = keystrokes.insertDictation(text, addTrailingSpace) {
-                    originSessionToken == editorSessionToken &&
-                        keyboardVisible && !isVoiceBlocked()
-                }
-                if (!inserted && keyboardVisible) savedResultSinceShown = true
-                scheduleReturnToPreviousKeyboard(inserted)
-                inserted
+            createAutoSendRequest = { enabled -> prepareAutoSend(enabled) },
+            invalidateAutoSend = { invalidateAutoSend() },
+            onTextReady = { text, addTrailingSpace, originSessionToken, autoSendRequest ->
+                acceptDictation(text, addTrailingSpace, originSessionToken, autoSendRequest)
             },
             onPhaseChanged = { phase -> panel.transitionTo(phase) },
             onAmplitude = { level -> panel.animator.adjustForAmplitude(level) },
@@ -163,6 +165,7 @@ class DictationInputMethod : InputMethodService() {
             view,
             ServiceLocator.pendingTranscriptStore,
             onInsert = { transcript ->
+                invalidateAutoSend()
                 val targetSessionToken = editorSessionToken
                 if (targetSessionToken == null) false
                 else keystrokes.insertDictation(transcript.text, transcript.addTrailingSpace) {
@@ -197,6 +200,7 @@ class DictationInputMethod : InputMethodService() {
 
     override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
         super.onStartInput(info, restarting)
+        invalidateAutoSend()
         quickCorrectionPanel?.stopRepeatingKeys()
         // Even restartInput can represent another DOM field in a browser. Treat replacement
         // editor connections conservatively; recreating just our panel keeps the token intact.
@@ -218,6 +222,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     override fun onFinishInput() {
+        invalidateAutoSend()
         quickCorrectionPanel?.stopRepeatingKeys()
         editorSessionToken = null
         if (quickCorrectionPanel?.isInstructionMode == true) quickCorrectionPanel?.hide()
@@ -276,6 +281,64 @@ class DictationInputMethod : InputMethodService() {
         if (info == null) EditorField.Enter.NewLine
         else EditorField.enter(info.imeOptions, info.actionId, info.actionLabel)
 
+    private fun sendActionFor(info: EditorInfo?): EditorField.Enter.Action? =
+        info?.let { EditorField.sendAction(it.imeOptions, it.actionId, it.actionLabel) }
+
+    private fun invalidateAutoSend() {
+        autoSendPolicy.invalidate()
+        autoSendCapture = null
+    }
+
+    private fun prepareAutoSend(enabled: Boolean): AutoSendPolicy.Request? {
+        invalidateAutoSend()
+        if (!enabled || !keyboardVisible || isVoiceBlocked() || sendActionFor(currentInputEditorInfo) == null) return null
+        val token = editorSessionToken ?: return null
+        val connection = currentInputConnection ?: return null
+        val request = autoSendPolicy.prepare(true) ?: return null
+        autoSendCapture = AutoSendCapture(request, connection, token)
+        return request
+    }
+
+    private fun currentAutoSendCapture(request: AutoSendPolicy.Request?): AutoSendCapture? =
+        autoSendCapture?.takeIf {
+            it.request === request && autoSendPolicy.isCurrent(request) &&
+                it.connection === currentInputConnection && it.editorToken == editorSessionToken &&
+                keyboardVisible && !isVoiceBlocked() && orchestrator.canAutoSendNow()
+        }
+
+    private fun acceptDictation(
+        text: String, addTrailingSpace: Boolean, originSessionToken: Long,
+        autoSendRequest: AutoSendPolicy.Request?
+    ): Boolean {
+        val target = currentAutoSendCapture(autoSendRequest)
+        val maySend = target != null
+        if (!maySend) autoSendRequest?.cancel()
+        // The queue saves a result only if insertion fails. Sending has its own contained failure
+        // path: a rejected/throwing SEND must never create a duplicate saved transcript.
+        val inserted = keystrokes.insertDictation(text, addTrailingSpace) {
+            originSessionToken == editorSessionToken && keyboardVisible && !isVoiceBlocked()
+        }
+        if (inserted && maySend) {
+            try {
+                val action = sendActionFor(currentInputEditorInfo)
+                if (target === currentAutoSendCapture(autoSendRequest) && action != null &&
+                    autoSendPolicy.isCurrent(autoSendRequest)
+                ) {
+                    autoSendCapture = null
+                    val accepted = autoSendPolicy.dispatchOnce(autoSendRequest) { keystrokes.pressSend(action) }
+                    DiagnosticLog.record(TAG, "Automatic send action dispatched, accepted=$accepted")
+                } else autoSendRequest?.cancel()
+            } catch (error: RuntimeException) {
+                autoSendRequest?.cancel()
+                // Host exceptions may contain editor contents; log only the failure category.
+                DiagnosticLog.record(TAG, "Automatic send unavailable: ${error.javaClass.simpleName}")
+            }
+        } else autoSendRequest?.cancel()
+        if (!inserted && keyboardVisible) savedResultSinceShown = true
+        scheduleReturnToPreviousKeyboard(inserted)
+        return inserted
+    }
+
     /**
      * Paints the navigation bar under the panel in the panel's background, with dark buttons on the
      * light theme, instead of the default black strip. Android 9+: 8.1 draws no bar colour for the
@@ -314,6 +377,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     override fun onWindowHidden() {
+        invalidateAutoSend()
         super.onWindowHidden()
         keyboardVisible = false
         lastDictationInserted = false
@@ -340,6 +404,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     private fun openSettings() {
+        invalidateAutoSend()
         // SINGLE_TOP reuses a settings screen that is already open instead of stacking a second
         // one on top of it.
         startActivity(Intent(this, SetupActivity::class.java).apply {
@@ -447,6 +512,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     override fun onDestroy() {
+        invalidateAutoSend()
         super.onDestroy()
         mainHandler.removeCallbacks(returnCheck)
         mainHandler.removeCallbacks(switchCheck)
@@ -511,18 +577,24 @@ class DictationInputMethod : InputMethodService() {
         val microphonePress = MicrophonePressGuard()
         btnMic.setOnTouchListener { _, event ->
             when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> microphonePress.onTouchDown(orchestrator.currentPhase)
+                MotionEvent.ACTION_DOWN -> {
+                    // A stop press can race the detector. Honour the user's manual intention
+                    // even when silence wins before the button's eventual click callback.
+                    invalidateAutoSend()
+                    microphonePress.onTouchDown(orchestrator.currentPhase)
+                }
                 MotionEvent.ACTION_CANCEL -> microphonePress.cancelTouch()
             }
             false // Preserve the platform button's pressed state, click and accessibility behavior.
         }
         btnMic.setOnClickListener {
+            invalidateAutoSend()
             if (microphonePress.shouldHandleClick(orchestrator.currentPhase)) {
                 orchestrator.handleAction(InputAction.ToggleCapture)
             }
         }
-        btnCancel.setOnClickListener { orchestrator.handleAction(InputAction.CancelOperation) }
-        btnRetryFailed.setOnClickListener { orchestrator.retryFailed() }
+        btnCancel.setOnClickListener { invalidateAutoSend(); orchestrator.handleAction(InputAction.CancelOperation) }
+        btnRetryFailed.setOnClickListener { invalidateAutoSend(); orchestrator.retryFailed() }
         panel.btnSilenceAutoStop.setOnClickListener {
             panel.renderSilenceAutoStop(orchestrator.toggleSilenceAutoStop())
         }
@@ -547,12 +619,14 @@ class DictationInputMethod : InputMethodService() {
         // use the click listener; suppress only the click announced for an already-handled touch.
         var announcingHandledTouch = false
         btnBackspace.setOnClickListener {
+            invalidateAutoSend()
             if (!announcingHandledTouch) keystrokes.deleteBack()
         }
         btnBackspace.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v.isPressed = true
+                    invalidateAutoSend()
                     keystrokes.startBackspaceRepeat()
                     true
                 }
@@ -576,23 +650,24 @@ class DictationInputMethod : InputMethodService() {
             }
         }
 
-        btnCutAll.setOnClickListener { keystrokes.cutAll() }
+        btnCutAll.setOnClickListener { invalidateAutoSend(); keystrokes.cutAll() }
 
-        btnSpace.setOnClickListener { keystrokes.insertText(" ") }
+        btnSpace.setOnClickListener { invalidateAutoSend(); keystrokes.insertText(" ") }
         btnSpace.setOnLongClickListener {
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
             true
         }
-        btnEnter.setOnClickListener { keystrokes.pressEnter(enterFor(currentInputEditorInfo)) }
+        btnEnter.setOnClickListener { invalidateAutoSend(); keystrokes.pressEnter(enterFor(currentInputEditorInfo)) }
         // Only long-clickable where Enter runs an action in a multi-line field (see updateEnterKey).
         btnEnter.setOnLongClickListener {
+            invalidateAutoSend()
             keystrokes.insertNewLine()
             true
         }
-        btnPeriod.setOnClickListener { keystrokes.insertPunctuation(".") }
-        btnQuestion.setOnClickListener { keystrokes.insertPunctuation("?") }
-        btnExclamation.setOnClickListener { keystrokes.insertPunctuation("!") }
+        btnPeriod.setOnClickListener { invalidateAutoSend(); keystrokes.insertPunctuation(".") }
+        btnQuestion.setOnClickListener { invalidateAutoSend(); keystrokes.insertPunctuation("?") }
+        btnExclamation.setOnClickListener { invalidateAutoSend(); keystrokes.insertPunctuation("!") }
 
         btnSettings.setOnClickListener { openSettings() }
 
@@ -600,6 +675,7 @@ class DictationInputMethod : InputMethodService() {
         // key, or whichever keyboard they type with. Just hiding is left to the system back gesture
         // and button. If Android has no usable history, offer its keyboard picker instead.
         btnPreviousKeyboard.setOnClickListener {
+            invalidateAutoSend()
             // A reported switch is still under way (the panel lingers until the app restarts
             // input): a second tap would have the platform switch straight back to this keyboard.
             if (!keyboardVisible) return@setOnClickListener
@@ -611,18 +687,24 @@ class DictationInputMethod : InputMethodService() {
         ViewCompat.setTooltipText(btnPreviousKeyboard, btnPreviousKeyboard.contentDescription)
 
         btnSend.setOnClickListener {
-            val enter = enterFor(currentInputEditorInfo)
-            if (EditorField.sendsByAction(enter)) keystrokes.pressEnter(enter) else keystrokes.sendCtrlEnter()
+            invalidateAutoSend()
+            val info = currentInputEditorInfo
+            DiagnosticLog.record(TAG, "Manual send package=${info?.packageName} " +
+                "inputType=${info?.inputType} imeOptions=${info?.imeOptions} " +
+                "actionId=${info?.actionId} labelPresent=${info?.actionLabel != null}")
+            keystrokes.pressSend(sendActionFor(info))
         }
 
         // Dictation language: tap cycles through the configured codes, long-press picks one.
         panel.btnLanguage.setOnClickListener {
+            invalidateAutoSend()
             panel.updateLanguageKey(orchestrator.cycleLanguage(), visible = true)
         }
-        panel.btnLanguage.setOnLongClickListener { showLanguagePicker(); true }
+        panel.btnLanguage.setOnLongClickListener { invalidateAutoSend(); showLanguagePicker(); true }
 
         // Clipboard bar
         panel.clipboardBar.setOnClickListener {
+            invalidateAutoSend()
             keystrokes.pasteFromClipboard(this)
         }
         setupClipboardMonitor()
@@ -639,6 +721,7 @@ class DictationInputMethod : InputMethodService() {
     }
 
     private fun suspendAutomaticReturn() {
+        invalidateAutoSend()
         lastDictationInserted = false
         mainHandler.removeCallbacks(returnCheck)
     }
@@ -709,6 +792,7 @@ class DictationInputMethod : InputMethodService() {
         // TalkBack reads it once; updateTranslateToggle replaces Translate's with its target.
         ViewCompat.setTooltipText(button, button.contentDescription)
         button.setOnClickListener {
+            invalidateAutoSend()
             orchestrator.togglePpMode(mode)
             updateToggleUI()
         }

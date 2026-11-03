@@ -85,6 +85,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var switchAutoRecord: Switch
     private lateinit var switchReturnToPreviousKeyboard: Switch
     private lateinit var switchSilenceAutoStop: Switch
+    private lateinit var switchAutoSendAfterSilence: Switch
     private lateinit var seekSilenceAutoStopPause: SeekBar
     private lateinit var txtSilenceAutoStopPause: TextView
     private lateinit var txtSilenceAutoStopMin: TextView
@@ -202,6 +203,7 @@ class SetupActivity : AppCompatActivity() {
         switchAutoRecord = findViewById(R.id.switchAutoRecord)
         switchReturnToPreviousKeyboard = findViewById(R.id.switchReturnToPreviousKeyboard)
         switchSilenceAutoStop = findViewById(R.id.switchSilenceAutoStop)
+        switchAutoSendAfterSilence = findViewById(R.id.switchAutoSendAfterSilence)
         seekSilenceAutoStopPause = findViewById(R.id.seekSilenceAutoStopPause)
         txtSilenceAutoStopPause = findViewById(R.id.txtSilenceAutoStopPause)
         txtSilenceAutoStopMin = findViewById(R.id.txtSilenceAutoStopMin)
@@ -215,7 +217,8 @@ class SetupActivity : AppCompatActivity() {
         // These controls reload from their own preferences. A stale framework view snapshot must
         // not trigger their listeners after a newer narrow write has already been loaded.
         listOf<View>(spinnerTheme, spinnerLanguage, spinnerSttPreset, switchAutoRecord,
-            switchReturnToPreviousKeyboard, switchSilenceAutoStop, seekSilenceAutoStopPause,
+            switchReturnToPreviousKeyboard, switchSilenceAutoStop, switchAutoSendAfterSilence,
+            seekSilenceAutoStopPause,
             switchAddSpace, switchSingleWordStripPunct, switchUpdateCheck
         ).forEach { it.isSaveEnabled = false }
         txtApiStatus = findViewById(R.id.txtApiStatus)
@@ -334,6 +337,11 @@ class SetupActivity : AppCompatActivity() {
             if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
             val store = preferenceStore
             enqueueSettingsWrite { store.setSilenceAutoStopEnabled(isChecked) }
+        }
+        switchAutoSendAfterSilence.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setAutoSendAfterSilenceEnabled(isChecked) }
         }
         seekSilenceAutoStopPause.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -546,6 +554,7 @@ class SetupActivity : AppCompatActivity() {
             switchAutoRecord.isChecked = p.autoRecord
             switchReturnToPreviousKeyboard.isChecked = p.returnToPreviousKeyboard
             switchSilenceAutoStop.isChecked = p.silenceAutoStopEnabled
+            switchAutoSendAfterSilence.isChecked = p.autoSendAfterSilenceEnabled
             seekSilenceAutoStopPause.progress = SilenceAutoStopSettings.progressForPauseMs(p.silenceAutoStopPauseMs)
             updateSilencePauseLabel(p.silenceAutoStopPauseMs)
             switchAddSpace.isChecked = p.addTrailingSpace
@@ -704,7 +713,8 @@ class SetupActivity : AppCompatActivity() {
         singleWordStripPunctuation = switchSingleWordStripPunct.isChecked,
         returnToPreviousKeyboard = switchReturnToPreviousKeyboard.isChecked,
         silenceAutoStopEnabled = switchSilenceAutoStop.isChecked,
-        silenceAutoStopPauseMs = SilenceAutoStopSettings.pauseMsForProgress(seekSilenceAutoStopPause.progress)
+        silenceAutoStopPauseMs = SilenceAutoStopSettings.pauseMsForProgress(seekSilenceAutoStopPause.progress),
+        autoSendAfterSilenceEnabled = switchAutoSendAfterSilence.isChecked
     )
 
     private fun formatSilencePause(pauseMs: Int): String {
@@ -804,6 +814,7 @@ class SetupActivity : AppCompatActivity() {
         switchSingleWordStripPunct.isEnabled = enabled
         switchReturnToPreviousKeyboard.isEnabled = enabled
         switchSilenceAutoStop.isEnabled = enabled
+        switchAutoSendAfterSilence.isEnabled = enabled
         seekSilenceAutoStopPause.isEnabled = enabled
     }
 

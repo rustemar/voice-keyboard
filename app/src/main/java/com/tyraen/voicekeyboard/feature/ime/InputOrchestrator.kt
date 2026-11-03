@@ -28,7 +28,7 @@ class InputOrchestrator(
     private val preferenceStore: PreferenceStore,
     private val processingQueue: ProcessingQueue,
     private val capture: MicrophoneCaptureSession,
-    private val onTextReady: (text: String, addTrailingSpace: Boolean, editorSessionToken: Long) -> Boolean,
+    private val onTextReady: (text: String, addTrailingSpace: Boolean, editorSessionToken: Long, autoSendRequest: AutoSendPolicy.Request?) -> Boolean,
     private val onPhaseChanged: (InputPhase) -> Unit,
     private val onAmplitude: (Int) -> Unit,
     private val onQueueCountChanged: (Int) -> Unit,
@@ -45,7 +45,9 @@ class InputOrchestrator(
     private val onApiKeyNeeded: () -> Unit = {},
     private val onCancellableWorkChanged: (Boolean) -> Unit = {},
     /** The live editor's RAM-only identity, captured when recording starts, not when it finishes. */
-    private val editorSessionToken: () -> Long? = { null }
+    private val editorSessionToken: () -> Long? = { null },
+    private val createAutoSendRequest: (enabled: Boolean) -> AutoSendPolicy.Request? = { null },
+    private val invalidateAutoSend: () -> Unit = {}
 ) {
 
     companion object {
@@ -79,6 +81,7 @@ class InputOrchestrator(
     private var captureContextToken: Long? = null
     private var captureEditorSessionToken: Long? = null
     private var captureIdentity: ProcessingQueue.WorkIdentity? = null
+    private var captureAutoSendRequest: AutoSendPolicy.Request? = null
     private var speechEndpointer: SpeechProbabilityEndpointer? = null
     private var silenceAutoStopEnabled = false
     private var silenceToggleRevision = 0L
@@ -90,13 +93,23 @@ class InputOrchestrator(
     // destroy so a torn-down panel stops receiving updates (the next panel rebinds instantly).
     private val queueListener = object : ProcessingQueue.Listener {
         override fun onTextReady(text: String, addTrailingSpace: Boolean, editorSessionToken: Long): Boolean =
-            viewVisible && this@InputOrchestrator.onTextReady(text, addTrailingSpace, editorSessionToken)
+            onTextReady(text, addTrailingSpace, editorSessionToken, null)
+        override fun onTextReady(
+            text: String, addTrailingSpace: Boolean, editorSessionToken: Long,
+            autoSendRequest: AutoSendPolicy.Request?
+        ): Boolean = viewVisible && this@InputOrchestrator.onTextReady(
+            text, addTrailingSpace, editorSessionToken, autoSendRequest
+        )
         override fun onQueueCountChanged(count: Int) = this@InputOrchestrator.onQueueCountChanged(count)
         override fun onProcessingPhaseChanged(phase: ProcessingQueue.ProcessingPhase) =
             this@InputOrchestrator.onProcessingPhaseChanged(phase)
         override fun onFailedCountChanged(count: Int) = this@InputOrchestrator.onFailedCountChanged(count)
         override fun onCancellableWorkChanged(available: Boolean) =
             this@InputOrchestrator.onCancellableWorkChanged(available)
+        override fun onAutoSendInvalidated() {
+            captureAutoSendRequest?.cancel()
+            invalidateAutoSend()
+        }
         override fun onError(message: String) {
             // Provider errors may echo the dictated text or credentials.
             DiagnosticLog.record(TAG, "Queue error reported")
@@ -201,6 +214,10 @@ class InputOrchestrator(
             preferences = if (silenceRevision == silenceToggleRevision) loaded
                 else loaded.copy(silenceAutoStopEnabled = silenceAutoStopEnabled)
             silenceAutoStopEnabled = preferences!!.silenceAutoStopEnabled
+            if (!silenceAutoStopEnabled || preferences?.autoSendAfterSilenceEnabled != true) {
+                captureAutoSendRequest?.cancel()
+                invalidateAutoSend()
+            }
             val now = SystemClock.elapsedRealtime()
             speechEndpointer?.setPauseMs(preferences!!.silenceAutoStopPauseMs.toLong(), now)
             speechEndpointer?.setEnabled(silenceAutoStopEnabled, now)
@@ -220,11 +237,19 @@ class InputOrchestrator(
 
     fun isSilenceAutoStopEnabled(): Boolean = silenceAutoStopEnabled
 
+    fun canAutoSendNow(): Boolean = reloadsInFlight == 0 && silenceAutoStopEnabled &&
+        preferences?.autoSendAfterSilenceEnabled == true && currentPhase is InputPhase.Ready &&
+        !toggles.terminalActive
+
     /** Changes only automatic endpointing; toggling never pauses, discards or restarts audio. */
     fun toggleSilenceAutoStop(): Boolean {
         val enabled = !silenceAutoStopEnabled
         silenceAutoStopEnabled = enabled
         silenceToggleRevision++
+        if (!enabled) {
+            captureAutoSendRequest?.cancel()
+            invalidateAutoSend()
+        }
         preferences = preferences?.copy(silenceAutoStopEnabled = enabled)
         speechEndpointer?.setEnabled(enabled, SystemClock.elapsedRealtime())
         val previousSave = silenceToggleSave
@@ -353,7 +378,7 @@ class InputOrchestrator(
                                     endpointer.shouldStop(SystemClock.elapsedRealtime())
                                 ) {
                                     DiagnosticLog.record(TAG, "Auto-stop after speech detector pause")
-                                    finishCaptureAndEnqueue()
+                                    finishCaptureAndEnqueue(FinishReason.SILENCE)
                                 }
                             }
                         }
@@ -372,6 +397,10 @@ class InputOrchestrator(
             moveTo(InputPhase.Failed(R.string.error_mic_unavailable))
             return
         }
+        captureAutoSendRequest = createAutoSendRequest(
+            reloadsInFlight == 0 && preferences?.autoSendAfterSilenceEnabled == true &&
+                silenceAutoStopEnabled && !toggles.terminalActive
+        )
         lateinit var identity: ProcessingQueue.WorkIdentity
         identity = processingQueue.reserveDictation {
             if (captureIdentity == identity) cancelCapture()
@@ -394,7 +423,9 @@ class InputOrchestrator(
         prefs, ppPreferences, toggles, vocabulary, textDictionary
     )
 
-    fun finishCaptureAndEnqueue() {
+    enum class FinishReason { MANUAL, SILENCE }
+
+    fun finishCaptureAndEnqueue(reason: FinishReason = FinishReason.MANUAL) {
         speechEndpointer = null
         val identity = captureIdentity ?: return
         captureIdentity = null
@@ -402,6 +433,12 @@ class InputOrchestrator(
         captureContextToken = null
         val editorToken = captureEditorSessionToken
         captureEditorSessionToken = null
+        val autoSendRequest = captureAutoSendRequest?.takeIf {
+            reason == FinishReason.SILENCE && silenceAutoStopEnabled && reloadsInFlight == 0 &&
+                preferences?.autoSendAfterSilenceEnabled == true && !toggles.terminalActive
+        }
+        if (autoSendRequest == null) captureAutoSendRequest?.cancel()
+        captureAutoSendRequest = null
         val pending = capture.finalizeAsync()
         val snapshot = preferences?.takeIf { reloadsInFlight == 0 }?.let { enqueueSnapshot(it) }
         var handoverJob: Job? = null
@@ -422,6 +459,8 @@ class InputOrchestrator(
             try {
                 val file = pending.result.await()
                 if (file == null) {
+                    autoSendRequest?.cancel()
+                    processingQueue.invalidatePendingAutoSend()
                     processingQueue.releaseReservation(identity)
                     DiagnosticLog.record(TAG, "finishCapture: nothing usable captured (${pending.durationMs}ms)")
                     return@reserve
@@ -434,7 +473,7 @@ class InputOrchestrator(
                 currentCoroutineContext().ensureActive()
                 val upload = prepared.file
                 DiagnosticLog.record(TAG, "finishCapture, file=${upload.name}, size=${upload.length()}, dur=${pending.durationMs}ms")
-                enqueue(upload, pending.durationMs, readySnapshot, contextToken, editorToken, identity)
+                enqueue(upload, pending.durationMs, readySnapshot, contextToken, editorToken, identity, autoSendRequest)
                 prepared.markEnqueued()
                 ownedFile = null // The process-wide queue now owns it.
             } catch (cancelled: CancellationException) {
@@ -446,6 +485,8 @@ class InputOrchestrator(
             } catch (error: Exception) {
                 // Keep the source file for diagnosis rather than silently deleting usable audio.
                 prepared?.retainSource()
+                autoSendRequest?.cancel()
+                processingQueue.invalidatePendingAutoSend()
                 processingQueue.releaseReservation(identity)
                 DiagnosticLog.recordFailure(TAG, "Capture handover failed; source retained", error)
             }
@@ -476,7 +517,7 @@ class InputOrchestrator(
 
     private fun enqueue(
         file: File, durationMs: Long, snapshot: EnqueueSnapshot, contextToken: Long?, editorToken: Long?,
-        identity: ProcessingQueue.WorkIdentity
+        identity: ProcessingQueue.WorkIdentity, autoSendRequest: AutoSendPolicy.Request?
     ) {
         val prefs = snapshot.prefs
         if (prefs.apiKey.isBlank() && currentPhase !is InputPhase.Capturing) {
@@ -516,6 +557,7 @@ class InputOrchestrator(
             ppTerminal = ppEnabled && s.terminalActive,
             contextToken = contextToken,
             editorSessionToken = editorToken,
+            autoSendRequest = autoSendRequest,
             workId = identity.workId,
             createdAt = identity.createdAt,
             postProcessingVocabulary = snapshot.dictionary.postProcessingVocabulary,
@@ -530,6 +572,8 @@ class InputOrchestrator(
         captureIdentity = null
         captureContextToken = null
         captureEditorSessionToken = null
+        captureAutoSendRequest?.cancel()
+        captureAutoSendRequest = null
         if (capture.isActive) {
             capture.abort()
         }
@@ -543,6 +587,8 @@ class InputOrchestrator(
         captureIdentity = null
         captureContextToken = null
         captureEditorSessionToken = null
+        captureAutoSendRequest?.cancel()
+        captureAutoSendRequest = null
         if (capture.isActive) {
             capture.abort()
         }
@@ -562,6 +608,7 @@ class InputOrchestrator(
     }
 
     fun destroy() {
+        invalidateAutoSend()
         speechEndpointer = null
         // Releases only a capture still in progress; files already handed to the queue are its own.
         captureIdentity?.let { processingQueue.releaseReservation(it) }

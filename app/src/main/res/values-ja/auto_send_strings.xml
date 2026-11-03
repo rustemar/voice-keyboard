@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">発話が途切れたら送信</string>
+    <string name="settings_auto_send_after_silence_hint">無音時の自動停止を有効にする必要があります。音声認識とテキスト処理の完了後、すでに入力されているテキストも含めてメッセージ全体を送信します。送信アクションを提供するアプリでのみ動作します。初期設定ではオフです。</string>
+</resources>

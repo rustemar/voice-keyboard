@@ -495,6 +495,24 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <Switch
+            android:id="@+id/switchAutoSendAfterSilence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_auto_send_after_silence"
+            android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_auto_send_after_silence_hint"
+            android:textColor="@color/status_text"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp" />
+
         <!-- Return to the previous keyboard (for use as another keyboard's voice input) -->
         <Switch
             android:id="@+id/switchReturnToPreviousKeyboard"

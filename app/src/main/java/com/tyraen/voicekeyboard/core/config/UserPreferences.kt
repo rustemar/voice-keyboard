@@ -21,7 +21,9 @@ data class UserPreferences(
     val returnToPreviousKeyboard: Boolean = false,
     /** Optional keyboard-only endpointing; manual dictation remains the default. */
     val silenceAutoStopEnabled: Boolean = false,
-    val silenceAutoStopPauseMs: Int = SilenceAutoStopSettings.DEFAULT_PAUSE_MS
+    val silenceAutoStopPauseMs: Int = SilenceAutoStopSettings.DEFAULT_PAUSE_MS,
+    /** Opt-in sending after a dictation finishes automatically on a speech pause. */
+    val autoSendAfterSilenceEnabled: Boolean = false
 ) {
     val languageCodes: List<String> get() = TranscriptionLocale.parseCodes(languages)
 

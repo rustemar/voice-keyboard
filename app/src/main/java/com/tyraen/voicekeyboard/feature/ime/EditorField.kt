@@ -70,7 +70,13 @@ object EditorField {
         }
     }
 
-    /** The send key runs the field's own Send action where there is one, else Ctrl+Enter. */
-    fun sendsByAction(enter: Enter): Boolean =
-        enter is Enter.Action && enter.label == null && enter.id == EditorInfo.IME_ACTION_SEND
+    /**
+     * An explicit Send button can run a declared Send action even when NO_ENTER_ACTION keeps
+     * the ordinary Enter key as a line break. A custom action uses the app's own action ID.
+     * Other editor actions do not imply that the field supports sending a message.
+     */
+    fun sendAction(imeOptions: Int, actionId: Int, actionLabel: CharSequence?): Enter.Action? {
+        if (imeOptions and EditorInfo.IME_MASK_ACTION != EditorInfo.IME_ACTION_SEND) return null
+        return Enter.Action(if (actionLabel != null) actionId else EditorInfo.IME_ACTION_SEND, actionLabel)
+    }
 }

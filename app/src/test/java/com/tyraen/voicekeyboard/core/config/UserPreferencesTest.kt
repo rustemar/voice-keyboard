@@ -1,6 +1,7 @@
 package com.tyraen.voicekeyboard.core.config
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class UserPreferencesTest {
@@ -36,5 +37,10 @@ class UserPreferencesTest {
         val p = prefs("ru", "")
         assertEquals(listOf("ru"), p.languageCodes)
         assertEquals("ru", p.effectiveLanguage)
+    }
+
+    @Test fun `automatic sending remains opt-in when silence auto-stop is enabled`() {
+        val p = prefs("en", "en").copy(silenceAutoStopEnabled = true)
+        assertFalse(p.autoSendAfterSilenceEnabled)
     }
 }

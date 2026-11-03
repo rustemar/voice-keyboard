@@ -88,11 +88,17 @@ class ProcessingQueue internal constructor(
     interface Listener {
         /** Return true only after the original editor accepted the text. This call cannot suspend. */
         fun onTextReady(text: String, addTrailingSpace: Boolean, editorSessionToken: Long): Boolean
+        fun onTextReady(
+            text: String, addTrailingSpace: Boolean, editorSessionToken: Long,
+            autoSendRequest: AutoSendPolicy.Request?
+        ): Boolean = onTextReady(text, addTrailingSpace, editorSessionToken)
         fun onQueueCountChanged(count: Int)
         fun onProcessingPhaseChanged(phase: ProcessingPhase)
         fun onFailedCountChanged(count: Int)
         fun onError(message: String)
         fun onCancellableWorkChanged(available: Boolean) {}
+        /** A failed/unfinished chunk must not be sent later as part of a newer composed draft. */
+        fun onAutoSendInvalidated() {}
     }
 
     companion object {
@@ -165,6 +171,8 @@ class ProcessingQueue internal constructor(
         val contextToken: Long? = null,
         /** Original editor session; never serialized into parked recordings. */
         val editorSessionToken: Long? = null,
+        /** One-shot consent from a silence-stopped capture. Never serialized or restored. */
+        val autoSendRequest: AutoSendPolicy.Request? = null,
         val workId: String = UUID.randomUUID().toString(),
         val createdAt: Long = nextCreatedAt(),
         /** Capture-time text preferences; never sent to the speech provider. */
@@ -220,6 +228,12 @@ class ProcessingQueue internal constructor(
     val pendingCount: Int get() = queue.size + reservations.values.count { it.finalized } +
         if (activeItem?.let { it.workId !in cancelledWork && it.workId !in deliveredWork } == true) 1 else 0
 
+    internal fun isIsolatedAutoSendWork(workId: String): Boolean =
+        store.isLoaded && store.count.value == 0 &&
+            reservations.keys.none { it != workId } &&
+            queue.none { it.workId != workId && it.workId !in cancelledWork && it.workId !in deliveredWork } &&
+            (activeItem == null || activeItem?.workId == workId)
+
     fun setPostProcessingContextScope(packageName: String?) = recentContext.setScope(packageName)
 
     fun capturePostProcessingContextToken(): Long? = recentContext.captureToken()
@@ -270,8 +284,18 @@ class ProcessingQueue internal constructor(
         }
     }
 
+    /** Also reaches a newer recording or disk handover whose request is not enqueued yet. */
+    fun invalidatePendingAutoSend() {
+        activeItem?.autoSendRequest?.cancel()
+        queue.forEach { it.autoSendRequest?.cancel() }
+        notifyListener("automatic send invalidation") { it.onAutoSendInvalidated() }
+    }
+
     /** Reserve capture order before asynchronous preferences or view handover can delay enqueue. */
     fun reserveDictation(onCancel: () -> Unit): WorkIdentity {
+        // Beginning another capture revokes older auto-send, even if that capture is cancelled.
+        activeItem?.autoSendRequest?.cancel()
+        queue.forEach { it.autoSendRequest?.cancel() }
         val identity = WorkIdentity(UUID.randomUUID().toString(), nextCreatedAt())
         reservations[identity.workId] = Reservation(identity, onCancel)
         pushCancellableWork()
@@ -390,6 +414,7 @@ class ProcessingQueue internal constructor(
         DiagnosticLog.record(TAG, "Transcribing ${item.audioFile.name}")
 
         if (!item.audioFile.exists()) {
+            invalidatePendingAutoSend()
             DiagnosticLog.record(TAG, "Audio file missing, dropping ${item.audioFile.name}")
             if (item.parkedId != null) store.markDone(item.parkedId)
             editorSessionTokens.remove(item.workId)
@@ -424,6 +449,7 @@ class ProcessingQueue internal constructor(
             return
         }
 
+        var pipelineSucceeded = true
         var rawText: String? = null
         var lastError: Throwable? = null
         var permanent = false
@@ -435,6 +461,8 @@ class ProcessingQueue internal constructor(
                 rawText = result.getOrNull()
                 break
             }
+            pipelineSucceeded = false
+            invalidatePendingAutoSend()
             lastError = result.exceptionOrNull()
             if (!isTransientError(lastError)) {
                 permanent = true
@@ -456,6 +484,7 @@ class ProcessingQueue internal constructor(
         }
 
         if (rawText.isBlank()) {
+            invalidatePendingAutoSend()
             DiagnosticLog.record(TAG, "Transcription returned empty text, discarding")
             complete(item)
             return
@@ -476,13 +505,18 @@ class ProcessingQueue internal constructor(
         if (hasPostProcessing) {
             setPhase(ProcessingPhase.POST_PROCESSING)
         }
-        val processed = maybePostProcess(cleanedText, item, prepared.vocabulary)
+        val processed = maybePostProcess(cleanedText, item, prepared.vocabulary) {
+            pipelineSucceeded = false
+            invalidatePendingAutoSend()
+        }
 
         // The prompts say "output nothing" for filler-only input; honour that instead of typing a
         // lone space into the field or saving an empty result. A model that blanks a real
         // sentence must not lose it, though: anything longer than a few filler sounds falls back
         // to the transcript, like an LLM error does.
         val output = if (processed.isBlank()) {
+            pipelineSucceeded = false
+            invalidatePendingAutoSend()
             if (cleanedText.trim().length <= FILLER_MAX_CHARS) {
                 DiagnosticLog.record(TAG, "Post-processing produced empty text, nothing inserted")
                 complete(item)
@@ -499,7 +533,7 @@ class ProcessingQueue internal constructor(
         committingWork.add(item.workId)
         pushCancellableWork()
         try {
-            deliver(item, output)
+            deliver(item, output, pipelineSucceeded)
             deliveredWork.add(item.workId)
             if (remember) recentContext.remember(item.contextToken, output)
             // Insertion or durable save has succeeded. Finish releasing owned audio even if the
@@ -512,6 +546,7 @@ class ProcessingQueue internal constructor(
     }
 
     private suspend fun complete(item: QueueItem) {
+        item.autoSendRequest?.cancel()
         if (item.parkedId != null) store.markDone(item.parkedId) else item.audioFile.delete()
         // Never clear the durable completion marker while replayable source audio remains.
         if (item.audioFile.exists()) throw IOException("Could not release the completed dictation audio")
@@ -520,12 +555,22 @@ class ProcessingQueue internal constructor(
     }
 
     /** Inserting cannot suspend; an unavailable/changed editor instead gets a durable result. */
-    private suspend fun deliver(item: QueueItem, text: String) {
+    private suspend fun deliver(item: QueueItem, text: String, pipelineSucceeded: Boolean) {
         val l = listener
         val editorToken = item.editorSessionToken
+        // A newer capture can begin after the error itself. Revoke its intention at delivery
+        // too, so recovered/fallback, parked and terminal chunks never enter an automatic send.
+        if (!pipelineSucceeded || item.parkedId != null || item.ppTerminal) invalidatePendingAutoSend()
+        if (item.parkedId != null || item.ppTerminal || !isIsolatedAutoSendWork(item.workId)) {
+            item.autoSendRequest?.cancel()
+        }
         if (editorToken != null && notifyListener("text delivery", l) {
-                it.onTextReady(text, item.addTrailingSpace, editorToken)
+                // Preserve overrides on delegated legacy listeners: Kotlin delegation of the
+                // overload would otherwise bypass their three-argument delivery callback.
+                if (item.autoSendRequest == null) it.onTextReady(text, item.addTrailingSpace, editorToken)
+                else it.onTextReady(text, item.addTrailingSpace, editorToken, item.autoSendRequest)
             } == true) return
+        invalidatePendingAutoSend()
         // A save failure must propagate: processNext parks the original audio and retries instead
         // of deleting the only copy of a dictation. No system clipboard is changed automatically.
         withContext(NonCancellable) {
@@ -539,6 +584,7 @@ class ProcessingQueue internal constructor(
      * and keep the indefinite retry loop alive for transient failures.
      */
     private suspend fun handleFailure(item: QueueItem, permanent: Boolean) {
+        invalidatePendingAutoSend()
         checkActive(item)
         val state = if (permanent) ParkedRecording.State.NEEDS_ATTENTION else ParkedRecording.State.WAITING_NETWORK
         // Once disk mutation starts, finish it even if cancelled. The completion handler then
@@ -644,12 +690,20 @@ class ProcessingQueue internal constructor(
         return trimmed.trimEnd('.', '!', '?', '。', '！', '？')
     }
 
-    private suspend fun maybePostProcess(text: String, item: QueueItem, referenceVocabulary: String): String {
+    private suspend fun maybePostProcess(
+        text: String, item: QueueItem, referenceVocabulary: String, onFallback: () -> Unit
+    ): String {
         checkActive(item)
         val pp = item.ppPreferences ?: return text
-        if (pp.apiKey.isBlank()) return text
+        if (pp.apiKey.isBlank()) {
+            if (item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal) {
+                onFallback()
+            }
+            return text
+        }
         if ((item.ppFix || item.ppShorten || item.ppEmoji || item.ppRhyme || item.ppTranslate || item.ppTerminal) &&
             !canAccessEndpoint(pp.resolvedEndpoint())) {
+            onFallback()
             DiagnosticLog.record(TAG, "Post-processing provider unavailable, using recognized text")
             return text
         }
@@ -675,6 +729,7 @@ class ProcessingQueue internal constructor(
             checkActive(item)
             val raw = result.getOrElse { error ->
                 if (error is CancellationException) throw error
+                onFallback()
                 DiagnosticLog.recordFailure(TAG, "Terminal processing failed, using raw text", error)
                 processed
             }
@@ -689,6 +744,7 @@ class ProcessingQueue internal constructor(
             checkActive(item)
             processed = result.getOrElse { error ->
                 if (error is CancellationException) throw error
+                onFallback()
                 DiagnosticLog.recordFailure(TAG, "Post-processing failed, using raw text", error)
                 processed
             }
@@ -703,6 +759,7 @@ class ProcessingQueue internal constructor(
             checkActive(item)
             processed = result.getOrElse { error ->
                 if (error is CancellationException) throw error
+                onFallback()
                 DiagnosticLog.recordFailure(TAG, "Rhyming failed, using pre-rhyme text", error)
                 processed
             }
@@ -717,6 +774,7 @@ class ProcessingQueue internal constructor(
             checkActive(item)
             processed = result.getOrElse { error ->
                 if (error is CancellationException) throw error
+                onFallback()
                 DiagnosticLog.recordFailure(TAG, "Translation failed, using pre-translate text", error)
                 processed
             }

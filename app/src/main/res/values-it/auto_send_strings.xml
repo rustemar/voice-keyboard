@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">Invia dopo una pausa</string>
+    <string name="settings_auto_send_after_silence_hint">Richiede l’arresto automatico in caso di silenzio. Invia l’intero messaggio, incluso il testo già digitato, al termine del riconoscimento e dell’elaborazione del testo. Funziona solo nelle app che offrono un’azione di invio. Disattivato per impostazione predefinita.</string>
+</resources>

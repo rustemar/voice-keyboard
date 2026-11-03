@@ -33,6 +33,7 @@ class PreferenceStore(private val context: Context) {
         val RETURN_TO_PREVIOUS_KEYBOARD = booleanPreferencesKey("return_to_previous_keyboard")
         val SILENCE_AUTO_STOP_ENABLED = booleanPreferencesKey("silence_auto_stop_enabled")
         val SILENCE_AUTO_STOP_PAUSE_MS = intPreferencesKey("silence_auto_stop_pause_ms")
+        val AUTO_SEND_AFTER_SILENCE_ENABLED = booleanPreferencesKey("auto_send_after_silence_enabled")
         val VOCABULARY = stringPreferencesKey("vocabulary")
         val POSTPROCESSING_VOCABULARY = stringPreferencesKey("postprocessing_vocabulary")
         val TEXT_REPLACEMENTS = stringPreferencesKey("text_replacements")
@@ -95,7 +96,8 @@ class PreferenceStore(private val context: Context) {
             silenceAutoStopEnabled = prefs[Keys.SILENCE_AUTO_STOP_ENABLED] ?: false,
             silenceAutoStopPauseMs = SilenceAutoStopSettings.normalizePauseMs(
                 prefs[Keys.SILENCE_AUTO_STOP_PAUSE_MS] ?: SilenceAutoStopSettings.DEFAULT_PAUSE_MS
-            )
+            ),
+            autoSendAfterSilenceEnabled = prefs[Keys.AUTO_SEND_AFTER_SILENCE_ENABLED] ?: false
         )
     }
 
@@ -114,6 +116,7 @@ class PreferenceStore(private val context: Context) {
             data[Keys.SILENCE_AUTO_STOP_ENABLED] = prefs.silenceAutoStopEnabled
             data[Keys.SILENCE_AUTO_STOP_PAUSE_MS] =
                 SilenceAutoStopSettings.normalizePauseMs(prefs.silenceAutoStopPauseMs)
+            data[Keys.AUTO_SEND_AFTER_SILENCE_ENABLED] = prefs.autoSendAfterSilenceEnabled
         }
     }
 
@@ -275,6 +278,11 @@ class PreferenceStore(private val context: Context) {
     /** Only the keyboard toggle changes, without overwriting settings being edited elsewhere. */
     suspend fun setSilenceAutoStopEnabled(value: Boolean) {
         context.store.edit { it[Keys.SILENCE_AUTO_STOP_ENABLED] = value }
+    }
+
+    /** Sending is opt-in and saves independently of unfinished provider edits. */
+    suspend fun setAutoSendAfterSilenceEnabled(value: Boolean) {
+        context.store.edit { it[Keys.AUTO_SEND_AFTER_SILENCE_ENABLED] = value }
     }
 
     /** Slider changes persist independently of the provider's network validation on Apply. */

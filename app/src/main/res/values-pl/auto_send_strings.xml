@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">Wysyłaj po przerwie w mowie</string>
+    <string name="settings_auto_send_after_silence_hint">Wymaga automatycznego zatrzymania po ciszy. Po zakończeniu rozpoznawania i przetwarzania tekstu wysyła całą wiadomość, łącznie z wcześniej wpisanym tekstem. Działa tylko w aplikacjach udostępniających akcję Wyślij. Domyślnie wyłączone.</string>
+</resources>

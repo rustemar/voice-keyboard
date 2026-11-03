@@ -4,6 +4,7 @@ import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -179,15 +180,40 @@ class EditorFieldTest {
         assertFalse(EditorField.isMultiLine(number or InputType.TYPE_TEXT_FLAG_MULTI_LINE))
     }
 
-    @Test fun `the send key uses the field's own send action only when it has one`() {
-        assertTrue(EditorField.sendsByAction(EditorField.enter(EditorInfo.IME_ACTION_SEND, 0, null)))
-        assertFalse(EditorField.sendsByAction(EditorField.enter(EditorInfo.IME_ACTION_DONE, 0, null)))
-        assertFalse(EditorField.sendsByAction(EditorField.Enter.NewLine))
-        // A chat box that asks for no enter action keeps Ctrl+Enter.
-        assertFalse(EditorField.sendsByAction(
-            EditorField.enter(EditorInfo.IME_ACTION_SEND or EditorInfo.IME_FLAG_NO_ENTER_ACTION, 0, null)
-        ))
-        // A custom label names some other action, whatever its id.
-        assertFalse(EditorField.sendsByAction(EditorField.enter(EditorInfo.IME_ACTION_SEND, 4, "Post")))
+    @Test fun `the send button uses Send even when ordinary Enter must remain a line break`() {
+        val options = EditorInfo.IME_ACTION_SEND or EditorInfo.IME_FLAG_NO_ENTER_ACTION
+        assertEquals(EditorField.Enter.NewLine, EditorField.enter(options, 0, null))
+        assertEquals(
+            EditorField.Enter.Action(EditorInfo.IME_ACTION_SEND, null),
+            EditorField.sendAction(options, 0, null)
+        )
+    }
+
+    @Test fun `a declared Send action uses the custom action id when it has a label`() {
+        assertEquals(
+            EditorField.Enter.Action(42, "Post"),
+            EditorField.sendAction(
+                EditorInfo.IME_ACTION_SEND or EditorInfo.IME_FLAG_NO_ENTER_ACTION,
+                42, "Post"
+            )
+        )
+    }
+
+    @Test fun `a Send action without a label ignores a stray custom action id`() {
+        assertEquals(
+            EditorField.Enter.Action(EditorInfo.IME_ACTION_SEND, null),
+            EditorField.sendAction(EditorInfo.IME_ACTION_SEND, 42, null)
+        )
+    }
+
+    @Test fun `other actions and custom labels do not advertise Send`() {
+        for (id in listOf(
+            EditorInfo.IME_ACTION_UNSPECIFIED, EditorInfo.IME_ACTION_NONE,
+            EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_SEARCH,
+            EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_PREVIOUS, EditorInfo.IME_ACTION_DONE
+        )) {
+            assertNull(EditorField.sendAction(id, 0, null))
+            assertNull(EditorField.sendAction(id, EditorInfo.IME_ACTION_SEND, "Send"))
+        }
     }
 }

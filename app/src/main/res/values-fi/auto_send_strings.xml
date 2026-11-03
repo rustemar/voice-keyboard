@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_auto_send_after_silence">Lähetä puhetauon jälkeen</string>
+    <string name="settings_auto_send_after_silence_hint">Edellyttää automaattista pysäytystä puhetauon jälkeen. Lähettää koko viestin, myös kenttään aiemmin kirjoitetun tekstin, tunnistuksen ja tekstinkäsittelyn valmistuttua. Toimii vain sovelluksissa, jotka tarjoavat lähetystoiminnon. Oletuksena pois käytöstä.</string>
+</resources>

@@ -118,7 +118,8 @@ android {
     buildTypes.create("noiseLocal") {
         initWith(buildTypes.getByName("release"))
         applicationIdSuffix = ".noisetest"
-        versionNameSuffix = "-noise-local.2"
+        versionNameSuffix = providers.gradleProperty("localTestVersionSuffix")
+            .getOrElse("-noise-local.2")
         signingConfig = signingConfigs.getByName("debug")
         matchingFallbacks += listOf("release")
     }
