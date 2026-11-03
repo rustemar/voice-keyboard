@@ -24,6 +24,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tyraen.voicekeyboard.R
@@ -74,7 +75,8 @@ class DictationInputMethod : InputMethodService() {
     private data class AutoSendCapture(
         val request: AutoSendPolicy.Request,
         val connection: InputConnection,
-        val editorToken: Long
+        val editorToken: Long,
+        val route: SendRouteResolver.Route
     )
     private var autoSendCapture: AutoSendCapture? = null
     private var currentTheme: String = ""
@@ -281,35 +283,70 @@ class DictationInputMethod : InputMethodService() {
         if (info == null) EditorField.Enter.NewLine
         else EditorField.enter(info.imeOptions, info.actionId, info.actionLabel)
 
-    private fun sendActionFor(info: EditorInfo?): EditorField.Enter.Action? =
-        info?.let { EditorField.sendAction(it.imeOptions, it.actionId, it.actionLabel) }
+    private fun sendRouteFor(info: EditorInfo?): SendRouteResolver.Route = SendRouteResolver.resolve(
+        info?.packageName, info?.inputType ?: InputType.TYPE_NULL, info?.imeOptions ?: 0,
+        info?.actionId ?: 0, info?.actionLabel,
+        if (info == null) emptyArray() else EditorInfoCompat.getContentMimeTypes(info)
+    )
 
-    private fun invalidateAutoSend() {
+    private fun logSendRoute(stage: String, reason: String, route: SendRouteResolver.Route = sendRouteFor(currentInputEditorInfo)) {
+        val info = currentInputEditorInfo
+        val mimeTypes = if (info == null) emptyArray() else EditorInfoCompat.getContentMimeTypes(info)
+        DiagnosticLog.record(TAG, "Send stage=$stage route=${route.kind} reason=$reason " +
+            "package=${info?.packageName} inputType=${info?.inputType} imeOptions=${info?.imeOptions} " +
+            "actionId=${info?.actionId} labelPresent=${info?.actionLabel != null} " +
+            "imageMimeTypes=[${SendRouteResolver.diagnosticMimeTypes(mimeTypes)}]")
+    }
+
+    private fun invalidateAutoSend(reason: String = "user_or_runtime_action") {
+        if (autoSendCapture?.request?.isPending == true) logSendRoute("invalidate", reason)
         autoSendPolicy.invalidate()
         autoSendCapture = null
     }
 
     private fun prepareAutoSend(enabled: Boolean): AutoSendPolicy.Request? {
-        invalidateAutoSend()
-        if (!enabled || !keyboardVisible || isVoiceBlocked() || sendActionFor(currentInputEditorInfo) == null) return null
-        val token = editorSessionToken ?: return null
-        val connection = currentInputConnection ?: return null
+        invalidateAutoSend("new_capture")
+        val route = sendRouteFor(currentInputEditorInfo)
+        val token = editorSessionToken
+        val connection = currentInputConnection
+        val reason = when {
+            !enabled -> orchestrator.autoSendReadinessReason() ?: "capture_disabled"
+            !keyboardVisible -> "keyboard_hidden"
+            isVoiceBlocked() -> "field_blocked"
+            !route.automatic -> "unsupported"
+            token == null || connection == null -> "editor_unavailable"
+            else -> null
+        }
+        logSendRoute("prepare", reason ?: "ready", route)
+        if (reason != null) return null
         val request = autoSendPolicy.prepare(true) ?: return null
-        autoSendCapture = AutoSendCapture(request, connection, token)
+        autoSendCapture = AutoSendCapture(request, connection!!, token!!, route)
         return request
     }
 
+    private fun autoSendBlockReason(request: AutoSendPolicy.Request?): String? {
+        if (request == null) return "not_requested"
+        val target = autoSendCapture
+        if (target == null || target.request !== request || !autoSendPolicy.isCurrent(request)) return "request_revoked"
+        if (target.connection !== currentInputConnection || target.editorToken != editorSessionToken) return "editor_changed"
+        if (!keyboardVisible) return "keyboard_hidden"
+        if (isVoiceBlocked()) return "field_blocked"
+        orchestrator.autoSendReadinessReason()?.let { return it }
+        val route = sendRouteFor(currentInputEditorInfo)
+        if (!route.automatic) return "unsupported"
+        if (target.route.kind != route.kind || target.route.action?.id != route.action?.id) return "route_changed"
+        return null
+    }
+
     private fun currentAutoSendCapture(request: AutoSendPolicy.Request?): AutoSendCapture? =
-        autoSendCapture?.takeIf {
-            it.request === request && autoSendPolicy.isCurrent(request) &&
-                it.connection === currentInputConnection && it.editorToken == editorSessionToken &&
-                keyboardVisible && !isVoiceBlocked() && orchestrator.canAutoSendNow()
-        }
+        autoSendCapture?.takeIf { autoSendBlockReason(request) == null }
 
     private fun acceptDictation(
         text: String, addTrailingSpace: Boolean, originSessionToken: Long,
         autoSendRequest: AutoSendPolicy.Request?
     ): Boolean {
+        val blockReason = autoSendBlockReason(autoSendRequest)
+        logSendRoute("auto_delivery", blockReason ?: "ready")
         val target = currentAutoSendCapture(autoSendRequest)
         val maySend = target != null
         if (!maySend) autoSendRequest?.cancel()
@@ -320,20 +357,27 @@ class DictationInputMethod : InputMethodService() {
         }
         if (inserted && maySend) {
             try {
-                val action = sendActionFor(currentInputEditorInfo)
-                if (target === currentAutoSendCapture(autoSendRequest) && action != null &&
+                val route = sendRouteFor(currentInputEditorInfo)
+                val action = route.action
+                if (target === currentAutoSendCapture(autoSendRequest) && route.automatic && action != null &&
                     autoSendPolicy.isCurrent(autoSendRequest)
                 ) {
                     autoSendCapture = null
                     val accepted = autoSendPolicy.dispatchOnce(autoSendRequest) { keystrokes.pressSend(action) }
-                    DiagnosticLog.record(TAG, "Automatic send action dispatched, accepted=$accepted")
-                } else autoSendRequest?.cancel()
+                    logSendRoute("auto_dispatch", "accepted=$accepted", route)
+                } else {
+                    logSendRoute("auto_dispatch", autoSendBlockReason(autoSendRequest) ?: "request_revoked", route)
+                    autoSendRequest?.cancel()
+                }
             } catch (error: RuntimeException) {
                 autoSendRequest?.cancel()
                 // Host exceptions may contain editor contents; log only the failure category.
                 DiagnosticLog.record(TAG, "Automatic send unavailable: ${error.javaClass.simpleName}")
             }
-        } else autoSendRequest?.cancel()
+        } else {
+            if (!inserted) logSendRoute("auto_dispatch", "insertion_rejected")
+            autoSendRequest?.cancel()
+        }
         if (!inserted && keyboardVisible) savedResultSinceShown = true
         scheduleReturnToPreviousKeyboard(inserted)
         return inserted
@@ -688,11 +732,10 @@ class DictationInputMethod : InputMethodService() {
 
         btnSend.setOnClickListener {
             invalidateAutoSend()
-            val info = currentInputEditorInfo
-            DiagnosticLog.record(TAG, "Manual send package=${info?.packageName} " +
-                "inputType=${info?.inputType} imeOptions=${info?.imeOptions} " +
-                "actionId=${info?.actionId} labelPresent=${info?.actionLabel != null}")
-            keystrokes.pressSend(sendActionFor(info))
+            val route = sendRouteFor(currentInputEditorInfo)
+            logSendRoute("manual", "requested", route)
+            val accepted = keystrokes.pressSend(route.action)
+            logSendRoute("manual_dispatch", "accepted=$accepted", route)
         }
 
         // Dictation language: tap cycles through the configured codes, long-press picks one.

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/keyboard_bg">
@@ -38,6 +39,7 @@
             android:layout_marginBottom="8dp" />
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -47,18 +49,20 @@
                 android:id="@+id/btnEnableKeyboard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/keyboard_open_settings"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/mic_idle"
                 android:layout_marginEnd="8dp" />
 
-            <Button
+            <com.tyraen.voicekeyboard.core.ui.IconActionButton
                 android:id="@+id/btnSwitchKeyboard"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/keyboard_switch"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/keyboard_switch"
+                app:icon="@drawable/ic_keyboard_switch"
                 android:textColor="@color/text_primary"
                 android:backgroundTint="@color/key_bg" />
         </LinearLayout>
@@ -674,6 +678,7 @@
 
         <!-- Test buttons -->
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -684,17 +689,20 @@
                 android:id="@+id/btnTestRecord"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/test_record"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/mic_recording"
                 android:layout_marginEnd="8dp" />
 
-            <Button
+            <com.tyraen.voicekeyboard.core.ui.IconActionButton
                 android:id="@+id/btnTestClear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_clear"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/test_clear"
+                app:icon="@drawable/ic_delete"
                 android:textColor="@color/text_primary"
                 android:backgroundTint="@color/key_bg" />
         </LinearLayout>
@@ -725,36 +733,41 @@
             android:layout_marginBottom="12dp" />
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="24dp">
 
-            <Button
+            <com.tyraen.voicekeyboard.core.ui.IconActionButton
                 android:id="@+id/btnSaveLogs"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/logs_save"
+                android:layout_height="48dp"
+                android:contentDescription="@string/logs_save"
+                app:icon="@drawable/ic_save"
                 android:textColor="@color/text_primary"
                 android:backgroundTint="@color/key_bg"
                 android:layout_marginEnd="8dp" />
 
-            <Button
+            <com.tyraen.voicekeyboard.core.ui.IconActionButton
                 android:id="@+id/btnShareLogs"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/logs_share"
+                android:layout_height="48dp"
+                android:contentDescription="@string/logs_share"
+                app:icon="@drawable/ic_share"
                 android:textColor="@color/text_primary"
                 android:backgroundTint="@color/key_bg"
                 android:layout_marginEnd="8dp" />
 
-            <Button
+            <com.tyraen.voicekeyboard.core.ui.IconActionButton
                 android:id="@+id/btnClearLogs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/logs_clear"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="48dp"
+                android:contentDescription="@string/logs_clear"
+                app:icon="@drawable/ic_delete"
                 android:textColor="@color/text_primary"
                 android:backgroundTint="@color/key_bg" />
         </LinearLayout>

@@ -7,6 +7,45 @@
         <item name="android:navigationBarColor">@color/system_nav_bar</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">@bool/light_system_bars</item>
         <item name="android:windowBackground">@color/keyboard_bg</item>
+        <item name="materialButtonStyle">@style/Widget.VoiceKeyboard.ActionButton</item>
+        <item name="android:switchStyle">@style/Widget.VoiceKeyboard.Switch</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.VoiceKeyboard.Dialog</item>
+    </style>
+
+    <style name="Widget.VoiceKeyboard.Switch" parent="@android:style/Widget.Material.CompoundButton.Switch">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:breakStrategy">balanced</item>
+        <item name="android:hyphenationFrequency">normal</item>
+    </style>
+
+    <style name="Widget.VoiceKeyboard.ActionButton" parent="Widget.Material3.Button">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">2147483647</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:breakStrategy">balanced</item>
+        <item name="android:hyphenationFrequency">normal</item>
+    </style>
+
+    <style name="Widget.VoiceKeyboard.DialogButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">2147483647</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:breakStrategy">balanced</item>
+        <item name="android:hyphenationFrequency">normal</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
+    <style name="Widget.VoiceKeyboard.DialogButton.Flush">
+        <item name="android:layout_marginStart">0dp</item>
+    </style>
+
+    <style name="ThemeOverlay.VoiceKeyboard.Dialog" parent="ThemeOverlay.Material3.Dialog.Alert">
+        <item name="buttonBarButtonStyle">@style/Widget.VoiceKeyboard.DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.VoiceKeyboard.DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.VoiceKeyboard.DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.VoiceKeyboard.DialogButton.Flush</item>
     </style>
 
     <!-- Invisible host for the microphone permission prompt launched from the keyboard. -->

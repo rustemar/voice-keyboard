@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -16,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
+import com.tyraen.voicekeyboard.core.ui.IconActionButton
+import com.tyraen.voicekeyboard.core.ui.useReadableActionLabel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -210,13 +211,13 @@ class PendingTranscriptsPanel(
                     remove(transcript)
                 }, actionParams())
             } else {
-                actions.addView(action(R.string.saved_texts_insert, R.id.btnPendingInsert, transcript) {
+                actions.addView(iconAction(R.string.saved_texts_insert, R.drawable.ic_paste, R.id.btnPendingInsert, transcript) {
                     insert(transcript)
                 }, actionParams())
-                actions.addView(action(R.string.saved_texts_copy, R.id.btnPendingCopy, transcript) {
+                actions.addView(iconAction(R.string.saved_texts_copy, R.drawable.ic_copy, R.id.btnPendingCopy, transcript) {
                     copy(transcript)
                 }, actionParams())
-                actions.addView(action(R.string.saved_texts_delete, R.id.btnPendingDelete, transcript) {
+                actions.addView(iconAction(R.string.saved_texts_delete, R.drawable.ic_delete, R.id.btnPendingDelete, transcript) {
                     confirmingDelete = transcript.id
                     render()
                 }, actionParams())
@@ -226,10 +227,19 @@ class PendingTranscriptsPanel(
         }
     }
 
-    private fun actionParams() = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f).apply {
+    private fun actionParams() = LinearLayout.LayoutParams(0, -2, 1f).apply {
         marginStart = dp(3)
         marginEnd = dp(3)
     }
+
+    private fun iconAction(label: Int, icon: Int, viewId: Int, transcript: PendingTranscript, click: () -> Unit) =
+        IconActionButton(context).apply {
+            id = viewId
+            setActionLabel(context.getString(label))
+            setIconResource(icon)
+            isEnabled = transcript.id !in claimedIds.value
+            setOnClickListener { click() }
+        }
 
     private fun action(label: Int, viewId: Int, transcript: PendingTranscript, click: () -> Unit) =
         Button(context).apply {
@@ -237,6 +247,7 @@ class PendingTranscriptsPanel(
             setText(label)
             isAllCaps = false
             textSize = 14f
+            useReadableActionLabel()
             minHeight = dp(48)
             minimumHeight = dp(48)
             minWidth = 0

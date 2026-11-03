@@ -25,6 +25,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.tyraen.voicekeyboard.R
+import com.tyraen.voicekeyboard.core.ui.useReadableActionLabel
 import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
@@ -586,6 +587,7 @@ class SelectedTextActionsPanel(
         text = label
         isAllCaps = false
         textSize = 15f
+        useReadableActionLabel()
         minHeight = dp(48)
         minimumHeight = dp(48)
         minWidth = 0

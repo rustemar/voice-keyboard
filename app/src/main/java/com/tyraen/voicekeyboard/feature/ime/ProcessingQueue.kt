@@ -285,7 +285,8 @@ class ProcessingQueue internal constructor(
     }
 
     /** Also reaches a newer recording or disk handover whose request is not enqueued yet. */
-    fun invalidatePendingAutoSend() {
+    fun invalidatePendingAutoSend(reason: String = "pipeline_failure") {
+        DiagnosticLog.record(TAG, "Auto-send invalidated reason=$reason")
         activeItem?.autoSendRequest?.cancel()
         queue.forEach { it.autoSendRequest?.cancel() }
         notifyListener("automatic send invalidation") { it.onAutoSendInvalidated() }
@@ -414,7 +415,7 @@ class ProcessingQueue internal constructor(
         DiagnosticLog.record(TAG, "Transcribing ${item.audioFile.name}")
 
         if (!item.audioFile.exists()) {
-            invalidatePendingAutoSend()
+            invalidatePendingAutoSend("audio_missing")
             DiagnosticLog.record(TAG, "Audio file missing, dropping ${item.audioFile.name}")
             if (item.parkedId != null) store.markDone(item.parkedId)
             editorSessionTokens.remove(item.workId)
@@ -462,7 +463,7 @@ class ProcessingQueue internal constructor(
                 break
             }
             pipelineSucceeded = false
-            invalidatePendingAutoSend()
+            invalidatePendingAutoSend("transcription_error")
             lastError = result.exceptionOrNull()
             if (!isTransientError(lastError)) {
                 permanent = true
@@ -484,7 +485,7 @@ class ProcessingQueue internal constructor(
         }
 
         if (rawText.isBlank()) {
-            invalidatePendingAutoSend()
+            invalidatePendingAutoSend("empty_transcript")
             DiagnosticLog.record(TAG, "Transcription returned empty text, discarding")
             complete(item)
             return
@@ -507,7 +508,7 @@ class ProcessingQueue internal constructor(
         }
         val processed = maybePostProcess(cleanedText, item, prepared.vocabulary) {
             pipelineSucceeded = false
-            invalidatePendingAutoSend()
+            invalidatePendingAutoSend("post_processing_fallback")
         }
 
         // The prompts say "output nothing" for filler-only input; honour that instead of typing a
@@ -516,7 +517,7 @@ class ProcessingQueue internal constructor(
         // to the transcript, like an LLM error does.
         val output = if (processed.isBlank()) {
             pipelineSucceeded = false
-            invalidatePendingAutoSend()
+            invalidatePendingAutoSend("empty_post_processing")
             if (cleanedText.trim().length <= FILLER_MAX_CHARS) {
                 DiagnosticLog.record(TAG, "Post-processing produced empty text, nothing inserted")
                 complete(item)
@@ -560,17 +561,25 @@ class ProcessingQueue internal constructor(
         val editorToken = item.editorSessionToken
         // A newer capture can begin after the error itself. Revoke its intention at delivery
         // too, so recovered/fallback, parked and terminal chunks never enter an automatic send.
-        if (!pipelineSucceeded || item.parkedId != null || item.ppTerminal) invalidatePendingAutoSend()
-        if (item.parkedId != null || item.ppTerminal || !isIsolatedAutoSendWork(item.workId)) {
-            item.autoSendRequest?.cancel()
+        val pipelineReason = when {
+            !pipelineSucceeded -> "pipeline_fallback"
+            item.parkedId != null -> "parked_replay"
+            item.ppTerminal -> "terminal_mode"
+            else -> null
         }
+        if (pipelineReason != null) invalidatePendingAutoSend(pipelineReason)
+        val isolated = isIsolatedAutoSendWork(item.workId)
+        if (item.autoSendRequest?.isPending == true && !isolated) {
+            DiagnosticLog.record(TAG, "Auto-send blocked reason=queue_work")
+        }
+        if (item.parkedId != null || item.ppTerminal || !isolated) item.autoSendRequest?.cancel()
         if (editorToken != null && notifyListener("text delivery", l) {
                 // Preserve overrides on delegated legacy listeners: Kotlin delegation of the
                 // overload would otherwise bypass their three-argument delivery callback.
                 if (item.autoSendRequest == null) it.onTextReady(text, item.addTrailingSpace, editorToken)
                 else it.onTextReady(text, item.addTrailingSpace, editorToken, item.autoSendRequest)
             } == true) return
-        invalidatePendingAutoSend()
+        invalidatePendingAutoSend("editor_unavailable")
         // A save failure must propagate: processNext parks the original audio and retries instead
         // of deleting the only copy of a dictation. No system clipboard is changed automatically.
         withContext(NonCancellable) {
@@ -584,7 +593,7 @@ class ProcessingQueue internal constructor(
      * and keep the indefinite retry loop alive for transient failures.
      */
     private suspend fun handleFailure(item: QueueItem, permanent: Boolean) {
-        invalidatePendingAutoSend()
+        invalidatePendingAutoSend("parked")
         checkActive(item)
         val state = if (permanent) ParkedRecording.State.NEEDS_ATTENTION else ParkedRecording.State.WAITING_NETWORK
         // Once disk mutation starts, finish it even if cancelled. The completion handler then

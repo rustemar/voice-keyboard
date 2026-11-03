@@ -237,9 +237,17 @@ class InputOrchestrator(
 
     fun isSilenceAutoStopEnabled(): Boolean = silenceAutoStopEnabled
 
-    fun canAutoSendNow(): Boolean = reloadsInFlight == 0 && silenceAutoStopEnabled &&
-        preferences?.autoSendAfterSilenceEnabled == true && currentPhase is InputPhase.Ready &&
-        !toggles.terminalActive
+    /** Stable reason codes for diagnostics; never include dictated text or editor contents. */
+    fun autoSendReadinessReason(): String? = when {
+        reloadsInFlight != 0 -> "settings_loading"
+        preferences?.autoSendAfterSilenceEnabled != true -> "option_off"
+        !silenceAutoStopEnabled -> "timer_off"
+        toggles.terminalActive -> "terminal_mode"
+        currentPhase !is InputPhase.Ready -> "capturing"
+        else -> null
+    }
+
+    fun canAutoSendNow(): Boolean = autoSendReadinessReason() == null
 
     /** Changes only automatic endpointing; toggling never pauses, discards or restarts audio. */
     fun toggleSilenceAutoStop(): Boolean {
@@ -460,7 +468,7 @@ class InputOrchestrator(
                 val file = pending.result.await()
                 if (file == null) {
                     autoSendRequest?.cancel()
-                    processingQueue.invalidatePendingAutoSend()
+                    processingQueue.invalidatePendingAutoSend("empty_capture")
                     processingQueue.releaseReservation(identity)
                     DiagnosticLog.record(TAG, "finishCapture: nothing usable captured (${pending.durationMs}ms)")
                     return@reserve
@@ -486,7 +494,7 @@ class InputOrchestrator(
                 // Keep the source file for diagnosis rather than silently deleting usable audio.
                 prepared?.retainSource()
                 autoSendRequest?.cancel()
-                processingQueue.invalidatePendingAutoSend()
+                processingQueue.invalidatePendingAutoSend("capture_handover_failed")
                 processingQueue.releaseReservation(identity)
                 DiagnosticLog.recordFailure(TAG, "Capture handover failed; source retained", error)
             }
