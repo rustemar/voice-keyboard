@@ -178,7 +178,7 @@ class PendingTranscriptsPanel(
         transcripts.forEach { transcript ->
             val card = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(dp(8), dp(8), dp(8), 0)
+                setPadding(dp(8), dp(8), dp(8), dp(12))
                 setBackgroundResource(R.drawable.key_bg)
             }
             val preview = TextView(context).apply {
@@ -201,6 +201,7 @@ class PendingTranscriptsPanel(
             val actions = LinearLayout(context).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.END
+                setPadding(0, dp(8), 0, 0)
             }
             if (confirmingDelete == transcript.id) {
                 actions.addView(action(android.R.string.cancel, View.NO_ID, transcript) {
@@ -213,14 +214,14 @@ class PendingTranscriptsPanel(
             } else {
                 actions.addView(iconAction(R.string.saved_texts_insert, R.drawable.ic_paste, R.id.btnPendingInsert, transcript) {
                     insert(transcript)
-                }, actionParams())
+                }, iconActionParams())
                 actions.addView(iconAction(R.string.saved_texts_copy, R.drawable.ic_copy, R.id.btnPendingCopy, transcript) {
                     copy(transcript)
-                }, actionParams())
+                }, iconActionParams(gapBefore = true))
                 actions.addView(iconAction(R.string.saved_texts_delete, R.drawable.ic_delete, R.id.btnPendingDelete, transcript) {
                     confirmingDelete = transcript.id
                     render()
-                }, actionParams())
+                }, iconActionParams(gapBefore = true))
             }
             card.addView(actions, LinearLayout.LayoutParams(-1, -2))
             list.addView(card, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
@@ -232,6 +233,11 @@ class PendingTranscriptsPanel(
         marginEnd = dp(3)
     }
 
+    private fun iconActionParams(gapBefore: Boolean = false) =
+        LinearLayout.LayoutParams(dp(48), dp(48)).apply {
+            if (gapBefore) marginStart = dp(6)
+        }
+
     private fun iconAction(label: Int, icon: Int, viewId: Int, transcript: PendingTranscript, click: () -> Unit) =
         ImageButton(context).apply {
             id = viewId
@@ -242,9 +248,9 @@ class PendingTranscriptsPanel(
             backgroundTintList = null
             setBackgroundResource(R.drawable.control_key_bg)
             scaleType = ImageView.ScaleType.CENTER_INSIDE
-            minimumWidth = 0
+            minimumWidth = dp(48)
             minimumHeight = dp(48)
-            setPadding(dp(12), dp(12), dp(12), dp(12))
+            setPadding(dp(14), dp(14), dp(14), dp(14))
             isEnabled = transcript.id !in claimedIds.value
             setOnClickListener { click() }
         }
