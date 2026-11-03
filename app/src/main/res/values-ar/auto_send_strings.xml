@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_auto_send_after_silence">الإرسال بعد توقف الكلام</string>
-    <string name="settings_auto_send_after_silence_hint">يتطلب تفعيل الإيقاف التلقائي عند الصمت. يرسل الرسالة كاملة، بما فيها النص المكتوب مسبقًا، بعد انتهاء التعرف على الكلام ومعالجة النص. يعمل فقط في التطبيقات التي توفر إجراء إرسال. معطّل افتراضيًا.</string>
+    <string name="settings_auto_send_after_silence">الإرسال بعد توقف الكلام (تجريبي)</string>
+    <string name="settings_auto_send_after_silence_hint">يتطلب تفعيل الإيقاف التلقائي عند الصمت. يرسل الرسالة كاملة، بما فيها النص المكتوب مسبقًا، بعد انتهاء التعرف على الكلام ومعالجة النص. يعمل فقط في التطبيقات التي توفر إجراء إرسال. معطّل افتراضيًا. قد لا تعمل هذه الميزة في جميع التطبيقات.</string>
 </resources>

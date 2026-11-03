@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">L’arrêt automatique en cas de silence est activé. Appuyez pour le désactiver.</string>
     <string name="cd_silence_auto_stop_off">L’arrêt automatique en cas de silence est désactivé. Appuyez pour l’activer.</string>
+    <string name="settings_saved_actions_left">Boutons des textes enregistrés à gauche</string>
+    <string name="settings_saved_actions_left_hint">Place les boutons insérer, copier et supprimer à gauche des cartes de textes enregistrés. Désactivé par défaut.</string>
 </resources>

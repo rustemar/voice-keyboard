@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s सेकंड</string>
     <string name="cd_silence_auto_stop_on">चुप्पी पर अपने आप रोकना चालू है। बंद करने के लिए टैप करें।</string>
     <string name="cd_silence_auto_stop_off">चुप्पी पर अपने आप रोकना बंद है। चालू करने के लिए टैप करें।</string>
+    <string name="settings_saved_actions_left">सहेजे गए टेक्स्ट के बटन बाईं ओर</string>
+    <string name="settings_saved_actions_left_hint">सहेजे गए टेक्स्ट के कार्ड में डालने, कॉपी करने और हटाने के बटन बाईं ओर रखें। डिफ़ॉल्ट रूप से बंद।</string>
 </resources>

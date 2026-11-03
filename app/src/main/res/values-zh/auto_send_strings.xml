@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_auto_send_after_silence">停顿后发送</string>
-    <string name="settings_auto_send_after_silence_hint">需要开启静音时自动停止。在语音识别和文本处理完成后发送整条消息，包括之前已输入的文本。仅适用于提供发送操作的应用。默认关闭。</string>
+    <string name="settings_auto_send_after_silence">停顿后发送 （测试版）</string>
+    <string name="settings_auto_send_after_silence_hint">需要开启静音时自动停止。在语音识别和文本处理完成后发送整条消息，包括之前已输入的文本。仅适用于提供发送操作的应用。默认关闭。 此功能可能无法在所有应用中使用。</string>
 </resources>

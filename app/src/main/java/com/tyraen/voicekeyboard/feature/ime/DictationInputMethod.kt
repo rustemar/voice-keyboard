@@ -166,6 +166,7 @@ class DictationInputMethod : InputMethodService() {
         pendingTranscriptsPanel = PendingTranscriptsPanel(
             view,
             ServiceLocator.pendingTranscriptStore,
+            savedActionsLeft = ServiceLocator.preferenceStore.savedActionsLeft,
             onInsert = { transcript ->
                 invalidateAutoSend()
                 val targetSessionToken = editorSessionToken

@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s 秒</string>
     <string name="cd_silence_auto_stop_on">無音時の自動停止はオンです。タップするとオフになります。</string>
     <string name="cd_silence_auto_stop_off">無音時の自動停止はオフです。タップするとオンになります。</string>
+    <string name="settings_saved_actions_left">保存したテキストのボタンを左側に配置</string>
+    <string name="settings_saved_actions_left_hint">保存したテキストのカードで、挿入・コピー・削除ボタンを左側に配置します。初期設定ではオフです。</string>
 </resources>

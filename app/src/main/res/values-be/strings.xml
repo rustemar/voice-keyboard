@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s с</string>
     <string name="cd_silence_auto_stop_on">Аўтаспыненне пры цішыні ўключана. Націсніце, каб выключыць.</string>
     <string name="cd_silence_auto_stop_off">Аўтаспыненне пры цішыні выключана. Націсніце, каб уключыць.</string>
+    <string name="settings_saved_actions_left">Кнопкі захаваных тэкстаў злева</string>
+    <string name="settings_saved_actions_left_hint">Размясціць кнопкі ўстаўкі, капіравання і выдалення злева ў картках захаваных тэкстаў. Па змаўчанні выключана.</string>
 </resources>

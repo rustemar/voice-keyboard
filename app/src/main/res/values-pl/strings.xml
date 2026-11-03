@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">Automatyczne zatrzymanie po ciszy jest włączone. Dotknij, aby wyłączyć.</string>
     <string name="cd_silence_auto_stop_off">Automatyczne zatrzymanie po ciszy jest wyłączone. Dotknij, aby włączyć.</string>
+    <string name="settings_saved_actions_left">Przyciski zapisanych tekstów po lewej</string>
+    <string name="settings_saved_actions_left_hint">Umieść przyciski wstawiania, kopiowania i usuwania po lewej stronie kart zapisanych tekstów. Domyślnie wyłączone.</string>
 </resources>

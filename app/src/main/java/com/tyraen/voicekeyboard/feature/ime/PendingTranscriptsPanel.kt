@@ -25,6 +25,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -32,6 +33,7 @@ import kotlinx.coroutines.withContext
 class PendingTranscriptsPanel(
     private val root: FrameLayout,
     private val store: PendingTranscriptStore,
+    private val savedActionsLeft: Flow<Boolean>,
     private val onInsert: (PendingTranscript) -> Boolean,
     private val onNotice: (String) -> Unit
 ) {
@@ -63,6 +65,7 @@ class PendingTranscriptsPanel(
     }
     private var transcripts = emptyList<PendingTranscript>()
     private var confirmingDelete: String? = null
+    private var actionsOnLeft = false
     private val accessibilityState = HashMap<View, Int>()
     private var destroyed = false
 
@@ -105,6 +108,14 @@ class PendingTranscriptsPanel(
                 transcripts = saved
                 updateBadge()
                 if (overlay.visibility == View.VISIBLE) render()
+            }
+        }
+        scope.launch {
+            savedActionsLeft.collect { left ->
+                if (actionsOnLeft != left) {
+                    actionsOnLeft = left
+                    if (overlay.visibility == View.VISIBLE) render()
+                }
             }
         }
         scope.launch {
@@ -200,7 +211,7 @@ class PendingTranscriptsPanel(
             }
             val actions = LinearLayout(context).apply {
                 orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.END
+                gravity = if (actionsOnLeft) Gravity.LEFT else Gravity.RIGHT
                 setPadding(0, dp(8), 0, 0)
             }
             if (confirmingDelete == transcript.id) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_auto_send_after_silence">Send after a pause</string>
-    <string name="settings_auto_send_after_silence_hint">Requires Auto-stop on silence. Sends the entire message, including text already in the field, after recognition and text processing finish. Works only in apps that provide a Send action. Off by default.</string>
+    <string name="settings_auto_send_after_silence">Send after a pause (Beta)</string>
+    <string name="settings_auto_send_after_silence_hint">Requires Auto-stop on silence. Sends the entire message, including text already in the field, after recognition and text processing finish. Works only in apps that provide a Send action. Off by default. This feature may not work in every app.</string>
 </resources>

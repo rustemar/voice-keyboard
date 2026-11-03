@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s 秒</string>
     <string name="cd_silence_auto_stop_on">静音时自动停止已开启。点按可关闭。</string>
     <string name="cd_silence_auto_stop_off">静音时自动停止已关闭。点按可开启。</string>
+    <string name="settings_saved_actions_left">将已保存文本的按钮置于左侧</string>
+    <string name="settings_saved_actions_left_hint">将已保存文本卡片中的插入、复制和删除按钮放在左侧。默认关闭。</string>
 </resources>

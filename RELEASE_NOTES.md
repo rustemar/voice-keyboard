@@ -1,7 +1,6 @@
-v1.14.0 — Better auto-stop in background noise
+v1.15.0 — Send after a pause
 
-- Auto-stop now detects speech on the device to recognize pauses more reliably around background noise. It remains off by default, with the same timer button and 0.3–3 second pause setting. Other voices, singing or difficult noise can still affect stopping.
-- Auto-start recording, trailing-space and single-word punctuation switches now save immediately. Auto-start recording also has an explanation in settings.
-- Settings more clearly separate voice recognition from optional text post-processing. Provider key links, default presets and the save button are clearer; changing the interface language preserves unfinished form edits without applying them.
-
-Pause detection uses [Silero VAD](https://github.com/snakers4/silero-vad) and [ONNX Runtime](https://github.com/microsoft/onnxruntime), both MIT-licensed. Thanks to their contributors. The detector runs locally; recordings still go only to the speech provider configured in the app. The universal APK is about 11 MB, using a compact CPU runtime built for this model.
+- Send after a pause is available as an optional beta. After an automatic stop and recognition, it sends the entire draft in supported apps, including existing text. It is off by default; manual stops leave the text for review. Support varies by app.
+- The paper-plane button uses supported Send actions where available. Some apps may not expose an action the keyboard can use.
+- Saved text cards have compact actions with more spacing. You can move the actions to the left in settings.
+- Improved the layout of diagnostic actions in settings to avoid awkward text wrapping.

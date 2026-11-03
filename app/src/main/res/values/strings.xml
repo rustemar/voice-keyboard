@@ -212,4 +212,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">Auto-stop on silence is on. Tap to turn off.</string>
     <string name="cd_silence_auto_stop_off">Auto-stop on silence is off. Tap to turn on.</string>
+    <string name="settings_saved_actions_left">Saved text buttons on the left</string>
+    <string name="settings_saved_actions_left_hint">Place the insert, copy and delete buttons on the left of saved text cards. Off by default.</string>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_auto_send_after_silence">विराम के बाद भेजें</string>
-    <string name="settings_auto_send_after_silence_hint">चुप्पी पर अपने आप रोकना चालू होना चाहिए। पहचान और टेक्स्ट प्रोसेसिंग पूरी होने के बाद पहले से लिखे टेक्स्ट सहित पूरा संदेश भेजता है। केवल उन ऐप में काम करता है जो भेजने की क्रिया उपलब्ध कराते हैं। डिफ़ॉल्ट रूप से बंद।</string>
+    <string name="settings_auto_send_after_silence">विराम के बाद भेजें (बीटा)</string>
+    <string name="settings_auto_send_after_silence_hint">चुप्पी पर अपने आप रोकना चालू होना चाहिए। पहचान और टेक्स्ट प्रोसेसिंग पूरी होने के बाद पहले से लिखे टेक्स्ट सहित पूरा संदेश भेजता है। केवल उन ऐप में काम करता है जो भेजने की क्रिया उपलब्ध कराते हैं। डिफ़ॉल्ट रूप से बंद। यह सुविधा हर ऐप में काम नहीं कर सकती है।</string>
 </resources>

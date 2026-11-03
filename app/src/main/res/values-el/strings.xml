@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s δευτ.</string>
     <string name="cd_silence_auto_stop_on">Η αυτόματη διακοπή στη σιωπή είναι ενεργή. Πατήστε για απενεργοποίηση.</string>
     <string name="cd_silence_auto_stop_off">Η αυτόματη διακοπή στη σιωπή είναι ανενεργή. Πατήστε για ενεργοποίηση.</string>
+    <string name="settings_saved_actions_left">Κουμπιά αποθηκευμένων κειμένων αριστερά</string>
+    <string name="settings_saved_actions_left_hint">Τοποθέτηση των κουμπιών εισαγωγής, αντιγραφής και διαγραφής αριστερά στις κάρτες αποθηκευμένων κειμένων. Απενεργοποιημένο από προεπιλογή.</string>
 </resources>

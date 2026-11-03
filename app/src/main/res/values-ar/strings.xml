@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s ث</string>
     <string name="cd_silence_auto_stop_on">الإيقاف التلقائي عند الصمت مفعّل. اضغط لتعطيله.</string>
     <string name="cd_silence_auto_stop_off">الإيقاف التلقائي عند الصمت معطّل. اضغط لتفعيله.</string>
+    <string name="settings_saved_actions_left">أزرار النصوص المحفوظة على اليسار</string>
+    <string name="settings_saved_actions_left_hint">وضع أزرار الإدراج والنسخ والحذف على يسار بطاقات النصوص المحفوظة. معطّل افتراضيًا.</string>
 </resources>

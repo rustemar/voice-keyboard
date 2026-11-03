@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">A paragem automática no silêncio está ativada. Toque para desativar.</string>
     <string name="cd_silence_auto_stop_off">A paragem automática no silêncio está desativada. Toque para ativar.</string>
+    <string name="settings_saved_actions_left">Botões dos textos guardados à esquerda</string>
+    <string name="settings_saved_actions_left_hint">Colocar os botões de inserir, copiar e apagar à esquerda dos cartões de textos guardados. Desativado por predefinição.</string>
 </resources>

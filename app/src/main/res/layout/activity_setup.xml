@@ -401,6 +401,24 @@
             android:backgroundTint="@color/mic_idle"
             android:layout_marginBottom="16dp" />
 
+        <Switch
+            android:id="@+id/switchSavedActionsLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_saved_actions_left"
+            android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_saved_actions_left_hint"
+            android:textColor="@color/status_text"
+            android:textSize="12sp"
+            android:layout_marginBottom="12dp" />
+
         <!-- Auto record -->
         <Switch
             android:id="@+id/switchAutoRecord"

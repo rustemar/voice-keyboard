@@ -202,4 +202,6 @@
     <string name="silence_auto_stop_seconds">%1$s с</string>
     <string name="cd_silence_auto_stop_on">Автостоп по тишине включён. Нажмите, чтобы выключить.</string>
     <string name="cd_silence_auto_stop_off">Автостоп по тишине выключен. Нажмите, чтобы включить.</string>
+    <string name="settings_saved_actions_left">Кнопки сохранённых текстов слева</string>
+    <string name="settings_saved_actions_left_hint">Расположить кнопки вставки, копирования и удаления слева в карточках сохранённых текстов. По умолчанию выключено.</string>
 </resources>

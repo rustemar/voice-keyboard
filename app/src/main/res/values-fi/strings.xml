@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">Automaattinen pysäytys puhetauon jälkeen on käytössä. Poista käytöstä napauttamalla.</string>
     <string name="cd_silence_auto_stop_off">Automaattinen pysäytys puhetauon jälkeen on pois käytöstä. Ota käyttöön napauttamalla.</string>
+    <string name="settings_saved_actions_left">Tallennettujen tekstien painikkeet vasemmalle</string>
+    <string name="settings_saved_actions_left_hint">Sijoita lisäys-, kopiointi- ja poistopainikkeet tallennettujen tekstien korteissa vasemmalle. Oletuksena pois käytöstä.</string>
 </resources>

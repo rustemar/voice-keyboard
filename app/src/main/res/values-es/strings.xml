@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">La parada automática al detectar silencio está activada. Toca para desactivarla.</string>
     <string name="cd_silence_auto_stop_off">La parada automática al detectar silencio está desactivada. Toca para activarla.</string>
+    <string name="settings_saved_actions_left">Botones de textos guardados a la izquierda</string>
+    <string name="settings_saved_actions_left_hint">Coloca los botones de insertar, copiar y eliminar a la izquierda de las tarjetas de textos guardados. Desactivado por defecto.</string>
 </resources>

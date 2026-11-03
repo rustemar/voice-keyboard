@@ -201,4 +201,6 @@
     <string name="silence_auto_stop_seconds">%1$s s</string>
     <string name="cd_silence_auto_stop_on">Automatischer Stopp bei Sprechpause ist an. Zum Ausschalten tippen.</string>
     <string name="cd_silence_auto_stop_off">Automatischer Stopp bei Sprechpause ist aus. Zum Einschalten tippen.</string>
+    <string name="settings_saved_actions_left">Schaltflächen für gespeicherte Texte links</string>
+    <string name="settings_saved_actions_left_hint">Einfügen, Kopieren und Löschen in Karten gespeicherter Texte links anzeigen. Standardmäßig aus.</string>
 </resources>

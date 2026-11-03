@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_auto_send_after_silence">Envoyer après une pause</string>
-    <string name="settings_auto_send_after_silence_hint">Nécessite l’arrêt automatique en cas de silence. Envoie le message entier, y compris le texte déjà saisi, une fois la reconnaissance et le traitement du texte terminés. Fonctionne uniquement dans les applications proposant une action Envoyer. Désactivé par défaut.</string>
+    <string name="settings_auto_send_after_silence">Envoyer après une pause (bêta)</string>
+    <string name="settings_auto_send_after_silence_hint">Nécessite l’arrêt automatique en cas de silence. Envoie le message entier, y compris le texte déjà saisi, une fois la reconnaissance et le traitement du texte terminés. Fonctionne uniquement dans les applications proposant une action Envoyer. Désactivé par défaut. Cette fonction peut ne pas fonctionner dans toutes les applications.</string>
 </resources>

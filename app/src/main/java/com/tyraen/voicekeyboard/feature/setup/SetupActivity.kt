@@ -37,6 +37,7 @@ import com.tyraen.voicekeyboard.feature.postprocessing.PostProcessingActivity
 import com.tyraen.voicekeyboard.feature.transcription.SpeechToTextClient
 import com.tyraen.voicekeyboard.feature.transcription.WhisperPromptBuilder
 import com.tyraen.voicekeyboard.feature.vocabulary.VocabularyActivity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.*
 import java.text.NumberFormat
 
@@ -82,6 +83,7 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var editModel: EditText
     private lateinit var editLanguage: EditText
     private lateinit var editPrompt: EditText
+    private lateinit var switchSavedActionsLeft: Switch
     private lateinit var switchAutoRecord: Switch
     private lateinit var switchReturnToPreviousKeyboard: Switch
     private lateinit var switchSilenceAutoStop: Switch
@@ -200,6 +202,7 @@ class SetupActivity : AppCompatActivity() {
         editModel = findViewById(R.id.editModel)
         editLanguage = findViewById(R.id.editLanguage)
         editPrompt = findViewById(R.id.editPrompt)
+        switchSavedActionsLeft = findViewById(R.id.switchSavedActionsLeft)
         switchAutoRecord = findViewById(R.id.switchAutoRecord)
         switchReturnToPreviousKeyboard = findViewById(R.id.switchReturnToPreviousKeyboard)
         switchSilenceAutoStop = findViewById(R.id.switchSilenceAutoStop)
@@ -216,7 +219,7 @@ class SetupActivity : AppCompatActivity() {
         switchUpdateCheck = findViewById(R.id.switchUpdateCheck)
         // These controls reload from their own preferences. A stale framework view snapshot must
         // not trigger their listeners after a newer narrow write has already been loaded.
-        listOf<View>(spinnerTheme, spinnerLanguage, spinnerSttPreset, switchAutoRecord,
+        listOf<View>(spinnerTheme, spinnerLanguage, spinnerSttPreset, switchSavedActionsLeft, switchAutoRecord,
             switchReturnToPreviousKeyboard, switchSilenceAutoStop, switchAutoSendAfterSilence,
             seekSilenceAutoStopPause,
             switchAddSpace, switchSingleWordStripPunct, switchUpdateCheck
@@ -310,6 +313,11 @@ class SetupActivity : AppCompatActivity() {
             scope.launch { preferenceStore.setUpdateCheckEnabled(isChecked) }
         }
 
+        switchSavedActionsLeft.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setSavedActionsLeft(isChecked) }
+        }
         switchAutoRecord.setOnCheckedChangeListener { _, isChecked ->
             if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
             val store = preferenceStore
@@ -543,6 +551,7 @@ class SetupActivity : AppCompatActivity() {
         preferencesLoad = scope.launch {
             pendingSettingsWrite?.join()
             val p = preferenceStore.load()
+            val savedActionsLeft = preferenceStore.savedActionsLeft.first()
             editApiKey.setText(p.apiKey)
             editEndpoint.setText(p.endpoint)
             editModel.setText(p.model)
@@ -551,6 +560,7 @@ class SetupActivity : AppCompatActivity() {
             editPrompt.setText(p.prompt)
             restoreRecognitionForm()
             bindingKeyboardOptions = true
+            switchSavedActionsLeft.isChecked = savedActionsLeft
             switchAutoRecord.isChecked = p.autoRecord
             switchReturnToPreviousKeyboard.isChecked = p.returnToPreviousKeyboard
             switchSilenceAutoStop.isChecked = p.silenceAutoStopEnabled
@@ -809,6 +819,7 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun setKeyboardOptionsEnabled(enabled: Boolean) {
+        switchSavedActionsLeft.isEnabled = enabled
         switchAutoRecord.isEnabled = enabled
         switchAddSpace.isEnabled = enabled
         switchSingleWordStripPunct.isEnabled = enabled

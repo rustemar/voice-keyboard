@@ -1,0 +1,4 @@
+Optional beta: send the entire draft after a pause in supported apps. Manual stops leave text for review.
+Improved Send button compatibility.
+Compact saved-text actions can be moved to the left.
+Improved diagnostic button layout.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_auto_send_after_silence">Nach einer Sprechpause senden</string>
-    <string name="settings_auto_send_after_silence_hint">Erfordert den automatischen Stopp bei Sprechpause. Sendet nach Abschluss der Erkennung und Textverarbeitung die gesamte Nachricht einschließlich des bereits eingegebenen Textes. Funktioniert nur in Apps mit einer Senden-Aktion. Standardmäßig aus.</string>
+    <string name="settings_auto_send_after_silence">Nach einer Sprechpause senden (Beta)</string>
+    <string name="settings_auto_send_after_silence_hint">Erfordert den automatischen Stopp bei Sprechpause. Sendet nach Abschluss der Erkennung und Textverarbeitung die gesamte Nachricht einschließlich des bereits eingegebenen Textes. Funktioniert nur in Apps mit einer Senden-Aktion. Standardmäßig aus. Diese Funktion funktioniert möglicherweise nicht in allen Apps.</string>
 </resources>

@@ -14,6 +14,7 @@ import com.tyraen.voicekeyboard.core.locale.TranscriptionLocale
 import com.tyraen.voicekeyboard.feature.vocabulary.TextDictionary
 import com.tyraen.voicekeyboard.feature.vocabulary.TextReplacementRules
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import java.util.Locale
 
 private val Context.store: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -27,6 +28,7 @@ class PreferenceStore(private val context: Context) {
         val LANGUAGE = stringPreferencesKey("language")
         val ACTIVE_LANGUAGE = stringPreferencesKey("active_language")
         val AUTO_RECORD = booleanPreferencesKey("auto_record")
+        val SAVED_ACTIONS_LEFT = booleanPreferencesKey("saved_actions_left")
         val ADD_TRAILING_SPACE = booleanPreferencesKey("add_trailing_space")
         val PROMPT = stringPreferencesKey("prompt")
         val SINGLE_WORD_STRIP_PUNCT = booleanPreferencesKey("single_word_strip_punct")
@@ -253,6 +255,13 @@ class PreferenceStore(private val context: Context) {
             data[Keys.UPDATE_CHECK_ENABLED] = value
             data[Keys.UPDATE_CONSENT_SHOWN] = true
         }
+    }
+
+    /** Physical alignment is explicit, including in right-to-left interfaces. */
+    val savedActionsLeft = context.store.data.map { it[Keys.SAVED_ACTIONS_LEFT] ?: false }
+
+    suspend fun setSavedActionsLeft(value: Boolean) {
+        context.store.edit { it[Keys.SAVED_ACTIONS_LEFT] = value }
     }
 
     /** Keyboard switches save only their own value, without applying unfinished provider edits. */
