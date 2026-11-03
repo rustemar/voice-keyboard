@@ -57,11 +57,11 @@ class SendRouteResolverTest {
         }
     }
 
-    @Test fun `owner reported ChatGPT multiline field uses exactly one standard Send trial`() {
+    @Test fun `owner reported ChatGPT field never authorizes automatic sending`() {
         val actual = route(pkg = "com.openai.chatgpt", type = 180225, action = 1107296256, mime = emptyArray())
         assertEquals(SendRouteResolver.Kind.CHATGPT_COMPAT_TRIAL, actual.kind)
         assertEquals(EditorInfo.IME_ACTION_SEND, actual.action!!.id)
-        assertTrue(actual.automatic)
+        assertFalse(actual.automatic)
     }
 
     @Test fun `ChatGPT compatibility trial excludes other fields packages and custom actions`() {

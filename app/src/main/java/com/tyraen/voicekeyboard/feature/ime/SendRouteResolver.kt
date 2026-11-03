@@ -39,9 +39,9 @@ internal object SendRouteResolver {
             return Route(Kind.TELEGRAM_COMPOSER_SEND, standardSend(), automatic = true)
         }
         if (composer && packageName == "com.openai.chatgpt" && rawAction == EditorInfo.IME_ACTION_UNSPECIFIED) {
-            // The maintainer's device reported this multiline signature. This is a compatibility
-            // trial of the standard SEND request, not a claim that the host sends a message.
-            return Route(Kind.CHATGPT_COMPAT_TRIAL, standardSend(), automatic = true)
+            // A real-device check found that this host accepts the request without sending.
+            // Keep the manual trial, but never treat it as automatic-send support.
+            return Route(Kind.CHATGPT_COMPAT_TRIAL, standardSend(), automatic = false)
         }
         return Route(Kind.LEGACY_CTRL_ENTER, null, automatic = false)
     }

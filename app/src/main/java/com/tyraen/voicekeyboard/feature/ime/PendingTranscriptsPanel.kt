@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -15,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
-import com.tyraen.voicekeyboard.core.ui.IconActionButton
 import com.tyraen.voicekeyboard.core.ui.useReadableActionLabel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -233,10 +233,18 @@ class PendingTranscriptsPanel(
     }
 
     private fun iconAction(label: Int, icon: Int, viewId: Int, transcript: PendingTranscript, click: () -> Unit) =
-        IconActionButton(context).apply {
+        ImageButton(context).apply {
             id = viewId
-            setActionLabel(context.getString(label))
-            setIconResource(icon)
+            contentDescription = context.getString(label)
+            ViewCompat.setTooltipText(this, contentDescription)
+            setImageResource(icon)
+            imageTintList = ContextCompat.getColorStateList(context, R.color.control_key_text)
+            backgroundTintList = null
+            setBackgroundResource(R.drawable.control_key_bg)
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            minimumWidth = 0
+            minimumHeight = dp(48)
+            setPadding(dp(12), dp(12), dp(12), dp(12))
             isEnabled = transcript.id !in claimedIds.value
             setOnClickListener { click() }
         }
