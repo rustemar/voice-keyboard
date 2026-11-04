@@ -16,4 +16,5 @@
     <string name="qc_enter">Entrée</string>
     <string name="qc_done">Terminé</string>
     <string name="qc_editor_unavailable">Le champ de texte est indisponible. Rouvrez-le et réessayez.</string>
+    <string name="qc_space_switch_hint">Espace ; maintenir pour changer de disposition</string>
 </resources>

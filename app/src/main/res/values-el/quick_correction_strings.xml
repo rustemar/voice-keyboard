@@ -16,4 +16,5 @@
     <string name="qc_enter">Enter</string>
     <string name="qc_done">Τέλος</string>
     <string name="qc_editor_unavailable">Το πεδίο κειμένου δεν είναι διαθέσιμο. Ανοίξτε το ξανά και δοκιμάστε πάλι.</string>
+    <string name="qc_space_switch_hint">Κενό· κρατήστε πατημένο για αλλαγή διάταξης</string>
 </resources>

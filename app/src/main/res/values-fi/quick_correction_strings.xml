@@ -16,4 +16,5 @@
     <string name="qc_enter">Enter</string>
     <string name="qc_done">Valmis</string>
     <string name="qc_editor_unavailable">Tekstikenttä ei ole käytettävissä. Avaa se uudelleen ja yritä uudestaan.</string>
+    <string name="qc_space_switch_hint">Välilyönti; vaihda asettelua pitämällä painettuna</string>
 </resources>

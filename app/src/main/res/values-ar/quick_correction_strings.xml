@@ -16,4 +16,5 @@
     <string name="qc_enter">إدخال</string>
     <string name="qc_done">تم</string>
     <string name="qc_editor_unavailable">حقل النص غير متاح. افتحه مجددًا وحاول مرة أخرى.</string>
+    <string name="qc_space_switch_hint">مسافة؛ اضغط مطولاً لتغيير التخطيط</string>
 </resources>

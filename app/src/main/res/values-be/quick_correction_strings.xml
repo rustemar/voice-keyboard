@@ -16,4 +16,5 @@
     <string name="qc_enter">Увод</string>
     <string name="qc_done">Гатова</string>
     <string name="qc_editor_unavailable">Поле ўводу недаступнае. Адкрыйце яго зноў і паўтарыце.</string>
+    <string name="qc_space_switch_hint">Прабел; утрымлівайце для пераключэння раскладкі</string>
 </resources>

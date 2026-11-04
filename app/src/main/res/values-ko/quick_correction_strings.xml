@@ -16,4 +16,5 @@
     <string name="qc_enter">입력</string>
     <string name="qc_done">완료</string>
     <string name="qc_editor_unavailable">텍스트 필드를 사용할 수 없습니다. 다시 열고 시도하세요.</string>
+    <string name="qc_space_switch_hint">스페이스; 길게 눌러 자판 전환</string>
 </resources>

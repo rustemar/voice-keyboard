@@ -16,4 +16,5 @@
     <string name="qc_enter">回车</string>
     <string name="qc_done">完成</string>
     <string name="qc_editor_unavailable">文本框不可用。请重新打开后重试。</string>
+    <string name="qc_space_switch_hint">空格；长按切换布局</string>
 </resources>

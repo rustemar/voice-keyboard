@@ -16,4 +16,5 @@
     <string name="qc_enter">Enter</string>
     <string name="qc_done">Done</string>
     <string name="qc_editor_unavailable">The text field is unavailable. Open it again and retry.</string>
+    <string name="qc_space_switch_hint">Space; hold to switch layout</string>
 </resources>

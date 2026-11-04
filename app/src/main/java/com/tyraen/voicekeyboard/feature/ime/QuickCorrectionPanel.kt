@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.text.InputType
 import android.view.Gravity
 import android.view.MotionEvent
@@ -19,10 +20,12 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.tyraen.voicekeyboard.R
 import com.tyraen.voicekeyboard.core.locale.InterfaceLanguageManager
 import kotlin.math.abs
@@ -58,6 +61,9 @@ class QuickCorrectionPanel(
     private var instructionIndex = -1
     private var instructionParams: ViewGroup.LayoutParams? = null
     private var instructionDone: (() -> Unit)? = null
+    private var alternativesPopup: PopupWindow? = null
+    private var alternativesAnchor: View? = null
+    private var alternativeButtons: List<Button> = emptyList()
     private val instructionHost = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
     private val language = KeyButton(15f)
     private val close = ImageButton(context)
@@ -145,7 +151,7 @@ class QuickCorrectionPanel(
     fun toggle() { if (visible) hide() else show() }
 
     /** A held key belongs to the editor that received its initial touch. */
-    fun stopRepeatingKeys() { keystrokes.stopBackspaceRepeat() }
+    fun stopRepeatingKeys() { keystrokes.stopBackspaceRepeat(); dismissAlternatives() }
 
     private fun show() {
         if (destroyed || visible) return
@@ -233,6 +239,7 @@ class QuickCorrectionPanel(
     fun hide() {
         val wasVisible = visible
         keystrokes.stopBackspaceRepeat()
+        dismissAlternatives()
         overlay.visibility = View.GONE
         ownAccessibilityState?.let { overlay.importantForAccessibility = it }
         ownAccessibilityState = null
@@ -262,6 +269,7 @@ class QuickCorrectionPanel(
 
     private fun render() {
         keystrokes.stopBackspaceRepeat()
+        dismissAlternatives()
         page = Page.KEYS
         paste.visibility = if (instructionEditor != null) View.VISIBLE else View.GONE
         more.visibility = if (!symbols && layout.extraCharacters.isNotEmpty()) View.VISIBLE else View.GONE
@@ -290,9 +298,14 @@ class QuickCorrectionPanel(
                 val keys = letters.map { value ->
                     val letter = layout.letter(value, uppercase)
                     keyButton(QuickCorrectionLayouts.label(letter), references = references) { commit(letter) }.apply {
-                        if (this@QuickCorrectionPanel.layout.extraCharacters.isNotEmpty()) {
-                            setOnLongClickListener { showCharacters(); true }
-                            ViewCompat.setTooltipText(this, context.getString(R.string.qc_more_characters))
+                        val alternatives = QuickCorrectionAlternatives.forKey(this@QuickCorrectionPanel.layout, value, uppercase)
+                        if (alternatives.isNotEmpty()) {
+                            setOnLongClickListener { showAlternatives(this, alternatives); true }
+                            setOnTouchListener { view, event -> handleAlternativeTouch(view, event) }
+                            ViewCompat.replaceAccessibilityAction(
+                                this, AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_LONG_CLICK,
+                                context.getString(R.string.qc_more_characters)
+                            ) { view, _ -> view.performLongClick() }
                         }
                     }
                 }
@@ -326,7 +339,23 @@ class QuickCorrectionPanel(
         toggle.id = R.id.btnQuickCorrectionSymbols
         val space = keyButton(layout.nativeName.substringBefore(" ·"), R.string.qc_space, size = 14f) {
             commit(" ")
-        }.apply { id = R.id.btnQuickCorrectionSpace }
+        }.apply {
+            id = R.id.btnQuickCorrectionSpace
+            if (QuickCorrectionLayouts.nextForDictation(this@QuickCorrectionPanel.layout.code, getDictationLanguages()) != null) {
+                contentDescription = context.getString(R.string.qc_space_switch_hint)
+                ViewCompat.setTooltipText(this, contentDescription)
+                setOnLongClickListener {
+                    QuickCorrectionLayouts.nextForDictation(this@QuickCorrectionPanel.layout.code, getDictationLanguages())?.let { next ->
+                        this@QuickCorrectionPanel.layout = next
+                        preferences.edit().putString("layout", next.code).apply()
+                        uppercase = false
+                        capsLock = false
+                        render()
+                    }
+                    true
+                }
+            }
+        }
         val enter = iconButton(
             if (instructionEditor != null) R.drawable.ic_action_done else R.drawable.ic_enter,
             if (instructionEditor != null) R.string.qc_done else R.string.qc_enter
@@ -401,8 +430,93 @@ class QuickCorrectionPanel(
         }
     }
 
+    /** Show only characters related to the held key without moving focus out of the editor. */
+    private fun showAlternatives(anchor: View, values: List<String>) {
+        dismissAlternatives()
+        if (!anchor.isAttachedToWindow || values.isEmpty()) return
+        val availableWidth = (root.width - dp(8)).coerceAtLeast(dp(32))
+        val itemWidth = min(dp(48), (availableWidth / values.size).coerceAtLeast(1))
+        val popupWidth = itemWidth * values.size
+        val popupHeight = dp(52)
+        val row = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutDirection = View.LAYOUT_DIRECTION_LTR
+            setBackgroundColor(ContextCompat.getColor(context, R.color.keyboard_bg))
+        }
+        val labels = values.map(QuickCorrectionLayouts::label)
+        val buttons = values.map { value ->
+            keyButton(QuickCorrectionLayouts.label(value), references = labels) {
+                dismissAlternatives()
+                commit(value)
+            }.also { row.addView(it, LinearLayout.LayoutParams(itemWidth, popupHeight)) }
+        }
+        val popup = PopupWindow(row, popupWidth, popupHeight, false).apply {
+            setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context, R.color.keyboard_bg)))
+            isOutsideTouchable = true
+            isClippingEnabled = true
+            elevation = dp(8).toFloat()
+        }
+        alternativesPopup = popup
+        alternativesAnchor = anchor
+        alternativeButtons = buttons
+        popup.setOnDismissListener {
+            anchor.parent?.requestDisallowInterceptTouchEvent(false)
+            if (alternativesPopup === popup) {
+                alternativesPopup = null
+                alternativesAnchor = null
+                alternativeButtons = emptyList()
+            }
+        }
+        val anchorLocation = IntArray(2)
+        val rootLocation = IntArray(2)
+        anchor.getLocationOnScreen(anchorLocation)
+        root.getLocationOnScreen(rootLocation)
+        val anchorLeft = anchorLocation[0] - rootLocation[0]
+        val popupLeft = (anchorLeft + (anchor.width - popupWidth) / 2)
+            .coerceIn(0, (root.width - popupWidth).coerceAtLeast(0))
+        anchor.parent?.requestDisallowInterceptTouchEvent(true)
+        popup.showAsDropDown(anchor, popupLeft - anchorLeft, -anchor.height - popupHeight)
+        row.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+        row.announceForAccessibility(context.getString(R.string.qc_more_characters))
+    }
+
+    private fun dismissAlternatives() {
+        alternativesPopup?.dismiss()
+        alternativesPopup = null
+        alternativesAnchor = null
+        alternativeButtons = emptyList()
+    }
+
+    /** A held key can be released and an option tapped, or the finger can slide to it. */
+    private fun handleAlternativeTouch(view: View, event: MotionEvent): Boolean {
+        if (alternativesAnchor !== view || alternativesPopup?.isShowing != true) return false
+        val target = alternativeButtons.firstOrNull { button ->
+            val location = IntArray(2)
+            button.getLocationOnScreen(location)
+            event.rawX >= location[0] && event.rawX < location[0] + button.width &&
+                event.rawY >= location[1] && event.rawY < location[1] + button.height
+        }
+        when (event.actionMasked) {
+            MotionEvent.ACTION_MOVE -> alternativeButtons.forEach { it.isPressed = it === target }
+            MotionEvent.ACTION_UP -> {
+                view.isPressed = false
+                alternativeButtons.forEach { it.isPressed = false }
+                view.parent?.requestDisallowInterceptTouchEvent(false)
+                target?.performClick()
+                return true
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                view.isPressed = false
+                dismissAlternatives()
+                return true
+            }
+        }
+        return false
+    }
+
     private fun showLayouts() {
         keystrokes.stopBackspaceRepeat()
+        dismissAlternatives()
         page = Page.LAYOUTS
         language.text = context.getString(R.string.qc_layouts)
         body.removeAllViews()
@@ -433,6 +547,7 @@ class QuickCorrectionPanel(
 
     private fun showCharacters() {
         keystrokes.stopBackspaceRepeat()
+        dismissAlternatives()
         page = Page.CHARACTERS
         body.removeAllViews()
         footer.removeAllViews()

@@ -16,4 +16,5 @@
     <string name="qc_enter">Enter</string>
     <string name="qc_done">Gotowe</string>
     <string name="qc_editor_unavailable">Pole tekstowe jest niedostępne. Otwórz je ponownie i spróbuj jeszcze raz.</string>
+    <string name="qc_space_switch_hint">Spacja; przytrzymaj, aby zmienić układ</string>
 </resources>

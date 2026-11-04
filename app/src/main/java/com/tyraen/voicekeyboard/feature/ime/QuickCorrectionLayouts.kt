@@ -51,6 +51,14 @@ object QuickCorrectionLayouts {
         return preferred + all.filterNot { it.code in preferredCodes }
     }
 
+    /** Cycle only among supported dictation languages; a single layout is not a cycle. */
+    fun nextForDictation(currentCode: String, languageCodes: List<String>): QuickCorrectionLayout? {
+        val preferred = languageCodes.distinct().mapNotNull { resolve(it) }
+        if (preferred.size < 2) return null
+        val current = preferred.indexOfFirst { it.code == currentCode }
+        return preferred[(current + 1) % preferred.size]
+    }
+
     /** UI locale is only an initial suggestion; a stored layout is never replaced by it. */
     fun initial(storedCode: String?, interfaceCode: String): QuickCorrectionLayout =
         resolve(storedCode) ?: resolve(interfaceCode) ?: all.first()
