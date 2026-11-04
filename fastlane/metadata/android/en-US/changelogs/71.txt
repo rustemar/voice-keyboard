@@ -1,0 +1,2 @@
+Hold the space bar to switch between configured correction layouts.
+Hold a letter to choose a related accented or additional character.
