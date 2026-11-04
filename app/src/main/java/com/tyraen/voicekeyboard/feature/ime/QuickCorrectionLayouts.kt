@@ -44,6 +44,13 @@ object QuickCorrectionLayouts {
 
     fun resolve(code: String?): QuickCorrectionLayout? = all.firstOrNull { it.code == code }
 
+    /** Put available dictation languages first while keeping every other layout accessible. */
+    fun orderedForDictation(languageCodes: List<String>): List<QuickCorrectionLayout> {
+        val preferred = languageCodes.distinct().mapNotNull { resolve(it) }
+        val preferredCodes = preferred.map { it.code }.toSet()
+        return preferred + all.filterNot { it.code in preferredCodes }
+    }
+
     /** UI locale is only an initial suggestion; a stored layout is never replaced by it. */
     fun initial(storedCode: String?, interfaceCode: String): QuickCorrectionLayout =
         resolve(storedCode) ?: resolve(interfaceCode) ?: all.first()

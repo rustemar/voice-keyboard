@@ -188,6 +188,7 @@ class DictationInputMethod : InputMethodService() {
         quickCorrectionPanel = QuickCorrectionPanel(
             root = view,
             getInputConnection = { currentInputConnection },
+            getDictationLanguages = { orchestrator.getLanguageCodes() },
             onEnter = { keystrokes.pressEnter(enterFor(currentInputEditorInfo)) },
             onShown = { shown -> if (shown) suspendAutomaticReturn() },
             onNotice = { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }

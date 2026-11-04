@@ -25,6 +25,20 @@ class QuickCorrectionLayoutsTest {
         for (unsupported in listOf("zh", "ja", "ko")) assertFalse(codes.contains(unsupported))
     }
 
+    @Test fun `dictation languages appear first in configured order while other layouts remain available`() {
+        val ordered = QuickCorrectionLayouts.orderedForDictation(listOf("ru", "ja", "en", "ru", "de"))
+            .map { it.code }
+        val all = QuickCorrectionLayouts.all.map { it.code }
+        assertEquals(listOf("ru", "en", "de"), ordered.take(3))
+        assertEquals(all.filterNot { it in listOf("ru", "en", "de") }, ordered.drop(3))
+        assertEquals(all.size, ordered.size)
+    }
+
+    @Test fun `empty or unsupported dictation languages keep the default layout order`() {
+        assertEquals(QuickCorrectionLayouts.all, QuickCorrectionLayouts.orderedForDictation(emptyList()))
+        assertEquals(QuickCorrectionLayouts.all, QuickCorrectionLayouts.orderedForDictation(listOf("ja", "zh")))
+    }
+
     @Test fun `French and German layouts include letters needed for ordinary corrections`() {
         for (letter in "éèêëàâçîïôœùûüÿ") assertTrue("French $letter", letter in characters("fr"))
         for (letter in "äöüß") assertTrue("German $letter", letter in characters("de"))

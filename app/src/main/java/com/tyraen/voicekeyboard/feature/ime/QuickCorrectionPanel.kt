@@ -32,6 +32,7 @@ import kotlin.math.min
 class QuickCorrectionPanel(
     private val root: FrameLayout,
     private val getInputConnection: () -> InputConnection?,
+    private val getDictationLanguages: () -> List<String>,
     private val onEnter: () -> Unit,
     private val onShown: (Boolean) -> Unit,
     private val onNotice: (String) -> Unit
@@ -406,7 +407,7 @@ class QuickCorrectionPanel(
         language.text = context.getString(R.string.qc_layouts)
         body.removeAllViews()
         footer.removeAllViews()
-        QuickCorrectionLayouts.all.forEach { candidate ->
+        QuickCorrectionLayouts.orderedForDictation(getDictationLanguages()).forEach { candidate ->
             val button = keyButton(candidate.nativeName, size = 16f) {
                 layout = candidate
                 preferences.edit().putString("layout", candidate.code).apply()

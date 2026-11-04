@@ -51,7 +51,7 @@ If the original editor is no longer available when a keyboard dictation finishes
 
 ### Optional correction tools
 
-The basic letter layout types directly into the focused editor. It does not send typed keys to a server or collect a typing history. Its selected layout is stored privately on the device and is independent of interface and dictation languages.
+The basic letter layout types directly into the focused editor. It does not send typed keys to a server or collect a typing history. Its selected layout is stored privately on the device and remains independent of interface and dictation languages. Configured dictation languages determine which available layouts appear first in the layout list.
 
 Selected-text actions read the selected passage and a small amount of adjacent text to verify the destination before replacement. Only the selected passage, your editing instruction and reference vocabulary are sent to the post-processing provider; neighbouring text stays in memory on the device. These actions do not add the passage to recent-dictation context. Password fields are excluded. A preview is shown before applying a replacement; the app checks the editor session, selection and text again before Apply or Undo. An unapplied completed preview is kept in Saved texts when closed, using the same private storage and deletion controls described above. Explicit Copy writes to the system clipboard; explicit Paste reads it for a custom instruction. Neither happens automatically.
 
