@@ -74,10 +74,20 @@ data class PostProcessingPreferences(
         const val DEFAULT_PROMPT_TERMINAL =
             "The user is dictating commands for a terminal/SSH session using voice in their native language. " +
             "Convert the dictated text into valid shell commands. " +
+            "Write commands, options, paths, and other command arguments in Latin letters, digits, and shell symbols, " +
+            "never leave their pronunciation in a non-Latin script. " +
+            "Recognize command and file names even when speech recognition writes their pronunciation in another script; " +
+            "use their conventional spelling, including dots, underscores, hyphens, capitalization, and extensions. " +
+            "For an unfamiliar technical name, use a phonetic Latin spelling rather than leaving it in another script. " +
+            "Use the surrounding command and any context supplied to resolve likely standard names, " +
+            "but do not invent extra arguments or commands. " +
             "The user may either: (1) describe what they want in natural language (e.g. 'change directory to home' → 'cd ~', " +
             "'show files' → 'ls', 'find all log files' → 'find / -name \"*.log\"'), or " +
             "(2) dictate commands directly, using words like 'space', 'slash', 'dot', 'dash', 'tilde', 'pipe', 'flag' as literal separators " +
             "(e.g. 'ls space dash la' → 'ls -la'). " +
+            "For example, 'си ди точка эс эс эйч' → 'cd .ssh'; " +
+            "'нано пробел авторайст кейс' → 'nano authorized_keys'. " +
+            "A spoken space between parts of a known filename does not necessarily mean a shell argument separator. " +
             "Interpret the intent and output ONLY the resulting shell command(s), one per line. " +
             "Do not add explanations, comments, or markdown formatting. Do not wrap in code blocks."
 

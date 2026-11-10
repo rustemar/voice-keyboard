@@ -48,6 +48,20 @@ class PostProcessingContextRequestTest {
         }
     }
 
+    @Test fun `terminal request sends dictated command and canonical spelling examples to both providers`() {
+        val dictated = "нано пробел авторайст кейс"
+        for (provider in listOf(PostProcessingPreferences.PROVIDER_OPENAI, PostProcessingPreferences.PROVIDER_CLAUDE)) {
+            val prefs = preferences(provider)
+            val prompt = PostProcessingPrompts.buildTerminal(dictated, prefs)
+            val (system, user) = messageContents(processAndCapture(prompt, prefs), provider)
+
+            assertEquals(dictated, user)
+            assertTrue(system.contains("Latin letters, digits, and shell symbols"))
+            assertTrue(system.contains("'си ди точка эс эс эйч' → 'cd .ssh'"))
+            assertTrue(system.contains("'нано пробел авторайст кейс' → 'nano authorized_keys'"))
+        }
+    }
+
     private fun assertContextRequests(provider: String) {
         val prefs = preferences(provider)
         val prompts = listOf(
