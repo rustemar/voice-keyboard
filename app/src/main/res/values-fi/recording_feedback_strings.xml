@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Tallennusäänet</string>
+    <string name="settings_recording_sounds_hint">Toista lyhyt ääni tallennuksen alkaessa ja päättyessä.</string>
+    <string name="settings_recording_sounds_preview">Kuuntele äänet</string>
+    <string name="settings_microphone_haptics">Mikrofonin värinä</string>
+    <string name="settings_microphone_haptics_hint">Lyhyt värinä tallennuksen alkaessa ja päättyessä. Noudattaa järjestelmän värinäasetuksia.</string>
+</resources>

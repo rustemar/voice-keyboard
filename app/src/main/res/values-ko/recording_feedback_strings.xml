@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">녹음 효과음</string>
+    <string name="settings_recording_sounds_hint">녹음을 시작하고 끝낼 때 짧은 소리를 재생합니다.</string>
+    <string name="settings_recording_sounds_preview">효과음 미리 듣기</string>
+    <string name="settings_microphone_haptics">마이크 진동</string>
+    <string name="settings_microphone_haptics_hint">녹음을 시작하고 끝낼 때 짧게 진동합니다. 시스템 진동 설정을 따릅니다.</string>
+</resources>

@@ -16,6 +16,8 @@ import com.tyraen.voicekeyboard.core.config.AdvancedPreferences
 import com.tyraen.voicekeyboard.core.logging.DiagnosticLog
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneCaptureSession
 import com.tyraen.voicekeyboard.feature.audio.MicrophoneGate
+import com.tyraen.voicekeyboard.feature.audio.RecordingFeedbackSession
+import com.tyraen.voicekeyboard.feature.audio.RecordingSoundPlayer
 import com.tyraen.voicekeyboard.feature.setup.MicPermission
 import com.tyraen.voicekeyboard.feature.transcription.TranscriptionConfig
 import kotlinx.coroutines.*
@@ -25,9 +27,14 @@ import java.util.Locale
 class DictationRecognitionService : RecognitionService() {
     private val scope = MainScope()
     private lateinit var options: AdvancedPreferences
+    private lateinit var recordingSounds: RecordingSoundPlayer
     private var active: Request? = null
 
-    private class Request(val callback: Callback, val captureContext: Context) {
+    private class Request(
+        val callback: Callback,
+        val captureContext: Context,
+        val recordingFeedback: RecordingFeedbackSession
+    ) {
         var loading: Job? = null
         var capture: MicrophoneCaptureSession? = null
         var session: RecognitionSession? = null
@@ -41,6 +48,7 @@ class DictationRecognitionService : RecognitionService() {
 
     override fun onCreate() {
         super.onCreate()
+        recordingSounds = ServiceLocator.recordingSounds
         options = AdvancedPreferences(this)
         options.register(optionListener)
     }
@@ -94,7 +102,7 @@ class DictationRecognitionService : RecognitionService() {
             error(listener, SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS)
             return
         }
-        val request = Request(listener, attributed)
+        val request = Request(listener, attributed, recordingSounds.newSession())
         active = request
         val load = scope.launch(start = CoroutineStart.LAZY) {
             try {
@@ -115,13 +123,20 @@ class DictationRecognitionService : RecognitionService() {
                     capture = object : RecognitionSession.Capture {
                         override fun start(onAmplitude: (Int) -> Unit): Boolean {
                             if (!MicPermission.isGranted(this@DictationRecognitionService)) throw SecurityException()
-                            return capture.begin(onAmplitude)
+                            val began = capture.begin(onAmplitude)
+                            if (began) request.recordingFeedback.started(prefs.recordingSoundsEnabled)
+                            return began
                         }
                         override fun finish(): RecognitionSession.CapturedAudio? {
-                            val file = capture.finalize() ?: return null
+                            val file = capture.finalize()
+                            request.recordingFeedback.stopped()
+                            if (file == null) return null
                             return RecognitionSession.CapturedAudio(file, capture.lastDurationMs)
                         }
-                        override fun abort() = capture.abort()
+                        override fun abort() {
+                            capture.abort()
+                            request.recordingFeedback.stopped()
+                        }
                     },
                     speechClient = ServiceLocator.speechToTextClient,
                     scope = scope,
@@ -188,6 +203,7 @@ class DictationRecognitionService : RecognitionService() {
         request.loading?.cancel()
         request.session?.cancel()
         request.capture?.release()
+        request.recordingFeedback.stopped()
     }
 
     private fun fail(request: Request, code: Int) {
@@ -205,6 +221,7 @@ class DictationRecognitionService : RecognitionService() {
         if (active !== request) return
         active = null
         request.capture?.release()
+        request.recordingFeedback.stopped()
         try { request.callback.block() } catch (_: Exception) { /* Client has gone away. */ }
     }
 

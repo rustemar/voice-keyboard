@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Aufnahmetöne</string>
+    <string name="settings_recording_sounds_hint">Kurze Töne beim Starten und Beenden einer Aufnahme abspielen.</string>
+    <string name="settings_recording_sounds_preview">Töne anhören</string>
+    <string name="settings_microphone_haptics">Vibration der Mikrofontaste</string>
+    <string name="settings_microphone_haptics_hint">Kurze Vibration beim Starten und Beenden einer Aufnahme. Berücksichtigt die Vibrationseinstellungen des Systems.</string>
+</resources>

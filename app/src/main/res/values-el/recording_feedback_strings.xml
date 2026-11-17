@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Ήχοι εγγραφής</string>
+    <string name="settings_recording_sounds_hint">Σύντομοι ήχοι κατά την έναρξη και τη διακοπή της εγγραφής.</string>
+    <string name="settings_recording_sounds_preview">Ακρόαση ήχων</string>
+    <string name="settings_microphone_haptics">Δόνηση μικροφώνου</string>
+    <string name="settings_microphone_haptics_hint">Σύντομη δόνηση κατά την έναρξη και τη διακοπή της εγγραφής. Ακολουθεί τις ρυθμίσεις δόνησης του συστήματος.</string>
+</resources>

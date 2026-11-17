@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">録音の効果音</string>
+    <string name="settings_recording_sounds_hint">録音の開始時と終了時に短い音を鳴らします。</string>
+    <string name="settings_recording_sounds_preview">効果音を試聴</string>
+    <string name="settings_microphone_haptics">マイクの振動</string>
+    <string name="settings_microphone_haptics_hint">録音の開始時と終了時に短く振動します。システムの振動設定に従います。</string>
+</resources>

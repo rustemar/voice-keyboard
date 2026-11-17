@@ -85,6 +85,9 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var editPrompt: EditText
     private lateinit var switchSavedActionsLeft: Switch
     private lateinit var switchAutoRecord: Switch
+    private lateinit var switchRecordingSounds: Switch
+    private lateinit var switchMicrophoneHaptics: Switch
+    private lateinit var btnPreviewRecordingSounds: Button
     private lateinit var switchReturnToPreviousKeyboard: Switch
     private lateinit var switchSilenceAutoStop: Switch
     private lateinit var switchAutoSendAfterSilence: Switch
@@ -204,6 +207,9 @@ class SetupActivity : AppCompatActivity() {
         editPrompt = findViewById(R.id.editPrompt)
         switchSavedActionsLeft = findViewById(R.id.switchSavedActionsLeft)
         switchAutoRecord = findViewById(R.id.switchAutoRecord)
+        switchRecordingSounds = findViewById(R.id.switchRecordingSounds)
+        switchMicrophoneHaptics = findViewById(R.id.switchMicrophoneHaptics)
+        btnPreviewRecordingSounds = findViewById(R.id.btnPreviewRecordingSounds)
         switchReturnToPreviousKeyboard = findViewById(R.id.switchReturnToPreviousKeyboard)
         switchSilenceAutoStop = findViewById(R.id.switchSilenceAutoStop)
         switchAutoSendAfterSilence = findViewById(R.id.switchAutoSendAfterSilence)
@@ -220,6 +226,7 @@ class SetupActivity : AppCompatActivity() {
         // These controls reload from their own preferences. A stale framework view snapshot must
         // not trigger their listeners after a newer narrow write has already been loaded.
         listOf<View>(spinnerTheme, spinnerLanguage, spinnerSttPreset, switchSavedActionsLeft, switchAutoRecord,
+            switchRecordingSounds, switchMicrophoneHaptics,
             switchReturnToPreviousKeyboard, switchSilenceAutoStop, switchAutoSendAfterSilence,
             seekSilenceAutoStopPause,
             switchAddSpace, switchSingleWordStripPunct, switchUpdateCheck
@@ -323,6 +330,18 @@ class SetupActivity : AppCompatActivity() {
             val store = preferenceStore
             enqueueSettingsWrite { store.setAutoRecord(isChecked) }
         }
+        switchRecordingSounds.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setRecordingSoundsEnabled(isChecked) }
+        }
+        switchMicrophoneHaptics.setOnCheckedChangeListener { _, isChecked ->
+            if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
+            val store = preferenceStore
+            enqueueSettingsWrite { store.setMicrophoneHapticsEnabled(isChecked) }
+        }
+        val recordingSounds = ServiceLocator.recordingSounds
+        btnPreviewRecordingSounds.setOnClickListener { recordingSounds.preview() }
         switchAddSpace.setOnCheckedChangeListener { _, isChecked ->
             if (bindingKeyboardOptions || !preferencesLoaded) return@setOnCheckedChangeListener
             val store = preferenceStore
@@ -562,6 +581,8 @@ class SetupActivity : AppCompatActivity() {
             bindingKeyboardOptions = true
             switchSavedActionsLeft.isChecked = savedActionsLeft
             switchAutoRecord.isChecked = p.autoRecord
+            switchRecordingSounds.isChecked = p.recordingSoundsEnabled
+            switchMicrophoneHaptics.isChecked = p.microphoneHapticsEnabled
             switchReturnToPreviousKeyboard.isChecked = p.returnToPreviousKeyboard
             switchSilenceAutoStop.isChecked = p.silenceAutoStopEnabled
             switchAutoSendAfterSilence.isChecked = p.autoSendAfterSilenceEnabled
@@ -724,7 +745,9 @@ class SetupActivity : AppCompatActivity() {
         returnToPreviousKeyboard = switchReturnToPreviousKeyboard.isChecked,
         silenceAutoStopEnabled = switchSilenceAutoStop.isChecked,
         silenceAutoStopPauseMs = SilenceAutoStopSettings.pauseMsForProgress(seekSilenceAutoStopPause.progress),
-        autoSendAfterSilenceEnabled = switchAutoSendAfterSilence.isChecked
+        autoSendAfterSilenceEnabled = switchAutoSendAfterSilence.isChecked,
+        recordingSoundsEnabled = switchRecordingSounds.isChecked,
+        microphoneHapticsEnabled = switchMicrophoneHaptics.isChecked
     )
 
     private fun formatSilencePause(pauseMs: Int): String {
@@ -821,6 +844,8 @@ class SetupActivity : AppCompatActivity() {
     private fun setKeyboardOptionsEnabled(enabled: Boolean) {
         switchSavedActionsLeft.isEnabled = enabled
         switchAutoRecord.isEnabled = enabled
+        switchRecordingSounds.isEnabled = enabled
+        switchMicrophoneHaptics.isEnabled = enabled
         switchAddSpace.isEnabled = enabled
         switchSingleWordStripPunct.isEnabled = enabled
         switchReturnToPreviousKeyboard.isEnabled = enabled

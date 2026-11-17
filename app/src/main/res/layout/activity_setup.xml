@@ -439,6 +439,52 @@
             android:textSize="12sp"
             android:layout_marginBottom="12dp" />
 
+        <Switch
+            android:id="@+id/switchRecordingSounds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_recording_sounds"
+            android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_recording_sounds_hint"
+            android:textColor="@color/status_text"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnPreviewRecordingSounds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_recording_sounds_preview"
+            android:textAllCaps="false"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/key_bg"
+            android:layout_marginBottom="8dp" />
+
+        <Switch
+            android:id="@+id/switchMicrophoneHaptics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/settings_microphone_haptics"
+            android:textColor="@color/key_text"
+            android:thumbTint="@color/switch_thumb_color"
+            android:trackTint="@color/switch_track_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_microphone_haptics_hint"
+            android:textColor="@color/status_text"
+            android:textSize="12sp"
+            android:layout_marginBottom="12dp" />
+
         <!-- Optional silence endpointing. The pause remains adjustable when the mode is off. -->
         <Switch
             android:id="@+id/switchSilenceAutoStop"

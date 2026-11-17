@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Kayıt sesleri</string>
+    <string name="settings_recording_sounds_hint">Kayıt başladığında ve durduğunda kısa bir ses çal.</string>
+    <string name="settings_recording_sounds_preview">Sesleri dinle</string>
+    <string name="settings_microphone_haptics">Mikrofon titreşimi</string>
+    <string name="settings_microphone_haptics_hint">Kayıt başladığında ve durduğunda kısa titreşim. Sistemin titreşim ayarlarına uyar.</string>
+</resources>

@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.InputType
 import android.provider.Settings
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -156,7 +157,13 @@ class DictationInputMethod : InputMethodService() {
             onPermissionNeeded = { requestMicPermission() },
             voiceAllowed = { !isVoiceBlocked() },
             onVoiceBlocked = { panel.showPasswordFieldNotice() },
-            onApiKeyNeeded = { openSettings() }
+            onApiKeyNeeded = { openSettings() },
+            onRecordingHaptic = {
+                // This view owns the capture. A rebuilt/detached view must not vibrate a newer one.
+                if (view.isAttachedToWindow) {
+                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                }
+            }
         )
         orchestrator.viewVisible = keyboardVisible
 

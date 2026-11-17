@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Dźwięki nagrywania</string>
+    <string name="settings_recording_sounds_hint">Odtwarzaj krótki dźwięk przy rozpoczęciu i zakończeniu nagrywania.</string>
+    <string name="settings_recording_sounds_preview">Odsłuchaj dźwięki</string>
+    <string name="settings_microphone_haptics">Wibracja mikrofonu</string>
+    <string name="settings_microphone_haptics_hint">Krótka wibracja przy rozpoczęciu i zakończeniu nagrywania. Zgodnie z ustawieniami wibracji systemu.</string>
+</resources>

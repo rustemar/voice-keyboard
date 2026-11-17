@@ -23,7 +23,10 @@ data class UserPreferences(
     val silenceAutoStopEnabled: Boolean = false,
     val silenceAutoStopPauseMs: Int = SilenceAutoStopSettings.DEFAULT_PAUSE_MS,
     /** Opt-in sending after a dictation finishes automatically on a speech pause. */
-    val autoSendAfterSilenceEnabled: Boolean = false
+    val autoSendAfterSilenceEnabled: Boolean = false,
+    /** First-install defaults are resolved and persisted by the DataStore migration, not here. */
+    val recordingSoundsEnabled: Boolean = false,
+    val microphoneHapticsEnabled: Boolean = false
 ) {
     val languageCodes: List<String> get() = TranscriptionLocale.parseCodes(languages)
 

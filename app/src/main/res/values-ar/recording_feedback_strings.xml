@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">أصوات التسجيل</string>
+    <string name="settings_recording_sounds_hint">تشغيل صوت قصير عند بدء التسجيل وانتهائه.</string>
+    <string name="settings_recording_sounds_preview">معاينة الأصوات</string>
+    <string name="settings_microphone_haptics">اهتزاز زر الميكروفون</string>
+    <string name="settings_microphone_haptics_hint">اهتزاز قصير عند بدء التسجيل وانتهائه، وفقًا لإعدادات اهتزاز النظام.</string>
+</resources>

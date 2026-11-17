@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Гукі запісу</string>
+    <string name="settings_recording_sounds_hint">Прайграваць кароткія гукі ў пачатку і ў канцы запісу.</string>
+    <string name="settings_recording_sounds_preview">Праслухаць гукі</string>
+    <string name="settings_microphone_haptics">Вібрацыя кнопкі мікрафона</string>
+    <string name="settings_microphone_haptics_hint">Кароткая вібрацыя ў пачатку і ў канцы запісу з улікам сістэмных налад вібрацыі.</string>
+</resources>

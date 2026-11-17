@@ -17,7 +17,18 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.Locale
 
-private val Context.store: DataStore<Preferences> by preferencesDataStore(name = "settings")
+private val Context.store: DataStore<Preferences> by preferencesDataStore(
+    name = "settings",
+    produceMigrations = { context ->
+        // Snapshot independent options before asynchronous DataStore initialization, so a new
+        // theme choice during that initialization cannot reclassify a freshly installed app.
+        // InterfaceLanguageManager automatically writes locale_prefs even on a fresh install.
+        val hasOtherSavedSettings =
+            context.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE).contains("app_theme") ||
+                context.getSharedPreferences("advanced_options", Context.MODE_PRIVATE).all.isNotEmpty()
+        listOf(RecordingFeedbackMigration { hasOtherSavedSettings })
+    }
+)
 
 class PreferenceStore(private val context: Context) {
 
@@ -28,6 +39,8 @@ class PreferenceStore(private val context: Context) {
         val LANGUAGE = stringPreferencesKey("language")
         val ACTIVE_LANGUAGE = stringPreferencesKey("active_language")
         val AUTO_RECORD = booleanPreferencesKey("auto_record")
+        val RECORDING_SOUNDS_ENABLED = RecordingFeedbackMigration.SOUNDS_ENABLED
+        val MICROPHONE_HAPTICS_ENABLED = RecordingFeedbackMigration.HAPTICS_ENABLED
         val SAVED_ACTIONS_LEFT = booleanPreferencesKey("saved_actions_left")
         val ADD_TRAILING_SPACE = booleanPreferencesKey("add_trailing_space")
         val PROMPT = stringPreferencesKey("prompt")
@@ -91,6 +104,8 @@ class PreferenceStore(private val context: Context) {
             languages = prefs[Keys.LANGUAGE] ?: defaultLang,
             activeLanguage = prefs[Keys.ACTIVE_LANGUAGE] ?: "",
             autoRecord = prefs[Keys.AUTO_RECORD] ?: false,
+            recordingSoundsEnabled = prefs[Keys.RECORDING_SOUNDS_ENABLED] ?: false,
+            microphoneHapticsEnabled = prefs[Keys.MICROPHONE_HAPTICS_ENABLED] ?: false,
             addTrailingSpace = prefs[Keys.ADD_TRAILING_SPACE] ?: true,
             prompt = prefs[Keys.PROMPT] ?: defaultPrompt,
             singleWordStripPunctuation = prefs[Keys.SINGLE_WORD_STRIP_PUNCT] ?: false,
@@ -111,6 +126,8 @@ class PreferenceStore(private val context: Context) {
             data[Keys.LANGUAGE] = prefs.languages
             data[Keys.ACTIVE_LANGUAGE] = prefs.effectiveLanguage
             data[Keys.AUTO_RECORD] = prefs.autoRecord
+            data[Keys.RECORDING_SOUNDS_ENABLED] = prefs.recordingSoundsEnabled
+            data[Keys.MICROPHONE_HAPTICS_ENABLED] = prefs.microphoneHapticsEnabled
             data[Keys.ADD_TRAILING_SPACE] = prefs.addTrailingSpace
             data[Keys.PROMPT] = prefs.prompt
             data[Keys.SINGLE_WORD_STRIP_PUNCT] = prefs.singleWordStripPunctuation
@@ -267,6 +284,14 @@ class PreferenceStore(private val context: Context) {
     /** Keyboard switches save only their own value, without applying unfinished provider edits. */
     suspend fun setAutoRecord(value: Boolean) {
         context.store.edit { it[Keys.AUTO_RECORD] = value }
+    }
+
+    suspend fun setRecordingSoundsEnabled(value: Boolean) {
+        context.store.edit { it[Keys.RECORDING_SOUNDS_ENABLED] = value }
+    }
+
+    suspend fun setMicrophoneHapticsEnabled(value: Boolean) {
+        context.store.edit { it[Keys.MICROPHONE_HAPTICS_ENABLED] = value }
     }
 
     suspend fun setAddTrailingSpace(value: Boolean) {

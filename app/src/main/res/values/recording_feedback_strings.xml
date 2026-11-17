@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">Recording sounds</string>
+    <string name="settings_recording_sounds_hint">Play a short sound when recording starts and stops.</string>
+    <string name="settings_recording_sounds_preview">Preview sounds</string>
+    <string name="settings_microphone_haptics">Microphone vibration</string>
+    <string name="settings_microphone_haptics_hint">Brief vibration when recording starts and stops. Follows system vibration settings.</string>
+</resources>

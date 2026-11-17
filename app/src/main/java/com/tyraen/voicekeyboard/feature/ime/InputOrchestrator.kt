@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import com.tyraen.voicekeyboard.R
+import com.tyraen.voicekeyboard.app.ServiceLocator
 import com.tyraen.voicekeyboard.core.config.PostProcessingPreferences
 import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.config.SilenceAutoStopSettings
@@ -47,7 +48,9 @@ class InputOrchestrator(
     /** The live editor's RAM-only identity, captured when recording starts, not when it finishes. */
     private val editorSessionToken: () -> Long? = { null },
     private val createAutoSendRequest: (enabled: Boolean) -> AutoSendPolicy.Request? = { null },
-    private val invalidateAutoSend: () -> Unit = {}
+    private val invalidateAutoSend: () -> Unit = {},
+    /** The host view supplies haptics at the same capture transitions as the sound cues. */
+    onRecordingHaptic: () -> Unit = {}
 ) {
 
     companion object {
@@ -67,6 +70,7 @@ class InputOrchestrator(
     }
 
     private val scope = MainScope()
+    private val recordingFeedback = ServiceLocator.recordingSounds.newSession(onRecordingHaptic)
     private var preferences: UserPreferences? = null
 
     /**
@@ -416,6 +420,11 @@ class InputOrchestrator(
         captureIdentity = identity
         captureContextToken = processingQueue.capturePostProcessingContextToken()
         captureEditorSessionToken = editorSessionToken()
+        // Keep capture immediate and intact: no delay or trimming of the user's first syllable.
+        recordingFeedback.started(
+            soundsEnabled = reloadsInFlight == 0 && preferences?.recordingSoundsEnabled == true,
+            hapticsEnabled = reloadsInFlight == 0 && preferences?.microphoneHapticsEnabled == true
+        )
         moveTo(InputPhase.Capturing())
     }
 
@@ -448,6 +457,7 @@ class InputOrchestrator(
         if (autoSendRequest == null) captureAutoSendRequest?.cancel()
         captureAutoSendRequest = null
         val pending = capture.finalizeAsync()
+        recordingFeedback.stopped()
         val snapshot = preferences?.takeIf { reloadsInFlight == 0 }?.let { enqueueSnapshot(it) }
         var handoverJob: Job? = null
         if (!processingQueue.updateReservation(identity) {
@@ -585,6 +595,7 @@ class InputOrchestrator(
         if (capture.isActive) {
             capture.abort()
         }
+        recordingFeedback.stopped()
         moveTo(InputPhase.Ready)
     }
 
@@ -600,6 +611,7 @@ class InputOrchestrator(
         if (capture.isActive) {
             capture.abort()
         }
+        recordingFeedback.stopped()
         processingQueue.cancelPending()
         moveTo(InputPhase.Ready)
     }
@@ -624,6 +636,7 @@ class InputOrchestrator(
         captureContextToken = null
         captureEditorSessionToken = null
         capture.release()
+        recordingFeedback.stopped()
         // The queue is a process-wide singleton — never destroy it here, just stop receiving its
         // callbacks. Parked recordings and in-flight work survive this input view.
         processingQueue.unbindListener(queueListener)

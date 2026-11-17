@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">录音提示音</string>
+    <string name="settings_recording_sounds_hint">录音开始和结束时播放简短提示音。</string>
+    <string name="settings_recording_sounds_preview">试听提示音</string>
+    <string name="settings_microphone_haptics">麦克风振动</string>
+    <string name="settings_microphone_haptics_hint">录音开始和结束时短暂振动。遵循系统振动设置。</string>
+</resources>

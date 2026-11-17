@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_recording_sounds">रिकॉर्डिंग की ध्वनियाँ</string>
+    <string name="settings_recording_sounds_hint">रिकॉर्डिंग शुरू और बंद होने पर छोटी ध्वनि बजाएँ।</string>
+    <string name="settings_recording_sounds_preview">ध्वनियाँ सुनें</string>
+    <string name="settings_microphone_haptics">माइक्रोफ़ोन का कंपन</string>
+    <string name="settings_microphone_haptics_hint">रिकॉर्डिंग शुरू और बंद होने पर हल्का कंपन। सिस्टम की कंपन सेटिंग के अनुसार काम करता है।</string>
+</resources>

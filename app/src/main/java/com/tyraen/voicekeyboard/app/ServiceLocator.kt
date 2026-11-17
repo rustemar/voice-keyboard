@@ -5,6 +5,7 @@ import com.tyraen.voicekeyboard.core.config.PreferenceStore
 import com.tyraen.voicekeyboard.core.network.ApiEndpoint
 import com.tyraen.voicekeyboard.core.network.ConnectivityMonitor
 import com.tyraen.voicekeyboard.core.network.HttpClientProvider
+import com.tyraen.voicekeyboard.feature.audio.RecordingSoundPlayer
 import com.tyraen.voicekeyboard.feature.ime.ParkedRecordingStore
 import com.tyraen.voicekeyboard.feature.ime.PendingTranscriptStore
 import com.tyraen.voicekeyboard.feature.ime.ProcessingQueue
@@ -28,6 +29,8 @@ object ServiceLocator {
     val httpClient: OkHttpClient by lazy { HttpClientProvider.create() }
 
     val preferenceStore: PreferenceStore by lazy { PreferenceStore(appContext) }
+
+    val recordingSounds: RecordingSoundPlayer by lazy { RecordingSoundPlayer(appContext) }
 
     val speechToTextClient: SpeechToTextClient by lazy {
         val whisper = WhisperApiClient(httpClient)
